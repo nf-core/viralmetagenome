@@ -29,11 +29,24 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     MINIMAP2_CONTIG_INDEX(ch_references)
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_INDEX.out.versions.first())
 
+    // Create clean copies before joining
     MINIMAP2_CONTIG_INDEX
         .out
         .index
-        .join( ch_references_members, by: [0] )
-        .join( CAT_CLUSTER.out.file_out, by: [0] )
+        .map { meta, index -> [meta.clone(), index] }
+        .set { ch_index_clean }
+
+    ch_references_members
+        .map { meta, references, members -> [meta.clone(), references, members] }
+        .set { ch_references_members_clean }
+
+    CAT_CLUSTER.out.file_out
+        .map { meta, file_out -> [meta.clone(), file_out] }
+        .set { ch_cat_clean }
+
+    ch_index_clean
+        .join( ch_references_members_clean, by: [0] )
+        .join( ch_cat_clean, by: [0] )
         .branch{ meta, index, references, members, comb ->
             external: meta.external_reference
                 return [meta, index, members]
@@ -50,8 +63,17 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     MINIMAP2_CONTIG_ALIGN(ch_contigs, ch_index, true, false, false )
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_ALIGN.out.versions.first())
 
+    // Create clean copies before joining
     ch_references_members
-        .join( MINIMAP2_CONTIG_ALIGN.out.bam, by: [0] )
+        .map { meta, references, members -> [meta.clone(), references, members] }
+        .set { ch_references_members_clean }
+
+    MINIMAP2_CONTIG_ALIGN.out.bam
+        .map { meta, bam -> [meta.clone(), bam] }
+        .set { ch_bam_clean }
+
+    ch_references_members_clean
+        .join( ch_bam_clean, by: [0] )
         .map{ meta, references, members, bam -> [meta, references, bam] }
         .set{ ch_references_bam }
 

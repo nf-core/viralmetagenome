@@ -19,8 +19,17 @@ workflow BAM_STATS_METRICS {
     SAMTOOLS_INDEX ( sort_bam )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
-    input_metrics = sort_bam_ref
-        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
+    // Create clean copies before joining
+    sort_bam_ref
+        .map { meta, bam, ref -> [meta.clone(), bam, ref] }
+        .set { sort_bam_ref_clean }
+
+    SAMTOOLS_INDEX.out.bai
+        .map { meta, bai -> [meta.clone(), bai] }
+        .set { ch_bai_clean }
+
+    input_metrics = sort_bam_ref_clean
+        .join(ch_bai_clean, by: [0], remainder: true)
         .multiMap{
             meta, bam, ref, bai ->
             bam_bai : [meta, bam, bai]

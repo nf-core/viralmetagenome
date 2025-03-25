@@ -1,4 +1,3 @@
-
 include { IVAR_CONSENSUS                                                } from '../../modules/nf-core/ivar/consensus/main'
 include { BAM_VCF_CONSENSUS_BCFTOOLS                                    } from './bam_vcf_consensus_bcftools.nf'
 include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_CALLED_CONSENSUS   } from '../../modules/local/rename_fasta_header'
@@ -27,6 +26,7 @@ workflow BAM_CALL_CONSENSUS {
         ch_consensus = BAM_VCF_CONSENSUS_BCFTOOLS.out.consensus
         ch_versions = ch_versions.mix(BAM_VCF_CONSENSUS_BCFTOOLS.out.versions)
     }
+
     else if (consensus_caller == "ivar"){
         IVAR_CONSENSUS (
             ch_bam,

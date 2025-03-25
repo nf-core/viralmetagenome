@@ -24,10 +24,23 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     )
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
 
+    // Create clean copies before joining
     bam
-    .join(vcf, by: [0])
-    .join(fasta, by: [0])
-    .set{bam_vcf_fasta}
+        .map { meta, bam -> [meta.clone(), bam] }
+        .set { bam_clean }
+
+    vcf
+        .map { meta, vcf -> [meta.clone(), vcf] }
+        .set { vcf_clean }
+
+    fasta
+        .map { meta, fasta -> [meta.clone(), fasta] }
+        .set { fasta_clean }
+
+    bam_clean
+        .join(vcf_clean, by: [0])
+        .join(fasta_clean, by: [0])
+        .set{bam_vcf_fasta}
 
     //
     // Create BED file with consensus regions to mask (regions to remove)
@@ -46,10 +59,15 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     )
     ch_versions = ch_versions.mix(BEDTOOLS_MERGE.out.versions.first())
 
+    // Create clean copies before joining
     BEDTOOLS_MERGE
         .out
         .bed
-        .join(fasta, by: [0])
+        .map { meta, bed -> [meta.clone(), bed] }
+        .set { bed_clean }
+
+    fasta_clean
+        .join(bed_clean, by: [0])
         .set{bed_fasta}
 
     //
@@ -63,8 +81,21 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     //
     // Call consensus sequence with BCFTools
     //
+    // Create clean copies before joining
+    vcf_clean
+        .map { meta, vcf -> [meta.clone(), vcf] }
+        .set { vcf_join_clean }
+
+    TABIX_TABIX.out.tbi
+        .map { meta, tbi -> [meta.clone(), tbi] }
+        .set { tbi_clean }
+
+    BEDTOOLS_MASKFASTA.out.fasta
+        .map { meta, fasta -> [meta.clone(), fasta] }
+        .set { masked_fasta_clean }
+
     BCFTOOLS_CONSENSUS (
-        vcf.join(TABIX_TABIX.out.tbi, by: [0]).join(BEDTOOLS_MASKFASTA.out.fasta, by: [0])
+        vcf_join_clean.join(tbi_clean, by: [0]).join(masked_fasta_clean, by: [0])
     )
     ch_versions = ch_versions.mix(BCFTOOLS_CONSENSUS.out.versions.first())
 

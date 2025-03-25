@@ -19,9 +19,22 @@ workflow BAM_STATS_FILTER {
     SAMTOOLS_INDEX ( ch_bam )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
-    stats_in = ch_bam
-        .join(SAMTOOLS_INDEX.out.bai, by: [0])
-        .join(ch_reference, by: [0])
+    // Create clean copies before joining
+    ch_bam
+        .map { meta, bam -> [meta.clone(), bam] }
+        .set { ch_bam_clean }
+
+    SAMTOOLS_INDEX.out.bai
+        .map { meta, bai -> [meta.clone(), bai] }
+        .set { ch_bai_clean }
+
+    ch_reference
+        .map { meta, ref -> [meta.clone(), ref] }
+        .set { ch_reference_clean }
+
+    stats_in = ch_bam_clean
+        .join(ch_bai_clean, by: [0])
+        .join(ch_reference_clean, by: [0])
         .multiMap{ meta, bam, bai, ref ->
             bam_bai : [meta, bam, bai ]
             ref : [meta, ref ]
@@ -30,11 +43,16 @@ workflow BAM_STATS_FILTER {
     SAMTOOLS_STATS ( stats_in.bam_bai, stats_in.ref )
     ch_versions = ch_versions.mix(SAMTOOLS_STATS.out.versions.first())
 
+    // Create clean copies before joining
     SAMTOOLS_STATS
         .out
         .stats
-        .join(ch_bam, by: [0] )
-        .map{ meta, stats, bam -> [ meta, bam, WorkflowCommons.getStatsMappedReads(stats) ] }
+        .map { meta, stats -> [meta.clone(), stats] }
+        .set { ch_stats_clean }
+
+    ch_bam_clean
+        .join(ch_stats_clean, by: [0] )
+        .map{ meta, bam, stats -> [ meta, bam, WorkflowCommons.getStatsMappedReads(stats) ] }
         .branch { meta, bam, mapped_reads ->
             pass: mapped_reads > min_mapped_reads
                 return [ meta, bam ]

@@ -20,7 +20,17 @@ workflow BAM_DEDUPLICATE {
 
     if ( params.with_umi && ['mapping','both'].contains(params.umi_deduplicate) ) {
             SAMTOOLS_INDEX( ch_bam )
-            ch_bam_bai  = ch_bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+
+            // Create clean copies before joining
+            ch_bam
+                .map { meta, bam -> [meta.clone(), bam] }
+                .set { ch_bam_clean }
+
+            SAMTOOLS_INDEX.out.bai
+                .map { meta, bai -> [meta.clone(), bai] }
+                .set { ch_bai_clean }
+
+            ch_bam_bai  = ch_bam_clean.join(ch_bai_clean, by: [0])
             ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions)
 
             UMITOOLS_DEDUP ( ch_bam_bai , mapping_stats)

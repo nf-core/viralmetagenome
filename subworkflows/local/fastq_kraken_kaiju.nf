@@ -74,7 +74,7 @@ workflow FASTQ_KRAKEN_KAIJU {
         Convert Krona text files into html Krona visualizations
     */
     ch_krona_text_for_import = ch_cleaned_krona_text
-        .map{meta, txt -> [[id: meta.tool], txt]}
+        .map{meta, txt -> tuple([id: meta.tool], txt)}
         .groupTuple()
 
     KRONA_KTIMPORTTEXT( ch_krona_text_for_import )

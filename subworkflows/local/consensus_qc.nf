@@ -29,9 +29,9 @@ workflow CONSENSUS_QC  {
 
     // Combine all genomes into a single file
     ch_genome
-        .collectFile(name: "all_genomes.fa"){it[1]}
-        .map{it -> [[id:"all_genomes"], it]}
-        .set{ch_genomes_all}
+        .collectFile(name:"all_genomes.fa", sort: false) { it[1] }
+        .map { genomes -> [[id: "all_genomes"], genomes] }
+        .set { ch_genomes_all }
 
     // combine the different iterations of a single consensus
     ch_genome
@@ -40,10 +40,16 @@ workflow CONSENSUS_QC  {
             fasta: [meta.id, fasta]
         }
         .set{ch_genomes_mapped}
-    ch_genomes_mapped.fasta.collectFile{ id, genome ->
+
+    ch_genomes_mapped
+        .metadata
+        .set{meta_genomes_mapped}
+
+    ch_genomes_mapped.fasta.collectFile(sort:false){ id, genome ->
             ["${id}.fa", genome]
-        }.map{ file -> [file.simpleName, file]}
-        .join(ch_genomes_mapped.metadata.unique())
+        }
+        .map{ file -> [file.simpleName, file]}
+        .join(meta_genomes_mapped.unique(), failOnDuplicate: true, failOnMismatch:true)
         .map{ id, genome, meta -> [meta, genome]}
         .set{ch_genome_grouped}
 

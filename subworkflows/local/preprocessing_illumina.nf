@@ -76,7 +76,7 @@ workflow PREPROCESSING_ILLUMINA {
 
     // Keeping track of failed reads for reporting
     trim_read_count
-        .filter{meta,num_reads -> num_reads < params.min_trimmed_reads.toLong() }
+        .filter{meta, num_reads -> num_reads < params.min_trimmed_reads.toLong() }
         .set { failed_reads }
 
     // deduplicate UMI's with HUMID

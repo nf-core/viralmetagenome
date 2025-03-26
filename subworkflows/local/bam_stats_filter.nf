@@ -21,15 +21,15 @@ workflow BAM_STATS_FILTER {
 
     // Create clean copies before joining
     ch_bam
-        .map { meta, bam -> [meta.clone(), bam] }
+        .map { meta, bam -> [meta + [:], bam] }
         .set { ch_bam_clean }
 
     SAMTOOLS_INDEX.out.bai
-        .map { meta, bai -> [meta.clone(), bai] }
+        .map { meta, bai -> [meta + [:], bai] }
         .set { ch_bai_clean }
 
     ch_reference
-        .map { meta, ref -> [meta.clone(), ref] }
+        .map { meta, ref -> [meta + [:], ref] }
         .set { ch_reference_clean }
 
     stats_in = ch_bam_clean
@@ -47,7 +47,7 @@ workflow BAM_STATS_FILTER {
     SAMTOOLS_STATS
         .out
         .stats
-        .map { meta, stats -> [meta.clone(), stats] }
+        .map { meta, stats -> [meta + [:], stats] }
         .set { ch_stats_clean }
 
     ch_bam_clean

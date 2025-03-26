@@ -23,11 +23,11 @@ workflow BAM_DEDUPLICATE {
 
             // Create clean copies before joining
             ch_bam
-                .map { meta, bam -> [meta.clone(), bam] }
+                .map { meta, bam -> [meta + [:], bam] }
                 .set { ch_bam_clean }
 
             SAMTOOLS_INDEX.out.bai
-                .map { meta, bai -> [meta.clone(), bai] }
+                .map { meta, bai -> [meta + [:], bai] }
                 .set { ch_bai_clean }
 
             ch_bam_bai  = ch_bam_clean.join(ch_bai_clean, by: [0])

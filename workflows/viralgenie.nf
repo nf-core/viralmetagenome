@@ -222,11 +222,11 @@ workflow VIRALGENIE {
             // blast contigs against reference & identify clusters of (contigs & references)
             // Create clean copies of channels before joining to prevent concurrent modification
             ch_contigs
-                .map { meta, contigs -> [meta.clone(), contigs] }
+                .map { meta, contigs -> [meta + [:], contigs] }
                 .set { ch_contigs_clean }
 
             ch_host_trim_reads
-                .map { meta, reads -> [meta.clone(), reads] }
+                .map { meta, reads -> [meta + [:], reads] }
                 .set { ch_reads_clean }
 
             ch_contigs_clean

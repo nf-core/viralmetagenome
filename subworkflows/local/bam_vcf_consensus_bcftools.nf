@@ -26,15 +26,15 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
 
     // Create clean copies before joining
     ch_bam
-        .map { meta, bam -> [meta.clone(), bam] }
+        .map { meta, bam -> [meta + [:], bam] }
         .set { bam_clean }
 
     ch_vcf
-        .map { meta, vcf -> [meta.clone(), vcf] }
+        .map { meta, vcf -> [meta + [:], vcf] }
         .set { vcf_clean }
 
     ch_fasta
-        .map { meta, fasta -> [meta.clone(), fasta] }
+        .map { meta, fasta -> [meta + [:], fasta] }
         .set { fasta_clean }
 
     bam_clean
@@ -63,7 +63,7 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     BEDTOOLS_MERGE
         .out
         .bed
-        .map { meta, bed -> [meta.clone(), bed] }
+        .map { meta, bed -> [meta + [:], bed] }
         .join(fasta_clean, by: [0])
         .set{bed_fasta}
 
@@ -80,15 +80,15 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     //
     // Create clean copies before joining
     vcf_clean
-        .map { meta, vcf -> [meta.clone(), vcf] }
+        .map { meta, vcf -> [meta + [:], vcf] }
         .set { vcf_join_clean }
 
     TABIX_TABIX.out.tbi
-        .map { meta, tbi -> [meta.clone(), tbi] }
+        .map { meta, tbi -> [meta + [:], tbi] }
         .set { tbi_clean }
 
     BEDTOOLS_MASKFASTA.out.fasta
-        .map { meta, fasta -> [meta.clone(), fasta] }
+        .map { meta, fasta -> [meta + [:], fasta] }
         .set { masked_fasta_clean }
 
     BCFTOOLS_CONSENSUS (

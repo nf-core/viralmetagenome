@@ -77,13 +77,13 @@ workflow FASTA_CONTIG_PRECLUST {
         .sequences
         .map { meta, fastas, json ->
             def jsonMap = WorkflowCommons.getMapFromJson(json)
-            def newMeta = meta.clone() + jsonMap  // Clone the map before adding to it
+            def newMeta = meta + [:] + jsonMap  // Clone the map before adding to it
             return [newMeta, fastas]                                                                // json contains ntaxa
                 }
         .transpose()                                                                                    // wide to long
         .map{ meta, fasta ->
             def taxid = fasta.baseName.split("_taxid")[1]                                               // get taxid from fasta file name
-            def newMeta = meta.clone() + [id: "${meta.id}_taxid${taxid}", taxid: "${taxid}"]
+            def newMeta = meta + [:] + [id: "${meta.id}_taxid${taxid}", taxid: "${taxid}"]
             return [meta.sample, newMeta, fasta ]    // [meta.sample, meta, fasta]
         }
         .filter { sample, meta, fasta ->
@@ -92,7 +92,7 @@ workflow FASTA_CONTIG_PRECLUST {
         .combine(ch_reads, by:[0])                                                                      // reads -> [meta.sample, meta, reads]
         .map{ sample, meta_contig, fasta, meta_reads, reads -> [meta_contig, fasta, reads] }            // select only meta of contigs
         .map{ meta, fasta, reads ->                                                                     // set original single_end back
-            def newMeta = meta.clone() + [single_end:meta.og_single_end]
+            def newMeta = meta + [:] + [single_end:meta.og_single_end]
             [newMeta, fasta, reads]
         }
         .set{sequences_reads}

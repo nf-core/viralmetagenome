@@ -21,11 +21,11 @@ workflow BAM_STATS_METRICS {
 
     // Create clean copies before joining
     sort_bam_ref
-        .map { meta, bam, ref -> [meta.clone(), bam, ref] }
+        .map { meta, bam, ref -> [meta + [:], bam, ref] }
         .set { sort_bam_ref_clean }
 
     SAMTOOLS_INDEX.out.bai
-        .map { meta, bai -> [meta.clone(), bai] }
+        .map { meta, bai -> [meta + [:], bai] }
         .set { ch_bai_clean }
 
     input_metrics = sort_bam_ref_clean

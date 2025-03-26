@@ -36,15 +36,15 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     MINIMAP2_CONTIG_INDEX
         .out
         .index
-        .map { meta, index -> [meta.clone(), index] }
+        .map { meta, index -> [meta + [:], index] }
         .set { ch_index_clean }
 
     ch_references_members
-        .map { meta, references, members -> [meta.clone(), references, members] }
+        .map { meta, references, members -> [meta + [:], references, members] }
         .set { ch_references_members_clean }
 
     CAT_CLUSTER.out.file_out
-        .map { meta, file_out -> [meta.clone(), file_out] }
+        .map { meta, file_out -> [meta + [:], file_out] }
         .set { ch_cat_clean }
 
     ch_index_clean
@@ -68,7 +68,7 @@ workflow ALIGN_COLLAPSE_CONTIGS {
 
     // Create clean copies before joining
     ch_references_members
-        .map { meta, references, members -> [meta.clone(), references, members] }
+        .map { meta, references, members -> [meta + [:], references, members] }
         .join( MINIMAP2_CONTIG_ALIGN.out.bam, by: [0] )
         .map{ meta, references, members, bam -> [meta, references, bam] }
         .set{ ch_references_bam }

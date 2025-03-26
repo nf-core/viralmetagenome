@@ -343,7 +343,7 @@ workflow VIRALGENIE {
         Channel
             .fromList(samplesheetToList(params.mapping_constraints, "${projectDir}/assets/schemas/mapping_constraints.json"))
             .map{ meta, sequence ->
-                def samples = meta.samples == [] ? null : tuple(meta.samples.split(";"))  // Split up samples if meta.samples is not null
+                def samples = meta.samples == [] ? null :[meta.samples.split(";")]              // Split up samples if meta.samples is not null
                 [meta, samples, sequence]
             }
             .transpose(remainder: true)                                                         // Unnest

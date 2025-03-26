@@ -77,11 +77,13 @@ workflow FASTQ_ASSEMBLY {
     ch_scaffolds
         .map { meta, scaffold  -> tuple( groupKey(meta, assemblers.size()), scaffold ) }
         .groupTuple(remainder: true)
+        .map { key, scaffolds -> [key.getGroupTarget(), scaffolds ] }
         .set{ch_scaffolds_combined}
 
     ch_coverages
         .map { meta, coverages  -> tuple( groupKey(meta, assemblers.size()), coverages ) }
         .groupTuple(remainder: true)
+        .map { key, coverages -> [key.getGroupTarget(), coverages ] }
         .set{ch_coverages_combined}
 
     CAT_ASSEMBLERS(ch_scaffolds_combined)

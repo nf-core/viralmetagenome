@@ -77,11 +77,10 @@ workflow FASTA_CONTIG_CLUST {
             tuple( groupKey(meta.sample, meta.ntaxa), meta, clusters )         // Set groupkey by sample and ntaxa
             }
         .groupTuple(remainder: true)                                           // Has to be grouped to link different taxa preclusters to the same sample
-        .map{ key, meta, clusters -> [key.getGroupTarget(), clusters] }              // Get rid of groupkey
         .combine(sample_fasta_ref_contigs)                                     // combine with contigs (regural join doesn't work)
         .filter{it -> it[0]==it[3]}                                            // filter for matching samples
         .map{ sample, meta_clust, clusters, sample2, meta_contig, contigs, coverages ->
-            [meta_contig, clusters, contigs, coverages]                        // get rid of meta_clust & sample
+            [meta_contig + [:], clusters, contigs, coverages]                        // get rid of meta_clust & sample
         }
         .set{ch_clusters_contigs_coverages}
 

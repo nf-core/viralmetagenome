@@ -10,9 +10,9 @@ include { MAKE_BED_MASK       } from '../../modules/local/make_bed_mask/main'
 
 workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     take:
-    bam          // channel: [ val(meta), [ bam ] ]
-    vcf          // channel: [ val(meta), [ vcf ] ]
-    fasta        // channel: [ val(meta), [ fasta ] ]
+    ch_bam          // channel: [ val(meta), [ bam ] ]
+    ch_vcf          // channel: [ val(meta), [ vcf ] ]
+    ch_fasta        // channel: [ val(meta), [ fasta ] ]
     mapping_stats    // value: [ true | false ]
 
     main:
@@ -20,20 +20,20 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     ch_versions = Channel.empty()
 
     TABIX_TABIX (
-        vcf
+        ch_vcf
     )
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
 
     // Create clean copies before joining
-    bam
+    ch_bam
         .map { meta, bam -> [meta.clone(), bam] }
         .set { bam_clean }
 
-    vcf
+    ch_vcf
         .map { meta, vcf -> [meta.clone(), vcf] }
         .set { vcf_clean }
 
-    fasta
+    ch_fasta
         .map { meta, fasta -> [meta.clone(), fasta] }
         .set { fasta_clean }
 
@@ -64,10 +64,7 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
         .out
         .bed
         .map { meta, bed -> [meta.clone(), bed] }
-        .set { bed_clean }
-
-    fasta_clean
-        .join(bed_clean, by: [0])
+        .join(fasta_clean, by: [0])
         .set{bed_fasta}
 
     //

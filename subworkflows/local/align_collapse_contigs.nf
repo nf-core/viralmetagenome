@@ -13,7 +13,10 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     main:
     ch_versions = Channel.empty()
 
-    ch_sequences = ch_references_members.map{ meta, references, members -> [meta, [references, members]] }
+    ch_references_members
+        .map { meta, references, members -> [meta, [references, members]] }
+        .set { ch_sequences }
+
 
     CAT_CLUSTER(ch_sequences)
     ch_versions = ch_versions.mix(CAT_CLUSTER.out.versions.first())
@@ -66,15 +69,7 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     // Create clean copies before joining
     ch_references_members
         .map { meta, references, members -> [meta.clone(), references, members] }
-        .set { ch_references_members_clean }
-
-    MINIMAP2_CONTIG_ALIGN.out.bam
-        .map { meta, bam -> [meta.clone(), bam] }
-        .set { ch_bam_clean }
-
-    ch_references_members_clean
-        .join( ch_bam_clean, by: [0] )
-        .map{ meta, references, members, bam -> [meta, references, bam] }
+        .join( MINIMAP2_CONTIG_ALIGN.out.bam, by: [0] )
         .set{ ch_references_bam }
 
     ivar_bam   = ch_references_bam.map{ meta, references, bam -> [meta, bam] }

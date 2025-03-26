@@ -49,7 +49,7 @@ workflow CONSENSUS_QC  {
             ["${id}.fa", genome]
         }
         .map{ file -> [file.simpleName, file]}
-        .join(meta_genomes_mapped.unique(), failOnDuplicate: true, failOnMismatch:true)
+        .join(meta_genomes_mapped.unique())
         .map{ id, genome, meta -> [meta, genome]}
         .set{ch_genome_grouped}
 

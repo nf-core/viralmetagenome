@@ -73,7 +73,8 @@ workflow CONSENSUS_QC  {
         // Run
         ch_genome
             .filter{ meta, genome ->
-                meta.iteration == params.iterative_refinement_cycles || meta.isConstraint?.toBoolean()
+                def isConstraint = meta.containsKey('isConstraint') ? meta.isConstraint : false
+                isConstraint.as(Boolean) || meta.iteration == params.iterative_refinement_cycles
                 }
             .set { ch_genomes_final }
 

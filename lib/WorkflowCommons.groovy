@@ -22,8 +22,8 @@ class WorkflowCommons {
     // Function to get a Map from a JSON file
     //
     public static Map getMapFromJson(json_file) {
-        def Map json = (Map) new JsonSlurper().parse(json_file)
-        return new ConcurrentHashMap<>(json)
+        def parsed = new JsonSlurper().parse(json_file)
+        return new HashMap(parsed)
     }
 
     public static Map getLengthAndAmbigous(fastaFile) {

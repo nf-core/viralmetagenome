@@ -43,14 +43,10 @@ def process_mpileup(filename: Path, reference: Path, k: int, max_depth: int = 80
     Process mpileup data using numpy vectorized operations.
     """
     fasta = pysam.FastaFile(str(reference))
-    alignment_file = pysam.AlignmentFile(
-        filename,
-        "rc" if filename.suffix == ".cram" else "rb",
-        reference_filename=str(reference),
-        max_depth = max_depth )
+    alignment_file = pysam.AlignmentFile( filename, "rc" if filename.suffix == ".cram" else "rb", reference_filename=str(reference))
 
     # Convert generator to structured numpy array
-    stats = list(pysamstats.stat_variation(alignment_file, fafile=fasta))
+    stats = list(pysamstats.stat_variation(alignment_file, fafile=fasta, max_depth=max_depth))
     n_rows = len(stats)
 
     # Create structured array in one go

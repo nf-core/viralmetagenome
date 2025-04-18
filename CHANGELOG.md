@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v0.1.3dev - [date]
 
+### `Enhancement`
+
+### `Fixed`
+
+### `Parameters`
+
 ## v0.1.2 - 2025-02-28
 
 Second release of the viralgenie pipeline. Focusing on user experience and bug fixes.

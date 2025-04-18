@@ -47,7 +47,7 @@ def process_mpileup(filename: Path, reference: Path, k: int, max_depth: int = 80
         filename,
         "rc" if filename.suffix == ".cram" else "rb",
         reference_filename=str(reference),
-        max_depth = )
+        max_depth = max_depth )
 
     # Convert generator to structured numpy array
     stats = list(pysamstats.stat_variation(alignment_file, fafile=fasta))

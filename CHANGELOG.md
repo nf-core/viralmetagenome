@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Enhancement`
 
 - Add argument to control the maximum mpileup depth in `custom_mpileup.py` script ([#176](https://github.com/Joon-Klaps/viralgenie/pull/176))
+- Giving Kaiju more memory ([#179](https://github.com/Joon-Klaps/viralgenie/pull/179))
 
 ### `Fixed`
 

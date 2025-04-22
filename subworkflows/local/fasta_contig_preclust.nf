@@ -77,21 +77,12 @@ workflow FASTA_CONTIG_PRECLUST {
         .sequences
         .map { meta, fastas, json ->
             def lazy_json = WorkflowCommons.getMapFromJson(json)
-            def map_json = [
-                centroid: lazy_json.centroid,
-                cluster_id: lazy_json.cluster_id,
-                cluster_size: lazy_json.cluster_size,
-                cumulative_read_depth: lazy_json.cumulative_read_depth,
-                external_reference: lazy_json.external_reference,
-                members: lazy_json.members,
-                taxid: lazy_json.taxid
-            ]
-            return [meta + map_json, fastas]                                                                // json contains ntaxa
-                }
+            [meta + [ntaxa: lazy_json.ntaxa],fastas]                                                    // json contains ONLY ntaxa
+        }
         .transpose()                                                                                    // wide to long
         .map{ meta, fasta ->
-            def new_id = "${meta.id}_taxid${meta.taxid}"
-            return [meta.sample, meta + [id: new_id], fasta ]                                           // [meta.sample, meta, fasta]
+            def taxid = fasta.baseName.split("_taxid")[1]                                               // get taxid from fasta file name
+            return [meta.sample, meta + [id: "${meta.id}_taxid${taxid}", taxid: "${taxid}"], fasta ]    // [meta.sample, meta, fasta]
         }
         .filter { sample, meta, fasta ->
             params.keep_unclassified || meta.taxid != "U"                                               // filter out unclassified

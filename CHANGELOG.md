@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add argument to control the maximum mpileup depth in `custom_mpileup.py` script ([#176](https://github.com/Joon-Klaps/viralgenie/pull/176))
 - Removing redundant `samtools_sort` after `BAM_DEDUPLICATE` ([#177](https://github.com/Joon-Klaps/viralgenie/pull/177))
+- Removing `seqkit replace` and move logic to  `blast_filter.py` ([#178](https://github.com/Joon-Klaps/viralgenie/pull/178))
 - Giving Kaiju more memory ([#179](https://github.com/Joon-Klaps/viralgenie/pull/179))
 
 ### `Fixed`

@@ -28,7 +28,6 @@ include { FASTQ_ASSEMBLY                  } from '../subworkflows/local/fastq_as
 // Consensus polishing of genome
 include { FASTA_CONTIG_CLUST              } from '../subworkflows/local/fasta_contig_clust'
 include { BLAST_MAKEBLASTDB               } from '../modules/nf-core/blast/makeblastdb/main'
-include { SEQKIT_REPLACE                  } from '../modules/nf-core/seqkit/replace/main'
 include { ALIGN_COLLAPSE_CONTIGS          } from '../subworkflows/local/align_collapse_contigs'
 include { UNPACK_DB                       } from '../subworkflows/local/unpack_db'
 include { FASTQ_FASTA_ITERATIVE_CONSENSUS } from '../subworkflows/local/fastq_fasta_iterative_consensus'
@@ -132,7 +131,7 @@ workflow VIRALGENIE {
 
         // transfer to value channels so processes are not just done once
         // '.collect()' is necessary to transform to list so cartesian products are made downstream
-        ch_ref_pool_raw     = ch_db.reference.collect{it[1]}.ifEmpty([]).map{it -> [[id: 'reference'], it]}
+        ch_ref_pool         = ch_db.reference.collect{it[1]}.ifEmpty([]).map{it -> [[id: 'reference'], it]}
         ch_annotation_db    = ch_db.annotation.collect{it[1]}.ifEmpty([]).map{it -> [[id: 'annotation'], it]}
         ch_kraken2_db       = ch_db.kraken2.collect().ifEmpty([])
         ch_kaiju_db         = ch_db.kaiju.collect().ifEmpty([])
@@ -143,15 +142,10 @@ workflow VIRALGENIE {
     }
 
     // Prepare blast DB
-    ch_ref_pool     = Channel.empty()
     ch_blast_refdb  = Channel.empty()
 
     if ( (!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc)){
         ch_blastdb_in = Channel.empty()
-        // see issue #56
-        SEQKIT_REPLACE (ch_ref_pool_raw)
-        ch_versions   = ch_versions.mix(SEQKIT_REPLACE.out.versions)
-        ch_ref_pool   = SEQKIT_REPLACE.out.fastx
         ch_blastdb_in = ch_blastdb_in.mix(ch_ref_pool)
 
         BLAST_MAKEBLASTDB ( ch_blastdb_in )

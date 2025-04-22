@@ -95,11 +95,22 @@ workflow FASTA_CONTIG_CLUST {
         .members_centroids
         .transpose()                                                                   // wide to long
         .map { meta, seq_members, seq_centroids, json_file ->
-            def json     = WorkflowCommons.getMapFromJson(json_file)                   // convert cluster metadata to Map
-            def new_meta = meta + [ id: "${meta.sample}_${json.cluster_id}"] + json    // rename meta.id to include cluster number
-            return [new_meta, seq_centroids, seq_members]
+            def lazy_json = WorkflowCommons.getMapFromJson(json_file)                  // convert cluster metadata to Map
+            def map_json = [
+                id : "${meta.sample}_${lazy_json.cluster_id}",                         // rename meta.id to include cluster number
+                centroid: lazy_json.centroid,
+                cluster_id: lazy_json.cluster_id,
+                cluster_size: lazy_json.cluster_size,
+                cumulative_read_depth: lazy_json.cumulative_read_depth,
+                external_reference: lazy_json.external_reference,
+                members: lazy_json.members,
+                taxid: lazy_json.taxid
+            ]
+            return [meta + map_json, seq_centroids, seq_members]
         }
         .set{seq_centroids_members}
+
+    seq_centroids_members.dump{tag:"json"}
 
     emit:
     clusters              = FASTA_FASTQ_CLUST.out.clusters // channel: [ [ meta ], [ clusters ] ]

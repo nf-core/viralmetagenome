@@ -67,12 +67,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
         ch_dedup_bam = ch_bam
     }
 
-    // sort bam
-    SAMTOOLS_SORT_DEDUPPED ( ch_dedup_bam, [[:],[]] )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT_DEDUPPED.out.versions)
-    ch_dedup_bam_sort = SAMTOOLS_SORT_DEDUPPED.out.bam
-
-    ch_dedup_bam_ref = ch_dedup_bam_sort
+    ch_dedup_bam_ref = ch_dedup_bam
         .join(ch_reference, by: [0])
 
     // report summary statistics of alignment

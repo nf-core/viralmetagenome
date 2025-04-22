@@ -86,7 +86,7 @@ workflow FASTA_CONTIG_PRECLUST {
                 members: lazy_json.members,
                 taxid: lazy_json.taxid
             ]
-            return [meta + json, fastas]                                                                // json contains ntaxa
+            return [meta + map_json, fastas]                                                                // json contains ntaxa
                 }
         .transpose()                                                                                    // wide to long
         .map{ meta, fasta ->

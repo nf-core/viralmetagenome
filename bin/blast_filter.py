@@ -138,6 +138,8 @@ def extract_contigs_hits(df, contigs, references, prefix):
         for record in SeqIO.parse(references, "fasta"):
             hit_name = record.id
             if hit_name in needed_hits:
+                # Reasign the id
+                record.id = hit_name.replace("|", "-").replace("\\", "-").replace("/", "-")
                 SeqIO.write(record, out_file, "fasta")
                 found_hits.add(hit_name)
 

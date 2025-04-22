@@ -4,6 +4,7 @@ include { lowReadSamplesToMultiQC            } from '../../subworkflows/local/ut
 include { PRINSEQPLUSPLUS as PRINSEQ_READS   } from '../../modules/nf-core/prinseqplusplus/main'
 include { HUMID                              } from '../../modules/nf-core/humid/main'
 include { BBMAP_BBDUK                        } from '../../modules/nf-core/bbmap/bbduk/main'
+include { CAT_FASTQ                          } from '../../modules/nf-core/cat/fastq/main'
 include { FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC  } from './fastq_fastqc_umitools_trimmomatic'
 include { FASTQ_FASTQC_UMITOOLS_FASTP        } from '../nf-core/fastq_fastqc_umitools_fastp/main'
 include { FASTQ_KRAKEN_HOST_REMOVE           } from './fastq_kraken_host_remove'
@@ -93,6 +94,17 @@ workflow PREPROCESSING_ILLUMINA {
         ch_reads_dedup = ch_reads_trim
     }
 
+    // Merge reads belonging to the same sample / group
+    if (params.merge_reads) {
+        ch_reads_dedup
+            .map { meta, reads -> [meta + [id: meta.sample], reads] }
+            .groupTuple ()
+            .set { ch_reads_grouped }
+
+        CAT_FASTQ ( ch_reads_grouped )
+        ch_reads_dedup = CAT_FASTQ.out.reads
+    }
+
 
     // Decomplexification with BBDuk
     if (!params.skip_complexity_filtering) {
@@ -136,6 +148,7 @@ workflow PREPROCESSING_ILLUMINA {
     } else {
         ch_reads_hostremoved = ch_reads_decomplexified
     }
+
 
     //
     // Create a section that reports failed samples and their read counts

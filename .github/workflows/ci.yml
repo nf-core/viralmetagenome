@@ -97,7 +97,7 @@ jobs:
       - name: Clean up Disk space
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
 
-      - name: Run pipeline with small test data with variant caller ${{ matrix.VARIANT_CALLER }} and consensus caller ${{ matrix.CONSENSUS_CALLER }}
+      - name: Test variantcaller ${{ matrix.VARIANT_CALLER }} | consensus caller ${{ matrix.CONSENSUS_CALLER }}
         env:
           VARIANT_CALLER: ${{ matrix.VARIANT_CALLER }}
           CONSENSUS_CALLER: ${{ matrix.CONSENSUS_CALLER }}
@@ -182,7 +182,7 @@ jobs:
       - name: Clean up Disk space
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
 
-      - name: Run pipeline with small test data using ${{ matrix.CLUSTER_METHOD }}
+      - name: Test cluster ${{ matrix.CLUSTER_METHOD }}
         env:
           CLUSTER_METHOD: ${{ matrix.CLUSTER_METHOD }}
           profile: ${{ matrix.profile }}
@@ -206,6 +206,7 @@ jobs:
         test_name:
           - "test_full"
           - "test_nothing"
+          - "test_group"
           - "test_fail_mapped"
           - "test_fail_db"
           - "test_umi"
@@ -263,7 +264,7 @@ jobs:
       - name: Clean up Disk space
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
 
-      - name: Run pipeline with small test data using ${{ matrix.test_name }} | ${{ matrix.profile }}
+      - name: Test ${{ matrix.test_name }} | ${{ matrix.profile }}
         env:
           test_name: ${{ matrix.test_name }}
           profile: ${{ matrix.profile }}

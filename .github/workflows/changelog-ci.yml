@@ -14,7 +14,8 @@ jobs:
     # Or run on PR creation, unless asked otherwise in the title.
     if: |
       github.event_name == 'pull_request_target' ||
-      github.event.issue.pull_request && contains(github.event.comment.body, '@Klaps-bot changelog')
+      github.event.issue.pull_request && contains(github.event.comment.body, '@Klaps-bot changelog') ||
+      github.event.issue.pull_request && contains(github.event.comment.body, '@Klaps-bot update changelog')
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:

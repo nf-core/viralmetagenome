@@ -110,6 +110,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     contigs = filterContigs ( consensus_all, min_len, n_100 )
 
     contig_qc_fail_mqc = failedContigsToMultiQC ( contigs.fail, min_len, n_100 )
+    ch_vcf_ref         = ch_vcf.join(ch_reference, by: [0])
 
     consensus_filtered = contigs.pass
     ch_multiqc         = ch_multiqc.mix(contig_qc_fail_mqc.collectFile(name:'failed_contig_quality_mqc.tsv').ifEmpty([]))
@@ -123,6 +124,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     consensus_all   = consensus_all                      // channel: [ val(meta), [ fasta ] ]
     bam             = bam_out                            // channel: [ val(meta), [ bam ] ]
     vcf             = ch_vcf                             // channel: [ val(meta), [ vcf ] ]
+    vcf_ref         = ch_vcf_ref                         // channel: [ val(meta), [ vcf ] ]
     vcf_filter      = ch_vcf_filter                      // channel: [ val(meta), [ vcf ] ]
 
     mqc             = ch_multiqc                           // channel: [ val(meta), [ csi ] ]

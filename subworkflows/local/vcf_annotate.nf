@@ -1,76 +1,55 @@
 // Based on https://github.com/nf-core/viralrecon/blob/master/subworkflows/local/variants_ivar.nf
 
-include { SNPEFF_BUILD   } from '../../modules/local/snpeff_build/main'
-include { SNPEFF_SNPEFF  } from '../../modules/nf-core/snpeff/snpeff/main'
+include { SNPEFF_BUILD          } from '../../modules/local/snpeff_build/main'
+include { SNPEFF_SNPEFF         } from '../../modules/nf-core/snpeff/snpeff/main'
+include { SNPSIFT_EXTRACTFIELDS } from '../../modules/local/snpsift_extractfields/main'
 
-workflow BAM_VARIANTS_IVAR {
+workflow VCF_ANNOTATE {
 
     take:
-    vcf         // channel: [ val(meta), [ vcf]]
+    ch_vcf_ref         // channel: [ val(meta), [ vcf], [ref]]
 
     main:
-
     ch_versions = Channel.empty()
 
-    ch_bam     = bam_fasta.map{ meta, bam, fasta -> [ meta, bam ] }
-    ch_fasta   = bam_fasta.map{ meta, bam, fasta -> [ fasta ] }
-    meta_fasta = bam_fasta.map{ meta, bam, fasta -> [ meta, fasta ] }
+    ch_vcf_ref = ch_vcf_ref.filter{ meta, vcf, ref -> meta.gff != null  }
+    ch_gff = ch_vcf_ref
+        .map{ meta, vcf, ref -> [ ref, meta.gff ] }
+        .unique()
 
-    //
-    // Call variants
-    //
-    IVAR_VARIANTS (
-        ch_bam,
-        ch_fasta,
-        [], // fai never used within ivar
-        [], // gff
-        save_stats
+    SNPEFF_BUILD (
+        ch_gff
     )
-    ch_versions = ch_versions.mix(IVAR_VARIANTS.out.versions.first())
+    ch_versions = ch_versions.mix(SNPEFF_BUILD.out.versions.first())
 
-    IVAR_VARIANTS
-        .out
-        .tsv
-        .set { ch_ivar_tsv }
+    ch_vcf_ref
+        .map{ meta, vcf, ref -> [ ref, meta, vcf ] }
+        .combine(SNPEFF_BUILD.out.db, by: [0])
+        .multiMap { ref, meta, vcf, db_id, db, config ->
+            vcf: [meta, vcf]
+            db: db_id
+            cache: [meta, db, config]
+        }
+        .set { snpeff_in }
 
-    //
-    // Convert original iVar output to VCF, zip and index
-    //
-    ch_ivar_vcf_header = params.ivar_header ?
-        file( params.ivar_header, checkIfExists: true ) :
-        file("$projectDir/assets/ivar_variants_header_mqc.txt", checkIfExists: true)
-
-    ch_ivar_tsv
-        .join( meta_fasta, by : [0] )
-        .set { ch_ivar_tsv_fasta }
-
-    IVAR_VARIANTS_TO_VCF (
-        ch_ivar_tsv_fasta,
-        ch_ivar_vcf_header
+    SNPEFF_SNPEFF (
+        snpeff_in.vcf,
+        snpeff_in.db,
+        snpeff_in.cache,
     )
-    ch_versions = ch_versions.mix(IVAR_VARIANTS_TO_VCF.out.versions.first())
+    ch_vcf_ann  = SNPEFF_SNPEFF.out.vcf
+    ch_versions = ch_versions.mix(SNPEFF_SNPEFF.out.versions.first())
 
-
-    BCFTOOLS_SORT (
-        IVAR_VARIANTS_TO_VCF.out.vcf
+    SNPSIFT_EXTRACTFIELDS (
+        ch_vcf_ann,
     )
-    ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
+    ch_versions = ch_versions.mix(SNPSIFT_EXTRACTFIELDS.out.versions.first())
 
-    BCFTOOLS_FILTER (
-        BCFTOOLS_SORT.out.vcf
-    )
-    ch_versions = ch_versions.mix(BCFTOOLS_FILTER.out.versions.first())
 
     emit:
-    tsv          = ch_ivar_tsv                     // channel: [ val(meta), [ tsv ] ]
+    vcf          = ch_vcf_ann                     // channel: [ val(meta), [ tsv ] ]
+    txt          = SNPSIFT_EXTRACTFIELDS.out.txt  // channel: [ val(meta), [ txt ] ]
 
-    vcf_orig     = IVAR_VARIANTS_TO_VCF.out.vcf    // channel: [ val(meta), [ vcf ] ]
-    log_out      = IVAR_VARIANTS_TO_VCF.out.log    // channel: [ val(meta), [ log ] ]
-    multiqc      = IVAR_VARIANTS_TO_VCF.out.tsv    // channel: [ val(meta), [ tsv ] ]
-
-    vcf          = BCFTOOLS_SORT.out.vcf           // channel: [ val(meta), [ vcf ] ]
-    vcf_filter   = BCFTOOLS_FILTER.out.vcf         // channel: [ val(meta), [ vcf ] ]
-
-    versions     = ch_versions                     // channel: [ versions.yml ]
+    versions     = ch_versions                    // channel: [ versions.yml ]
 }
 

@@ -1,5 +1,5 @@
 process SNPEFF_BUILD {
-    tag "$meta.id"
+    tag "$fasta"
     label 'process_low'
 
     conda "bioconda::snpeff=5.0"
@@ -8,10 +8,10 @@ process SNPEFF_BUILD {
         'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(fasta), path(gff)
+    tuple path(fasta), path(gff)
 
     output:
-    tuple val(meta), path('snpeff_db'), path("*.config"), emit: db
+    tuple path(fasta), prefix, path('snpeff_db'), path("*.config"), emit: db
     path "versions.yml", emit: versions
 
     when:
@@ -19,7 +19,7 @@ process SNPEFF_BUILD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: fasta.baseName
     def extension = gff.getExtension().replace("3", "")
     if (extension == "gtf") {
         format = "gtf22"

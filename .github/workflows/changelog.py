@@ -57,6 +57,8 @@ def _determine_change_type(pr_title) -> tuple[str, str]:
         "Enhance": "### `Enhancement`",
         "Param": "### `Parameters`",
         "Include": "### `Enhancement`",
+        "Update": "### `Enhancement`",
+        "Improve": "### `Enhancement`",
     }
     current_section_header = "### `Enhancement`"
     current_section = "Add"
@@ -140,7 +142,7 @@ while orig_lines:
 
         # Parse version from the line `## v2.12dev` or
         # `## [v2.11.1 - Magnesium Dragon Patch](https://github.com/nf-core/tools/releases/tag/2.11) - [2023-12-20]` ...
-        if not (m := re.match(r".*(v\d+\.\d+(dev)?).*", line)):
+        if not (m := re.match(r".*(v\d+\.\d+(?:\.\d+)?(dev)?).*", line)):
             print(f"Cannot parse version from line {line.strip()}.", file=sys.stderr)
             sys.exit(1)
         version = m.group(1)
@@ -148,8 +150,8 @@ while orig_lines:
         if not inside_version_dev:
             if not version.endswith("dev"):
                 print(
-                    "Can't find a 'dev' version section in the changelog. Make sure "
-                    "it's created, and all the required sections, e.g. `### Template` are created under it .",
+                    f"Can't find a 'dev' version section in the changelog. Found version '{version}' which doesn't end with 'dev'. "
+                    f"Make sure a dev version section is created, and all the required sections, e.g. `### `Enhancement`` are created under it.",
                     file=sys.stderr,
                 )
                 sys.exit(1)
@@ -217,9 +219,7 @@ def collapse_newlines(lines: List[str]) -> List[str]:
         updated.append(lines[idx])
     return updated
 
-
 updated_lines = collapse_newlines(updated_lines)
-
 
 # Finally, writing the updated lines back.
 with changelog_path.open("w") as f:

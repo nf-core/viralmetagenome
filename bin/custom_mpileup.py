@@ -27,6 +27,7 @@ def parse_args(argv=None):
     parser.add_argument("--reference", type=Path, help="Reference FASTA file")
     parser.add_argument("--prefix", type=str, help="Name of the output file")
     parser.add_argument("--k", type=int, help="Pseudocount to add to the total for shannon entropy calculation", default=50)
+    parser.add_argument("--max-depth", type=int, help="Maximum depth to allow in pileup column", default=8000)
     parser.add_argument(
         "-l",
         "--log-level",
@@ -37,15 +38,15 @@ def parse_args(argv=None):
     return parser.parse_args(argv)
 
 
-def process_mpileup(filename: Path, reference: Path, k: int) -> NDArray:
+def process_mpileup(filename: Path, reference: Path, k: int, max_depth: int = 8000) -> NDArray:
     """
     Process mpileup data using numpy vectorized operations.
     """
     fasta = pysam.FastaFile(str(reference))
-    alignment_file = pysam.AlignmentFile(filename, "rc" if filename.suffix == ".cram" else "rb", reference_filename=str(reference))
+    alignment_file = pysam.AlignmentFile( filename, "rc" if filename.suffix == ".cram" else "rb", reference_filename=str(reference))
 
     # Convert generator to structured numpy array
-    stats = list(pysamstats.stat_variation(alignment_file, fafile=fasta))
+    stats = list(pysamstats.stat_variation(alignment_file, fafile=fasta, max_depth=max_depth))
     n_rows = len(stats)
 
     # Create structured array in one go
@@ -146,7 +147,7 @@ def write_csv(matrix: NDArray, prefix: str) -> None:
 def main():
     args = parse_args()
     logger.info("Starting mpileup processing")
-    matrix = process_mpileup(args.alignment, args.reference, args.k)
+    matrix = process_mpileup(args.alignment, args.reference, args.k, args.max_depth)
     write_csv(matrix, args.prefix)
     logger.info("Mpileup processing completed")
 

@@ -5,6 +5,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v0.1.3dev - [date]
 
+### `Enhancement`
+
+- Add argument to control the maximum mpileup depth in `custom_mpileup.py` script ([#176](https://github.com/Joon-Klaps/viralgenie/pull/176))
+- Removing redundant `samtools_sort` after `BAM_DEDUPLICATE` ([#177](https://github.com/Joon-Klaps/viralgenie/pull/177))
+- Removing `seqkit replace` and move logic to  `blast_filter.py` ([#178](https://github.com/Joon-Klaps/viralgenie/pull/178))
+- Giving Kaiju more memory ([#179](https://github.com/Joon-Klaps/viralgenie/pull/179))
+
+### `Fixed`
+
+### `Parameters`
+
 ## v0.1.2 - 2025-02-28
 
 Second release of the viralgenie pipeline. Focusing on user experience and bug fixes.
@@ -30,7 +41,6 @@ Second release of the viralgenie pipeline. Focusing on user experience and bug f
 - Include samtools stats pre dedup & post dedup in overview tables ([#163](https://github.com/Joon-Klaps/viralgenie/pull/163))
 - adding prokka for gene detection & annotation ([#165](https://github.com/Joon-Klaps/viralgenie/pull/165))
 
-
 ### `Fixed`
 
 - OOM with longer contigs for nocov_to_reference, uses more RAM now ([#125](https://github.com/Joon-Klaps/viralgenie/pull/125))
@@ -42,7 +52,6 @@ Second release of the viralgenie pipeline. Focusing on user experience and bug f
 ### `Parameters`
 - New parameter mmseqs_cluster_mode default to 0 ([#130](https://github.com/Joon-Klaps/viralgenie/pull/130)) __DEPRECATED__
 - Refactor module arguments to pipeline arguments ([#166](https://github.com/Joon-Klaps/viralgenie/pull/166))
-
 
 ## v0.1.1 - 2024-05-08
 

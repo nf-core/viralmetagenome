@@ -49,10 +49,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml
+
+      - name: Check CHANGELOG.md structure
+        run: |
+          echo "Current CHANGELOG.md structure:"
+          grep -A 5 "^## " ${GITHUB_WORKSPACE}/CHANGELOG.md || echo "No version headers found"
+
       - name: Update CHANGELOG.md from the PR title
+        id: update_changelog
         env:
           COMMENT: ${{ github.event.comment.body }}
           GH_TOKEN: ${{ secrets.KLAPS_BOT_AUTH_TOKEN }}
+        continue-on-error: true
         run: |
           if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
             export PR_NUMBER='${{ github.event.issue.number }}'
@@ -61,7 +69,13 @@ jobs:
             export PR_NUMBER='${{ github.event.pull_request.number }}'
             export PR_TITLE='${{ github.event.pull_request.title }}'
           fi
+          echo "Updating CHANGELOG.md for PR #${PR_NUMBER}: ${PR_TITLE}"
           python ${GITHUB_WORKSPACE}/.github/workflows/changelog.py
+          if [ $? -ne 0 ]; then
+            echo "changed=NO" >> $GITHUB_ENV
+            exit 0
+          fi
+
       - name: Check if CHANGELOG.md actually changed
         run: |
           git diff --exit-code ${GITHUB_WORKSPACE}/CHANGELOG.md || echo "changed=YES" >> $GITHUB_ENV
@@ -98,6 +112,7 @@ jobs:
           env.changed == 'YES'
         run: |
           pre-commit run --all-files
+
       - name: Commit and push changes
         if: |
           env.changed == 'YES'

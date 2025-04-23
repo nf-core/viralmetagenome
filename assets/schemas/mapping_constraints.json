@@ -48,6 +48,14 @@
                 "errorMessage": "Give a definition of the sequence for metadata annotation purposes only",
                 "meta": ["definition"],
                 "type": "string"
+            },
+            "gff": {
+                "errorMessage": "GFF file for mapping must be provided, cannot contain spaces and must have extension '.gff'",
+                "meta": ["gff"],
+                "type": "string",
+                "pattern": "^\\S+\\.gff3?$",
+                "format": "file-path",
+                "exists": true
             }
         },
         "required": ["id", "sequence"],

@@ -76,9 +76,9 @@ workflow FASTA_CONTIG_PRECLUST {
         .out
         .sequences
         .map { meta, fastas, json ->
-            json = WorkflowCommons.getMapFromJson(json)
-            return [meta + json, fastas]                                                                // json contains ntaxa
-                }
+            def lazy_json = WorkflowCommons.getMapFromJson(json)
+            [meta + [ntaxa: lazy_json.ntaxa],fastas]                                                    // json contains ONLY ntaxa
+        }
         .transpose()                                                                                    // wide to long
         .map{ meta, fasta ->
             def taxid = fasta.baseName.split("_taxid")[1]                                               // get taxid from fasta file name

@@ -14,10 +14,10 @@ workflow VCF_ANNOTATE {
 
     // A gff must be supplied & the genome shouldn't have undergone selection
     ch_vcf_ref = ch_vcf_ref
-        .filter{ meta, vcf, ref -> meta.gff != null && !meta.selection  }
+        .filter{ meta, _vcf, _ref -> meta.gff != null && !meta.selection  }
 
     ch_gff = ch_vcf_ref
-        .map{ meta, vcf, ref -> [ ref, meta.gff ] }
+        .map{ meta, _vcf, ref -> [ [id: meta.cluster_id], ref, meta.gff ] }
         .unique()
 
     SNPEFF_BUILD (
@@ -26,11 +26,11 @@ workflow VCF_ANNOTATE {
     ch_versions = ch_versions.mix(SNPEFF_BUILD.out.versions.first())
 
     ch_vcf_ref
-        .map{ meta, vcf, ref -> [ ref, meta, vcf ] }
+        .map{ meta, vcf, ref -> [ [id: meta.cluster_id], meta, ref, vcf ] }
         .combine(SNPEFF_BUILD.out.db, by: [0])
-        .multiMap { ref, meta, vcf, db_id, db, config ->
+        .multiMap { db_id, meta, _ref, vcf, db, config ->
             vcf: [meta, vcf]
-            db: db_id
+            db: db_id.id
             cache: [meta, db, config]
         }
         .set { snpeff_in }

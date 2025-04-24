@@ -11,7 +11,7 @@ process SNPEFF_BUILD {
     tuple path(fasta), path(gff)
 
     output:
-    tuple path(fasta), prefix, path('snpeff_db'), path("*.config"), emit: db
+    tuple path(fasta), val(prefix), path('snpeff_db'), path("*.config"), emit: db
     path "versions.yml", emit: versions
 
     when:

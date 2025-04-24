@@ -31,8 +31,6 @@ process SNPSIFT_EXTRACTFIELDS {
     SnpSift \\
         -Xmx${avail_mem}g \\
         extractFields \\
-        -s "," \\
-        -e "." \\
         $args \\
         $vcf \\
         CHROM POS REF ALT \\

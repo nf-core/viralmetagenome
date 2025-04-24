@@ -68,8 +68,15 @@
 16. Variant calling and filtering ([`BCFTools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
 17. Create consensus genome ([`BCFTools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
 18. Repeat step 14-17 multiple times for the denovo contig route
-19. Consensus evaluation and annotation ([`QUAST`](http://quast.sourceforge.net/quast),[`CheckV`](https://bitbucket.org/berkeleylab/checkv/src/master/),[`blastn`](https://blast.ncbi.nlm.nih.gov/Blast.cgi),[`prokka`](http://github.com/tseemann/prokka) [`mmseqs-search`](https://github.com/soedinglab/MMseqs2/wiki#batch-sequence-searching-using-mmseqs-search), [`MAFFT` - alignment of contigs vs iterations & consensus](https://mafft.cbrc.jp/alignment/software/))
-20. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](http://multiqc.info/))
+19. [Optional] Variant annotation ([`SnpEff`](https://pcingola.github.io/SnpEff/),[`SnpSift`](https://pcingola.github.io/SnpEff/SnpSift.html))
+20. [Optional] Consensus evaluation and annotation:
+    - [`QUAST`](http://quast.sourceforge.net/quast)
+    - [`CheckV`](https://bitbucket.org/berkeleylab/checkv/src/master/)
+    - [`blastn`](https://blast.ncbi.nlm.nih.gov/Blast.cgi)
+    - [`prokka`](http://github.com/tseemann/prokka)
+    - [`mmseqs-search`](https://github.com/soedinglab/MMseqs2/wiki#batch-sequence-searching-using-mmseqs-search)
+    - [`MAFFT` - alignment of contigs vs iterations & consensus](https://mafft.cbrc.jp/alignment/software/)
+21. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](http://multiqc.info/))
 
 ## Usage
 

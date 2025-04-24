@@ -130,7 +130,6 @@
                 },
                 "merge_reads": {
                     "type": "boolean",
-                    "default": false,
                     "description": "Specify if reads coming from the same group or orignal sample should be merged for the downstream analyses",
                     "fa_icon": "fas fa-compress-alt"
                 },
@@ -729,6 +728,12 @@
                     "fa_icon": "fas fa-forward",
                     "description": "Skip the analysis of variants for the external reference or contigs"
                 },
+                "skip_vcf_annotation": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-forward",
+                    "default": false,
+                    "description": "Skip the annotation of the VCF file"
+                },
                 "mapper": {
                     "type": "string",
                     "default": "bwamem2",
@@ -938,6 +943,17 @@
                     "default": "--count-orphans --max-depth 0 --min-BQ 20 --no-BAQ -aa",
                     "description": "Arguments for iVar consensus step 2",
                     "fa_icon": "fas fa-cogs"
+                },
+                "arguments_snpeff": {
+                    "type": "string",
+                    "description": "Arguments for SnpEff tool for variant annotation",
+                    "fa_icon": "fas fa-cogs"
+                },
+                "arguments_snpsift_extractfields": {
+                    "type": "string",
+                    "default": "-s \",\" -e \".",
+                    "description": "Arguments for SnpSift ExtractFields tool",
+                    "fa_icon": "fas fa-cogs"
                 }
             },
             "fa_icon": "fas fa-layer-group"
@@ -965,7 +981,7 @@
                     "description": "Reference database used by checkv for consensus quality control",
                     "help_text": "If not given, the most recent one is downloaded."
                 },
-                "skip_annotation": {
+                "skip_consensus_annotation": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",
                     "description": "Skip the annotation of the consensus constructs"

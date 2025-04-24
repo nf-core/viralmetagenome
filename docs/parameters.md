@@ -204,7 +204,7 @@ Apply different quality control techniques on the generated consensus genomes
 | `skip_consensus_qc` | Skip the quality measurements on consensus genomes |  |
 | `skip_checkv` | Skip the use of checkv for quality check |  |
 | `checkv_db` | Reference database used by checkv for consensus quality control <details><summary>Help</summary><small>If not given, the most recent one is downloaded.</small></details>|  |
-| `skip_annotation` | Skip the annotation of the consensus constructs |  |
+| `skip_consensus_annotation` | Skip the annotation of the consensus constructs |  |
 | `annotation_db` | Database used for annotation of the consensus constructs <details><summary>Help</summary><small>The metadata fields are stored in the fasta comment as `key1:"value1"|key2:"value2"|...` see docs/databases.md for more information.</small></details>| ftp://ftp.expasy.org/databases/viralzone/2020_4/virosaurus90_vertebrate-20200330.fas.gz |
 | `skip_prokka` | Skip gene estimation & annotation with prokka |  |
 | `prokka_db` | Define a prokka `--protein` database for protein annotation <details><summary>Help</summary><small>Specify a custom protein database for Prokka annotation</small></details>|  |

@@ -12,7 +12,10 @@ workflow VCF_ANNOTATE {
     main:
     ch_versions = Channel.empty()
 
-    ch_vcf_ref = ch_vcf_ref.filter{ meta, vcf, ref -> meta.gff != null  }
+    // A gff must be supplied & the genome shouldn't have undergone selection
+    ch_vcf_ref = ch_vcf_ref
+        .filter{ meta, vcf, ref -> meta.gff != null && !meta.selection  }
+
     ch_gff = ch_vcf_ref
         .map{ meta, vcf, ref -> [ ref, meta.gff ] }
         .unique()

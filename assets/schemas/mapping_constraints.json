@@ -15,7 +15,7 @@
             },
             "sequence": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?(n)?a$",
+                "pattern": "^\\S+\\.f(ast)?(n)?a(\\.gz)?$",
                 "format": "file-path",
                 "exists": true,
                 "errorMessage": "Fasta file for mapping must be provided, cannot contain spaces and must have extension '.fa', '.fasta' or '.fna' (unzipped)"
@@ -53,7 +53,7 @@
                 "errorMessage": "GFF file for mapping must be provided, cannot contain spaces and must have extension '.gff'",
                 "meta": ["gff"],
                 "type": "string",
-                "pattern": "^\\S+\\.gff3?$",
+                "pattern": "^\\S+\\.gff3?(\\.gz)?$",
                 "format": "file-path",
                 "exists": true
             }

@@ -124,7 +124,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     consensus_all   = consensus_all                      // channel: [ val(meta), [ fasta ] ]
     bam             = bam_out                            // channel: [ val(meta), [ bam ] ]
     vcf             = ch_vcf                             // channel: [ val(meta), [ vcf ] ]
-    vcf_ref         = ch_vcf_ref                         // channel: [ val(meta), [ vcf ] ]
+    vcf_ref         = ch_vcf_ref                         // channel: [ val(meta), [ vcf ], [ fasta ] ]
     vcf_filter      = ch_vcf_filter                      // channel: [ val(meta), [ vcf ] ]
 
     mqc             = ch_multiqc                           // channel: [ val(meta), [ csi ] ]

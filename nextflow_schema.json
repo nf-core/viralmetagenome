@@ -863,7 +863,7 @@
                 },
                 "arguments_bcftools_mpileup3": {
                     "type": "string",
-                    "default": "--include \\'INFO/DP>=10\\",
+                    "default": "--include \\'INFO/DP>=5\\",
                     "description": "Arguments for BCFtools mpileup step 3",
                     "fa_icon": "fas fa-cogs"
                 },
@@ -916,7 +916,7 @@
                 },
                 "arguments_ivar_variants1": {
                     "type": "string",
-                    "default": "-q 20 -m 10",
+                    "default": "-q 20 -m 5",
                     "description": "Arguments for iVar variants step 1",
                     "fa_icon": "fas fa-cogs"
                 },
@@ -934,7 +934,7 @@
                 },
                 "arguments_ivar_consensus1": {
                     "type": "string",
-                    "default": "-t 0 -q 20 -m 10 -n N",
+                    "default": "-t 0 -q 20 -m 5 -n N",
                     "description": "Arguments for iVar consensus step 1",
                     "fa_icon": "fas fa-cogs"
                 },

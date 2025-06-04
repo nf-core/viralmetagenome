@@ -842,7 +842,7 @@
                     "type": "string",
                     "description": "Arguments for custom mpileup",
                     "fa_icon": "fas fa-cogs",
-                    "default": "--max-depth 80000"
+                    "default": "--max-depth 800000"
                 },
                 "arguments_mosdepth": {
                     "type": "string",

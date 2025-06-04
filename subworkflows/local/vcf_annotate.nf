@@ -20,8 +20,6 @@ workflow VCF_ANNOTATE {
         .map{ meta, _vcf, ref -> [ [id: meta.cluster_id], ref, meta.gff ] }
         .unique()
 
-    ch_gff.view()
-
     SNPEFF_BUILD (
         ch_gff
     )

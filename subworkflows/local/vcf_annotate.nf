@@ -14,11 +14,13 @@ workflow VCF_ANNOTATE {
 
     // A gff must be supplied & the genome shouldn't have undergone selection
     ch_vcf_ref = ch_vcf_ref
-        .filter{ meta, _vcf, _ref -> meta.gff != null && !meta.selection  }
+        .filter{ meta, _vcf, _ref -> meta.gff != null && meta.gff != [] && !meta.selection  }
 
     ch_gff = ch_vcf_ref
         .map{ meta, _vcf, ref -> [ [id: meta.cluster_id], ref, meta.gff ] }
         .unique()
+
+    ch_gff.view()
 
     SNPEFF_BUILD (
         ch_gff

@@ -4,8 +4,9 @@ Viralgenie offers three main preprocessing steps for the preprocessing of raw se
 
 1. [Adapter trimming](#1-adapter-trimming): adapter clipping and pair-merging.
 1. [UMI deduplication](#2-umi-deduplication): removal of PCR duplicates based on Unique Molecular Identifiers (UMIs) on a read level.
-1. [Complexity filtering](#3-complexity-filtering): removal of low-sequence complexity reads.
-1. [Host read-removal](#4-host-read-removal): removal of reads aligning to reference genome(s) of a host.
+1. [Read merging](#3-read-merging): merging of reads from the same sample.
+1. [Complexity filtering](#4-complexity-filtering): removal of low-sequence complexity reads.
+1. [Host read-removal](#5-host-read-removal): removal of reads aligning to reference genome(s) of a host.
 
 ![preprocessing](../images/preprocessing.png)
 
@@ -52,7 +53,14 @@ Viralgenie supports both deduplication on a read level as well as a mapping leve
 
 > By default, viralgenie doesn't assume UMIs are present in the reads. If UMIs are present, specify the `--with_umi` parameter and `--deduplicate`.
 
-## 3. Complexity filtering
+## 3. Read merging
+
+Certain patients or original samples can be sequenced in multiple times. This step involves merging reads from these different sequencing methods to create a comprehensive dataset for analysis.
+> only R1 will be merged with R1 and R2 with R2. Single end and paired end reads will not be merged.
+
+This is done with `CAT`.
+
+## 4. Complexity filtering
 
 Complexity filtering is primarily a run-time optimization step. Low-complexity sequences are defined as having commonly found stretches of nucleotides with limited information content (e.g., the dinucleotide repeat CACACACACA). Such sequences can produce a large number of high-scoring but biologically insignificant results in database searches. Removing these reads therefore saves computational time and resources.
 
@@ -60,7 +68,7 @@ Complexity filtering is done with [`Bbduk`](https://jgi.doe.gov/data-and-tools/s
 
 > By default, this step is skipped. If this step shouldn't be skipped, specify `--skip_complexity_filtering false`. Specify the tool to use for complexity filtering with the `--decomplexifier` parameter, `bbduk` or `prinseq` [default].
 
-## 4. Host read-removal
+## 5. Host read-removal
 
 Contamination, whether derived from experiments or computational processes, looms large in next-generation sequencing data. Such contamination can compromise results from WGS as well as metagenomics studies, and can even lead to the inadvertent disclosure of personal information. To avoid this, host read-removal is performed. Host read-removal is performed by the tool `Kraken2`.
 

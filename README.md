@@ -32,6 +32,7 @@
 2. Performs optional read pre-processing
     - Adapter trimming([`fastp`](https://github.com/OpenGene/fastp), [`Trimmomatic`](https://github.com/usadellab/Trimmomatic))
     - Read UMI deduplication ([`HUMID`](https://humid.readthedocs.io/en/latest/usage.html))
+    - [Optional] Combining of reads (CAT)
     - Low complexity and quality filtering ([`bbduk`](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/), [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus))
     - Host-read removal ([`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/))
 3. Metagenomic diversity mapping
@@ -66,7 +67,7 @@
 15. [Optional] Deduplicate reads ([`Picard`](https://broadinstitute.github.io/picard/) or if UMI's are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html))
 16. Variant calling and filtering ([`BCFTools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
 17. Create consensus genome ([`BCFTools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
-18. Repeat step 12-15 multiple times for the denovo contig route
+18. Repeat step 14-17 multiple times for the denovo contig route
 19. Consensus evaluation and annotation ([`QUAST`](http://quast.sourceforge.net/quast),[`CheckV`](https://bitbucket.org/berkeleylab/checkv/src/master/),[`blastn`](https://blast.ncbi.nlm.nih.gov/Blast.cgi),[`prokka`](http://github.com/tseemann/prokka) [`mmseqs-search`](https://github.com/soedinglab/MMseqs2/wiki#batch-sequence-searching-using-mmseqs-search), [`MAFFT` - alignment of contigs vs iterations & consensus](https://mafft.cbrc.jp/alignment/software/))
 20. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](http://multiqc.info/))
 

@@ -4,6 +4,7 @@ include { lowReadSamplesToMultiQC            } from '../../subworkflows/local/ut
 include { PRINSEQPLUSPLUS as PRINSEQ_READS   } from '../../modules/nf-core/prinseqplusplus/main'
 include { HUMID                              } from '../../modules/nf-core/humid/main'
 include { BBMAP_BBDUK                        } from '../../modules/nf-core/bbmap/bbduk/main'
+include { CAT_FASTQ                          } from '../../modules/nf-core/cat/fastq/main'
 include { FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC  } from './fastq_fastqc_umitools_trimmomatic'
 include { FASTQ_FASTQC_UMITOOLS_FASTP        } from '../nf-core/fastq_fastqc_umitools_fastp/main'
 include { FASTQ_KRAKEN_HOST_REMOVE           } from './fastq_kraken_host_remove'
@@ -93,12 +94,25 @@ workflow PREPROCESSING_ILLUMINA {
         ch_reads_dedup = ch_reads_trim
     }
 
+    // Merge reads belonging to the same sample / group
+    if (params.merge_reads) {
+        ch_reads_dedup
+            .map { meta, reads -> [meta + [id: meta.sample], reads] }
+            .groupTuple ()
+            .set { ch_reads_grouped }
+
+        CAT_FASTQ ( ch_reads_grouped.map { meta, reads -> [meta, reads.flatten()] } )
+        ch_reads_dedup_joined = CAT_FASTQ.out.reads
+    } else {
+        ch_reads_dedup_joined = ch_reads_dedup
+    }
+
 
     // Decomplexification with BBDuk
     if (!params.skip_complexity_filtering) {
         if (params.decomplexifier == 'bbduk') {
             BBMAP_BBDUK (
-                ch_reads_dedup,
+                ch_reads_dedup_joined,
                 ch_contaminants,
                 params.decomplexifier
             )
@@ -106,7 +120,7 @@ workflow PREPROCESSING_ILLUMINA {
             ch_multiqc_files        = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
             ch_versions             = ch_versions.mix(BBMAP_BBDUK.out.versions)
         } else if (params.decomplexifier == 'prinseq') {
-            prinseq_in = ch_reads_dedup.map { meta, reads -> [meta, reads, []] }
+            prinseq_in = ch_reads_dedup_joined.map { meta, reads -> [meta, reads, []] }
             PRINSEQ_READS (
                 prinseq_in
             )
@@ -115,7 +129,7 @@ workflow PREPROCESSING_ILLUMINA {
             ch_versions             = ch_versions.mix(PRINSEQ_READS.out.versions)
         }
     } else {
-        ch_reads_decomplexified = ch_reads_dedup
+        ch_reads_decomplexified = ch_reads_dedup_joined
     }
 
     // Host removal with kraken2
@@ -137,6 +151,7 @@ workflow PREPROCESSING_ILLUMINA {
         ch_reads_hostremoved = ch_reads_decomplexified
     }
 
+
     //
     // Create a section that reports failed samples and their read counts
     //
@@ -147,7 +162,7 @@ workflow PREPROCESSING_ILLUMINA {
     emit:
     reads                   = ch_reads_hostremoved            // channel: [ [ meta ], [ reads ] ]
     reads_decomplexified    = ch_reads_decomplexified         // channel: [ [ meta ], [ reads ] ]
-    reads_trimmed           = ch_reads_trim                   // channel: [ [ meta ], [ reads ] ]
+    reads_trimmed           = ch_reads_dedup                  // channel: [ [ meta ], [ reads ] ]
     mqc                     = ch_multiqc_files                // channel: [ [ meta ], [ mqc ] ]
     low_reads_mqc           = low_reads_mqc                   // channel: [ mqc ]
     versions                = ch_versions                     // channel: [ versions.yml ]

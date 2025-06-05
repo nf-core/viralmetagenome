@@ -9,9 +9,15 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^[A-z0-9\\-]+$",
+                "pattern": "^[A-z0-9\\-\\.]+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces or special characters",
                 "meta": ["id", "sample"]
+            },
+            "group": {
+                "type": "string",
+                "pattern": "^[A-z0-9\\-\\.]+$",
+                "errorMessage": "Group name must be provided and cannot contain spaces or special characters",
+                "meta": ["group"]
             },
             "fastq_1": {
                 "type": "string",

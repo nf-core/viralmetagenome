@@ -71,11 +71,12 @@ workflow PIPELINE_INITIALISATION {
         .map{
             meta, read1, read2 ->
             def single_end = read1 && !read2
+            def sample_id = meta?.group && params.merge_reads ? meta.group : meta.id
             if (single_end) {
-                return [meta + [sample: meta.id, single_end: single_end] , [read1]]
+                return [meta + [sample: sample_id, single_end: single_end] , [read1]]
             }
             else {
-                return [meta + [sample: meta.id, single_end: single_end] , [read1, read2]]
+                return [meta + [sample: sample_id, single_end: single_end] , [read1, read2]]
             }
         }
         .set { ch_samplesheet }

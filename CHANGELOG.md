@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removing redundant `samtools_sort` after `BAM_DEDUPLICATE` ([#177](https://github.com/Joon-Klaps/viralgenie/pull/177))
 - Removing `seqkit replace` and move logic to  `blast_filter.py` ([#178](https://github.com/Joon-Klaps/viralgenie/pull/178))
 - Giving Kaiju more memory ([#179](https://github.com/Joon-Klaps/viralgenie/pull/179))
+- Add option for sample merging based on group coulumn in samplesheet ([#180](https://github.com/Joon-Klaps/viralgenie/pull/180))
 
 ### `Fixed`
 

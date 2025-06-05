@@ -20,9 +20,9 @@ process MAKE_BED_MASK {
     when:
     task.ext.when == null || task.ext.when
 
-    script:  // This script is bundled with the pipeline, in Joon-Klaps/viralgenie/bin/
+    script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: 10
+    def args2 = task.ext.args2 ?: 5
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
     """

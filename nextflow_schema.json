@@ -387,7 +387,8 @@
                 "skip_sspace_basic": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",
-                    "description": "Skip the contig extension with sspace_basic"
+                    "description": "Skip the contig extension with sspace_basic",
+                    "default": true
                 },
                 "read_distance": {
                     "type": "integer",
@@ -731,7 +732,6 @@
                 "skip_vcf_annotation": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",
-                    "default": false,
                     "description": "Skip the annotation of the VCF file"
                 },
                 "mapper": {
@@ -774,6 +774,13 @@
                     "fa_icon": "fas fa-align-center",
                     "description": "Define the minimum number of mapped reads in order to continue the variant and consensus calling",
                     "minimum": 1
+                },
+                "min_consensus_depth": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 5,
+                    "fa_icon": "fas fa-align-center",
+                    "description": "Define the minimum consensus depth"
                 },
                 "allele_frequency": {
                     "type": "number",
@@ -863,7 +870,7 @@
                 },
                 "arguments_bcftools_mpileup3": {
                     "type": "string",
-                    "default": "--include \\'INFO/DP>=5\\",
+                    "default": "--include 'INFO/DP>=5",
                     "description": "Arguments for BCFtools mpileup step 3",
                     "fa_icon": "fas fa-cogs"
                 },

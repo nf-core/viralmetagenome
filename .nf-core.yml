@@ -15,6 +15,8 @@ lint:
     - assets/email_template.html
     - assets/email_template.txt
     - assets/sendmail_template.txt
+    - docs/images/nf-core-viralmetagenome_logo_light.png
+    - docs/images/nf-core-viralmetagenome_logo_dark.png
     - pyproject.toml
     - .gitignore
   nextflow_config:

@@ -1177,8 +1177,7 @@
                     "type": "string",
                     "description": "Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file",
                     "fa_icon": "fas fa-image",
-                    "hidden": true,
-                    "default": "https://github.com/nf-core/viralmetagenome/blob/dev/docs/images/Viralmetagenome-nf-core-theme.png?raw=true"
+                    "hidden": true
                 },
                 "multiqc_methods_description": {
                     "type": "string",

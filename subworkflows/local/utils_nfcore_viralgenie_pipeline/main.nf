@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the nf-core/viralgenie pipeline
+// Subworkflow with functionality specific to the nf-core/viralmetagenome pipeline
 //
 
 /*
@@ -163,7 +163,7 @@ def toolCitationText() {
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def citation_text = [
             "Tools used in the workflow included:",
-            "Viralgenie (Klaps et al.)",
+            "Viralmetagenome (Klaps et al.)",
             "nf-core (Ewels et al. 2020)",
             "Nextflow (Di Tommaso et al. 2017)",
             "Bbduk (Bushnell 2022)",
@@ -211,7 +211,7 @@ def toolCitationText() {
 def toolBibliographyText() {
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def reference_text = [
-            "<li>Klaps J, Lemey P, Kafetzopoulou L. Viralgenie: A metagenomics analysis pipeline for eukaryotic viruses. __Github__ https://github.com/Joon-Klaps/viralgenie.</li>",
+            "<li>Klaps J, Lemey P, Kafetzopoulou L. Viralmetagenome: A metagenomics analysis pipeline for eukaryotic viruses. __Github__ https://github.com/nf-core/viralmetagenome.</li>",
             "<li>Ewels PA, Peltzer A, Fillinger S, Patel H, Alneberg J, Wilm A, Garcia MU, Di Tommaso P, Nahnsen S. The nf-core framework for community-curated bioinformatics pipelines. Nat Biotechnol. 2020 Mar;38(3):276-278. doi: 10.1038/s41587-020-0439-x. PubMed PMID: 32055031.</li>",
             "<li>Di Tommaso P, Chatzou M, Floden EW, Barja PP, Palumbo E, Notredame C. Nextflow enables reproducible computational workflows. Nat Biotechnol. 2017 Apr 11;35(4):316-319. doi: 10.1038/nbt.3820. PubMed PMID: 28398311.</li>",
             "<li>Bushnell B. (2022) BBMap, URL: http://sourceforge.net/projects/bbmap/</li>",

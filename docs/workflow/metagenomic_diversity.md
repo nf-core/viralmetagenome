@@ -1,6 +1,6 @@
 # Read classification
 
-Viralgenie offers two main tools for the classification of reads and a summary visualisation tool:
+Viralmetagenome offers two main tools for the classification of reads and a summary visualisation tool:
 
 - [Kaiju](#kaiju): Taxonomic classification based on maximum exact matches using protein alignments.
 - [Kraken2](#kraken2): Assigns taxonomic labels on a DNA level using a k-mer approach. (optional Bracken)

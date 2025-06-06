@@ -1,6 +1,6 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VIRALGENIE
+    VIRALMETAGENOME
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
@@ -15,10 +15,10 @@ include { samplesheetToList               } from 'plugin/nf-schema'
 include { paramsSummaryMap                } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc            } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML          } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText          } from '../subworkflows/local/utils_nfcore_viralgenie_pipeline'
-include { createFileChannel               } from '../subworkflows/local/utils_nfcore_viralgenie_pipeline'
-include { createChannel                   } from '../subworkflows/local/utils_nfcore_viralgenie_pipeline'
-include { noContigSamplesToMultiQC        } from '../subworkflows/local/utils_nfcore_viralgenie_pipeline'
+include { methodsDescriptionText          } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { createFileChannel               } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { createChannel                   } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { noContigSamplesToMultiQC        } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 // Preprocessing
 include { PREPROCESSING_ILLUMINA          } from '../subworkflows/local/preprocessing_illumina'
 // metagenomic diversity
@@ -48,7 +48,7 @@ include { FASTQ_FASTA_MAP_CONSENSUS       } from '../subworkflows/local/fastq_fa
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-workflow VIRALGENIE {
+workflow VIRALMETAGENOME {
 
     take:
     ch_samplesheet // channel: samplesheet read in from --input
@@ -457,7 +457,7 @@ workflow VIRALGENIE {
     softwareVersionsToYAML(ch_versions)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
-            name: 'viralgenie_mqc_versions.yml',
+            name: 'viralmetagenome_mqc_versions.yml',
             sort: true,
             newLine: true
         ).set { ch_collated_versions }

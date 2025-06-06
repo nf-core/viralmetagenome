@@ -1,5 +1,5 @@
 """
-Taken from https://github.com/MultiQC/MultiQC/blob/main/.github/workflows/changelog.py and taken from nf-core/tools, updated for viralgenie
+Taken from https://github.com/MultiQC/MultiQC/blob/main/.github/workflows/changelog.py and taken from nf-core/tools, updated for viralmetagenome
 To be called by a CI action. Assumes the following environment variables are set:
 PR_TITLE, PR_NUMBER, GITHUB_WORKSPACE.
 Adds a line into the CHANGELOG.md:
@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 from typing import List
 
-REPO_URL = "https://github.com/Joon-Klaps/viralgenie"
+REPO_URL = "https://github.com/nf-core/viralmetagenome"
 
 # Assumes the environment is set by the GitHub action.
 pr_title = os.environ["PR_TITLE"]
@@ -135,7 +135,7 @@ while orig_lines:
     line = _skip_existing_entry_for_this_pr(line, same_section=False)
 
     if (
-        line.startswith("## ") and not line.strip() == "# Joon-Klaps/viralgenie: Changelog"
+        line.startswith("## ") and not line.strip() == "# nf-core/viralmetagenome: Changelog"
     ):  # Version header, e.g. "## v2.12dev"
         print(f"Found version header: {line.strip()}")
         updated_lines.append(line)

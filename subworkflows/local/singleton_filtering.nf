@@ -1,5 +1,5 @@
 
-include { filterContigs                                        } from '../../subworkflows/local/utils_nfcore_viralgenie_pipeline'
+include { filterContigs                                        } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_SINGLETON } from '../../modules/local/rename_fasta_header'
 
 workflow SINGLETON_FILTERING {

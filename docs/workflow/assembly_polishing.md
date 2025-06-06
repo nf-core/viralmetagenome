@@ -1,6 +1,6 @@
 # Assembly & polishing
 
-Viralgenie offers an elaborate workflow for the assembly and polishing of viral genomes:
+Viralmetagenome offers an elaborate workflow for the assembly and polishing of viral genomes:
 
 1. [Assembly](#1-de-novo-assembly): combining the results of multiple assemblers.
 1. [Extension](#2-extension): extending contigs using paired-end reads.
@@ -159,6 +159,6 @@ After classifying all contigs and their top BLAST hits into distinct clusters or
 
 ## 8. Annotation with Reference
 
-Regions with 0-depth coverage are annotated with the reference sequence. This is done with a [custom script](https://github.com/Joon-Klaps/viralgenie/blob/dev/bin/nocov_to_reference.py) that uses the coverage of the de novo contigs towards the reference sequence to identify regions with 0-depth coverage. The reference sequence is then annotated to these regions.
+Regions with 0-depth coverage are annotated with the reference sequence. This is done with a [custom script](https://github.com/nf-core/viralmetagenome/blob/dev/bin/nocov_to_reference.py) that uses the coverage of the de novo contigs towards the reference sequence to identify regions with 0-depth coverage. The reference sequence is then annotated to these regions.
 
 > This step can be skipped using `--skip_nocov_to_reference` parameter.

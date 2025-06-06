@@ -1,4 +1,4 @@
-include { noBlastHitsToMultiQC  } from '../../subworkflows/local/utils_nfcore_viralgenie_pipeline'
+include { noBlastHitsToMultiQC  } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { BLAST_BLASTN          } from '../../modules/nf-core/blast/blastn/main'
 include { BLAST_FILTER          } from '../../modules/local/blast_filter'
 

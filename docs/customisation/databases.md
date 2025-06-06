@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Viralgenie uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
+Viralmetagenome uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
 
 !!! Tip
     Keep an eye out for [nf-core createtaxdb](https://nf-co.re/createtaxdb/) as it can be used for the customization of the main databases but the pipeline is still under development.
@@ -93,7 +93,7 @@ You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blo
 
 ### Host read removal
 
-Viralgenie uses Kraken2 to remove contaminated reads.
+Viralmetagenome uses Kraken2 to remove contaminated reads.
 
 !!! info
     The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:

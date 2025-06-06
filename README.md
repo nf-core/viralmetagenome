@@ -15,7 +15,7 @@
 [![GitHub Actions CI Status](https://github.com/nf-core/viralmetagenome/actions/workflows/ci.yml/badge.svg)](https://github.com/nf-core/viralmetagenome/actions?query=workflow%3A%22nf-core+CI%22)
 [![GitHub Actions Linting Status](https://github.com/nf-core/viralmetagenome/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/viralmetagenome/actions?query=workflow%3A%22nf-core+linting%22)
 
-<!-- [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23viralmetagenome-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/viralmetagenome)-->
+<!-- [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23viralmetagenome-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/viralmetagenome)
 
 > [!TIP]
 > Make sure to checkout the [viralmetagenome website](https://joon-klaps.github.io/viralmetagenome/dev/) for more elaborate documentation!

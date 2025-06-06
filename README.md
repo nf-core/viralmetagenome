@@ -1,7 +1,7 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-viralmetagenome_logo_dark.png">
-    <img alt="nf-core/viralmetagenome" src="docs/images/nf-core-viralmetagenome_logo_light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-viralmetagenome_logo_custom_dark.png">
+    <img alt="nf-core/viralmetagenome" src="docs/images/nf-core-viralmetagenome_logo_custom_light.png">
   </picture>
 </h1>
 

@@ -4,6 +4,9 @@ org_path:
 repository_type: pipeline
 lint:
   files_unchanged:
+    - docs/images/nf-core-viralgenie_logo_light.png
+    - docs/images/nf-core-viralgenie_logo_dark.png
+    - assets/nf-core-viralmetagenome_logo_light.png
     - docs/README.md
     - .github/ISSUE_TEMPLATE/bug_report.yml
     - .github/ISSUE_TEMPLATE/config.yml

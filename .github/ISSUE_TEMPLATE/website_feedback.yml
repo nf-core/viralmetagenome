@@ -1,5 +1,5 @@
 name: Website feedback
-description: Report an issue or suggest an improvement for the viralgenie website
+description: Report an issue or suggest an improvement for the viralmetagenome website
 labels: ["website", "documentation"]
 body:
   - type: textarea

@@ -1,7 +1,7 @@
-site_name: Viralgenie
-repo_name: Joon-Klaps/viralgenie
-repo_url: https://github.com/Joon-Klaps/viralgenie
-site_url: https://joon-klaps.github.io/viralgenie/latest/
+site_name: Viralmetagenome
+repo_name: nf-core/viralmetagenome
+repo_url: https://github.com/nf-core/viralmetagenome
+site_url: https://joon-klaps.github.io/viralmetagenome/latest/
 
 nav:
   - Home: index.md
@@ -26,8 +26,8 @@ nav:
 
 theme:
   name: material
-  favicon: images/ViralGenie-nf-core-theme.png
-  logo: images/ViralGenie-nf-core-theme.png
+  favicon: images/Viralmetagenome-nf-core-theme.png
+  logo: images/Viralmetagenome-nf-core-theme.png
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -133,7 +133,7 @@ extra:
           data: 0
           note: >-
             Thanks for your feedback! Help us improve this page by
-            submitting an <a href="https://github.com/Joon-Klaps/viralgenie/issues/new/?labels=website%2Cdocumentation&template=website_feedback.yml&title=[Website feedback]+{title}" target="_blank" rel="noopener">issue</a>.
+            submitting an <a href="https://github.com/nf-core/viralmetagenome/issues/new/?labels=website%2Cdocumentation&template=website_feedback.yml&title=[Website feedback]+{title}" target="_blank" rel="noopener">issue</a>.
   consent:
     title: Cookie Consent
     description: >-

@@ -1,6 +1,6 @@
 // Take in a bam file and remove those that don't have any reads aligned
 
-include {failedMappedReadsToMultiQC } from '../../subworkflows/local/utils_nfcore_viralgenie_pipeline'
+include {failedMappedReadsToMultiQC } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { SAMTOOLS_INDEX            } from '../../modules/nf-core/samtools/index/main'
 include { SAMTOOLS_STATS            } from '../../modules/nf-core/samtools/stats/main'
 

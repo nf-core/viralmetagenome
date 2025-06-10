@@ -1,6 +1,6 @@
 # Preprocessing
 
-Viralgenie offers three main preprocessing steps for the preprocessing of raw sequencing reads:
+Viralmetagenome offers three main preprocessing steps for the preprocessing of raw sequencing reads:
 
 1. [Adapter trimming](#1-adapter-trimming): adapter clipping and pair-merging.
 1. [UMI deduplication](#2-umi-deduplication): removal of PCR duplicates based on Unique Molecular Identifiers (UMIs) on a read level.
@@ -49,9 +49,9 @@ Unique Molecular Identifiers (UMIs) are short sequences that are added during li
     - __directional__ (default for both HUMID and UMI-tools): Form networks with edges defined based on distance threshold and $$ \text{ node A counts} \geq (2 \cdot \text{node B counts}) - 1$$
     Each connected component is a read group, with the node with the highest counts selected as the top node for the component. In the example above, the directional edges yield two connected components. One with AAAT by itself and the other with the remaining UMIs with ACGT as the selected node.
 
-Viralgenie supports both deduplication on a read level as well as a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
+Viralmetagenome supports both deduplication on a read level as well as a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
 
-> By default, viralgenie doesn't assume UMIs are present in the reads. If UMIs are present, specify the `--with_umi` parameter and `--deduplicate`.
+> By default, viralmetagenome doesn't assume UMIs are present in the reads. If UMIs are present, specify the `--with_umi` parameter and `--deduplicate`.
 
 ## 3. Read merging
 

@@ -1,4 +1,4 @@
-# Viralgenie pipeline parameters
+# Viralmetagenome pipeline parameters
 
 A pipeline to reconstruct consensus genomes and identify intrahost variants from metagenomic sequencing data or enriched based sequencing data like hybrid capture.
 
@@ -8,7 +8,7 @@ Define where the pipeline should find input data and save output data.
 
 | Parameter | Description | Default |
 |-----------|-----------|-----------|
-| `input` | Path to comma-separated file containing information about the samples in the experiment. <details><summary>Help</summary><small>You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://joon-klaps.github.io/viralgenie/latest/usage/#input).</small></details>|  |
+| `input` | Path to comma-separated file containing information about the samples in the experiment. <details><summary>Help</summary><small>You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://joon-klaps.github.io/viralmetagenome/latest/usage/#input).</small></details>|  |
 | `outdir` | The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure. |  |
 | `metadata` | Sample metadata that is included in the multiqc report |  |
 | `email` | Email address for completion summary. <details><summary>Help</summary><small>Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.</small></details>|  |
@@ -248,10 +248,10 @@ Less common options for the pipeline, typically set in a config file.
 | `hook_url` | Incoming hook URL for messaging service <details><summary>Help</summary><small>Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.</small></details>|  |
 | `multiqc_title` | MultiQC report title. Printed as page header, used for filename if not otherwise specified. |  |
 | `multiqc_config` | Custom config file to supply to MultiQC. |  |
-| `multiqc_logo` | Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file | https://github.com/Joon-Klaps/viralgenie/blob/dev/docs/images/ViralGenie-nf-core-theme.png?raw=true |
+| `multiqc_logo` | Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file | https://github.com/nf-core/viralmetagenome/blob/dev/docs/images/Viralmetagenome-nf-core-theme.png?raw=true |
 | `multiqc_methods_description` | Custom MultiQC yaml file containing HTML including a methods description. |  |
 | `clean_output_on_error` | Delete the output directory if the pipeline fails |  |
-| `custom_table_headers` | Custom yaml file containing the table column names selection and new names. | https://github.com/Joon-Klaps/viralgenie/raw/refs/heads/dev/assets/custom_table_headers.yml |
+| `custom_table_headers` | Custom yaml file containing the table column names selection and new names. | https://github.com/nf-core/viralmetagenome/raw/refs/heads/dev/assets/custom_table_headers.yml |
 | `validate_params` | Boolean whether to validate parameters against the schema at runtime | True |
 | `prefix` | Prefix of all output files followed by [date]_[pipelineversion]_[runName] <details><summary>Help</summary><small>Use '--global_prefix' to not have metadata embedded.</small></details>|  |
 | `global_prefix` | Global prefix set if you don't want metadata embedded in the output filenames |  |

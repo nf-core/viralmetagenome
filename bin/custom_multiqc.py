@@ -534,7 +534,7 @@ def main(argv=None):
         args.multiqc_config,
     )
 
-    for module in [m for m in mqc.list_modules() if "viralgenie" not in m]:
+    for module in [m for m in mqc.list_modules() if "viralmetagenome" not in m]:
         module_data = get_module_data(mqc, module)
         logger.info("Data for %s: %s", module, module_data.keys())
 

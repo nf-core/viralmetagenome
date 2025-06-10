@@ -2,7 +2,7 @@
 title: Workflow overview
 ---
 
-Viralgenie takes in a set of reads and performs 5 major analyses, each of them are explained in more detail in the following sections:
+Viralmetagenome takes in a set of reads and performs 5 major analyses, each of them are explained in more detail in the following sections:
 
 1. [Preprocessing](preprocessing.md)
 2. [Metagenomic diversity](metagenomic_diversity.md)
@@ -19,7 +19,7 @@ By default all analyses are run.
 ## Subway map
 
 <!-- can't parse images with snippets -->
-![viralgenie-workflow](../images/metromap_style_pipeline_workflow_viralgenie.png)
+![viralmetagenome-workflow](../images/metromap_style_pipeline_workflow_viralmetagenome.png)
 
 --8<-- "README.md:31:68"
 

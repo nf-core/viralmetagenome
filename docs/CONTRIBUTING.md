@@ -6,23 +6,23 @@ hide:
 
 Hi there!
 
-**🤩 Many thanks for taking an interest in improving Viralgenie. 🤩**
+**🤩 Many thanks for taking an interest in improving Viralmetagenome. 🤩**
 
-We try to manage the required tasks for Viralgenie using GitHub issues, you probably came to this page when creating one.
+We try to manage the required tasks for Viralmetagenome using GitHub issues, you probably came to this page when creating one.
 Please use the pre-filled template to save time.
 
 However, don't be put off by this template - other more general issues and suggestions are welcome!
 Contributions to the code are even more welcome ;
 
 !!! info
-    If you need help using or modifying viralgenie then the best place to ask is on the nf-core Slack [Joon-Klaps](https://nfcore.slack.com/team/U043Y6FQR6J).
+    If you need help using or modifying viralmetagenome then the best place to ask is on the nf-core Slack [Joon-Klaps](https://nfcore.slack.com/team/U043Y6FQR6J).
 
 ## Contribution workflow
 
-If you'd like to write some code for Joon-Klaps/viralgenie, the standard workflow is as follows:
+If you'd like to write some code for nf-core/viralmetagenome, the standard workflow is as follows:
 
-1. Check that there isn't already an issue about your idea in the [Joon-Klaps/viralgenie issues](https://github.com/Joon-Klaps/viralgenie/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
-2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [Joon-Klaps/viralgenie repository](https://github.com/Joon-Klaps/viralgenie) to your GitHub account
+1. Check that there isn't already an issue about your idea in the [nf-core/viralmetagenome issues](https://github.com/nf-core/viralmetagenome/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
+2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/viralmetagenome repository](https://github.com/nf-core/viralmetagenome) to your GitHub account
 3. Make the necessary changes / additions within your forked repository following [Pipeline conventions](#pipeline-contribution-conventions)
 4. Use `nf-core pipelines schema build` and add any new parameters to the pipeline JSON schema (requires [nf-core tools](https://github.com/nf-core/tools) >= 1.10).
 5. Submit a Pull Request against the `dev` branch and wait for the code to be reviewed and merged
@@ -41,14 +41,14 @@ There are typically two types of tests that run:
 
 ### Lint tests
 
-`nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which viralgenie adheres to.
-To enforce these and ensure that viralgenie stays in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
+`nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which viralmetagenome adheres to.
+To enforce these and ensure that viralmetagenome stays in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
 
 If any failures or warnings are encountered, please follow the listed URL for more documentation.
 
 ### Pipeline tests
 
-Viralgenie is set up with a minimal set of test-data.
+Viralmetagenome is set up with a minimal set of test-data.
 `GitHub Actions` then runs the pipeline on this data to ensure that it exits successfully.
 If there are any failures then the automated tests fail.
 These tests are run both with the latest available version of `Nextflow` and also the minimum required version that is stated in the pipeline code.
@@ -62,11 +62,11 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 ## Getting help
 
-For further information/help, please consult the [Joon-Klaps/viralgenie documentation](https://github.io/Joon-Klaps/viralgenie) and don't hesitate to get in touch on Slack [Joon-Klaps](https://nfcore.slack.com/team/U043Y6FQR6J) channel ([join the nf-core Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the [nf-core/viralmetagenome documentation](https://github.io/nf-core/viralmetagenome) and don't hesitate to get in touch on Slack [Joon-Klaps](https://nfcore.slack.com/team/U043Y6FQR6J) channel ([join the nf-core Slack here](https://nf-co.re/join/slack)).
 
 ## Pipeline contribution conventions
 
-To make the Joon-Klaps/viralgenie code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
+To make the nf-core/viralmetagenome code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
 ### Adding a new step
 
@@ -116,11 +116,11 @@ This repo includes a devcontainer configuration which will create a GitHub Codes
 
 To get started:
 
--   Open the repo in [Codespaces](https://github.com/Joon-Klaps/viralgenie/codespaces)
+-   Open the repo in [Codespaces](https://github.com/nf-core/viralmetagenome/codespaces)
 -   Tools installed
     -   nf-core
     -   Nextflow
 
 Devcontainer specs:
 
--   [DevContainer config](https://github.com/Joon-Klaps/viralgenie/blob/master/.devcontainer/devcontainer.json)
+-   [DevContainer config](https://github.com/nf-core/viralmetagenome/blob/master/.devcontainer/devcontainer.json)

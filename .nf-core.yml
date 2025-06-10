@@ -1,18 +1,21 @@
-bump_version: null
-lint: null
-nf_core_version: 3.0.2
-org_path: null
+lint:
+  files_exist:
+    - conf/test.config
+    - conf/test_full.config
+    - docs/README.md
+  multiqc_config: false
+nf_core_version: 3.3.1
 repository_type: pipeline
 template:
-  author: joon.klaps@kuleuven.be
-  description: "A pipeline to reconstruct consensus genomes and identify intrahost
-    variants from metagenomic sequencing data or enriched based sequencing data like
-    hybrid capture.  "
+  author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
+  description: a bioinformatics best-practice analysis pipeline for untargeted viral
+    genome reconstruction and to identify intra-host variants from metagenomic sequencing
+    data.
   force: false
   is_nfcore: true
-  name: viralgenie
+  name: viralmetagenome
   org: nf-core
   outdir: .
-  skip_features: null
-  version: 1.0dev
-update: null
+  skip_features:
+    - igenomes
+  version: 0.1.3dev

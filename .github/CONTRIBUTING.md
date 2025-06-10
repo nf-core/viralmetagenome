@@ -1,23 +1,23 @@
-# nf-core/viralgenie: Contributing Guidelines
+# `nf-core/viralmetagenome`: Contributing Guidelines
 
 Hi there!
-Many thanks for taking an interest in improving nf-core/viralgenie.
+Many thanks for taking an interest in improving nf-core/viralmetagenome.
 
-We try to manage the required tasks for nf-core/viralgenie using GitHub issues, you probably came to this page when creating one.
+We try to manage the required tasks for nf-core/viralmetagenome using GitHub issues, you probably came to this page when creating one.
 Please use the pre-filled template to save time.
 
 However, don't be put off by this template - other more general issues and suggestions are welcome!
 Contributions to the code are even more welcome ;)
 
 > [!NOTE]
-> If you need help using or modifying nf-core/viralgenie then the best place to ask is on the nf-core Slack [#viralgenie](https://nfcore.slack.com/channels/viralgenie) channel ([join our Slack here](https://nf-co.re/join/slack)).
+> If you need help using or modifying nf-core/viralmetagenome then the best place to ask is on the nf-core Slack [#viralmetagenome](https://nfcore.slack.com/channels/viralmetagenome) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
 ## Contribution workflow
 
-If you'd like to write some code for nf-core/viralgenie, the standard workflow is as follows:
+If you'd like to write some code for nf-core/viralmetagenome, the standard workflow is as follows:
 
-1. Check that there isn't already an issue about your idea in the [nf-core/viralgenie issues](https://github.com/nf-core/viralgenie/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
-2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/viralgenie repository](https://github.com/nf-core/viralgenie) to your GitHub account
+1. Check that there isn't already an issue about your idea in the [nf-core/viralmetagenome issues](https://github.com/nf-core/viralmetagenome/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
+2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/viralmetagenome repository](https://github.com/nf-core/viralmetagenome) to your GitHub account
 3. Make the necessary changes / additions within your forked repository following [Pipeline conventions](#pipeline-contribution-conventions)
 4. Use `nf-core pipelines schema build` and add any new parameters to the pipeline JSON schema (requires [nf-core tools](https://github.com/nf-core/tools) >= 1.10).
 5. Submit a Pull Request against the `dev` branch and wait for the code to be reviewed and merged
@@ -55,36 +55,36 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 :warning: Only in the unlikely and regretful event of a release happening with a bug.
 
-- On your own fork, make a new branch `patch` based on `upstream/master`.
+- On your own fork, make a new branch `patch` based on `upstream/main` or `upstream/master`.
 - Fix the bug, and bump version (X.Y.Z+1).
-- A PR should be made on `master` from patch to directly this particular bug.
+- Open a pull-request from `patch` to `main`/`master` with the changes.
 
 ## Getting help
 
-For further information/help, please consult the [nf-core/viralgenie documentation](https://nf-co.re/viralgenie/usage) and don't hesitate to get in touch on the nf-core Slack [#viralgenie](https://nfcore.slack.com/channels/viralgenie) channel ([join our Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the [nf-core/viralmetagenome documentation](https://nf-co.re/viralmetagenome/usage) and don't hesitate to get in touch on the nf-core Slack [#viralmetagenome](https://nfcore.slack.com/channels/viralmetagenome) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
 ## Pipeline contribution conventions
 
-To make the nf-core/viralgenie code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
+To make the `nf-core/viralmetagenome` code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
 ### Adding a new step
 
 If you wish to contribute a new step, please use the following coding standards:
 
-1. Define the corresponding input channel into your new process from the expected previous process channel
+1. Define the corresponding input channel into your new process from the expected previous process channel.
 2. Write the process block (see below).
 3. Define the output channel if needed (see below).
 4. Add any new parameters to `nextflow.config` with a default (see below).
 5. Add any new parameters to `nextflow_schema.json` with help text (via the `nf-core pipelines schema build` tool).
 6. Add sanity checks and validation for all relevant parameters.
 7. Perform local tests to validate that the new code works as expected.
-8. If applicable, add a new test command in `.github/workflow/ci.yml`.
+8. If applicable, add a new test in the `tests` directory.
 9. Update MultiQC config `assets/multiqc_config.yml` so relevant suffixes, file name clean up and module plots are in the appropriate order. If applicable, add a [MultiQC](https://https://multiqc.info/) module.
 10. Add a description of the output files and if relevant any appropriate images from the MultiQC report to `docs/output.md`.
 
 ### Default values
 
-Parameters should be initialised / defined with default values in `nextflow.config` under the `params` scope.
+Parameters should be initialised / defined with default values within the `params` scope in `nextflow.config`.
 
 Once there, use `nf-core pipelines schema build` to add to `nextflow_schema.json`.
 
@@ -115,7 +115,7 @@ This repo includes a devcontainer configuration which will create a GitHub Codes
 
 To get started:
 
-- Open the repo in [Codespaces](https://github.com/nf-core/viralgenie/codespaces)
+- Open the repo in [Codespaces](https://github.com/nf-core/viralmetagenome/codespaces)
 - Tools installed
   - nf-core
   - Nextflow

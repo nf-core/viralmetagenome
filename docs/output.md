@@ -1,4 +1,4 @@
-# nf-core/viralgenie: Output
+# nf-core/viralmetagenome: Output
 
 ## Introduction
 

@@ -2,7 +2,7 @@ process BWAMEM2_INDEX {
     tag "$fasta"
     // NOTE Requires 28N GB memory where N is the size of the reference sequence
     // source: https://github.com/bwa-mem2/bwa-mem2/issues/9
-    memory { Math.max(6.MB, 28.B * fasta.size()) }
+    memory { 6.MB > 28.B * fasta.size() ? 6.MB : 28.B * fasta.size() }
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

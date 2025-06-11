@@ -68,6 +68,7 @@ MMseqs was used for the annotation step instead of BLAST because of the ability 
 Viralgenie uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
 
 The annotation process provides valuable information about the impact of variants, including:
+
 - Whether variants are synonymous or non-synonymous
 - Changes in amino acid sequences
 - Potential impact severity (HIGH, MODERATE, LOW, MODIFIER)

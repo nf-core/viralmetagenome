@@ -660,6 +660,7 @@ Variant annotation is performed with [`SnpEff`](https://pcingola.github.io/SnpEf
         - `<sample-id>/<sample-id>_<constraint-id>-CONSTRAINT.snipsift.table.txt`: A tabular file containing extracted fields from the annotated variants, making the information more accessible for analysis.
 
 The SnpEff annotation provides valuable information about variants, including:
+
 - Variant type (SNP, insertion, deletion)
 - Impact (HIGH, MODERATE, LOW, MODIFIER)
 - Gene name and ID affected by the variant

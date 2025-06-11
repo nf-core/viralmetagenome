@@ -89,7 +89,8 @@
                     "bwamem2/index": {
                         "branch": "master",
                         "git_sha": "a29f18660f5e3748d44d6f716241e70c942c065d",
-                        "installed_by": ["modules"]
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/bwamem2/index/bwamem2-index.diff"
                     },
                     "bwamem2/mem": {
                         "branch": "master",

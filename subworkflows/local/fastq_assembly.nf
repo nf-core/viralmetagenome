@@ -63,7 +63,13 @@ workflow FASTQ_ASSEMBLY {
 
     // MEGAHIT
     if ('megahit' in assemblers) {
-        MEGAHIT(ch_reads)
+        megahit_in = ch_reads.map
+            { meta, reads -> meta.single_end ?
+                [meta, reads.collect{it},[]] :
+                [meta, reads[0].collect{it}, reads[1].collect{it}]
+            }
+
+        MEGAHIT(megahit_in)
         ch_versions          = ch_versions.mix(MEGAHIT.out.versions.first())
 
         EXTEND_MEGAHIT( ch_reads, MEGAHIT.out.contigs, "megahit")

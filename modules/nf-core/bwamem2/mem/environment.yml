@@ -1,0 +1,11 @@
+name: bwamem2_mem
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - bwa-mem2=2.2.1
+  - htslib=1.19.1
+  - samtools=1.19.2

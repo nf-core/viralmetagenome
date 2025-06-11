@@ -1,4 +1,4 @@
-include { filterContigs; failedContigsToMultiQC   } from '../../subworkflows/local/utils_nfcore_viralgenie_pipeline'
+include { filterContigs; failedContigsToMultiQC   } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { MAP_READS                               } from './map_reads'
 include { BAM_DEDUPLICATE                         } from './bam_deduplicate'
 include { SAMTOOLS_SORT as SAMTOOLS_SORT_DEDUPPED } from '../../modules/nf-core/samtools/sort/main'

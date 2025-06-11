@@ -1,32 +1,32 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-viralgenie_logo_dark.png">
-    <img alt="nf-core/viralgenie" src="docs/images/nf-core-viralgenie_logo_light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-viralmetagenome_logo_custom_dark.png">
+    <img alt="nf-core/viralmetagenome" src="docs/images/nf-core-viralmetagenome_logo_custom_light.png">
   </picture>
 </h1>
 
-<!--[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/viralgenie/results)
+<!--[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/viralmetagenome/results)
 [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
 -->
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A524.04.2-23aa62.svg)](https://www.nextflow.io/) [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/) [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/) [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/Joon-Klaps/viralgenie)
+[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/nf-core/viralmetagenome)
 
-[![GitHub Actions CI Status](https://github.com/Joon-Klaps/viralgenie/actions/workflows/ci.yml/badge.svg)](https://github.com/Joon-Klaps/viralgenie/actions?query=workflow%3A%22nf-core+CI%22)
-[![GitHub Actions Linting Status](https://github.com/Joon-Klaps/viralgenie/actions/workflows/linting.yml/badge.svg)](https://github.com/Joon-Klaps/viralgenie/actions?query=workflow%3A%22nf-core+linting%22)
+[![GitHub Actions CI Status](https://github.com/nf-core/viralmetagenome/actions/workflows/ci.yml/badge.svg)](https://github.com/nf-core/viralmetagenome/actions?query=workflow%3A%22nf-core+CI%22)
+[![GitHub Actions Linting Status](https://github.com/nf-core/viralmetagenome/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/viralmetagenome/actions?query=workflow%3A%22nf-core+linting%22)
 
-<!-- [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23viralgenie-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/viralgenie)-->
+<!-- [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23viralmetagenome-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/viralmetagenome)
 
 > [!TIP]
-> Make sure to checkout the [viralgenie website](https://joon-klaps.github.io/viralgenie/dev/) for more elaborate documentation!
+> Make sure to checkout the [viralmetagenome website](https://joon-klaps.github.io/viralmetagenome/dev/) for more elaborate documentation!
 
 ## Introduction
 
-**Viralgenie** is a bioinformatics best-practice analysis pipeline for reconstructing consensus genomes and to identify intra-host variants from metagenomic sequencing data or enriched based sequencing data like hybrid capture.
+**Viralmetagenome** is a bioinformatics best-practice analysis pipeline for reconstructing consensus genomes and to identify intra-host variants from metagenomic sequencing data or enriched based sequencing data like hybrid capture.
 
 ## Pipeline summary
 
-![viralgenie-workflow](docs/images/metromap_style_pipeline_workflow_viralgenie.svg)
+![viralmetagenome-workflow](docs/images/metromap_style_pipeline_workflow_viralmetagenome.svg)
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Performs optional read pre-processing
@@ -99,7 +99,7 @@ Each row represents a fastq file (single-end) or a pair of fastq files (paired e
 Now, you can run the pipeline using:
 
 ```bash
-nextflow run Joon-Klaps/viralgenie \
+nextflow run nf-core/viralmetagenome \
    -profile <docker/singularity/.../institute> \
    --input samplesheet.csv \
    --outdir <OUTDIR>
@@ -108,17 +108,17 @@ nextflow run Joon-Klaps/viralgenie \
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
 
-For more details and further functionality, please refer to the [usage documentation](https://joon-klaps.github.io/viralgenie/latest/usage) and the [parameter documentation](https://joon-klaps.github.io/viralgenie/latest/parameters).
+For more details and further functionality, please refer to the [usage documentation](https://joon-klaps.github.io/viralmetagenome/latest/usage) and the [parameter documentation](https://joon-klaps.github.io/viralmetagenome/latest/parameters).
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://joon-klaps.github.io/viralgenie/latest/output) tab on the nf-core website pipeline page.
+To see the results of an example test run with a full size dataset refer to the [results](https://joon-klaps.github.io/viralmetagenome/latest/output) tab on the nf-core website pipeline page.
 For more details about the output files and reports, please refer to the
-[output documentation](https://joon-klaps.github.io/viralgenie/latest/output).
+[output documentation](https://joon-klaps.github.io/viralmetagenome/latest/output).
 
 ## Credits
 
-Viralgenie was originally written by [`Joon-Klaps`](https://github.com/Joon-Klaps).
+Viralmetagenome was originally written by [`Joon-Klaps`](https://github.com/Joon-Klaps).
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
@@ -128,20 +128,20 @@ We thank the following people for their extensive assistance in the development 
 
 ## Contributions and Support
 
-If you would like to contribute to this pipeline, please see the [contributing guidelines](https://joon-klaps.github.io/viralgenie/latest/CONTRIBUTING).
+If you would like to contribute to this pipeline, please see the [contributing guidelines](https://joon-klaps.github.io/viralmetagenome/latest/CONTRIBUTING).
 
 <!--
-For further information or help, don't hesitate to get in touch on the [Slack `#viralgenie` channel](https://nfcore.slack.com/channels/viralgenie) (you can join with [this invite](https://nf-co.re/join/slack)).
+For further information or help, don't hesitate to get in touch on the [Slack `#viralmetagenome` channel](https://nfcore.slack.com/channels/viralmetagenome) (you can join with [this invite](https://nf-co.re/join/slack)).
 -->
 
 ## Citations
 
-<!-- If you use nf-core/viralgenie for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
+<!-- If you use nf-core/viralmetagenome for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
 >[!WARNING]
-> Viralgenie is currently not Published. Please cite as:
-> Klaps J, Lemey P, Kafetzopoulou L. Viralgenie: A metagenomics analysis pipeline for eukaryotic viruses. **Github** <https://github.com/Joon-Klaps/viralgenie>
+> Viralmetagenome is currently not Published. Please cite as:
+> Klaps J, Lemey P, Kafetzopoulou L. Viralmetagenome: A metagenomics analysis pipeline for eukaryotic viruses. **Github** <https://github.com/nf-core/viralmetagenome>
 
-An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](https://joon-klaps.github.io/viralgenie/latest/CITATIONS) file.
+An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](https://joon-klaps.github.io/viralmetagenome/latest/CITATIONS) file.
 
 <!-- You can cite the `nf-core` publication as follows:
 

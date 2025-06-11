@@ -21,7 +21,7 @@ process IVAR_VARIANTS_TO_VCF {
     when:
     task.ext.when == null || task.ext.when
 
-    script:  // This script is bundled with the pipeline, in viralgenie/bin/
+    script:  // This script is bundled with the pipeline, in viralmetagenome/bin/
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 

@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/Joon-Klaps/viralgenie/dev/assets/schemas/mapping_constraints.json",
-    "title": "Joon-Klaps/viralgenie pipeline - params.mapping_constraints schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/viralmetagenome/dev/assets/schemas/mapping_constraints.json",
+    "title": "nf-core/viralmetagenome pipeline - params.mapping_constraints schema",
     "description": "Schema for the file provided with params.mapping_constraints",
     "type": "array",
     "items": {

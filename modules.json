@@ -1,6 +1,6 @@
 {
-    "name": "Joon-Klaps/viralgenie",
-    "homePage": "https://github.com/Joon-Klaps/viralgenie",
+    "name": "nf-core/viralmetagenome",
+    "homePage": "https://github.com/nf-core/viralmetagenome",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {

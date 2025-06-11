@@ -4,14 +4,14 @@ hide:
 ---
 # Installation
 
-Viralgenie uses Nextflow, and a [package/container management system](https://www.nextflow.io/docs/latest/container.html#containers) ([Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html) or [Conda](https://docs.conda.io/en/latest/)) so both need to be installed on the system where you launch your analysis.
+Viralmetagenome uses Nextflow, and a [package/container management system](https://www.nextflow.io/docs/latest/container.html#containers) ([Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html) or [Conda](https://docs.conda.io/en/latest/)) so both need to be installed on the system where you launch your analysis.
 
 !!! Tip "New to bioinformatics?"
     If the word "terminal" brings to mind an airport boarding area, you can become a little lost. [This blog post](https://www.nextflow.io/blog/2021/setup-nextflow-on-windows.html) (up until Configuring an Xserver ...) will help people with little bioinformatic experience set up Nextflow and Docker on a Windows computer.
 
 ## Software managers: Docker, Singularity, and Conda
 
-Viralgenie can be run using either [Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html) or [Conda](https://docs.conda.io/en/latest/). The choice of container system is up to the user, but it is important to note that Docker and Singularity are the most reproducible. Nextflow supports more containers in addition to Docker and Singularity, such as Podman, Shifter, and Charliecloud. You can read the full list of supported containers and how to set them up [here](https://www.nextflow.io/docs/latest/container.html#containers).
+Viralmetagenome can be run using either [Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html) or [Conda](https://docs.conda.io/en/latest/). The choice of container system is up to the user, but it is important to note that Docker and Singularity are the most reproducible. Nextflow supports more containers in addition to Docker and Singularity, such as Podman, Shifter, and Charliecloud. You can read the full list of supported containers and how to set them up [here](https://www.nextflow.io/docs/latest/container.html#containers).
 
 When using these containers, Nextflow will use the manager for each process that is executed. In other words, Nextflow will be using `docker run` or `singularity exec` without the need for you to do anything else.
 
@@ -102,12 +102,12 @@ Nextflow runs on most POSIX systems (Linux, macOS, etc) and requires Java 11 or 
     > conda install nextflow
     > ```
 
-## Viralgenie
+## Viralmetagenome
 
 If you have both Nextflow and a software manager installed, you are all set! You can test the pipeline using the following command:
 
 ```bash
-nextflow run Joon-Klaps/viralgenie \
+nextflow run nf-core/viralmetagenome \
     -profile test,<docker/singularity/.../institute>
 ```
 !!! note
@@ -119,7 +119,7 @@ nextflow run Joon-Klaps/viralgenie \
 !!! danger "Apple silicon (ARM)"
     If you are using an Apple silicon (ARM) machine, you may encounter issues. Most tools are not yet compatible with ARM architecture, therefore Conda will most likely fail. In this case, use Docker in combination with the profile `arm`.
     ```bash
-    nextflow run Joon-Klaps/viralgenie \
+    nextflow run nf-core/viralmetagenome \
         -profile test,docker,arm
     ```
     If you still encounter issues, you can set up a Nextflow Tower account and run the pipeline with [wave containers](https://www.nextflow.io/docs/latest/wave.html). In this config file, supply the following:

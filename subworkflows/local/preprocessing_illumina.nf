@@ -1,6 +1,6 @@
 // modules
 
-include { lowReadSamplesToMultiQC            } from '../../subworkflows/local/utils_nfcore_viralgenie_pipeline'
+include { lowReadSamplesToMultiQC            } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { PRINSEQPLUSPLUS as PRINSEQ_READS   } from '../../modules/nf-core/prinseqplusplus/main'
 include { HUMID                              } from '../../modules/nf-core/humid/main'
 include { BBMAP_BBDUK                        } from '../../modules/nf-core/bbmap/bbduk/main'

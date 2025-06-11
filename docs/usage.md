@@ -7,7 +7,7 @@ hide:
 Try out the pipeline right now!
 
 ```bash
-nextflow run Joon-Klaps/viralgenie -profile test,docker
+nextflow run nf-core/viralmetagenome -profile test,docker
 ```
 > Make sure you have [Nextflow](https://nf-co.re/docs/usage/installation) and a container manager (for example, [Docker](https://docs.docker.com/get-docker/)) installed. See the [installation instructions](installation.md) for more info.
 
@@ -87,7 +87,7 @@ An example samplesheet file consisting of both single- and paired-end data may l
 
 ### Mapping constraints
 
-Viralgenie can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
+Viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
 
 An example mapping constraint samplesheet file consisting of 5 references, may look something like the one below.
 > This is for 5 references, 2 of them being a multi-fasta file, only one of the multi-fasta needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference).
@@ -220,7 +220,7 @@ Sample metadata can be provided to the pipeline with the argument `--metadata`. 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run Joon-Klaps/viralgenie --input ./samplesheet.csv --outdir <OUTDIR> -profile docker
+nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir <OUTDIR> -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -254,7 +254,7 @@ Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <
     The above pipeline run specified with a params file in yaml format:
 
     ```bash
-    nextflow run Joon-Klaps/viralgenie -profile docker -params-file params.yaml
+    nextflow run nf-core/viralmetagenome -profile docker -params-file params.yaml
     ```
 
     !!! info "`params.yaml` will contain:"
@@ -272,7 +272,7 @@ Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <
 === "command line"
 
     ```bash
-    nextflow run Joon-Klaps/viralgenie -profile docker \
+    nextflow run nf-core/viralmetagenome -profile docker \
         --input ./samplesheet.csv \
         --outdir ./results/ \
         --host_k2_db ./databases/kraken2/host \
@@ -283,7 +283,7 @@ Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <
 
 You can also generate such `YAML`/`JSON` files via [`nf-core launch`](https://nf-co.re/tools#launch-a-pipeline) if `nf-core` is [installed](https://nf-co.re/tools#installation).
 ```console
-nf-core launch Joon-Klaps/viralgenie
+nf-core launch nf-core/viralmetagenome
 ```
 !!! Tip
     Use [`nf-core launch`](https://nf-co.re/tools#launch-a-pipeline) if it is the first time running the pipeline to explore all its features and options in an accessible way.
@@ -291,20 +291,20 @@ nf-core launch Joon-Klaps/viralgenie
 ## Updating the pipeline
 
 ```bash
-nextflow pull Joon-Klaps/viralgenie
+nextflow pull nf-core/viralmetagenome
 ```
 
 When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
 
 ```console
-nextflow pull Joon-Klaps/viralgenie
+nextflow pull nf-core/viralmetagenome
 ```
 
 ### Reproducibility
 
 It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [Joon-Klaps/viralgenie releases page](https://github.com/Joon-Klaps/viralgenie/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
+First, go to the [nf-core/viralmetagenome releases page](https://github.com/nf-core/viralmetagenome/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
 
@@ -375,19 +375,19 @@ To change the resource requests, please see the [max resources](https://nf-co.re
 
 ### Custom Containers
 
-In some cases you may wish to change which container or conda environment a step of the pipeline uses for a particular tool. By default Viralgenie uses containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However in some cases the pipeline specified version maybe out of date.
+In some cases you may wish to change which container or conda environment a step of the pipeline uses for a particular tool. By default Viralmetagenome uses containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However in some cases the pipeline specified version maybe out of date.
 
 To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/usage/configuration#updating-tool-versions) section of the nf-core website.
 
 ### Custom Tool Arguments
 
-A pipeline might not always support every possible argument or option of a particular tool used in pipeline. Fortunately, Viralgenie provides some freedom to users to insert additional parameters that the pipeline does not include by default.
+A pipeline might not always support every possible argument or option of a particular tool used in pipeline. Fortunately, Viralmetagenome provides some freedom to users to insert additional parameters that the pipeline does not include by default.
 
 To learn how to provide additional arguments to a particular tool of the pipeline, please see the [customising tool arguments](https://nf-co.re/docs/usage/configuration#customising-tool-arguments) section of the nf-core website.
 
 ### nf-core/configs
 
-In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running Viralgenie regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
+In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running Viralmetagenome regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
 
 See the main [Nextflow documentation](https://www.nextflow.io/docs/latest/config.html) for more information about creating your own configuration files.
 

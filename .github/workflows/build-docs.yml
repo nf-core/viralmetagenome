@@ -50,7 +50,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
             mike deploy --push --update-aliases "dev" "development"
           else
-            RELEASE=$(curl -sL https://api.github.com/repos/Joon-Klaps/viralgenie/releases | jq -r '.[0].tag_name')
+            RELEASE=$(curl -sL https://api.github.com/repos/nf-core/viralmetagenome/releases | jq -r '.[0].tag_name')
             echo "${RELEASE}"
             mike deploy --push --update-aliases "${RELEASE}" latest
             mike set-default --push latest

@@ -4,15 +4,15 @@
   |\\ | |__  __ /  ` /  \\ |__) |__         }  {
   | \\| |       \\__, \\__/ |  \\ |___     \\`-._,-`-,
                                         `._,._,'
-  nf-core/viralgenie ${version}
+  nf-core/viralmetagenome ${version}
 ----------------------------------------------------
 Run Name: $runName
 
 <% if (success){
-    out << "## nf-core/viralgenie execution completed successfully! ##"
+    out << "## nf-core/viralmetagenome execution completed successfully! ##"
 } else {
     out << """####################################################
-## nf-core/viralgenie execution completed unsuccessfully! ##
+## nf-core/viralmetagenome execution completed unsuccessfully! ##
 ####################################################
 The exit status of the task that caused the workflow execution to fail was: $exitStatus.
 The full error message was:
@@ -35,5 +35,5 @@ Pipeline Configuration:
 <% out << summary.collect{ k,v -> " - $k: $v" }.join("\n") %>
 
 --
-nf-core/viralgenie
-https://github.com/nf-core/viralgenie
+nf-core/viralmetagenome
+https://github.com/nf-core/viralmetagenome

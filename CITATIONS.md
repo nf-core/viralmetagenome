@@ -1,11 +1,11 @@
 # Citations
 
-## [Viralgenie](https://github.com/Joon-Klaps/viralgenie)
+## [Viralmetagenome](https://github.com/nf-core/viralmetagenome)
 
 !!! warning
-    Viralgenie is currently not Published. Please cite as:
+    Viralmetagenome is currently not Published. Please cite as:
 
-    - Klaps J, Lemey P, Kafetzopoulou L. Viralgenie: A metagenomics analysis pipeline for eukaryotic viruses. __Github__ https://github.com/Joon-Klaps/viralgenie
+    - Klaps J, Lemey P, Kafetzopoulou L. Viralmetagenome: A metagenomics analysis pipeline for eukaryotic viruses. __Github__ https://github.com/nf-core/viralmetagenome
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 

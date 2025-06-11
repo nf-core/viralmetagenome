@@ -4,7 +4,7 @@ hide:
 ---
 # Quick Start
 
-Viralgenie needs two things:
+Viralmetagenome needs two things:
 
  1. [Nextflow](https://www.nextflow.io/)
  2. [Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html), or [Conda](https://docs.conda.io/en/latest/)
@@ -16,16 +16,16 @@ conda install nextflow
 
 Run the pipeline with a small test dataset using Docker containers:
 ```bash
-nextflow run Joon-Klaps/viralgenie \
+nextflow run nf-core/viralmetagenome \
     -profile test,docker
 ```
 
 > For a more complete guide on how to set up Nextflow, Docker, Singularity, and Conda, see the [installation guide](installation.md).
 
-## Running viralgenie with your own samples
+## Running viralmetagenome with your own samples
 
 ```bash
-nextflow run Joon-Klaps/viralgenie \
+nextflow run nf-core/viralmetagenome \
     -profile docker \
     --input my_samplesheet.csv
 ```

@@ -17,7 +17,7 @@ Changes in 'cat/cat/main.nf':
      $command1 \\
          $args \\
 -        ${file_list.join(' ')} \\
-+        ${file_list} \\
++        ${files_in} \\
          $command2 \\
          > ${prefix}
  

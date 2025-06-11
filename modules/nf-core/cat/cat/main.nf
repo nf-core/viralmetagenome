@@ -44,7 +44,7 @@ process CAT_CAT {
     """
     $command1 \\
         $args \\
-        ${file_list} \\
+        ${files_in} \\
         $command2 \\
         > ${prefix}
 

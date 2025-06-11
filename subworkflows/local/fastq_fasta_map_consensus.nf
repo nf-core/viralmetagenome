@@ -128,4 +128,3 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     mqc             = ch_multiqc                           // channel: [ val(meta), [ csi ] ]
     versions        = ch_versions                          // channel: [ versions.yml ]
 }
-

@@ -74,4 +74,3 @@ workflow BAM_CALL_VARIANTS {
     mqc         = ch_multiqc     // channel: [ val(meta), [ mqc ] ]
     versions    = ch_versions    // channel: [ versions.yml ]
 }
-

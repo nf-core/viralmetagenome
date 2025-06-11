@@ -76,4 +76,3 @@ workflow BAM_VARIANTS_IVAR {
 
     versions     = ch_versions                     // channel: [ versions.yml ]
 }
-

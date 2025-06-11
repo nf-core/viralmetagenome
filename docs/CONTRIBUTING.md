@@ -59,6 +59,7 @@ These tests are run both with the latest available version of `Nextflow` and als
 - Fix the bug, and bump version (X.Y.Z+1).
 - Open a pull-request from `patch` to `main`/`master` with the changes.
 -->
+
 ## Getting help
 
 For further information/help, please consult the [nf-core/viralmetagenome documentation](https://nf-co.re/viralmetagenome/usage) and don't hesitate to get in touch on the nf-core Slack [#viralmetagenome](https://nfcore.slack.com/channels/viralmetagenome) channel ([join our Slack here](https://nf-co.re/join/slack)).
@@ -98,8 +99,8 @@ The process resources can be passed on to the tool dynamically within the proces
 
 Please use the following naming schemes, to make it easy to understand what is going where.
 
--   initial process channel: `ch_output_from_<process>`
--   intermediate and terminal channels: `ch_<previousprocess>_for_<nextprocess>`
+- initial process channel: `ch_output_from_<process>`
+- intermediate and terminal channels: `ch_<previousprocess>_for_<nextprocess>`
 
 ### Nextflow version bumping
 

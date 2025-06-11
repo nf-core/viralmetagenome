@@ -136,4 +136,3 @@ workflow FASTQ_ASSEMBLY {
     versions             = ch_versions            // channel: [ versions.yml ]
     // there are not any MQC files available for spades, trinity and megahit
 }
-

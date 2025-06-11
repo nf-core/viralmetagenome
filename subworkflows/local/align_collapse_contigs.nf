@@ -105,4 +105,3 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     unaligned_fasta = CAT_CLUSTER.out.file_out          // channel: [ val(meta), [ fasta ] ]
     versions        = ch_versions                       // channel: [ versions.yml ]
 }
-

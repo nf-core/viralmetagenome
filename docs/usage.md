@@ -5,12 +5,14 @@
 ```bash
 nextflow run nf-core/viralmetagenome -profile test,docker
 ```
+
 > Make sure you have [Nextflow](https://nf-co.re/docs/usage/installation) and a container manager (for example, [Docker](https://docs.docker.com/get-docker/)) installed. See the [installation instructions](installation.md) for more info.
 
 !!! Tip
-    Did your analysis fail? After fixing the issue add `-resume` to the command to continue from where it left off.
+Did your analysis fail? After fixing the issue add `-resume` to the command to continue from where it left off.
 
 ## Input
+
 ### Samples
 
 The pipeline requires a samplesheet as input. This samplesheet should contain the name and the absolute locations of reads.
@@ -55,7 +57,7 @@ An example samplesheet file consisting of both single- and paired-end data may l
     ```
 
 === "JSON"
-    ```json title="samplesheet.json"
+`json title="samplesheet.json"
     [
         {
             "sample": "sample1",
@@ -72,9 +74,9 @@ An example samplesheet file consisting of both single- and paired-end data may l
             "fastq2": "AEG588A3_S3_L002_R2_001.fastq.gz"
         }
     ]
-    ```
+    `
 
-| Value   | Description                                                                                                                                       |
+| Value     | Description                                                                                                                                       |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`  | Custom sample name, needs to be unique                                                                                                            |
 | `fastq_1` | Full path (_not_ relative paths) to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz". |
@@ -85,28 +87,29 @@ An example samplesheet file consisting of both single- and paired-end data may l
 Viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
 
 An example mapping constraint samplesheet file consisting of 5 references, may look something like the one below.
+
 > This is for 5 references, 2 of them being a multi-fasta file, only one of the multi-fasta needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference).
 
-
 === "TSV"
-    ```tsv title="constraints-samplesheet.tsv"
-    id	species	segment	selection	samples	sequence	definition
-    Lassa-L-dataset	LASV	L	true		LASV_L.multi.fasta	Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity
-    Lassa-S-dataset	LASV	S	false	sample1;sample3	LASV_S.multi.fasta	Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity
-    NC038709.1	HAZV	L	false	sample1;sample2	L-NC_038709.1.fasta	Hazara virus isolate JC280 segment L, complete sequence.
-    NC038710.1	HAZV	M	false		M-NC_038710.1.fasta	Hazara virus isolate JC280 segment M, complete sequence.
-    NC038711.1	HAZV	S	false		S-NC_038711.1.fasta	Hazara virus isolate JC280 segment S, complete sequence.
+
+````tsv title="constraints-samplesheet.tsv"
+id species segment selection samples sequence definition
+Lassa-L-dataset LASV L true LASV_L.multi.fasta Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity
+Lassa-S-dataset LASV S false sample1;sample3 LASV_S.multi.fasta Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity
+NC038709.1 HAZV L false sample1;sample2 L-NC_038709.1.fasta Hazara virus isolate JC280 segment L, complete sequence.
+NC038710.1 HAZV M false M-NC_038710.1.fasta Hazara virus isolate JC280 segment M, complete sequence.
+NC038711.1 HAZV S false S-NC_038711.1.fasta Hazara virus isolate JC280 segment S, complete sequence.
 
     ```
 
 === "CSV"
-    ```csv title="constraints-samplesheet.csv"
-    id,species,segment,selection,samples,sequence,definition
-    Lassa-L-dataset,LASV,L,true,,LASV_L.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity"
-    Lassa-S-dataset,LASV,S,false,"sample1;sample3",LASV_S.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity"
-    NC038709.1,HAZV,L,false,"sample1;sample2",L-NC_038709.1.fasta,"Hazara virus isolate JC280 segment L, complete sequence."
-    NC038710.1,HAZV,M,false,,M-NC_038710.1.fasta,"Hazara virus isolate JC280 segment M, complete sequence."
-    NC038711.1,HAZV,S,false,,S-NC_038711.1.fasta,"Hazara virus isolate JC280 segment S, complete sequence."
+```csv title="constraints-samplesheet.csv"
+id,species,segment,selection,samples,sequence,definition
+Lassa-L-dataset,LASV,L,true,,LASV_L.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity"
+Lassa-S-dataset,LASV,S,false,"sample1;sample3",LASV_S.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity"
+NC038709.1,HAZV,L,false,"sample1;sample2",L-NC_038709.1.fasta,"Hazara virus isolate JC280 segment L, complete sequence."
+NC038710.1,HAZV,M,false,,M-NC_038710.1.fasta,"Hazara virus isolate JC280 segment M, complete sequence."
+NC038711.1,HAZV,S,false,,S-NC_038711.1.fasta,"Hazara virus isolate JC280 segment S, complete sequence."
 
     ```
 
@@ -148,24 +151,20 @@ An example mapping constraint samplesheet file consisting of 5 references, may l
     ```
 
 === "JSON"
-    !!! Warning
-        JSON format is not supported for mapping constraints samplesheet.
+!!! Warning
+JSON format is not supported for mapping constraints samplesheet.
 
+| Column       | Description                                                                                                                                                 |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | Reference identifier, needs to be unique                                                                                                                    |
+| `species`    | [Optional] Species name of the reference                                                                                                                    |
+| `segment`    | [Optional] Segment name of the reference                                                                                                                    |
+| `selection`  | [Optional] Specify if the multi-fasta reference file needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference) |
+| `samples`    | [Optional] List of samples that need to be mapped towards the reference. If empty, map all samples.                                                         |
+| `sequence`   | Full path (_not_ relative paths) to the reference sequence file.                                                                                            |
+| `definition` | [Optional] Definition of the reference sequence file.                                                                                                       |
 
-
-| Column       | Description                                                                                         |
-| ------------ | --------------------------------------------------------------------------------------------------- |
-| `id`         | Reference identifier, needs to be unique                                                            |
-| `species`    | [Optional] Species name of the reference                                                            |
-| `segment`    | [Optional] Segment name of the reference                                                            |
-| `selection`  | [Optional] Specify if the multi-fasta reference file needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference)            |
-| `samples`    | [Optional] List of samples that need to be mapped towards the reference. If empty, map all samples. |
-| `sequence`   | Full path (_not_ relative paths) to the reference sequence file.                                    |
-| `definition` | [Optional] Definition of the reference sequence file.                                               |
-
-!!! Tip
-    - The `samples` column is optional - if empty, all samples will be mapped towards the reference.
-    - Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
+!!! Tip - The `samples` column is optional - if empty, all samples will be mapped towards the reference. - Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
 
 ### Metadata
 
@@ -209,14 +208,13 @@ Sample metadata can be provided to the pipeline with the argument `--metadata`. 
     !!! Warning
         JSON format is not supported for metadata samplesheet.
 
-
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
 nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir ./results  -profile docker
-```
+````
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
@@ -277,7 +275,6 @@ To further assist in reproducibility, you can use share and reuse [parameter fil
 
 > [!NOTE]
 > These options are part of Nextflow and use a _single_ hyphen (pipeline parameters use a double-hyphen)
-
 
 ### The `-profile` parameter
 

@@ -5,7 +5,7 @@
 Viralmetagenome uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
 
 !!! Tip
-    Keep an eye out for [nf-core createtaxdb](https://nf-co.re/createtaxdb/) as it can be used for the customization of the main databases but the pipeline is still under development.
+Keep an eye out for [nf-core createtaxdb](https://nf-co.re/createtaxdb/) as it can be used for the customization of the main databases but the pipeline is still under development.
 
 ## Reference pool
 
@@ -21,7 +21,7 @@ A number of Kaiju pre-built indexes for reference datasets are maintained by the
 To build a Kaiju database, you need three components: a FASTA file with the protein sequences, the NCBI taxonomy dump files, and you need to define the uppercase characters of the standard 20 amino acids you wish to include.
 
 !!! Warning
-    The headers of the protein fasta file must be numeric NCBI taxon identifiers of the protein sequences.
+The headers of the protein fasta file must be numeric NCBI taxon identifiers of the protein sequences.
 
 To download the NCBI taxonomy files, please run the following commands:
 
@@ -38,15 +38,15 @@ kaiju-mkfmi proteins
 ```
 
 !!! Tip
-    You can speed up database construction by supplying the threads parameter (`-t`).
+You can speed up database construction by supplying the threads parameter (`-t`).
 
 <details markdown="1">
 <summary>Expected files in database directory</summary>
 
--   `kaiju`
-    -   `kaiju_db_*.fmi`
-    -   `nodes.dmp`
-    -   `names.dmp`
+- `kaiju`
+  - `kaiju_db_*.fmi`
+  - `nodes.dmp`
+  - `names.dmp`
 
 </details>
 
@@ -83,11 +83,7 @@ kraken2-build --clean --db <YOUR_DB_NAME>
 
 You can then add the `<YOUR_DB_NAME>/` path to your nf-core/taxprofiler database input sheet.
 
-???+ Tip "Expected files in database directory"
-    -   `kraken2`
-        -   `opts.k2d`
-        -   `hash.k2d`
-        -   `taxo.k2d`
+???+ Tip "Expected files in database directory" - `kraken2` - `opts.k2d` - `hash.k2d` - `taxo.k2d`
 
 You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown#custom-databases) for a more detailed description.
 
@@ -96,7 +92,7 @@ You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blo
 Viralmetagenome uses Kraken2 to remove contaminated reads.
 
 !!! info
-    The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
+The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
 
     * [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
     * [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
@@ -129,6 +125,7 @@ In case [Virosaurus](https://viralzone.expasy.org/8676) does not suffice your ne
 An easy-to-use public database with a lot of metadata is [BV-BRC](https://www.bv-brc.org/). Sequences can be extracted using their [CLI-tool](https://www.bv-brc.org/docs/cli_tutorial/index.html) and linked to their [metadata](https://www.bv-brc.org/docs/cli_tutorial/cli_getting_started.html#the-bv-brc-database)
 
 Here we select all viral genomes that are not lab reassortments and are reference genomes and add metadata attributes to the output.
+
 > This is an example, in case you need to have a more elaborate dataset than Virosaurus, be more inclusive towards your taxa of interest and include more metadata attributes.
 
 ```bash
@@ -139,8 +136,8 @@ p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne ho
 ```
 
 !!! Tip
-    Any attribute can be downloaded and will be added to the final report if the formatting remains the same.
-    For a complete list of attributes see `p3-all-genomes --fields` or read their [manual](https://www.bv-brc.org/docs/cli_tutorial/cli_getting_started.html)
+Any attribute can be downloaded and will be added to the final report if the formatting remains the same.
+For a complete list of attributes see `p3-all-genomes --fields` or read their [manual](https://www.bv-brc.org/docs/cli_tutorial/cli_getting_started.html)
 
 Next, the metadata and the genomic data are combined into a single fasta file where the metadata fields are stored in the fasta comment as `key1="value1"|key2="value2"|...` using the following python code.
 
@@ -179,7 +176,4 @@ with open("bv-brc-refvirus-anno.fasta", "w") as f:
         f.write(entry + "\n")
 ```
 
-???+ Tip "Expected files in database directory"
-    -   `refseq-virus.fasta`
-    -   `refseq-virus-anno.txt`
-    -   `bv-brc-refvirus-anno.fasta`
+???+ Tip "Expected files in database directory" - `refseq-virus.fasta` - `refseq-virus-anno.txt` - `bv-brc-refvirus-anno.fasta`

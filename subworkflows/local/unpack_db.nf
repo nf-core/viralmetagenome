@@ -35,4 +35,3 @@ workflow UNPACK_DB  {
     db       = ch_db            // channel: [ db ]
     versions = ch_versions      // channel: [ versions.yml ]
 }
-

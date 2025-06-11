@@ -414,4 +414,3 @@ def noContigSamplesToMultiQC(tsv_data, assemblers) {
             )
         }
 }
-

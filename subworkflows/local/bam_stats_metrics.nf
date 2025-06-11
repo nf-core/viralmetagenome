@@ -51,4 +51,3 @@ workflow BAM_STATS_METRICS {
 
     versions = ch_versions                     // channel: [ versions.yml ]
 }
-

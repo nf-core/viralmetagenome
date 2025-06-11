@@ -121,4 +121,3 @@ workflow FASTA_CONTIG_CLUST {
     versions              = ch_versions                    // channel: [ versions.yml ]
 
 }
-

@@ -98,4 +98,3 @@ workflow FASTA_CONTIG_PRECLUST {
     kaiju          = ch_kaiju         // channel: [ val(meta), [ kaiju ] ]
     versions       = ch_versions      // channel: [ versions.yml ]
 }
-

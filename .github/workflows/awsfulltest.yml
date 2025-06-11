@@ -12,7 +12,6 @@ on:
 
 jobs:
   run-platform:
-  run-platform:
     name: Run AWS full tests
     # run only if the PR is approved by at least 2 reviewers and against the master/main branch or manually triggered
     if: github.repository == 'nf-core/viralmetagenome' && github.event.review.state == 'approved' && (github.event.pull_request.base.ref == 'master' || github.event.pull_request.base.ref == 'main') || github.event_name == 'workflow_dispatch' || github.event_name == 'release'
@@ -43,10 +42,6 @@ jobs:
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: Seqera Platform debug log file
-          path: |
-            seqera_platform_action_*.log
-            seqera_platform_action_*.json
           name: Seqera Platform debug log file
           path: |
             seqera_platform_action_*.log

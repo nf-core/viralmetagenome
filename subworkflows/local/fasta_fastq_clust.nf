@@ -97,4 +97,3 @@ workflow FASTA_FASTQ_CLUST {
 
     versions = ch_versions  // channel: [ versions.yml ]
 }
-

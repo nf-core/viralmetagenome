@@ -87,4 +87,3 @@ workflow FASTQ_KRAKEN_KAIJU {
     mqc                  = ch_multiqc_files       // channel: [ val(meta), multiqc_file ]
     versions             = ch_versions            // channel: [ versions.yml ]
 }
-

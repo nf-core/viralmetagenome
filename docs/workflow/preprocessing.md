@@ -14,7 +14,7 @@ Viralmetagenome offers three main preprocessing steps for the preprocessing of r
 > See the [parameters preprocessing section](../parameters.md#preprocessing-options) for all relevant arguments to control the preprocessing steps.
 
 !!! Tip
-    Samples with fewer than `--min_trimmed_reads [default: 1]` reads will be removed from any further downstream analysis. These samples will be highlighted in the MultiQC report.
+Samples with fewer than `--min_trimmed_reads [default: 1]` reads will be removed from any further downstream analysis. These samples will be highlighted in the MultiQC report.
 
 ## Read Quality control
 
@@ -42,8 +42,9 @@ Raw sequencing read processing in the form of adapter clipping and paired-end re
 Unique Molecular Identifiers (UMIs) are short sequences that are added during library preparation. They are used to identify and remove PCR duplicates. The tool [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html) is used to remove PCR duplicates based on the UMI sequences. HUMID supports two ways to group reads using their UMI. By default, HUMID uses the directional method, which takes into account the expected errors based on the PCR process. Specify the allowed amount of errors to see reads coming from the same original fragment with `--arguments_humid '-m 5'`, for a distance of 5 [default : 1]. Alternatively, HUMID supports the maximum clustering method, where all reads that are within the specified distance are grouped together.
 
 !!! Tip "Directional vs maximum clustering"
-    ![HUMID UMI clustering](../images/umi-clustering-humid.png){.center : style="height:230px;width:450px"}
-    <p style="text-align: center;">_Taken from [UMI-tools: 'The network based deduplication methods'](https://umi-tools.readthedocs.io/en/latest/the_methods.html)_ </p>
+![HUMID UMI clustering](../images/umi-clustering-humid.png){.center : style="height:230px;width:450px"}
+
+<p style="text-align: center;">_Taken from [UMI-tools: 'The network based deduplication methods'](https://umi-tools.readthedocs.io/en/latest/the_methods.html)_ </p>
 
     - __cluster__: Form networks of connected UMIs with a mismatch distance of 1. Each connected component is a read group. In the above example, all the UMIs are contained in a single connected component and thus there is one read group containing all reads, with ACGT as the ‘selected’ UMI.
     - __directional__ (default for both HUMID and UMI-tools): Form networks with edges defined based on distance threshold and $$ \text{ node A counts} \geq (2 \cdot \text{node B counts}) - 1$$
@@ -56,6 +57,7 @@ Viralmetagenome supports both deduplication on a read level as well as a mapping
 ## 3. Read merging
 
 Certain patients or original samples can be sequenced in multiple times. This step involves merging reads from these different sequencing methods to create a comprehensive dataset for analysis.
+
 > only R1 will be merged with R1 and R2 with R2. Single end and paired end reads will not be merged.
 
 This is done with `CAT`.
@@ -73,7 +75,7 @@ Complexity filtering is done with [`Bbduk`](https://jgi.doe.gov/data-and-tools/s
 Contamination, whether derived from experiments or computational processes, looms large in next-generation sequencing data. Such contamination can compromise results from WGS as well as metagenomics studies, and can even lead to the inadvertent disclosure of personal information. To avoid this, host read-removal is performed. Host read-removal is performed by the tool `Kraken2`.
 
 !!! Tip "Want to know more?"
-    * [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
-    * [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+_ [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
+_ [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
 
 > Specify the host database with the `--host_k2_db` parameter. The default is a small subset of the human genome and **we highly suggest that you make this database more elaborate** (for example, complete human genome, common sequencer contaminants, bacterial genomes, ...). For this, read the section on [creating custom kraken2 host databases](../customisation/databases.md#kraken2-databases).

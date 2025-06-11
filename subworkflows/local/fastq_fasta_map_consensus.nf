@@ -39,7 +39,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     ch_versions  = ch_versions.mix(MAP_READS.out.versions)
     ch_multiqc   = ch_multiqc.mix(MAP_READS.out.mqc.collect{it[1]}.ifEmpty([]))
 
-    SAMTOOLS_FAIDX ( ch_reference, [[],[]])
+    SAMTOOLS_FAIDX ( ch_reference, [[],[]], false)
     ch_versions  = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
 
     // remove references-read combinations with low mapping rates

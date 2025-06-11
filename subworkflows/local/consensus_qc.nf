@@ -62,7 +62,7 @@ workflow CONSENSUS_QC  {
     }
 
     // use MMSEQS easy search to find best hits against annotation db
-    if ( !params.skip_annotation){
+    if ( !params.skip_consensus_annotation){
         MMSEQS_ANNOTATE(ch_genomes_all,annotation_db)
         annotation  = MMSEQS_ANNOTATE.out.tsv
         ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions)

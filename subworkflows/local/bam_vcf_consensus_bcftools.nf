@@ -74,5 +74,5 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
 
     emit:
     consensus        = BCFTOOLS_CONSENSUS.out.fasta     // channel: [ val(meta), [ fasta ] ]
-    versions         = ch_versions                       // channel: [ versions.yml ]
+    versions         = ch_versions                      // channel: [ versions.yml ]
 }

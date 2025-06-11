@@ -40,6 +40,7 @@ include { CONSENSUS_QC                    } from '../subworkflows/local/consensu
 include { CUSTOM_MULTIQC                  } from '../modules/local/custom_multiqc'
 // Variant calling
 include { FASTQ_FASTA_MAP_CONSENSUS       } from '../subworkflows/local/fastq_fasta_map_consensus'
+include { VCF_ANNOTATE                    } from '../subworkflows/local/vcf_annotate'
 
 
 /*
@@ -78,7 +79,7 @@ workflow VIRALMETAGENOME {
     ch_checkv_db     = !params.skip_consensus_qc                                                                                           ? createChannel( params.checkv_db, "checkv", !params.skip_checkv )                                                  : Channel.empty()
     ch_bracken_db    = !params.skip_read_classification                                                                                    ? createChannel( params.bracken_db, "bracken", ('bracken' in read_classifiers) )                                    : Channel.empty()
     ch_k2_host       = !params.skip_preprocessing                                                                                          ? createChannel( params.host_k2_db, "k2_host", !params.skip_hostremoval )                                           : Channel.empty()
-    ch_annotation_db = !params.skip_consensus_qc                                                                                           ? createChannel( params.annotation_db, "annotation", !params.skip_annotation )                                      : Channel.empty()
+    ch_annotation_db = !params.skip_consensus_qc                                                                                           ? createChannel( params.annotation_db, "annotation", !params.skip_consensus_annotation )                                      : Channel.empty()
     ch_prokka_db     = !params.skip_consensus_qc                                                                                           ? createChannel( params.prokka_db, "prokka", !params.skip_prokka )                                                  : Channel.empty()
 
     /*
@@ -404,11 +405,20 @@ workflow VIRALMETAGENOME {
 
     }
 
+    // Annotate variants with supplied gff
+    if ( !params.skip_variant_calling && !params.skip_vcf_annotation ) {
+        VCF_ANNOTATE (
+            FASTQ_FASTA_MAP_CONSENSUS.out.vcf_ref
+        )
+        ch_versions = ch_versions.mix(VCF_ANNOTATE.out.versions)
+    }
+
     ch_checkv_summary     = Channel.empty()
     ch_quast_summary      = Channel.empty()
     ch_blast_summary      = Channel.empty()
     ch_annotation_summary = Channel.empty()
 
+    // Run several sumarisation tools on the variant calling results
     if ( !params.skip_consensus_qc  && (!params.skip_assembly || !params.skip_variant_calling) ) {
         ch_consensus_filter = ch_consensus
             .filter{meta, fasta -> WorkflowCommons.getLengthAndAmbigous(fasta).contig_size > 0}

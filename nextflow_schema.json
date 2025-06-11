@@ -130,7 +130,6 @@
                 },
                 "merge_reads": {
                     "type": "boolean",
-                    "default": false,
                     "description": "Specify if reads coming from the same group or orignal sample should be merged for the downstream analyses",
                     "fa_icon": "fas fa-compress-alt"
                 },
@@ -388,7 +387,8 @@
                 "skip_sspace_basic": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",
-                    "description": "Skip the contig extension with sspace_basic"
+                    "description": "Skip the contig extension with sspace_basic",
+                    "default": true
                 },
                 "read_distance": {
                     "type": "integer",
@@ -729,6 +729,11 @@
                     "fa_icon": "fas fa-forward",
                     "description": "Skip the analysis of variants for the external reference or contigs"
                 },
+                "skip_vcf_annotation": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-forward",
+                    "description": "Skip the annotation of the VCF file"
+                },
                 "mapper": {
                     "type": "string",
                     "default": "bwamem2",
@@ -769,6 +774,13 @@
                     "fa_icon": "fas fa-align-center",
                     "description": "Define the minimum number of mapped reads in order to continue the variant and consensus calling",
                     "minimum": 1
+                },
+                "min_consensus_depth": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 5,
+                    "fa_icon": "fas fa-align-center",
+                    "description": "Define the minimum consensus depth"
                 },
                 "allele_frequency": {
                     "type": "number",
@@ -837,7 +849,7 @@
                     "type": "string",
                     "description": "Arguments for custom mpileup",
                     "fa_icon": "fas fa-cogs",
-                    "default": "--max-depth 80000"
+                    "default": "--max-depth 800000"
                 },
                 "arguments_mosdepth": {
                     "type": "string",
@@ -858,7 +870,7 @@
                 },
                 "arguments_bcftools_mpileup3": {
                     "type": "string",
-                    "default": "--include \\'INFO/DP>=10\\",
+                    "default": "--include 'INFO/DP>=5",
                     "description": "Arguments for BCFtools mpileup step 3",
                     "fa_icon": "fas fa-cogs"
                 },
@@ -911,7 +923,7 @@
                 },
                 "arguments_ivar_variants1": {
                     "type": "string",
-                    "default": "-q 20 -m 10",
+                    "default": "-q 20 -m 5",
                     "description": "Arguments for iVar variants step 1",
                     "fa_icon": "fas fa-cogs"
                 },
@@ -929,7 +941,7 @@
                 },
                 "arguments_ivar_consensus1": {
                     "type": "string",
-                    "default": "-t 0 -q 20 -m 10 -n N",
+                    "default": "-t 0 -q 20 -m 5 -n N",
                     "description": "Arguments for iVar consensus step 1",
                     "fa_icon": "fas fa-cogs"
                 },
@@ -937,6 +949,17 @@
                     "type": "string",
                     "default": "--count-orphans --max-depth 0 --min-BQ 20 --no-BAQ -aa",
                     "description": "Arguments for iVar consensus step 2",
+                    "fa_icon": "fas fa-cogs"
+                },
+                "arguments_snpeff": {
+                    "type": "string",
+                    "description": "Arguments for SnpEff tool for variant annotation",
+                    "fa_icon": "fas fa-cogs"
+                },
+                "arguments_snpsift_extractfields": {
+                    "type": "string",
+                    "default": "-s \",\" -e \".",
+                    "description": "Arguments for SnpSift ExtractFields tool",
                     "fa_icon": "fas fa-cogs"
                 }
             },
@@ -965,7 +988,7 @@
                     "description": "Reference database used by checkv for consensus quality control",
                     "help_text": "If not given, the most recent one is downloaded."
                 },
-                "skip_annotation": {
+                "skip_consensus_annotation": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",
                     "description": "Skip the annotation of the consensus constructs"

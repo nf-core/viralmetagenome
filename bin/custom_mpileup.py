@@ -137,7 +137,7 @@ def write_csv(matrix: NDArray, prefix: str) -> None:
         matrix: NumPy array containing the mpileup results
         output: Path to the output file
     """
-    header = ["Position", "Reference", "A", "C", "G", "T", "Insertions", "Deletions", "Consensus", "Entropy", "Weighted Entropy"]
+    header = ["POS", "REF", "A", "C", "G", "T", "Insertions", "Deletions", "Consensus", "Entropy", "Weighted Entropy"]
     with open(f"{prefix}.tsv", "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file, delimiter="\t")
         writer.writerow(header)

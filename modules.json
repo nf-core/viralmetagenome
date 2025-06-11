@@ -324,6 +324,12 @@
                         "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["bam_stats_samtools", "modules"]
                     },
+                    "snpeff/snpeff": {
+                        "branch": "master",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/snpeff/snpeff/snpeff-snpeff.diff"
+                    },
                     "spades": {
                         "branch": "master",
                         "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",

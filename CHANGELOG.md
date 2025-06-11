@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Giving Kaiju more memory ([#179](https://github.com/nf-core/viralmetagenome/pull/179))
 - Add option for sample merging based on group coulumn in samplesheet ([#180](https://github.com/nf-core/viralmetagenome/pull/180))
 - Creating testdatasets using nf-core repo ([#183](https://github.com/nf-core/viralmetagenome/pull/183))
+- Add option to annotate snps with Snpeff for mapping constraint route ([#186](https://github.com/Joon-Klaps/viralgenie/pull/186))
 
 ### `Fixed`
 

@@ -13,6 +13,7 @@ Within the MultiQC report, Viralmetagenome provides a number of custom tables ba
 - [blastn](#blast): BLAST is a tool for comparing primary biological sequence information. It calculates the similarity between the consensus genome and the reference genome.
 - [mmseqs-search](#mmseqs-search) - included as 'annotation': MMseqs is an ultra-fast and sensitive search tool for protein and nucleotide databases. Viralmetagenome uses MMseqs to annotate the consensus genomes and assign them a species name, segment name, expected host, etc.
 - [mafft](#mafft): MAFFT is a multiple sequence alignment program.
+- [SnpEff and SnpSift](#snpeff-and-snpsift): SnpEff is a genetic variant annotation and functional effect prediction tool. SnpSift is a toolbox that allows you to filter and manipulate annotated files.
 
 > Consensus genome quality control can be skipped with `--skip_consensus_qc`.
 
@@ -56,8 +57,23 @@ Within the MultiQC report, Viralmetagenome provides a number of custom tables ba
 !!! info
     MMseqs was used for the annotation step instead of BLAST because of the ability to query using a tblastx search for highly diverging viruses while supplying a nucleotide annotation database. To specify another type of search (e.g. blastp, blastx, etc.), please refer to the [parameters consensus-qc section](../parameters.md#consensus-qc).
 
-> MMseqs-search can be skipped with `--skip_annotation`.
+> MMseqs-search can be skipped with `--skip_consensus_annotation`.
 
+## SnpEff and SnpSift
+
+[SnpEff](https://pcingola.github.io/SnpEff/) is a genetic variant annotation and functional effect prediction tool. It annotates and predicts the effects of genetic variants on genes and proteins (such as amino acid changes).
+
+[SnpSift](https://pcingola.github.io/SnpEff/SnpSift.html) is a toolbox that allows you to filter and manipulate annotated files. The ExtractFields tool is used to extract specific information from the annotated VCF files into a tabular format for easier analysis.
+
+Viralgenie uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
+
+The annotation process provides valuable information about the impact of variants, including:
+- Whether variants are synonymous or non-synonymous
+- Changes in amino acid sequences
+- Potential impact severity (HIGH, MODERATE, LOW, MODIFIER)
+- Gene and transcript information
+
+> Variant annotation can be skipped with `--skip_vcf_annotation`.
 
 ## MAFFT
 

@@ -8,7 +8,7 @@ process CAT_CAT {
         'biocontainers/pigz:2.3.4' }"
 
     input:
-    tuple val(meta), path(files_in, stageAs: "?/*")
+    tuple val(meta), path(files_in)
 
     output:
     tuple val(meta), path("${prefix}"), emit: file_out
@@ -44,7 +44,7 @@ process CAT_CAT {
     """
     $command1 \\
         $args \\
-        ${files_in} \\
+        ${file_list.join(' ')} \\
         $command2 \\
         > ${prefix}
 
@@ -76,4 +76,3 @@ def getFileSuffix(filename) {
     def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
     return match ? match[0][1] : filename.substring(filename.lastIndexOf('.'))
 }
-

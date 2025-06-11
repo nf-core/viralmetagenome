@@ -65,8 +65,8 @@ workflow FASTQ_ASSEMBLY {
     if ('megahit' in assemblers) {
         megahit_in = ch_reads.map
             { meta, reads -> meta.single_end ?
-                [meta, reads.collect{it},[]] :
-                [meta, reads[0].collect{it}, reads[1].collect{it}]
+                [meta, reads[0].collect{it}, reads[1].collect{it}] :
+                [meta, reads.collect{it},[]]
             }
 
         MEGAHIT(megahit_in)

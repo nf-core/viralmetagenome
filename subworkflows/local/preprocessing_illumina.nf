@@ -167,4 +167,3 @@ workflow PREPROCESSING_ILLUMINA {
     low_reads_mqc           = low_reads_mqc                   // channel: [ mqc ]
     versions                = ch_versions                     // channel: [ versions.yml ]
 }
-

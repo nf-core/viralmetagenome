@@ -4,8 +4,8 @@ process IVAR_VARIANTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ivar:1.4--h6b7c446_1' :
-        'biocontainers/ivar:1.4--h6b7c446_1' }"
+        'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
+        'biocontainers/ivar:1.4.4--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -29,7 +29,6 @@ process IVAR_VARIANTS {
     def features = gff ? "-g $gff" : ""
 
     def max_retries = 3
-
     """
     set -e  # Exit on error
     retry_count=0
@@ -70,4 +69,16 @@ process IVAR_VARIANTS {
     END_VERSIONS
     """
 
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_mpileup = save_mpileup ? "touch ${prefix}.mpileup" : ''
+    """
+    touch ${prefix}.tsv
+    $touch_mpileup
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
+    END_VERSIONS
+    """
 }

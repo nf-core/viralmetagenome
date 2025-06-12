@@ -1,52 +1,23 @@
-bump_version:
-nf_core_version: 3.1.0
-org_path:
-repository_type: pipeline
 lint:
-  files_unchanged:
-    - docs/images/nf-core-viralgenie_logo_light.png
-    - docs/images/nf-core-viralgenie_logo_dark.png
-    - assets/nf-core-viralmetagenome_logo_light.png
-    - docs/README.md
-    - .github/ISSUE_TEMPLATE/bug_report.yml
-    - .github/ISSUE_TEMPLATE/config.yml
-    - .github/ISSUE_TEMPLATE/feature_request.yml
-    - .github/PULL_REQUEST_TEMPLATE.md
-    - .github/workflows/branch.yml
-    - .github/workflows/linting.yml
-    - .github/workflows/linting_comment.yml
-    - assets/email_template.html
-    - assets/email_template.txt
-    - assets/sendmail_template.txt
-    - docs/images/nf-core-viralmetagenome_logo_light.png
-    - docs/images/nf-core-viralmetagenome_logo_dark.png
-    - pyproject.toml
-    - .gitignore
-  nextflow_config:
-    - manifest.name
-    - manifest.homePage
-    - config_defaults:
-        - params.custom_table_headers
-  multiqc_config: false
   files_exist:
-    - .github/CONTRIBUTING.md
-    - CITATIONS.md
     - conf/test.config
     - conf/test_full.config
-    - docs/README.md
-  actions_awsfulltest: false
-  actions_ci: false
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
+  multiqc_config: false
+nf_core_version: 3.3.1
+repository_type: pipeline
 template:
+  author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
+  description: a bioinformatics best-practice analysis pipeline for untargeted viral
+    genome reconstruction and to identify intra-host variants from metagenomic sequencing
+    data.
+  force: false
+  is_nfcore: true
   name: viralmetagenome
-  description: a bioinformatics best-practice analysis pipeline for reconstructing
-    consensus genomes and to identify intra-host variants from metagenomic sequencing
-    data or enriched based sequencing data like hybrid capture.
-  author: "Joon Klaps, Philippe Lemey, Liana Kafetzopoulou"
-  is_nfcore: false
-  org: Joon-Klaps
+  org: nf-core
+  outdir: .
   skip_features:
     - igenomes
-  force: false
-  outdir: .
+    - multiqc
   version: 0.1.3dev
-update:

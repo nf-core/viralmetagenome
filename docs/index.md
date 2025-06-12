@@ -7,6 +7,7 @@ hide:
 ---
 
 # ![viralmetagenome](images/nf-core-viralmetagenome_logo_dark.png#only-dark)
+
 # ![viralmetagenome](images/nf-core-viralmetagenome_logo_light.png#only-light)
 
 {==

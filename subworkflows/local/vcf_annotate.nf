@@ -55,4 +55,3 @@ workflow VCF_ANNOTATE {
 
     versions     = ch_versions                    // channel: [ versions.yml ]
 }
-

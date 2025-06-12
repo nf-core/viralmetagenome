@@ -64,7 +64,12 @@ workflow FASTA_FASTQ_CLUST {
         ch_versions = ch_versions.mix(MMSEQS_CREATETSV.out.versions.first())
     }
     else if (cluster_method == "vrhyme") {
-        VRHYME_VRHYME (fasta_fastq)
+        vhryme_in = fasta_fastq
+            .branch{ meta, fasta, reads ->
+                fasta: [meta, fasta]
+                reads: [meta, reads]
+            }
+        VRHYME_VRHYME (vhryme_in.reads, vhryme_in.fasta)
         ch_clusters = VRHYME_VRHYME.out.membership
         ch_versions = ch_versions.mix(VRHYME_VRHYME.out.versions.first())
     }
@@ -92,4 +97,3 @@ workflow FASTA_FASTQ_CLUST {
 
     versions = ch_versions  // channel: [ versions.yml ]
 }
-

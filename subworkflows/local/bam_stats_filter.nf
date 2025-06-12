@@ -55,4 +55,3 @@ workflow BAM_STATS_FILTER {
 
     versions = ch_versions                     // channel: [ versions.yml ]
 }
-

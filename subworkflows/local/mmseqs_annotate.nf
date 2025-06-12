@@ -22,4 +22,3 @@ workflow MMSEQS_ANNOTATE {
     tsv      = MMSEQS_EASYSEARCH.out.tsv // channel: [ val(meta), [ tsv ] ]
     versions = ch_versions               // channel: [ versions.yml ]
 }
-

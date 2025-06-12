@@ -140,4 +140,3 @@ workflow CONSENSUS_QC  {
     mqc         = ch_multiqc_files  // channel: [ tsv ]
     versions    = ch_versions       // channel: [ versions.yml ]
 }
-

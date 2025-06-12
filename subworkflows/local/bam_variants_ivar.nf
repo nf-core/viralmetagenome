@@ -60,7 +60,7 @@ workflow BAM_VARIANTS_IVAR {
     ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
     BCFTOOLS_FILTER (
-        BCFTOOLS_SORT.out.vcf
+        BCFTOOLS_SORT.out.vcf.map{ meta, vcf -> [ meta, vcf, [] ] },
     )
     ch_versions = ch_versions.mix(BCFTOOLS_FILTER.out.versions.first())
 
@@ -76,4 +76,3 @@ workflow BAM_VARIANTS_IVAR {
 
     versions     = ch_versions                     // channel: [ versions.yml ]
 }
-

@@ -150,4 +150,3 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
     mqc                  = ch_multiqc                           // channel: [ val(meta), [ mqc ] ]
     versions             = ch_versions                          // channel: [ versions.yml ]
 }
-

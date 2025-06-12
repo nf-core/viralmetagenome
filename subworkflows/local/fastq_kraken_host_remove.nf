@@ -73,4 +73,3 @@ workflow FASTQ_KRAKEN_HOST_REMOVE {
     mqc                     = ch_multiqc_files                // channel: [ multiqc_files ]
     versions                = ch_versions                     // channel: [ versions.yml ]
 }
-

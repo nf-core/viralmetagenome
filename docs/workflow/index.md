@@ -13,13 +13,12 @@ Viralmetagenome takes in a set of reads and performs 5 major analyses, each of t
 By default all analyses are run.
 
 !!! Tip "Skipping steps"
-    All steps can be skipped and the pipeline can be run with only the desired steps. This can be done with the `--skip_preprocessing`, `--skip_read_classification`, `--skip_assembly`, `--skip_polishing`, `--skip_variant_analysis`, `--skip_iterative_refinement`, `--skip_consensus_qc` flags.
-
+All steps can be skipped and the pipeline can be run with only the desired steps. This can be done with the `--skip_preprocessing`, `--skip_read_classification`, `--skip_assembly`, `--skip_polishing`, `--skip_variant_analysis`, `--skip_iterative_refinement`, `--skip_consensus_qc` flags.
 
 ## Subway map
 
 <!-- can't parse images with snippets -->
+
 ![viralmetagenome-workflow](../images/metromap_style_pipeline_workflow_viralmetagenome.png)
 
 --8<-- "README.md:31:68"
-

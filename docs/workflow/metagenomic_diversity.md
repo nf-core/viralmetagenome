@@ -8,7 +8,6 @@ Viralmetagenome offers two main tools for the classification of reads and a summ
 
 ![metagenomic_diversity](../images/metagenomic_diversity.png)
 
-
 !!! Tip "Want more classifiers?"
 
     Feel free to reach out and suggest more classifiers. However, if the main goal of your project is to establish the presence of a virus within a sample and are therefore only focused on metagenomic diversity, have a look at [taxprofiler](https://nf-co.re/taxprofiler/)
@@ -28,8 +27,3 @@ Viralmetagenome offers two main tools for the classification of reads and a summ
 ## Krona
 
 [Krona](https://github.com/marbl/Krona/wiki) allows hierarchical data to be explored with zooming, multi-layered pie charts. The interactive charts are self-contained and can be viewed with any modern web browser.
-
-
-
-
-

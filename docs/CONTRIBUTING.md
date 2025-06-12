@@ -1,21 +1,16 @@
----
-hide:
-  - navigation
----
-# Contributing Guidelines
+# `nf-core/viralmetagenome`: Contributing Guidelines
 
 Hi there!
+Many thanks for taking an interest in improving nf-core/viralmetagenome.
 
-**🤩 Many thanks for taking an interest in improving Viralmetagenome. 🤩**
-
-We try to manage the required tasks for Viralmetagenome using GitHub issues, you probably came to this page when creating one.
+We try to manage the required tasks for nf-core/viralmetagenome using GitHub issues, you probably came to this page when creating one.
 Please use the pre-filled template to save time.
 
 However, don't be put off by this template - other more general issues and suggestions are welcome!
 Contributions to the code are even more welcome ;
 
-!!! info
-    If you need help using or modifying viralmetagenome then the best place to ask is on the nf-core Slack [Joon-Klaps](https://nfcore.slack.com/team/U043Y6FQR6J).
+> [!NOTE]
+> If you need help using or modifying nf-core/viralmetagenome then the best place to ask is on the nf-core Slack [#viralmetagenome](https://nfcore.slack.com/channels/viralmetagenome) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
 ## Contribution workflow
 
@@ -31,8 +26,11 @@ If you're not used to this workflow with git, you can start with some [docs from
 
 ## Tests
 
-You can optionally test your changes by running the pipeline locally. Then it is recommended to use the `debug` profile to
-receive warnings about process selectors and other debug info. Example: `nextflow run . -profile debug,test,docker --outdir <OUTDIR>`.
+You have the option to test your changes locally by running the pipeline. For receiving warnings about process selectors and other `debug` information, it is recommended to use the debug profile. Execute all the tests with the following command:
+
+```bash
+nf-test test --profile debug,test,docker --verbose
+```
 
 When you create a pull request with changes, [GitHub Actions](https://github.com/features/actions) will run automatic tests.
 Typically, pull-requests are only fully reviewed when these tests are passing, though of course we can help out before then.
@@ -41,8 +39,8 @@ There are typically two types of tests that run:
 
 ### Lint tests
 
-`nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which viralmetagenome adheres to.
-To enforce these and ensure that viralmetagenome stays in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
+`nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which all pipelines must adhere to.
+To enforce these and ensure that all pipelines stay in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core pipelines lint <pipeline-directory>` command.
 
 If any failures or warnings are encountered, please follow the listed URL for more documentation.
 
@@ -55,37 +53,39 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 <!-- ## Patch
 
-!!! Warning "Only in the unlikely and regretful event of a release happening with a bug."
-    - On your own fork, make a new branch `patch` based on `upstream/master`.
-    - Fix the bug, and bump version (X.Y.Z+1).
-    - A PR should be made on `master` from patch to directly this particular bug. -->
+:warning: Only in the unlikely and regretful event of a release happening with a bug.
+
+- On your own fork, make a new branch `patch` based on `upstream/main` or `upstream/master`.
+- Fix the bug, and bump version (X.Y.Z+1).
+- Open a pull-request from `patch` to `main`/`master` with the changes.
+-->
 
 ## Getting help
 
-For further information/help, please consult the [nf-core/viralmetagenome documentation](https://github.io/nf-core/viralmetagenome) and don't hesitate to get in touch on Slack [Joon-Klaps](https://nfcore.slack.com/team/U043Y6FQR6J) channel ([join the nf-core Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the [nf-core/viralmetagenome documentation](https://nf-co.re/viralmetagenome/usage) and don't hesitate to get in touch on the nf-core Slack [#viralmetagenome](https://nfcore.slack.com/channels/viralmetagenome) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
 ## Pipeline contribution conventions
 
-To make the nf-core/viralmetagenome code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
+To make the `nf-core/viralmetagenome` code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
 ### Adding a new step
 
 If you wish to contribute a new step, please use the following coding standards:
 
-1. Define the corresponding input channel into your new process from the expected previous process channel
+1. Define the corresponding input channel into your new process from the expected previous process channel.
 2. Write the process block (see below).
 3. Define the output channel if needed (see below).
 4. Add any new parameters to `nextflow.config` with a default (see below).
 5. Add any new parameters to `nextflow_schema.json` with help text (via the `nf-core pipelines schema build` tool).
 6. Add sanity checks and validation for all relevant parameters.
 7. Perform local tests to validate that the new code works as expected.
-8. If applicable, add a new test command in `.github/workflow/ci.yml`.
+8. If applicable, add a new test in the `tests` directory.
 9. Update MultiQC config `assets/multiqc_config.yml` so relevant suffixes, file name clean up and module plots are in the appropriate order. If applicable, add a [MultiQC](https://https://multiqc.info/) module.
 10. Add a description of the output files and if relevant any appropriate images from the MultiQC report to `docs/output.md`.
 
 ### Default values
 
-Parameters should be initialised / defined with default values in `nextflow.config` under the `params` scope.
+Parameters should be initialised / defined with default values within the `params` scope in `nextflow.config`.
 
 Once there, use `nf-core pipelines schema build` to add to `nextflow_schema.json`.
 
@@ -99,8 +99,8 @@ The process resources can be passed on to the tool dynamically within the proces
 
 Please use the following naming schemes, to make it easy to understand what is going where.
 
--   initial process channel: `ch_output_from_<process>`
--   intermediate and terminal channels: `ch_<previousprocess>_for_<nextprocess>`
+- initial process channel: `ch_output_from_<process>`
+- intermediate and terminal channels: `ch_<previousprocess>_for_<nextprocess>`
 
 ### Nextflow version bumping
 
@@ -116,11 +116,11 @@ This repo includes a devcontainer configuration which will create a GitHub Codes
 
 To get started:
 
--   Open the repo in [Codespaces](https://github.com/nf-core/viralmetagenome/codespaces)
--   Tools installed
-    -   nf-core
-    -   Nextflow
+- Open the repo in [Codespaces](https://github.com/nf-core/viralmetagenome/codespaces)
+- Tools installed
+  - nf-core
+  - Nextflow
 
 Devcontainer specs:
 
--   [DevContainer config](https://github.com/nf-core/viralmetagenome/blob/master/.devcontainer/devcontainer.json)
+- [DevContainer config](.devcontainer/devcontainer.json)

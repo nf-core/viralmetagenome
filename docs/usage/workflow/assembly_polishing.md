@@ -1,4 +1,7 @@
-# Assembly & polishing
+---
+title: Assembly & polishing
+subtitle: De novo genome assembly and consensus polishing
+---
 
 Viralmetagenome offers an elaborate workflow for the assembly and polishing of viral genomes:
 
@@ -12,7 +15,7 @@ Viralmetagenome offers an elaborate workflow for the assembly and polishing of v
 1. [Scaffolding](#7-scaffolding): scaffolding the contigs to the centroid of each bin.
 1. [Annotation with Reference](#8-annotation-with-reference): annotating regions with 0-depth coverage with the reference sequence.
 
-![assembly_polishing](../images/assembly_polishing.png)
+![assembly_polishing](../../images/assembly_polishing.png)
 
 > The overall workflow of creating reference assisted assemblies can be skipped with the argument `--skip_assembly`. See the [parameters assembly section](../parameters.md#assembly) for all relevant arguments to control the assembly steps.
 
@@ -82,15 +85,18 @@ graph LR;
     E --> F["Taxon simplification"];
 ```
 
-!!! Tip annotate "Having complex metagenomic samples?"
+:::tip{title="Having complex metagenomic samples?"}
 The pre-clustering step can be used to simplify the taxonomy of the contigs, let [NCBI's taxonomy browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi) help you identify taxon-id's for simplification. The simplification can be done in several ways:
 
-    - Make sure your contamination database is up to date and removes the relevant taxa.
-    - Exclude unclassified contigs with `--arguments_extract_precluster "--keep-unclassified false"` parameter.
-    - Simplify the taxonomy of the contigs to a higher rank using `--arguments_extract_precluster "--precluster-simplify-taxa <value>"` parameter (1).
-    - Specify the taxa to include or exclude with `--arguments_extract_precluster "--precluster-include-children <taxa>"`, `--arguments_extract_precluster "--precluster-include-parents <taxa>"`, `--arguments_extract_precluster "--precluster-exclude-children <taxa>"`, `--arguments_extract_precluster "--precluster-exclude-parents <taxa>"`, `--arguments_extract_precluster "--precluster-exclude-taxa <taxa>"` parameters.
-    !!! warning
-        Providing lists to the extract precluster script is done by encapsulating values with `"` and separating them with a space. For example: `--arguments_extract_precluster "--precluster-exclude-taxa taxon1 taxon2 taxon3"`.
+- Make sure your contamination database is up to date and removes the relevant taxa.
+- Exclude unclassified contigs with `--arguments_extract_precluster "--keep-unclassified false"` parameter.
+- Simplify the taxonomy of the contigs to a higher rank using `--arguments_extract_precluster "--precluster-simplify-taxa <value>"` parameter (1).
+- Specify the taxa to include or exclude with `--arguments_extract_precluster "--precluster-include-children <taxa>"`, `--arguments_extract_precluster "--precluster-include-parents <taxa>"`, `--arguments_extract_precluster "--precluster-exclude-children <taxa>"`, `--arguments_extract_precluster "--precluster-exclude-parents <taxa>"`, `--arguments_extract_precluster "--precluster-exclude-taxa <taxa>"` parameters.
+
+:::warning
+Providing lists to the extract precluster script is done by encapsulating values with `"` and separating them with a space. For example: `--arguments_extract_precluster "--precluster-exclude-taxa taxon1 taxon2 taxon3"`.
+:::
+:::
 
 1. Options here are 'species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom' or 'superkingdom'.
 
@@ -135,8 +141,9 @@ The clustering is performed with one of the following tools:
 
 These methods all come with their own advantages and disadvantages. For example, cdhitest is very fast but cannot be used for large viruses >10Mb and similarity threshold cannot go below 80% which is not preferable for highly diverse RNA viruses. Vsearch is slower but accurate. Mmseqs-linclust is the fastest but tends to create a large amount of bins. Mmseqs-cluster is slower but can handle larger datasets and is more accurate. vRhyme is a new method that is still under development but has shown promising results but can sometimes not output any bins when segments are small. Mash is a very fast comparison method is linked with a custom script that identifies communities within a network.
 
-!!! Tip
+:::tip
 When pre-clustering is performed, it is recommended to set a lower identity_threshold (60-70% ANI) as the new goal becomes to separate genome segments within the same bin.
+:::
 
 > The clustering method can be specified with the `--clustering_method` parameter. The default is `cdhitest`.
 
@@ -148,12 +155,13 @@ When pre-clustering is performed, it is recommended to set a lower identity_thre
 
 The coverage of the contigs is calculated using the same method as in the [coverage calculation step](#3-coverage-calculation). A cumulative sum is taken across the contigs from every assembler. If these cumulative sums are above the specified `--perc_reads_contig` parameter, the contig is kept. If all cumulative sums are below the specified parameter, the contig is removed.
 
-!!! Info annotate "Show me an example how it works"
+:::info{title="Show me an example how it works"}
 If the `--perc_reads_contig` is set to `5`, the cumulative sum of the contigs from every assembler is calculated. For example:
 
-    - Cluster 1: the cumulative sum of the contigs from SPAdes is 0.6, Megahit is 0.5, the cluster is kept.
-    - Cluster 2: the cumulative sum of the contigs from SPAdes is 0.1, Megahit is 0.1, the cluster is removed.
-    - Cluster 3: the cumulative sum of the contigs from SPAdes is 0.5, Megahit is 0, the cluster is kept.
+- Cluster 1: the cumulative sum of the contigs from SPAdes is 0.6, Megahit is 0.5, the cluster is kept.
+- Cluster 2: the cumulative sum of the contigs from SPAdes is 0.1, Megahit is 0.1, the cluster is removed.
+- Cluster 3: the cumulative sum of the contigs from SPAdes is 0.5, Megahit is 0, the cluster is kept.
+:::
 
 > The default is `5` and can be specified with the `--perc_reads_contig` parameter.
 

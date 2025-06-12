@@ -1,4 +1,7 @@
-# Custom configuration of modules
+---
+title: Custom configuration of modules
+subtitle: Modifying tool arguments and pipeline parameters
+---
 
 ## Using `--argument_tool_name` parameters
 
@@ -6,7 +9,7 @@ The viralmetagenome pipeline uses a set of tools to perform the analysis. Each t
 
 For example, to change the minimum depth to call consensus to 5 and the minimum quality score of base to 30 for the `ivar consensus` module, we can use the `--ivar_consensus` parameter:
 
-```bash hl_lines="3-4"
+```bash {3-4}
 nextflow run nf-core/viralmetagenome \
     -profile docker \
     --arguments_ivar_consensus1 '-q 30 -m 5' \
@@ -14,16 +17,17 @@ nextflow run nf-core/viralmetagenome \
     --input samplesheet.csv ...
 ```
 
-!!! info
+:::info
 This will overwrite all default arguments of viralmetagenome for the `ivar consensus` module. Similarly the remove the default values of viralmetagenome, specifiy the argument with an empty string:
 
-```bash hl_lines="3-4"
+```bash {3-4}
 nextflow run nf-core/viralmetagenome \
     -profile docker \
     --arguments_ivar_consensus1 '' \
     --arguments_ivar_consensus2 '' \
     --input samplesheet.csv ...
 ```
+:::
 
 ## Supplying a custom configuration file
 
@@ -31,7 +35,7 @@ Within viralmetagenome, all modules (tools, e.g., `FASTP`, `FASTQC`) can be run 
 
 To see which specific arguments or variables are used for a module or tool, have a look at the [`modules.config` file](https://github.com/nf-core/viralmetagenome/blob/dev/conf/modules.config). Here the arguments of a module are specified as follows:
 
-```groovy hl_lines="3-6 9-13"
+```groovy {3-6,9-13}
 withName: IVAR_CONSENSUS {
     ext.args = [
         '-t 0.75',          // frequency to call consensus: 0.75 just the majority rule
@@ -52,10 +56,10 @@ withName: IVAR_CONSENSUS {
 
 In this example, the `IVAR_CONSENSUS` module is configured with the arguments `-q 20 -m 10` for the tool [`ivar consensus`](https://andersen-lab.github.io/ivar/html/manualpage.html#autotoc_md19) and `--ignore-overlaps --count-orphans --max-depth 0 --no-BAQ --min-BQ 0` for [`samtools mpileup`](https://www.htslib.org/doc/samtools-mpileup.html) as iVar uses the output of `samtools mpileup` directly.
 
-!!! Tip
+:::tip
 The `ext.args` and `ext.args2` are used to specify the arguments for the tool. If unsure which tools use which arguments (`ivar:ext.args` and `samtools:ext.args2`), have a look at the nextflow module file directly! For example, at [`modules/nf-core/ivar/consensus.nf`](https://github.com/nf-core/viralmetagenome/blob/dev/modules/nf-core/ivar/consensus/main.nf), "$args" and "$args2" are used to specify the arguments for the tools:
 
-````groovy hl_lines="5 10"
+```groovy {5,10}
 
     """
     samtools \\
@@ -70,11 +74,12 @@ The `ext.args` and `ext.args2` are used to specify the arguments for the tool. I
             -p $prefix
     ...
     """
-    ```
+```
+:::
 
 In case we do want to modify the arguments of a module, we can do so by providing a custom configuration file. The easiest way to do this would be to copy a segment from the modules.config and modify the arguments. This way, none of the other configurations will get lost or modified. For example, setting the minimum depth to call consensus to 5 and the minimum quality score of base to 30 for the `IVAR_CONSENSUS` module:
 
-```groovy title='custom.config' hl_lines="5-6 12"
+```groovy title='custom.config' {5-6,12}
 process {
     withName: IVAR_CONSENSUS {
         ext.args = [
@@ -93,10 +98,11 @@ process {
         ...
     }
 }
-````
+```
 
-!!! Warning
+:::warning
 Make sure you include the `process{}` section.
+:::
 
 Next, supply the file to viralmetagenome using the `-c` Nextflow option:
 
@@ -107,5 +113,6 @@ nextflow run nf-core/viralmetagenome \
     --input samplesheet.csv ...
 ```
 
-!!! Tip
+:::tip
 This guide not entirely clear? Also have a look at the [nf-core guide for customizing tool arguments](https://nf-co.re/docs/usage/configuration#customising-tool-arguments).
+:::

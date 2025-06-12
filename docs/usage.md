@@ -1,4 +1,7 @@
-# nf-core/viralmetagenome: Usage
+---
+title: Usage
+subtitle: How to run nf-core/viralmetagenome
+---
 
 ## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/viralmetagenome/usage](https://nf-co.re/viralmetagenome/usage)
 
@@ -8,8 +11,9 @@ nextflow run nf-core/viralmetagenome -profile test,docker
 
 > Make sure you have [Nextflow](https://nf-co.re/docs/usage/installation) and a container manager (for example, [Docker](https://docs.docker.com/get-docker/)) installed. See the [installation instructions](installation.md) for more info.
 
-!!! Tip
+:::tip
 Did your analysis fail? After fixing the issue add `-resume` to the command to continue from where it left off.
+:::
 
 ## Input
 
@@ -25,56 +29,12 @@ The pipeline will auto-detect whether a sample is single- or paired-end using th
 
 An example samplesheet file consisting of both single- and paired-end data may look something like the one below.
 
-=== "TSV"
-
-    ```tsv title="input-samplesheet.tsv"
-    sample	fastq_1	fastq_2
-    sample1	AEG588A1_S1_L002_R1_001.fastq.gz	AEG588A1_S1_L002_R2_001.fastq.gz
-    sample2	AEG588A5_S5_L003_R1_001.fastq.gz
-    sample3	AEG588A3_S3_L002_R1_001.fastq.gz	AEG588A3_S3_L002_R2_001.fastq.gz
-    ```
-
-=== "CSV"
-
-    ```csv title="input-samplesheet.csv"
-    sample,fastq_1,fastq_2
-    sample1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-    sample2,AEG588A5_S5_L003_R1_001.fastq.gz,
-    sample3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-    ```
-
-=== "YAML"
-
-    ```yaml title="input-samplesheet.yaml"
-    - sample: sample1
-      fastq1: AEG588A1_S1_L002_R1_001.fastq.gz
-      fastq2: AEG588A1_S1_L002_R2_001.fastq.gz
-    - sample: sample2
-      fastq1: AEG588A5_S5_L003_R1_001.fastq.gz
-    - sample: sample3
-      fastq1: AEG588A3_S3_L002_R1_001.fastq.gz
-      fastq2: AEG588A3_S3_L002_R2_001.fastq.gz
-    ```
-
-=== "JSON"
-`json title="samplesheet.json"
-    [
-        {
-            "sample": "sample1",
-            "fastq1": "AEG588A1_S1_L002_R1_001.fastq.gz",
-            "fastq2": "AEG588A1_S1_L002_R2_001.fastq.gz"
-        },
-        {
-            "sample": "sample2",
-            "fastq1": "AEG588A5_S5_L003_R1_001.fastq.gz"
-        },
-        {
-            "sample": "sample3",
-            "fastq1": "AEG588A3_S3_L002_R1_001.fastq.gz",
-            "fastq2": "AEG588A3_S3_L002_R2_001.fastq.gz"
-        }
-    ]
-    `
+```csv title="input-samplesheet.csv"
+sample,fastq_1,fastq_2
+sample1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
+sample2,AEG588A5_S5_L003_R1_001.fastq.gz,
+sample3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
+```
 
 | Value     | Description                                                                                                                                       |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -90,9 +50,7 @@ An example mapping constraint samplesheet file consisting of 5 references, may l
 
 > This is for 5 references, 2 of them being a multi-fasta file, only one of the multi-fasta needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference).
 
-=== "TSV"
-
-````tsv title="constraints-samplesheet.tsv"
+```tsv title="constraints-samplesheet.tsv"
 id species segment selection samples sequence definition
 Lassa-L-dataset LASV L true LASV_L.multi.fasta Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity
 Lassa-S-dataset LASV S false sample1;sample3 LASV_S.multi.fasta Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity
@@ -100,59 +58,7 @@ NC038709.1 HAZV L false sample1;sample2 L-NC_038709.1.fasta Hazara virus isolate
 NC038710.1 HAZV M false M-NC_038710.1.fasta Hazara virus isolate JC280 segment M, complete sequence.
 NC038711.1 HAZV S false S-NC_038711.1.fasta Hazara virus isolate JC280 segment S, complete sequence.
 
-    ```
-
-=== "CSV"
-```csv title="constraints-samplesheet.csv"
-id,species,segment,selection,samples,sequence,definition
-Lassa-L-dataset,LASV,L,true,,LASV_L.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity"
-Lassa-S-dataset,LASV,S,false,"sample1;sample3",LASV_S.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity"
-NC038709.1,HAZV,L,false,"sample1;sample2",L-NC_038709.1.fasta,"Hazara virus isolate JC280 segment L, complete sequence."
-NC038710.1,HAZV,M,false,,M-NC_038710.1.fasta,"Hazara virus isolate JC280 segment M, complete sequence."
-NC038711.1,HAZV,S,false,,S-NC_038711.1.fasta,"Hazara virus isolate JC280 segment S, complete sequence."
-
-    ```
-
-=== "YAML"
-
-    ```yaml title="constraints-samplesheet.yaml"
-    - id: Lassa-L-dataset
-      species: LASV
-      segment: L
-      selection: true
-      sequence: LASV_L.multi.fasta
-      definition: 'Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity'
-    - id: Lassa-S-dataset
-      species: LASV
-      segment: S
-      selection: false
-      samples: sample1;sample3
-      sequence: LASV_S.multi.fasta
-      definition: 'Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity'
-    - id: NC038709.1
-      species: HAZV
-      segment: L
-      selection: false
-      samples: sample1;sample2
-      sequence: L-NC_038709.1.fasta
-      definition: 'Hazara virus isolate JC280 segment L, complete sequence.'
-    - id: NC038710.1
-      species: HAZV
-      segment: M
-      selection: false
-      sequence: M-NC_038710.1.fasta
-      definition: 'Hazara virus isolate JC280 segment M, complete sequence.'
-    - id: NC038711.1
-      species: HAZV
-      segment: S
-      selection: false
-      sequence: S-NC_038711.1.fasta
-      definition: 'Hazara virus isolate JC280 segment S, complete sequence.'
-    ```
-
-=== "JSON"
-!!! Warning
-JSON format is not supported for mapping constraints samplesheet.
+```
 
 | Column       | Description                                                                                                                                                 |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -162,51 +68,24 @@ JSON format is not supported for mapping constraints samplesheet.
 | `selection`  | [Optional] Specify if the multi-fasta reference file needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference) |
 | `samples`    | [Optional] List of samples that need to be mapped towards the reference. If empty, map all samples.                                                         |
 | `sequence`   | Full path (_not_ relative paths) to the reference sequence file.                                                                                            |
+| `gff`        | Full path (_not_ relative paths) to the reference annotation gff file.                                                                                            |
 | `definition` | [Optional] Definition of the reference sequence file.                                                                                                       |
 
-!!! Tip - The `samples` column is optional - if empty, all samples will be mapped towards the reference. - Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
+:::tip
+- The `samples` column is optional - if empty, all samples will be mapped towards the reference.
+- Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
+:::
 
 ### Metadata
 
 Sample metadata can be provided to the pipeline with the argument `--metadata`. This metadata will not affect the analysis in any way and is only used to annotate the final report. Any metadata can be provided as long as the first value is the `sample` value.
 
-=== "TSV"
 
-    ```tsv title="metadata.tsv"
-    sample	sample_accession	secondary_sample_accession	study_accession	run_alias	library_layout
-    sample1	SAMN14154201	SRS6189918	PRJNA607948	vero76_Illumina.fastq	PAIRED
-    sample2	SAMN14154205	SRS6189924	PRJNA607948	veroSTAT-1KO_Illumina.fastq	PAIRED
-    ```
-
-=== "CSV"
-
-    ```csv title="metadata.csv"
-    sample,sample_accession,secondary_sample_accession,study_accession,run_alias,library_layout
-    sample1,SAMN14154201,SRS6189918,PRJNA607948,vero76_Illumina.fastq,PAIRED
-    sample2,SAMN14154205,SRS6189924,PRJNA607948,veroSTAT-1KO_Illumina.fastq,PAIRED
-    ```
-
-=== "YAML"
-
-    ```yaml title="metadata.yaml"
-    - sample: sample1
-      sample_accession: SAMN14154201
-      secondary_sample_accession: SRS6189918
-      study_accession: PRJNA607948
-      run_alias: vero76_Illumina.fastq
-      library_layout: PAIRED
-    - sample: sample2
-      sample_accession: SAMN14154205
-      secondary_sample_accession: SRS6189924
-      study_accession: PRJNA607948
-      run_alias: veroSTAT-1KO_Illumina.fastq
-      library_layout: PAIRED
-    ```
-
-=== "JSON"
-
-    !!! Warning
-        JSON format is not supported for metadata samplesheet.
+```csv title="metadata.csv"
+sample,sample_accession,secondary_sample_accession,study_accession,run_alias,library_layout
+sample1,SAMN14154201,SRS6189918,PRJNA607948,vero76_Illumina.fastq,PAIRED
+sample2,SAMN14154205,SRS6189924,PRJNA607948,veroSTAT-1KO_Illumina.fastq,PAIRED
+```
 
 ## Running the pipeline
 

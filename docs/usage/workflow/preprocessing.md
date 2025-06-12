@@ -1,4 +1,7 @@
-# Preprocessing
+---
+title: Preprocessing
+subtitle: Read quality control, trimming, and host removal
+---
 
 Viralmetagenome offers three main preprocessing steps for the preprocessing of raw sequencing reads:
 
@@ -8,13 +11,14 @@ Viralmetagenome offers three main preprocessing steps for the preprocessing of r
 1. [Complexity filtering](#4-complexity-filtering): removal of low-sequence complexity reads.
 1. [Host read-removal](#5-host-read-removal): removal of reads aligning to reference genome(s) of a host.
 
-![preprocessing](../images/preprocessing.png)
+![preprocessing](../../images/preprocessing.png)
 
 > Preprocessing can be entirely skipped with the option `--skip_preprocessing`.
 > See the [parameters preprocessing section](../parameters.md#preprocessing-options) for all relevant arguments to control the preprocessing steps.
 
-!!! Tip
+:::tip
 Samples with fewer than `--min_trimmed_reads [default: 1]` reads will be removed from any further downstream analysis. These samples will be highlighted in the MultiQC report.
+:::
 
 ## Read Quality control
 
@@ -41,14 +45,15 @@ Raw sequencing read processing in the form of adapter clipping and paired-end re
 
 Unique Molecular Identifiers (UMIs) are short sequences that are added during library preparation. They are used to identify and remove PCR duplicates. The tool [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html) is used to remove PCR duplicates based on the UMI sequences. HUMID supports two ways to group reads using their UMI. By default, HUMID uses the directional method, which takes into account the expected errors based on the PCR process. Specify the allowed amount of errors to see reads coming from the same original fragment with `--arguments_humid '-m 5'`, for a distance of 5 [default : 1]. Alternatively, HUMID supports the maximum clustering method, where all reads that are within the specified distance are grouped together.
 
-!!! Tip "Directional vs maximum clustering"
-![HUMID UMI clustering](../images/umi-clustering-humid.png){.center : style="height:230px;width:450px"}
+:::tip{title="Directional vs maximum clustering"}
+![HUMID UMI clustering](../../images/umi-clustering-humid.png){.center : style="height:230px;width:450px"}
 
 <p style="text-align: center;">_Taken from [UMI-tools: 'The network based deduplication methods'](https://umi-tools.readthedocs.io/en/latest/the_methods.html)_ </p>
 
     - __cluster__: Form networks of connected UMIs with a mismatch distance of 1. Each connected component is a read group. In the above example, all the UMIs are contained in a single connected component and thus there is one read group containing all reads, with ACGT as the ‘selected’ UMI.
     - __directional__ (default for both HUMID and UMI-tools): Form networks with edges defined based on distance threshold and $$ \text{ node A counts} \geq (2 \cdot \text{node B counts}) - 1$$
     Each connected component is a read group, with the node with the highest counts selected as the top node for the component. In the example above, the directional edges yield two connected components. One with AAAT by itself and the other with the remaining UMIs with ACGT as the selected node.
+:::
 
 Viralmetagenome supports both deduplication on a read level as well as a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
 

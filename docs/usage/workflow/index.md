@@ -21,4 +21,3 @@ All steps can be skipped and the pipeline can be run with only the desired steps
 
 ![viralmetagenome-workflow](../images/metromap_style_pipeline_workflow_viralmetagenome.png)
 
---8<-- "README.md:31:68"

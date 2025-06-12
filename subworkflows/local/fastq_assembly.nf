@@ -63,7 +63,13 @@ workflow FASTQ_ASSEMBLY {
 
     // MEGAHIT
     if ('megahit' in assemblers) {
-        MEGAHIT(ch_reads)
+        megahit_in = ch_reads.map
+            { meta, reads -> meta.single_end ?
+                [meta, reads[0].collect{it}, reads[1].collect{it}] :
+                [meta, reads.collect{it},[]]
+            }
+
+        MEGAHIT(megahit_in)
         ch_versions          = ch_versions.mix(MEGAHIT.out.versions.first())
 
         EXTEND_MEGAHIT( ch_reads, MEGAHIT.out.contigs, "megahit")
@@ -130,4 +136,3 @@ workflow FASTQ_ASSEMBLY {
     versions             = ch_versions            // channel: [ versions.yml ]
     // there are not any MQC files available for spades, trinity and megahit
 }
-

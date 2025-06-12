@@ -78,4 +78,3 @@ workflow SCAFFOLDS_EXTEND_STATS {
     versions             = ch_versions   // channel: [ versions.yml ]
 
 }
-

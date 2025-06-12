@@ -11,6 +11,7 @@ process VRHYME_VRHYME {
     tuple val(meta), path(fasta), path(reads)
 
     output:
+    // tuple val(meta), path("vRhyme_best_bins_fasta/")                , emit: bins
     tuple val(meta), path("**/vRhyme_best_bins.*.membership.tsv")   , emit: membership
     tuple val(meta), path("**/vRhyme_best_bins.*.summary.tsv")      , emit: summary
     path "versions.yml"                                             , emit: versions
@@ -21,13 +22,20 @@ process VRHYME_VRHYME {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_input = fasta.toString().replaceAll(/\.gz$/, '')
+    def gunzip      = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
+    def cleanup     = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
     """
+    ${gunzip}
+
     vRhyme \\
-        -i $fasta \\
+        -i $fasta_input \\
         -r $reads \\
         -o $prefix \\
         -t $task.cpus \\
         $args
+
+    ${cleanup}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -36,7 +44,6 @@ process VRHYME_VRHYME {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p $prefix

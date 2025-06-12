@@ -84,4 +84,3 @@ workflow MAP_READS  {
 
     versions = ch_versions // channel: [ versions.yml ]
 }
-

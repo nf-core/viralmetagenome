@@ -2,12 +2,13 @@
 hide:
   - navigation
 ---
+
 # Installation
 
 Viralmetagenome uses Nextflow, and a [package/container management system](https://www.nextflow.io/docs/latest/container.html#containers) ([Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html) or [Conda](https://docs.conda.io/en/latest/)) so both need to be installed on the system where you launch your analysis.
 
 !!! Tip "New to bioinformatics?"
-    If the word "terminal" brings to mind an airport boarding area, you can become a little lost. [This blog post](https://www.nextflow.io/blog/2021/setup-nextflow-on-windows.html) (up until Configuring an Xserver ...) will help people with little bioinformatic experience set up Nextflow and Docker on a Windows computer.
+If the word "terminal" brings to mind an airport boarding area, you can become a little lost. [This blog post](https://www.nextflow.io/blog/2021/setup-nextflow-on-windows.html) (up until Configuring an Xserver ...) will help people with little bioinformatic experience set up Nextflow and Docker on a Windows computer.
 
 ## Software managers: Docker, Singularity, and Conda
 
@@ -48,8 +49,8 @@ When using these containers, Nextflow will use the manager for each process that
 Nextflow runs on most POSIX systems (Linux, macOS, etc) and requires Java 11 or later. It can be installed in several ways, including using the [Nextflow installer](https://www.nextflow.io/docs/latest/getstarted.html#installation) or [Bioconda](https://bioconda.github.io/).
 
 === "Nextflow installer"
-    !!! Tip
-        Unsure how to install Nextflow with these commands? Check out the [Nextflow installation documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation) for more information.
+!!! Tip
+Unsure how to install Nextflow with these commands? Check out the [Nextflow installation documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation) for more information.
 
     ```console
     # Make sure that Java v11+ is installed:
@@ -110,20 +111,21 @@ If you have both Nextflow and a software manager installed, you are all set! You
 nextflow run nf-core/viralmetagenome \
     -profile test,<docker/singularity/.../institute>
 ```
+
 !!! note
-    With the argument `-profile <docker/singularity/.../institute>`, you can specify the container system you want to use. The `test` profile is used to run the pipeline with a small dataset to verify if everything is working correctly.
+With the argument `-profile <docker/singularity/.../institute>`, you can specify the container system you want to use. The `test` profile is used to run the pipeline with a small dataset to verify if everything is working correctly.
 
 !!! Tip "Running Nextflow on a High performance computing (HPC) system?"
-    You might not be the first person to run a Nextflow pipeline on your infrastructure! Check out the [nf-core configuration website](https://nf-co.re/configs) as it might already contain a specific configuration for your infrastructure.
+You might not be the first person to run a Nextflow pipeline on your infrastructure! Check out the [nf-core configuration website](https://nf-co.re/configs) as it might already contain a specific configuration for your infrastructure.
 
 !!! danger "Apple silicon (ARM)"
-    If you are using an Apple silicon (ARM) machine, you may encounter issues. Most tools are not yet compatible with ARM architecture, therefore Conda will most likely fail. In this case, use Docker in combination with the profile `arm`.
-    ```bash
+If you are using an Apple silicon (ARM) machine, you may encounter issues. Most tools are not yet compatible with ARM architecture, therefore Conda will most likely fail. In this case, use Docker in combination with the profile `arm`.
+`bash
     nextflow run nf-core/viralmetagenome \
         -profile test,docker,arm
-    ```
-    If you still encounter issues, you can set up a Nextflow Tower account and run the pipeline with [wave containers](https://www.nextflow.io/docs/latest/wave.html). In this config file, supply the following:
-    ```groovy
+    `
+If you still encounter issues, you can set up a Nextflow Tower account and run the pipeline with [wave containers](https://www.nextflow.io/docs/latest/wave.html). In this config file, supply the following:
+`groovy
     wave {
         enabled = true
         wave.strategy = ['dockerfile']
@@ -131,5 +133,4 @@ nextflow run nf-core/viralmetagenome \
     tower {
         accessToken = '<your access token>'
     }
-    ```
-
+    `

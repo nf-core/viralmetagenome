@@ -69,4 +69,3 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     json            = ch_json           // channel: [meta, json ]
     versions        = ch_versions       // channel: [ versions.yml ]
 }
-

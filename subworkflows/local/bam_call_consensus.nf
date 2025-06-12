@@ -47,4 +47,3 @@ workflow BAM_CALL_CONSENSUS {
     consensus = RENAME_FASTA_HEADER_CALLED_CONSENSUS.out.fasta   // channel: [ val(meta), [ fasta ] ]
     versions  = ch_versions                                      // channel: [ versions.yml ]
 }
-

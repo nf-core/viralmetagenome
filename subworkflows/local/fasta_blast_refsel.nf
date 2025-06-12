@@ -59,4 +59,3 @@ workflow FASTA_BLAST_REFSEL {
     no_blast_hits     = ch_no_blast_hits           // channel: [ val(meta), [ mqc ] ]
     versions          = ch_versions                // channel: [ versions.yml ]
 }
-

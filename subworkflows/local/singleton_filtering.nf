@@ -28,4 +28,3 @@ workflow SINGLETON_FILTERING {
     filtered     = RENAME_FASTA_HEADER_SINGLETON.out.fasta  // channel: [ val(meta), [ fasta ] ]
     versions     = ch_versions                              // channel: [ versions.yml ]
 }
-

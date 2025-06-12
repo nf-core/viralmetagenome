@@ -1,20 +1,18 @@
----
-hide:
-  - navigation
----
-# Usage
+# nf-core/viralmetagenome: Usage
 
-Try out the pipeline right now!
+## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/viralmetagenome/usage](https://nf-co.re/viralmetagenome/usage)
 
 ```bash
 nextflow run nf-core/viralmetagenome -profile test,docker
 ```
+
 > Make sure you have [Nextflow](https://nf-co.re/docs/usage/installation) and a container manager (for example, [Docker](https://docs.docker.com/get-docker/)) installed. See the [installation instructions](installation.md) for more info.
 
 !!! Tip
-    Did your analysis fail? After fixing the issue add `-resume` to the command to continue from where it left off.
+Did your analysis fail? After fixing the issue add `-resume` to the command to continue from where it left off.
 
 ## Input
+
 ### Samples
 
 The pipeline requires a samplesheet as input. This samplesheet should contain the name and the absolute locations of reads.
@@ -45,7 +43,6 @@ An example samplesheet file consisting of both single- and paired-end data may l
     sample3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
     ```
 
-
 === "YAML"
 
     ```yaml title="input-samplesheet.yaml"
@@ -60,7 +57,7 @@ An example samplesheet file consisting of both single- and paired-end data may l
     ```
 
 === "JSON"
-    ```json title="samplesheet.json"
+`json title="samplesheet.json"
     [
         {
             "sample": "sample1",
@@ -77,9 +74,9 @@ An example samplesheet file consisting of both single- and paired-end data may l
             "fastq2": "AEG588A3_S3_L002_R2_001.fastq.gz"
         }
     ]
-    ```
+    `
 
-| Value   | Description                                                                                                                                       |
+| Value     | Description                                                                                                                                       |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`  | Custom sample name, needs to be unique                                                                                                            |
 | `fastq_1` | Full path (_not_ relative paths) to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz". |
@@ -90,28 +87,29 @@ An example samplesheet file consisting of both single- and paired-end data may l
 Viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
 
 An example mapping constraint samplesheet file consisting of 5 references, may look something like the one below.
+
 > This is for 5 references, 2 of them being a multi-fasta file, only one of the multi-fasta needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference).
 
-
 === "TSV"
-    ```tsv title="constraints-samplesheet.tsv"
-    id	species	segment	selection	samples	sequence	definition
-    Lassa-L-dataset	LASV	L	true		LASV_L.multi.fasta	Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity
-    Lassa-S-dataset	LASV	S	false	sample1;sample3	LASV_S.multi.fasta	Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity
-    NC038709.1	HAZV	L	false	sample1;sample2	L-NC_038709.1.fasta	Hazara virus isolate JC280 segment L, complete sequence.
-    NC038710.1	HAZV	M	false		M-NC_038710.1.fasta	Hazara virus isolate JC280 segment M, complete sequence.
-    NC038711.1	HAZV	S	false		S-NC_038711.1.fasta	Hazara virus isolate JC280 segment S, complete sequence.
+
+````tsv title="constraints-samplesheet.tsv"
+id species segment selection samples sequence definition
+Lassa-L-dataset LASV L true LASV_L.multi.fasta Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity
+Lassa-S-dataset LASV S false sample1;sample3 LASV_S.multi.fasta Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity
+NC038709.1 HAZV L false sample1;sample2 L-NC_038709.1.fasta Hazara virus isolate JC280 segment L, complete sequence.
+NC038710.1 HAZV M false M-NC_038710.1.fasta Hazara virus isolate JC280 segment M, complete sequence.
+NC038711.1 HAZV S false S-NC_038711.1.fasta Hazara virus isolate JC280 segment S, complete sequence.
 
     ```
 
 === "CSV"
-    ```csv title="constraints-samplesheet.csv"
-    id,species,segment,selection,samples,sequence,definition
-    Lassa-L-dataset,LASV,L,true,,LASV_L.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity"
-    Lassa-S-dataset,LASV,S,false,"sample1;sample3",LASV_S.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity"
-    NC038709.1,HAZV,L,false,"sample1;sample2",L-NC_038709.1.fasta,"Hazara virus isolate JC280 segment L, complete sequence."
-    NC038710.1,HAZV,M,false,,M-NC_038710.1.fasta,"Hazara virus isolate JC280 segment M, complete sequence."
-    NC038711.1,HAZV,S,false,,S-NC_038711.1.fasta,"Hazara virus isolate JC280 segment S, complete sequence."
+```csv title="constraints-samplesheet.csv"
+id,species,segment,selection,samples,sequence,definition
+Lassa-L-dataset,LASV,L,true,,LASV_L.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the L segment clustered at 99.5% similarity"
+Lassa-S-dataset,LASV,S,false,"sample1;sample3",LASV_S.multi.fasta,"Collection of LASV sequences used for hybrid capture bait design, all publicly available sequences of the S segment clustered at 99.5% similarity"
+NC038709.1,HAZV,L,false,"sample1;sample2",L-NC_038709.1.fasta,"Hazara virus isolate JC280 segment L, complete sequence."
+NC038710.1,HAZV,M,false,,M-NC_038710.1.fasta,"Hazara virus isolate JC280 segment M, complete sequence."
+NC038711.1,HAZV,S,false,,S-NC_038711.1.fasta,"Hazara virus isolate JC280 segment S, complete sequence."
 
     ```
 
@@ -153,24 +151,20 @@ An example mapping constraint samplesheet file consisting of 5 references, may l
     ```
 
 === "JSON"
-    !!! Warning
-        JSON format is not supported for mapping constraints samplesheet.
+!!! Warning
+JSON format is not supported for mapping constraints samplesheet.
 
+| Column       | Description                                                                                                                                                 |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | Reference identifier, needs to be unique                                                                                                                    |
+| `species`    | [Optional] Species name of the reference                                                                                                                    |
+| `segment`    | [Optional] Segment name of the reference                                                                                                                    |
+| `selection`  | [Optional] Specify if the multi-fasta reference file needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference) |
+| `samples`    | [Optional] List of samples that need to be mapped towards the reference. If empty, map all samples.                                                         |
+| `sequence`   | Full path (_not_ relative paths) to the reference sequence file.                                                                                            |
+| `definition` | [Optional] Definition of the reference sequence file.                                                                                                       |
 
-
-| Column       | Description                                                                                         |
-| ------------ | --------------------------------------------------------------------------------------------------- |
-| `id`         | Reference identifier, needs to be unique                                                            |
-| `species`    | [Optional] Species name of the reference                                                            |
-| `segment`    | [Optional] Segment name of the reference                                                            |
-| `selection`  | [Optional] Specify if the multi-fasta reference file needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference)            |
-| `samples`    | [Optional] List of samples that need to be mapped towards the reference. If empty, map all samples. |
-| `sequence`   | Full path (_not_ relative paths) to the reference sequence file.                                    |
-| `definition` | [Optional] Definition of the reference sequence file.                                               |
-
-!!! Tip
-    - The `samples` column is optional - if empty, all samples will be mapped towards the reference.
-    - Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
+!!! Tip - The `samples` column is optional - if empty, all samples will be mapped towards the reference. - Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
 
 ### Metadata
 
@@ -214,14 +208,13 @@ Sample metadata can be provided to the pipeline with the argument `--metadata`. 
     !!! Warning
         JSON format is not supported for metadata samplesheet.
 
-
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir <OUTDIR> -profile docker
-```
+nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir ./results  -profile docker
+````
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
@@ -234,91 +227,54 @@ work          #(1)!
 ...           #(4)!
 ```
 
-1. Directory containing the nextflow working files
-
-2. Finished results in specified location (defined with --outdir)
-
-3. Log file from Nextflow
-
-4. Other nextflow hidden files, eg. history of pipeline runs and old logs.
-
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
 
-!!! warning
-    Do **not** use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources), other infrastructural tweaks (such as output directories), or module arguments (args).
+> [!WARNING]
+> Do not use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources), other infrastructural tweaks (such as output directories), or module arguments (args).
 
-=== "params.json"
+The above pipeline run specified with a params file in yaml format:
 
-    The above pipeline run specified with a params file in yaml format:
-
-    ```bash
-    nextflow run nf-core/viralmetagenome -profile docker -params-file params.yaml
-    ```
-
-    !!! info "`params.yaml` will contain:"
-        ```json
-        {
-            "input": "./samplesheet.csv",
-            "outdir": "./results/",
-            "host_k2_db": "./databases/kraken2/host",
-            "mapping_constraints": "./mapping_constraints.tsv",
-            "cluster_method": "mmseqs-linclust"
-            ...
-        }
-        ```
-
-=== "command line"
-
-    ```bash
-    nextflow run nf-core/viralmetagenome -profile docker \
-        --input ./samplesheet.csv \
-        --outdir ./results/ \
-        --host_k2_db ./databases/kraken2/host \
-        --mapping_constraints ./mapping_constraints.tsv \
-        --cluster_method 'mmseqs-linclust' \
-        ...
-    ```
-
-You can also generate such `YAML`/`JSON` files via [`nf-core launch`](https://nf-co.re/tools#launch-a-pipeline) if `nf-core` is [installed](https://nf-co.re/tools#installation).
-```console
-nf-core launch nf-core/viralmetagenome
+```bash
+nextflow run nf-core/viralmetagenome -profile docker -params-file params.yaml
 ```
-!!! Tip
-    Use [`nf-core launch`](https://nf-co.re/tools#launch-a-pipeline) if it is the first time running the pipeline to explore all its features and options in an accessible way.
 
-## Updating the pipeline
+with:
+
+```yaml title="params.yaml"
+input: './samplesheet.csv'
+outdir: './results/'
+<...>
+```
+
+You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
+
+### Updating the pipeline
+
+When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
 
 ```bash
 nextflow pull nf-core/viralmetagenome
 ```
 
-When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
-
-```console
-nextflow pull nf-core/viralmetagenome
-```
-
 ### Reproducibility
 
-It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
+It is a good idea to specify the pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
 First, go to the [nf-core/viralmetagenome releases page](https://github.com/nf-core/viralmetagenome/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
 
-To further assist in reproducibility, you can use share and re-use [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
+To further assist in reproducibility, you can use share and reuse [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
 
-!!! Tip
-    If you wish to share such profile (such as upload as supplementary material for academic publications), make sure to NOT include cluster specific paths to files, nor institutional specific profiles.
-
+> [!TIP]
+> If you wish to share such profile (such as upload as supplementary material for academic publications), make sure to NOT include cluster specific paths to files, nor institutional specific profiles.
 
 ## Core Nextflow arguments
 
-!!! note
-    These options are part of Nextflow and use a _single_ hyphen (pipeline parameters use a double-hyphen).
-
+> [!NOTE]
+> These options are part of Nextflow and use a _single_ hyphen (pipeline parameters use a double-hyphen)
 
 ### The `-profile` parameter
 
@@ -326,34 +282,35 @@ Use this parameter to choose a configuration profile. Profiles can give configur
 
 Several generic profiles are bundled with the pipeline which instruct the pipeline to use software packaged using different methods (Docker, Singularity, Podman, Shifter, Charliecloud, Apptainer, Conda) - see below.
 
-!!! info
-    We highly recommend the use of Docker or Singularity containers for full pipeline reproducibility, however when this is not possible, Conda is also supported.
+> [!IMPORTANT]
+> We highly recommend the use of Docker or Singularity containers for full pipeline reproducibility, however when this is not possible, Conda is also supported.
 
-
-The pipeline also dynamically loads configurations from [https://github.com/nf-core/configs](https://github.com/nf-core/configs) when it runs, making multiple config profiles for various institutional clusters available at run time. For more information and to see if your system is available in these configs please see the [nf-core/configs documentation](https://github.com/nf-core/configs#documentation).
+The pipeline also dynamically loads configurations from [https://github.com/nf-core/configs](https://github.com/nf-core/configs) when it runs, making multiple config profiles for various institutional clusters available at run time. For more information and to check if your system is supported, please see the [nf-core/configs documentation](https://github.com/nf-core/configs#documentation).
 
 Note that multiple profiles can be loaded, for example: `-profile test,docker` - the order of arguments is important!
 They are loaded in sequence, so later profiles can overwrite earlier profiles.
 
 If `-profile` is not specified, the pipeline will run locally and expect all software to be installed and available on the `PATH`. This is _not_ recommended, since it can lead to different results on different machines dependent on the computer environment.
 
--   `test`
-    -   A profile with a complete configuration for automated testing
-    -   Includes links to test data so needs no other parameters
--   `docker`
-    -   A generic configuration profile to be used with [Docker](https://docker.com/)
--   `singularity`
-    -   A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
--   `podman`
-    -   A generic configuration profile to be used with [Podman](https://podman.io/)
--   `shifter`
-    -   A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
--   `charliecloud`
-    -   A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
--   `apptainer`
-    -   A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
--   `conda`
-    -   A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter, Charliecloud, or Apptainer.
+- `test`
+  - A profile with a complete configuration for automated testing
+  - Includes links to test data so needs no other parameters
+- `docker`
+  - A generic configuration profile to be used with [Docker](https://docker.com/)
+- `singularity`
+  - A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
+- `podman`
+  - A generic configuration profile to be used with [Podman](https://podman.io/)
+- `shifter`
+  - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
+- `charliecloud`
+  - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
+- `apptainer`
+  - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
+- `wave`
+  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow ` 24.03.0-edge` or later).
+- `conda`
+  - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter, Charliecloud, or Apptainer.
 
 ### `-resume`
 
@@ -369,19 +326,19 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ### Resource requests
 
-Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customize the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the steps in the pipeline, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher requests (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
+Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the pipeline steps, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher resources request (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
 
 To change the resource requests, please see the [max resources](https://nf-co.re/docs/usage/configuration#max-resources) and [tuning workflow resources](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources) section of the nf-core website.
 
 ### Custom Containers
 
-In some cases you may wish to change which container or conda environment a step of the pipeline uses for a particular tool. By default Viralmetagenome uses containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However in some cases the pipeline specified version maybe out of date.
+In some cases, you may wish to change the container or conda environment used by a pipeline steps for a particular tool. By default, nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However, in some cases the pipeline specified version maybe out of date.
 
 To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/usage/configuration#updating-tool-versions) section of the nf-core website.
 
 ### Custom Tool Arguments
 
-A pipeline might not always support every possible argument or option of a particular tool used in pipeline. Fortunately, Viralmetagenome provides some freedom to users to insert additional parameters that the pipeline does not include by default.
+A pipeline might not always support every possible argument or option of a particular tool used in pipeline. Fortunately, nf-core pipelines provide some freedom to users to insert additional parameters that the pipeline does not include by default.
 
 To learn how to provide additional arguments to a particular tool of the pipeline, please see the [customising tool arguments](https://nf-co.re/docs/usage/configuration#customising-tool-arguments) section of the nf-core website.
 

@@ -2,12 +2,13 @@
 hide:
   - navigation
 ---
+
 # Quick Start
 
 Viralmetagenome needs two things:
 
- 1. [Nextflow](https://www.nextflow.io/)
- 2. [Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html), or [Conda](https://docs.conda.io/en/latest/)
+1.  [Nextflow](https://www.nextflow.io/)
+2.  [Docker](https://www.docker.com/resources/what-container/), [Singularity](https://docs.sylabs.io/guides/latest/user-guide/introduction.html), or [Conda](https://docs.conda.io/en/latest/)
 
 ```bash
 # Install nextflow with conda
@@ -15,6 +16,7 @@ conda install nextflow
 ```
 
 Run the pipeline with a small test dataset using Docker containers:
+
 ```bash
 nextflow run nf-core/viralmetagenome \
     -profile test,docker
@@ -83,4 +85,3 @@ An input file contains the paths to the fastq files and the sample names. The in
         }
     ]
     ```
-

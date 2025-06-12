@@ -45,4 +45,3 @@ workflow BAM_DEDUPLICATE {
 
     versions = ch_versions            // channel: [ versions.yml ]
 }
-

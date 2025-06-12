@@ -4,12 +4,20 @@
     nf-core/viralmetagenome
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/nf-core/viralmetagenome
-    Website: https://joon-klaps.github.io/viralmetagenome/latest/
+    Website: https://nf-co.re/viralmetagenome
+    Slack  : https://nfcore.slack.com/channels/viralmetagenome
 ----------------------------------------------------------------------------------------
 */
 
+nextflow.enable.dsl = 2
 params.global_prefix = getGlobalPrefix(workflow, params)
-
+def getGlobalPrefix(workflow,params) {
+    def date_stamp = new java.util.Date().format( 'yyyyMMdd')
+    if (params.prefix) {
+        return "${params.prefix}_${date_stamp}_${workflow.manifest.version}_${workflow.runName}".replaceAll("\\s+", "_")
+    }
+    return null
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,10 +25,9 @@ params.global_prefix = getGlobalPrefix(workflow, params)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { VIRALMETAGENOME              } from './workflows/viralmetagenome.nf'
+include { VIRALMETAGENOME  } from './workflows/viralmetagenome'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
@@ -85,20 +92,6 @@ workflow {
         params.hook_url,
         NFCORE_VIRALMETAGENOME.out.multiqc_report
     )
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-def getGlobalPrefix(workflow,params) {
-    def date_stamp = new java.util.Date().format( 'yyyyMMdd')
-    if (params.prefix) {
-        return "${params.prefix}_${date_stamp}_${workflow.manifest.version}_${workflow.runName}".replaceAll("\\s+", "_")
-    }
-    return null
 }
 
 /*

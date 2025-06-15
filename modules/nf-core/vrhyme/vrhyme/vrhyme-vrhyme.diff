@@ -1,6 +1,57 @@
 Changes in component 'nf-core/vrhyme/vrhyme'
 'modules/nf-core/vrhyme/vrhyme/environment.yml' is unchanged
-'modules/nf-core/vrhyme/vrhyme/meta.yml' is unchanged
+Changes in 'vrhyme/vrhyme/meta.yml':
+--- modules/nf-core/vrhyme/vrhyme/meta.yml
++++ modules/nf-core/vrhyme/vrhyme/meta.yml
+@@ -23,23 +23,18 @@
+         description: |
+           Groovy Map containing sample information
+           e.g. [ id:'test']
++    - fasta:
++        type: file
++        description: Contigs/scaffolds identified as viral
++        pattern: "*.{fna,fasta,fa,fasta.gz,fa.gz}"
++        ontologies:
++          - edam: http://edamontology.org/format_1929 # FASTA
+     - reads:
+         type: file
+         description: Preprocessed FASTQ file containing sample reads
+         pattern: "*.{fastq}"
+         ontologies:
+           - edam: http://edamontology.org/format_1930 # FASTQ
+-  - - meta2:
+-        type: map
+-        description: |
+-          Groovy Map containing fasta information
+-          e.g. [ id:'test']
+-    - fasta:
+-        type: file
+-        description: Contigs/scaffolds identified as viral
+-        pattern: "*.{fna,fasta,fa,fasta.gz,fa.gz}"
+-        ontologies:
+-          - edam: http://edamontology.org/format_1929 # FASTA
+ output:
+   - bins:
+       - meta:
+@@ -73,13 +68,15 @@
+           type: file
+           description: TSV file summarizing the attributes of each bin
+           pattern: "vRhyme_best_bins.*.summary.tsv"
+-          ontologies: []
++          ontologies:
++            - edam: http://edamontology.org/format_3475 # TSV
+   - versions:
+       - versions.yml:
+           type: file
+           description: File containing software versions
+           pattern: "versions.yml"
+-          ontologies: []
++          ontologies:
++            - edam: http://edamontology.org/format_3750 # YAML
+ authors:
+   - "@CarsonJM"
+ maintainers:
+
 Changes in 'vrhyme/vrhyme/main.nf':
 --- modules/nf-core/vrhyme/vrhyme/main.nf
 +++ modules/nf-core/vrhyme/vrhyme/main.nf

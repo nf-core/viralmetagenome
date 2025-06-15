@@ -152,8 +152,7 @@
                     "ivar/consensus": {
                         "branch": "master",
                         "git_sha": "fa30cb23a4ad91e509b0c91399ab3b0cc76e858f",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/ivar/consensus/ivar-consensus.diff"
+                        "installed_by": ["modules"]
                     },
                     "ivar/variants": {
                         "branch": "master",
@@ -196,7 +195,8 @@
                     "mafft/align": {
                         "branch": "master",
                         "git_sha": "c7cfb9446fb3098e525089198ff232d795c20ef2",
-                        "installed_by": ["modules"]
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/mafft/align/mafft-align.diff"
                     },
                     "mash/dist": {
                         "branch": "master",

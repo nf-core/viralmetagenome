@@ -228,6 +228,7 @@ sp:
 extra_fn_clean_exts:
   - "_raw_1"
   - "_raw_2"
+  - "_raw"
   - "_trim_1"
   - "_trim_2"
   - "_trim"

@@ -1,5 +1,6 @@
 ---
 title: Customisation
+subtitle: Pipeline configuration and database customisation options
 ---
 
 The viralmetagenome pipeline is highly customisable, allowing you to tailor the analysis to your specific needs. This section provides information on how to customise the pipeline, including configuration options and database customisation.

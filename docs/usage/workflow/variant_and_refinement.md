@@ -1,4 +1,6 @@
-# Variant calling and consensus refinement
+---
+title: Variant calling and consensus refinement
+---
 
 This subworkflow supports two distinct starting points:
 
@@ -24,17 +26,20 @@ Performs iterative refinement:
 
 Both approaches use the same variant calling and consensus generation methods, but differ in their starting point and purpose.
 
-![variant and refinement](../images/variant_and_refinement.png)
+![variant and refinement](../../images/variant_and_refinement.png)
 
-!!! info
+:::info
 This schema is a simplification as there are some additional steps:
 
-      - [Deduplication](../workflow/variant_and_refinement.md#21-deduplication): (optional) deduplication of reads can be performed with [`Picard`](https://broadinstitute.github.io/picard/) or if UMIs are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html).
-      - [Variant filtering](../workflow/variant_and_refinement.md#variant-filtering): variant filtering, only variants with sufficient depth and quality are retained for consensus calling (only for BCFtools).
-      - [Mapping statistics](../workflow/variant_and_refinement.md#22-mapping-statistics): (optional) generate multiple summary statistics of the BAM files.
+- [Deduplication](../workflow/variant_and_refinement.md#21-deduplication): (optional) deduplication of reads can be performed with [`Picard`](https://broadinstitute.github.io/picard/) or if UMIs are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html).
+- [Variant filtering](../workflow/variant_and_refinement.md#variant-filtering): variant filtering, only variants with sufficient depth and quality are retained for consensus calling (only for BCFtools).
+- [Mapping statistics](../workflow/variant_and_refinement.md#22-mapping-statistics): (optional) generate multiple summary statistics of the BAM files.
 
-!!! info
+:::
+
+:::info
 The variant calling and consensus refinement step can be skipped with the argument `--skip_iterative_refinement` and `--skip_variant_calling`, see the [parameters iterative refinement section](../parameters.md#iterative-consensus-refinement) and [parameters variant analysis section](../parameters.md#variant-analysis), respectively, for all relevant arguments to control the variant analysis steps.
+:::
 
 ## 1a. Selection of reference
 
@@ -48,15 +53,18 @@ graph LR
     C --> E[Reference selection]
 ```
 
-!!! Tip
+:::tip
 As with any mapping tool, the reference genome(s) should be as close as possible to the sample genome(s) to avoid mapping bias, especially for fast mutating viruses. If the reference genome is too different from the sample genome, the reads will likely not map correctly and could result in incorrect variants and consensus.
 For this reason, **use an extensive reference dataset** like the [RVDB](https://rvdb.dbi.udel.edu/), if possible even the unclustered one.
+:::
 
 This procedure is done with [`Mash`](https://mash.readthedocs.io/en/latest/) where the reads are compared to the reference genomes and the reference genome with the highest number of shared k-mers is selected. The number of shared k-mers can be specified with `--arguments_mash_dist "-k 15"` (default k-mer size: `15`), and the number of sketches to create with `--arguments_mash_dist "-s 4000"` (default sketch size: `4000`). These parameters can be combined as `--arguments_mash_dist "-s 4000 -k 15"`.
 
-!!! Tip
+:::tip
 
-    - As in any k-mer based method, larger k-mers will provide more specificity, while smaller k-mers will provide more sensitivity. Larger genomes will also require larger k-mers to avoid k-mers that are shared by chance.
+- As in any k-mer based method, larger k-mers will provide more specificity, while smaller k-mers will provide more sensitivity. Larger genomes will also require larger k-mers to avoid k-mers that are shared by chance.
+
+:::
 
 ## 2. Mapping of reads
 
@@ -99,8 +107,9 @@ BCFtools is a set of utilities that manipulate variant calls in the Variant Call
 
 There are multiple studies on the benchmarking of variant callers as this is an area with active development. For instance [Bassano _et al._ (2023)](https://doi.org/10.1099/mgen.0.000933) noticed that BCFtools called mutations with higher precision and recall than iVar. However, the reason behind this is that iVar has a lower precision than the others within their setup as it detects a lot of ‘additional’ variants within the sample, resulting in a higher amount of false positives but also true positives.
 
-!!! Tip
+:::tip
 Bcftools doesn't handle well multiallelic sites, so if you have a lot of multiallelic sites, iVar is the better choice. iVar is also the better choice if you have a lot of low-frequency variants.
+:::
 
 > The variant caller can be specified with the `--variant_caller` parameter, the default is `ivar`. In case the intermediate variant caller (for intermediate refinement cycles) needs to be different, this can be specified with `--intermediate_variant_caller` otherwise it uses the supplied `--variant_caller` tool.
 
@@ -112,8 +121,9 @@ The following steps are implemented for variant filtering.
 - Variant filtering: filter out variants with an allelic depth of less than 75% of the average depth of the sample.
 - [only for `iVar`]: strand bias correction & collapsing variants belonging to the same codon.
 
-!!! Info
+:::info
 If these filtering options are not to your liking, you can modify all of them. See the section on [configuration](../customisation/configuration.md) for more information on how to do so.
+:::
 
 ## 4. Consensus calling
 
@@ -126,10 +136,10 @@ There are again a couple of differences between the iVar and BCFtools:
 2. Ambiguous nucleotides for multi-allelic sites in iVar.
    > iVar is capable to give lower frequency nucleotides ambiguous bases a summarising annotation instead of 'N'. For example at a certain position, the frequency of 'A' is 40% and of 'G' is 40%. Instead of reporting an 'N', iVar will report 'R'.
    >
-   > ![multi-allelic sites ivar vs bcftools](../images/multi_allelic_sites_ivar_vs_bcftools.png){.center}
+   > ![multi-allelic sites ivar vs bcftools](../../images/multi_allelic_sites_ivar_vs_bcftools.png){.center}
 3. Ambiguous nucleotides for low read depth.
    > In case of a low read depth at a certain position, if it doesn't get flagged by bcftools during variant calling, it will not be considered as a variant and the consensus will not be updated. iVar will update the consensus with an ambiguous base in case of low read depth.
    >
-   > ![low depth ivar vs bcftools](../images/low_depth_ivar_vs_bcftools.png){.center}
+   > ![low depth ivar vs bcftools](../../images/low_depth_ivar_vs_bcftools.png){.center}
 
 > The consensus caller can be specified with the `--consensus_caller` parameter, the default is `ivar`. The intermediate consensus caller (for intermediate refinement cycles) can be specified with `--intermediate_consensus_caller` and is by default `bcftools`.

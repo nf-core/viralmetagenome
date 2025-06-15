@@ -1,11 +1,15 @@
-# Databases
+---
+title: Databases
+subtitle: Custom database configuration and setup
+---
 
 ## Introduction
 
 Viralmetagenome uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
 
-!!! Tip
+:::tip
 Keep an eye out for [nf-core createtaxdb](https://nf-co.re/createtaxdb/) as it can be used for the customization of the main databases but the pipeline is still under development.
+:::
 
 ## Reference pool
 
@@ -20,8 +24,9 @@ The Kaiju database will be used to classify the reads and intermediate contigs i
 A number of Kaiju pre-built indexes for reference datasets are maintained by the developers of Kaiju and made available on the [Kaiju website](https://bioinformatics-centre.github.io/kaiju/downloads.html).
 To build a Kaiju database, you need three components: a FASTA file with the protein sequences, the NCBI taxonomy dump files, and you need to define the uppercase characters of the standard 20 amino acids you wish to include.
 
-!!! Warning
+:::warning
 The headers of the protein fasta file must be numeric NCBI taxon identifiers of the protein sequences.
+:::
 
 To download the NCBI taxonomy files, please run the following commands:
 
@@ -37,18 +42,18 @@ kaiju-mkbwt -a ACDEFGHIKLMNPQRSTVWY -o proteins proteins.faa
 kaiju-mkfmi proteins
 ```
 
-!!! Tip
+:::tip
 You can speed up database construction by supplying the threads parameter (`-t`).
+:::
 
-<details markdown="1">
-<summary>Expected files in database directory</summary>
+:::note{title="Expected files in database directory" collapse}
 
 - `kaiju`
   - `kaiju_db_*.fmi`
   - `nodes.dmp`
   - `names.dmp`
 
-</details>
+:::
 
 For the Kaiju database construction documentation, see [here](https://github.com/bioinformatics-centre/kaiju#custom-database).
 
@@ -83,7 +88,14 @@ kraken2-build --clean --db <YOUR_DB_NAME>
 
 You can then add the `<YOUR_DB_NAME>/` path to your nf-core/taxprofiler database input sheet.
 
-???+ Tip "Expected files in database directory" - `kraken2` - `opts.k2d` - `hash.k2d` - `taxo.k2d`
+:::tip{title="Expected files in database directory"}
+
+- `kraken2`
+  - `opts.k2d`
+  - `hash.k2d`
+  - `taxo.k2d`
+
+:::
 
 You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown#custom-databases) for a more detailed description.
 
@@ -91,11 +103,14 @@ You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blo
 
 Viralmetagenome uses Kraken2 to remove contaminated reads.
 
-!!! info
+::: info "Why kraken2 for host removal?"
 The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
 
-    * [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
-    * [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+- [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)
+- [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
+- [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+
+:::
 
 The contamination database is likely the largest database. The default databases are made small explicitly to save storage for end users but are not optimal. I would recommend creating a database consisting of the libraries `human, archaea, bacteria` which will be more than 200GB in size. Additionally, it's good practice to include DNA & RNA of the host of origin if known (i.e. mice, ticks, mosquito, ... ). Add it as described above.
 
@@ -117,7 +132,7 @@ This annotation database can be specified using `--annotation_db`
 
 In case [Virosaurus](https://viralzone.expasy.org/8676) does not suffice your needs, a custom annotation dataset can be made. Creating a custom annotation dataset can easily be done as long as the annotation data is in the fasta header using this format: `(key)=(value)` or `(key):(value)`. For example, the following fasta headers are both valid:
 
-```
+```text
 >754189.6 species="Ungulate tetraparvovirus 3"|segment="nan"|host_common_name="Pig"|genbank_accessions="NC_038883"|taxon_id="754189"
 >NC_001731; usual name=Molluscum contagiosum virus; clinical level=SPECIES; clinical typing=unknown; species=Molluscum contagiosum virus; taxid=10279; acronym=MOCV; nucleic acid=DNA; circular=N; segment=N/A; host=Human,Vertebrate;
 ```
@@ -135,9 +150,10 @@ p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne ho
 p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne host_common_name,'Lab reassortment' | p3-get-genome-contigs --attr sequence > all-virus.fasta
 ```
 
-!!! Tip
+:::tip
 Any attribute can be downloaded and will be added to the final report if the formatting remains the same.
 For a complete list of attributes see `p3-all-genomes --fields` or read their [manual](https://www.bv-brc.org/docs/cli_tutorial/cli_getting_started.html)
+:::
 
 Next, the metadata and the genomic data are combined into a single fasta file where the metadata fields are stored in the fasta comment as `key1="value1"|key2="value2"|...` using the following python code.
 
@@ -176,4 +192,10 @@ with open("bv-brc-refvirus-anno.fasta", "w") as f:
         f.write(entry + "\n")
 ```
 
-???+ Tip "Expected files in database directory" - `refseq-virus.fasta` - `refseq-virus-anno.txt` - `bv-brc-refvirus-anno.fasta`
+:::tip{title="Expected files in database directory"}
+
+- `refseq-virus.fasta`
+- `refseq-virus-anno.txt`
+- `bv-brc-refvirus-anno.fasta`
+
+:::

@@ -1,4 +1,7 @@
-# Read classification
+---
+title: Read classification
+subtitle: Metagenomic taxonomic classification and diversity analysis
+---
 
 Viralmetagenome offers two main tools for the classification of reads and a summary visualisation tool:
 
@@ -6,11 +9,11 @@ Viralmetagenome offers two main tools for the classification of reads and a summ
 - [Kraken2](#kraken2): Assigns taxonomic labels on a DNA level using a k-mer approach. (optional Bracken)
 - [Krona](#krona): Interactive multi-layered pie charts of hierarchical data.
 
-![metagenomic_diversity](../images/metagenomic_diversity.png)
+![metagenomic_diversity](../../images/metagenomic_diversity.png)
 
-!!! Tip "Want more classifiers?"
-
-    Feel free to reach out and suggest more classifiers. However, if the main goal of your project is to establish the presence of a virus within a sample and are therefore only focused on metagenomic diversity, have a look at [taxprofiler](https://nf-co.re/taxprofiler/)
+:::tip{title="Want more classifiers?"}
+Feel free to reach out and suggest more classifiers. However, if the main goal of your project is to establish the presence of a virus within a sample and are therefore only focused on metagenomic diversity, have a look at [taxprofiler](https://nf-co.re/taxprofiler/)
+:::
 
 > The read classification can be skipped with the argument `--skip_read_classification`, classifiers should be specified with the parameter `--read_classifiers 'kaiju,kraken2'` (no spaces, no caps). See the [parameters classification section](../parameters.md#metagenomic-diversity) for all relevant arguments to control the classification steps.
 

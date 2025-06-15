@@ -1,9 +1,13 @@
-# Report generation and quality control
+---
+title: Report generation and quality control
+subtitle: Summary reporting and consensus genome validation
+---
 
 Viralmetagenome's report and result interpretation heavily relies on MultiQC. MultiQC is a tool to create a single report from multiple analysis results. It is designed to be used with a wide range of bioinformatics tools and is compatible with a wide range of data formats. Almost all tools are summarised within the MultiQC report that have interactive plots and data tables. However, due to the number of tools included, some results are summarised in the directory `overview-tables` to reduce the size of the MultiQC report.
 
-!!! Tip
+:::tip
 Complete output descriptions of files and images can be found in the [output section](../output.md).
+:::
 
 Within the MultiQC report, Viralmetagenome provides a number of custom tables based on consensus genome quality control data. These tools are:
 
@@ -27,8 +31,9 @@ Within the MultiQC report, Viralmetagenome provides a number of custom tables ba
 
 [CheckV](https://bitbucket.org/berkeleylab/checkv/src/master/) is a tool for assessing the quality of metagenome-assembled viral genomes. It calculates various metrics such as completeness, contamination, and strain heterogeneity. CheckV estimates completeness by comparing sequences with a large database of complete viral genomes, metagenomes, metatranscriptomes, and metaviromes.
 
-!!! Tip "Incomplete genomes for segmented viruses"
+:::tip{title="Incomplete genomes for segmented viruses"}
 CheckV estimates the completeness of a virus based on all genome segments. If a virus has multiple segments, the completeness of the virus is calculated based on the length of the concatenated segments. For example, Lassa virus has 2 segments L: 7.2kb and S: 3.4kb. The completeness of the virus is calculated based on the length of the concatenated segments (7.2kb + 3.4kb = 10.6kb) and so if the generated consensus genome of the L segment is 7.1kb it will report the completeness as 7.1/10.6 ~ 67%.
+:::
 
 > CheckV can be skipped with `--skip_checkv`.
 
@@ -36,11 +41,13 @@ CheckV estimates the completeness of a virus based on all genome segments. If a 
 
 [Prokka](https://github.com/tseemann/prokka) is a whole genome annotation pipeline for identifying features of interest in a set of genomic DNA sequences, and labelling them with useful information. Prokka is a software tool to annotate bacterial, archaeal and viral genomes.
 
-!!! Tip "Suboptimal annotation"
+:::tip{title="Suboptimal annotation"}
 Prokka was initially designed for bacterial and archaeal genomes, and may not be optimal for viral genomes. [VIGOR4](https://github.com/JCVenterInstitute/VIGOR4) is a good alternative but is species specific.
+:::
 
-!!! Tip "Custom protein database"
+:::tip{title="Custom protein database"}
 Prokka can be given a custom protein database to annotate your genomes with, have a look at [prot-RVDB](https://rvdb-prot.pasteur.fr/) for viral protein databases. Supply the database using `--prokka_db`.
+:::
 
 > Prokka can be skipped with `--skip_prokka`.
 
@@ -54,8 +61,9 @@ Prokka can be given a custom protein database to annotate your genomes with, hav
 
 [MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases. Viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virousarus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](../customisation/databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that is embedded within the database. This allows Viralmetagenome, in addition to the BLAST search of reference pool hits, to compare the generated consensus genomes at a species & segment level.
 
-!!! info
+:::info
 MMseqs was used for the annotation step instead of BLAST because of the ability to query using a tblastx search for highly diverging viruses while supplying a nucleotide annotation database. To specify another type of search (e.g. blastp, blastx, etc.), please refer to the [parameters consensus-qc section](../parameters.md#consensus-qc).
+:::
 
 > MMseqs-search can be skipped with `--skip_consensus_annotation`.
 
@@ -65,7 +73,7 @@ MMseqs was used for the annotation step instead of BLAST because of the ability 
 
 [SnpSift](https://pcingola.github.io/SnpEff/SnpSift.html) is a toolbox that allows you to filter and manipulate annotated files. The ExtractFields tool is used to extract specific information from the annotated VCF files into a tabular format for easier analysis.
 
-Viralmetagenome uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
+Viralgenie uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
 
 The annotation process provides valuable information about the impact of variants, including:
 

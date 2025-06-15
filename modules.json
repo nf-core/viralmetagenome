@@ -193,11 +193,10 @@
                         "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["modules"]
                     },
-                    "mafft": {
+                    "mafft/align": {
                         "branch": "master",
-                        "git_sha": "faf557ba56156ac0e5de76a25c1e3df11c944f59",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/mafft/mafft.diff"
+                        "git_sha": "c7cfb9446fb3098e525089198ff232d795c20ef2",
+                        "installed_by": ["modules"]
                     },
                     "mash/dist": {
                         "branch": "master",

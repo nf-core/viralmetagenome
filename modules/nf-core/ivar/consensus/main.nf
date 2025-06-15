@@ -41,6 +41,7 @@ process IVAR_CONSENSUS {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -55,6 +56,7 @@ process IVAR_CONSENSUS {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

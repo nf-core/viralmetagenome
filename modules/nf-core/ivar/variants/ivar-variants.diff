@@ -1,5 +1,6 @@
 Changes in component 'nf-core/ivar/variants'
 'modules/nf-core/ivar/variants/environment.yml' is unchanged
+'modules/nf-core/ivar/variants/meta.yml' is unchanged
 Changes in 'ivar/variants/main.nf':
 --- modules/nf-core/ivar/variants/main.nf
 +++ modules/nf-core/ivar/variants/main.nf
@@ -63,7 +64,6 @@ Changes in 'ivar/variants/main.nf':
      """
  
 
-'modules/nf-core/ivar/variants/meta.yml' is unchanged
-'modules/nf-core/ivar/variants/tests/main.nf.test' is unchanged
 'modules/nf-core/ivar/variants/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/ivar/variants/tests/main.nf.test' is unchanged
 ************************************************************

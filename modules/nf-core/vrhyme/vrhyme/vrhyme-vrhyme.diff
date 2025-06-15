@@ -1,5 +1,6 @@
 Changes in component 'nf-core/vrhyme/vrhyme'
 'modules/nf-core/vrhyme/vrhyme/environment.yml' is unchanged
+'modules/nf-core/vrhyme/vrhyme/meta.yml' is unchanged
 Changes in 'vrhyme/vrhyme/main.nf':
 --- modules/nf-core/vrhyme/vrhyme/main.nf
 +++ modules/nf-core/vrhyme/vrhyme/main.nf
@@ -27,7 +28,6 @@ Changes in 'vrhyme/vrhyme/main.nf':
      ${cleanup}
  
 
-'modules/nf-core/vrhyme/vrhyme/meta.yml' is unchanged
-'modules/nf-core/vrhyme/vrhyme/tests/main.nf.test' is unchanged
 'modules/nf-core/vrhyme/vrhyme/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/vrhyme/vrhyme/tests/main.nf.test' is unchanged
 ************************************************************

@@ -34,6 +34,7 @@ This schema is a simplification as there are some additional steps:
 - [Deduplication](../workflow/variant_and_refinement.md#21-deduplication): (optional) deduplication of reads can be performed with [`Picard`](https://broadinstitute.github.io/picard/) or if UMIs are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html).
 - [Variant filtering](../workflow/variant_and_refinement.md#variant-filtering): variant filtering, only variants with sufficient depth and quality are retained for consensus calling (only for BCFtools).
 - [Mapping statistics](../workflow/variant_and_refinement.md#22-mapping-statistics): (optional) generate multiple summary statistics of the BAM files.
+
 :::
 
 :::info
@@ -62,6 +63,7 @@ This procedure is done with [`Mash`](https://mash.readthedocs.io/en/latest/) whe
 :::tip
 
 - As in any k-mer based method, larger k-mers will provide more specificity, while smaller k-mers will provide more sensitivity. Larger genomes will also require larger k-mers to avoid k-mers that are shared by chance.
+
 :::
 
 ## 2. Mapping of reads

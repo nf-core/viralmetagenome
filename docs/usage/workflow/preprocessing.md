@@ -50,9 +50,10 @@ Unique Molecular Identifiers (UMIs) are short sequences that are added during li
 
 <p style="text-align: center;">_Taken from [UMI-tools: 'The network based deduplication methods'](https://umi-tools.readthedocs.io/en/latest/the_methods.html)_ </p>
 
-    - __cluster__: Form networks of connected UMIs with a mismatch distance of 1. Each connected component is a read group. In the above example, all the UMIs are contained in a single connected component and thus there is one read group containing all reads, with ACGT as the ‘selected’ UMI.
-    - __directional__ (default for both HUMID and UMI-tools): Form networks with edges defined based on distance threshold and $$ \text{ node A counts} \geq (2 \cdot \text{node B counts}) - 1$$
-    Each connected component is a read group, with the node with the highest counts selected as the top node for the component. In the example above, the directional edges yield two connected components. One with AAAT by itself and the other with the remaining UMIs with ACGT as the selected node.
+- **cluster**: Form networks of connected UMIs with a mismatch distance of 1. Each connected component is a read group. In the above example, all the UMIs are contained in a single connected component and thus there is one read group containing all reads, with ACGT as the ‘selected’ UMI.
+- **directional** (default for both HUMID and UMI-tools): Form networks with edges defined based on distance threshold and $$ \text{ node A counts} \geq (2 \cdot \text{node B counts}) - 1$$
+  Each connected component is a read group, with the node with the highest counts selected as the top node for the component. In the example above, the directional edges yield two connected components. One with AAAT by itself and the other with the remaining UMIs with ACGT as the selected node.
+
 :::
 
 Viralmetagenome supports both deduplication on a read level as well as a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
@@ -79,8 +80,13 @@ Complexity filtering is done with [`Bbduk`](https://jgi.doe.gov/data-and-tools/s
 
 Contamination, whether derived from experiments or computational processes, looms large in next-generation sequencing data. Such contamination can compromise results from WGS as well as metagenomics studies, and can even lead to the inadvertent disclosure of personal information. To avoid this, host read-removal is performed. Host read-removal is performed by the tool `Kraken2`.
 
-!!! Tip "Want to know more?"
-_ [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
-_ [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+::: info "Interesting reads"
+The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
+
+- [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)
+- [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
+- [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+
+:::
 
 > Specify the host database with the `--host_k2_db` parameter. The default is a small subset of the human genome and **we highly suggest that you make this database more elaborate** (for example, complete human genome, common sequencer contaminants, bacterial genomes, ...). For this, read the section on [creating custom kraken2 host databases](../customisation/databases.md#kraken2-databases).

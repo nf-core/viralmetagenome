@@ -47,10 +47,12 @@ You can speed up database construction by supplying the threads parameter (`-t`)
 :::
 
 :::note{title="Expected files in database directory" collapse}
+
 - `kaiju`
   - `kaiju_db_*.fmi`
   - `nodes.dmp`
   - `names.dmp`
+
 :::
 
 For the Kaiju database construction documentation, see [here](https://github.com/bioinformatics-centre/kaiju#custom-database).
@@ -104,9 +106,10 @@ Viralmetagenome uses Kraken2 to remove contaminated reads.
 ::: info "Why kraken2 for host removal?"
 The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
 
-    * [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)
-    * [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
-    * [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+- [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)
+- [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
+- [Reconstruction of the personal information from human genome reads in gut metagenome sequencing data](https://www.nature.com/articles/s41564-023-01381-3)
+
 :::
 
 The contamination database is likely the largest database. The default databases are made small explicitly to save storage for end users but are not optimal. I would recommend creating a database consisting of the libraries `human, archaea, bacteria` which will be more than 200GB in size. Additionally, it's good practice to include DNA & RNA of the host of origin if known (i.e. mice, ticks, mosquito, ... ). Add it as described above.

@@ -27,6 +27,7 @@ nextflow run nf-core/viralmetagenome \
     --arguments_ivar_consensus2 '' \
     --input samplesheet.csv ...
 ```
+
 :::
 
 ## Supplying a custom configuration file
@@ -75,6 +76,7 @@ The `ext.args` and `ext.args2` are used to specify the arguments for the tool. I
     ...
     """
 ```
+
 :::
 
 In case we do want to modify the arguments of a module, we can do so by providing a custom configuration file. The easiest way to do this would be to copy a segment from the modules.config and modify the arguments. This way, none of the other configurations will get lost or modified. For example, setting the minimum depth to call consensus to 5 and the minimum quality score of base to 30 for the `IVAR_CONSENSUS` module:

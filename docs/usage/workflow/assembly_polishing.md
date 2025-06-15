@@ -161,6 +161,7 @@ If the `--perc_reads_contig` is set to `5`, the cumulative sum of the contigs fr
 - Cluster 1: the cumulative sum of the contigs from SPAdes is 0.6, Megahit is 0.5, the cluster is kept.
 - Cluster 2: the cumulative sum of the contigs from SPAdes is 0.1, Megahit is 0.1, the cluster is removed.
 - Cluster 3: the cumulative sum of the contigs from SPAdes is 0.5, Megahit is 0, the cluster is kept.
+
 :::
 
 > The default is `5` and can be specified with the `--perc_reads_contig` parameter.

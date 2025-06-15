@@ -68,18 +68,19 @@ NC038711.1 HAZV S false S-NC_038711.1.fasta Hazara virus isolate JC280 segment S
 | `selection`  | [Optional] Specify if the multi-fasta reference file needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference) |
 | `samples`    | [Optional] List of samples that need to be mapped towards the reference. If empty, map all samples.                                                         |
 | `sequence`   | Full path (_not_ relative paths) to the reference sequence file.                                                                                            |
-| `gff`        | Full path (_not_ relative paths) to the reference annotation gff file.                                                                                            |
+| `gff`        | Full path (_not_ relative paths) to the reference annotation gff file.                                                                                      |
 | `definition` | [Optional] Definition of the reference sequence file.                                                                                                       |
 
 :::tip
+
 - The `samples` column is optional - if empty, all samples will be mapped towards the reference.
 - Multi-fasta files can be provided and all reads will be mapped to all genomes but stats will not be reported separately in the final report.
+
 :::
 
 ### Metadata
 
 Sample metadata can be provided to the pipeline with the argument `--metadata`. This metadata will not affect the analysis in any way and is only used to annotate the final report. Any metadata can be provided as long as the first value is the `sample` value.
-
 
 ```csv title="metadata.csv"
 sample,sample_accession,secondary_sample_accession,study_accession,run_alias,library_layout
@@ -93,7 +94,7 @@ The typical command for running the pipeline is as follows:
 
 ```bash
 nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir ./results  -profile docker
-````
+```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 

@@ -2,8 +2,8 @@ include { CHECKV_DOWNLOADDATABASE           } from '../../modules/nf-core/checkv
 include { CHECKV_ENDTOEND                   } from '../../modules/nf-core/checkv/endtoend/main'
 include { QUAST  as QUAST_QC                } from '../../modules/nf-core/quast/main'
 include { BLAST_BLASTN as BLASTN_QC         } from '../../modules/nf-core/blast/blastn/main'
-include { MAFFT as MAFFT_ITERATIONS         } from '../../modules/nf-core/mafft/main'
-include { MAFFT as MAFFT_QC                 } from '../../modules/nf-core/mafft/main'
+include { MAFFT_ALIGN as MAFFT_ITERATIONS   } from '../../modules/nf-core/mafft/align/main'
+include { MAFFT_ALIGN as MAFFT_QC           } from '../../modules/nf-core/mafft/align/main'
 include { PROKKA                            } from '../../modules/nf-core/prokka/main'
 include { MMSEQS_ANNOTATE                   } from './mmseqs_annotate.nf'
 

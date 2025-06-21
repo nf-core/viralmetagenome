@@ -1,5 +1,5 @@
-include { KRAKEN2_KRAKEN2 as KRAKEN2_HOST_REMOVE  } from '../modules/nf-core/kraken2/kraken2/main'
-include { FASTQC          as FASTQC_HOST          } from '../modules/nf-core/fastqc/main'
+include { KRAKEN2_KRAKEN2 as KRAKEN2_HOST_REMOVE  } from '../../modules/nf-core/kraken2/kraken2/main'
+include { FASTQC          as FASTQC_HOST          } from '../../modules/nf-core/fastqc/main'
 
 def getReadsAfterHostRemove(tsv) {
     def n_reads = 0

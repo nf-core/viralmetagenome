@@ -1,6 +1,7 @@
 include { KAIJU_KAIJU     as KAIJU_CONTIG      } from '../../modules/nf-core/kaiju/kaiju/main'
 include { KRAKEN2_KRAKEN2 as KRAKEN2_CONTIG    } from '../../modules/nf-core/kraken2/kraken2/main'
 include { EXTRACT_PRECLUSTER                   } from '../../modules/local/extract_precluster/main'
+include { getMapFromJson                       } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 
 // Classify contigs using kaiju and/or kraken2 and extract their sequences
 workflow FASTA_CONTIG_PRECLUST {
@@ -76,7 +77,7 @@ workflow FASTA_CONTIG_PRECLUST {
         .out
         .sequences
         .map { meta, fastas, json ->
-            def lazy_json = WorkflowCommons.getMapFromJson(json)
+            def lazy_json = getMapFromJson(json)
             [meta + [ntaxa: lazy_json.ntaxa],fastas]                                                    // json contains ONLY ntaxa
         }
         .transpose()                                                                                    // wide to long

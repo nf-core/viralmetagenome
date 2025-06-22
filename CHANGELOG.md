@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Fixed`
 
+- Fix local module `ivar_variants_to_vcf` to handle empty tsv files ([#197](https://github.com/Joon-Klaps/viralmetagenome/pull/197/))
+
 ### `Parameters`
 
 ## v0.1.2 - 2025-02-28

@@ -1,4 +1,3 @@
-include { KRAKEN2_BUILD   as KRAKEN2_HOST_BUILD   } from '../../modules/local/kraken2/build/main'
 include { KRAKEN2_KRAKEN2 as KRAKEN2_HOST_REMOVE  } from '../../modules/nf-core/kraken2/kraken2/main'
 include { FASTQC          as FASTQC_HOST          } from '../../modules/nf-core/fastqc/main'
 
@@ -17,22 +16,12 @@ workflow FASTQ_KRAKEN_HOST_REMOVE {
     take:
     reads
     kraken2_host_db
-    library
     skip_fastqc
     min_reads
 
     main:
     ch_versions      = Channel.empty()
     ch_multiqc_files = Channel.empty()
-
-    // build kraken2 host db if needed
-    if (!params.host_k2_db) {
-        KRAKEN2_HOST_BUILD (
-            library
-        )
-        ch_versions     = ch_versions.mix(KRAKEN2_HOST_BUILD.out.versions.first())
-        kraken2_host_db = KRAKEN2_HOST_BUILD.out.db
-    }
 
     // remove host reads & keep unclassified reads [true, true]
     KRAKEN2_HOST_REMOVE (

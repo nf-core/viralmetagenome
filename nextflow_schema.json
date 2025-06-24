@@ -163,13 +163,6 @@
                     "fa_icon": "fas fa-database",
                     "description": "Kraken2 database used to remove host and contamination"
                 },
-                "host_k2_library": {
-                    "type": "string",
-                    "default": "human",
-                    "fa_icon": "fab fa-gitkraken",
-                    "description": "Kraken2 library(s) required to remove host and contamination",
-                    "help_text": "Only used when no host kraken2 database is specified."
-                },
                 "skip_host_fastqc": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",

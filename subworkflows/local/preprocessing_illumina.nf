@@ -136,7 +136,6 @@ workflow PREPROCESSING_ILLUMINA {
         FASTQ_KRAKEN_HOST_REMOVE (
             ch_reads_decomplexified,
             ch_kraken2_host_db,
-            params.host_k2_library,
             params.skip_host_fastqc,
             params.min_trimmed_reads,
         )

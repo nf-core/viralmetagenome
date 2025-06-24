@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
+# Copied from nf-core/viralrecon and adjusted
+# https://github.com/nf-core/viralrecon/blob/master/bin/make_bed_mask.py
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text
+
 import argparse
 import gzip
 import re
 import sys
 
-# Taken from https://github.com/nf-core/viralrecon/blob/master/bin/make_bed_mask.py
 
 
 def parse_args(args=None):

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Originally written by Joon Klaps and released under the MIT license.
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
+
 """Provide a command line tool to filter generate a custom tsv -csv file from a bam"""
 
 import pysam

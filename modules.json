@@ -116,12 +116,12 @@
                     },
                     "checkv/downloaddatabase": {
                         "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "git_sha": "53db90beb140ec02a4bf829986282f9d1a94ba7a",
                         "installed_by": ["modules"]
                     },
                     "checkv/endtoend": {
                         "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "git_sha": "53db90beb140ec02a4bf829986282f9d1a94ba7a",
                         "installed_by": ["modules"]
                     },
                     "emboss/cons": {

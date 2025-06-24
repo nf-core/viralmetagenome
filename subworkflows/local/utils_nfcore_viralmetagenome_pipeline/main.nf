@@ -2,6 +2,8 @@
 // Subworkflow with functionality specific to the nf-core/viralmetagenome pipeline
 //
 
+import groovy.json.JsonSlurper
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS
@@ -302,7 +304,7 @@ def createChannel(dbPath, dbName, skipFlag) {
 
 def filterContigs(contig, min_len, n_100) {
     contig
-        .map { meta, fasta -> [ meta, fasta, WorkflowCommons.getLengthAndAmbigous( fasta ) ] }
+        .map { meta, fasta -> [ meta, fasta, getLengthAndAmbigous( fasta ) ] }
         .branch { meta, fasta, stats ->
             pass: stats.contig_size >= min_len.toInteger() && stats.n_100 <= n_100.toInteger()
                 return [ meta, fasta ]
@@ -315,7 +317,7 @@ def failedContigsToMultiQC(tsv_data, min_len, n_100) {
         .map { meta, fasta, stats -> ["$meta.id\t$meta.sample\t$meta.cluster_id\t$meta.previous_step\t$stats.contig_size\t$stats.n_100"] }
         .collect()
         .map { tsv ->
-            WorkflowCommons.multiqcTsvFromList(
+            multiqcTsvFromList(
                 tsv,
                 ['Id','sample name', 'cluster','step','contig size', 'N\'s %'],
                 [
@@ -330,6 +332,42 @@ def failedContigsToMultiQC(tsv_data, min_len, n_100) {
         }
 }
 
+def getLengthAndAmbigous(fastaFile) {
+    def length = 0
+    def ambiguousCount = 0
+    def ambiguousPerc = 0
+
+    fastaFile.eachLine { line ->
+        if (line.startsWith(">")) {
+            // Ignore header lines starting with ">"
+            return
+        } else {
+            // Count the length of the sequence
+            length += line.trim().length()
+            // Count the occurrences of 'N'
+            ambiguousCount += line.count("N")
+        }
+    }
+    if (length.toInteger() > 0) {
+        ambiguousPerc = (ambiguousCount / length) * 100
+    }
+    return [contig_size: length.toInteger(), n_100 :ambiguousPerc.toInteger()]
+}
+
+def getMapFromJson(json_file) {
+    def Map json = (Map) new JsonSlurper().parse(json_file)
+    return json
+}
+
+def getStatsMappedReads(statsFile) {
+    def n_reads = 0
+    statsFile.eachLine { line ->
+        if (line =~ /SN\treads mapped:\s+(\d+)/) {
+            n_reads = line.split('\t')[2].toInteger()
+        }}
+    return n_reads
+}
+
 def failedMappedReadsToMultiQC(tsv_data, min_mapped_reads) {
     tsv_data
         .map { meta, bam, mapped_reads ->
@@ -337,7 +375,7 @@ def failedMappedReadsToMultiQC(tsv_data, min_mapped_reads) {
             }
         .collect()
         .map { tsv ->
-            WorkflowCommons.multiqcTsvFromList(tsv,
+            multiqcTsvFromList(tsv,
                 ['id','sample name', 'cluster','step','mapped reads'],
                 [
                     "id: 'failed_mapped'",
@@ -351,6 +389,16 @@ def failedMappedReadsToMultiQC(tsv_data, min_mapped_reads) {
         }
 }
 
+def multiqcTsvFromList(tsv_data, header, comments) {
+    def tsv_string = ""
+    if (tsv_data.size() > 0) {
+        if (comments) tsv_string += "# ${comments.join('\n# ')}\n"
+        tsv_string += "${header.join('\t')}\n"
+        tsv_string += tsv_data.join('\n')
+    }
+    return tsv_string
+}
+
 def noBlastHitsToMultiQC(tsv_data, assemblers) {
     tsv_data
         .map { meta, txt, fasta ->
@@ -358,7 +406,7 @@ def noBlastHitsToMultiQC(tsv_data, assemblers) {
             ["$meta.sample\t$n_fasta"]}
         .collect()
         .map { tsv ->
-            WorkflowCommons.multiqcTsvFromList(tsv,
+            multiqcTsvFromList(tsv,
                 ['sample name', "number of contigs"],
                 [
                     "id: 'samples_without_blast_hits'",
@@ -377,7 +425,7 @@ def lowReadSamplesToMultiQC(tsv_data, min_trimmed_reads) {
         .map { meta, read_count -> ["$meta.sample\t$read_count"] }
         .collect()
         .map { tsv ->
-            WorkflowCommons.multiqcTsvFromList(
+            multiqcTsvFromList(
                 tsv,
                 ['Sample', "Number of reads"],
                 [
@@ -400,7 +448,7 @@ def noContigSamplesToMultiQC(tsv_data, assemblers) {
         }
         .collect()
         .map { tsv ->
-            WorkflowCommons.multiqcTsvFromList(
+            multiqcTsvFromList(
                 tsv,
                 ['sample name', "number of contigs"],
                 [

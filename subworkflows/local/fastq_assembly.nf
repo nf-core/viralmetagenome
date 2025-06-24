@@ -63,12 +63,13 @@ workflow FASTQ_ASSEMBLY {
 
     // MEGAHIT
     if ('megahit' in assemblers) {
-        megahit_in = ch_reads.map
-            { meta, reads -> meta.single_end ?
-                [meta, reads[0].collect{it}, reads[1].collect{it}] :
-                [meta, reads.collect{it},[]]
-            }
-
+        ch_reads
+            .filter { it[0].single_end }
+            .map { meta, reads -> [meta, [reads], []] }
+            .mix(
+                ch_reads.filter { !it[0].single_end }.map { meta, reads -> [meta, [reads[0]], [reads[1]]] }
+            )
+            .set{megahit_in}
         MEGAHIT(megahit_in)
         ch_versions          = ch_versions.mix(MEGAHIT.out.versions.first())
 

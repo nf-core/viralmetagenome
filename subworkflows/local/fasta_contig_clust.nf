@@ -2,6 +2,7 @@ include { FASTA_BLAST_REFSEL      } from '../../subworkflows/local/fasta_blast_r
 include { FASTA_FASTQ_CLUST       } from '../../subworkflows/local/fasta_fastq_clust'
 include { FASTA_CONTIG_PRECLUST   } from '../../subworkflows/local/fasta_contig_preclust'
 include { EXTRACT_CLUSTER         } from '../../modules/local/extract_cluster/main'
+include { getMapFromJson          } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 
 workflow FASTA_CONTIG_CLUST {
 
@@ -95,7 +96,7 @@ workflow FASTA_CONTIG_CLUST {
         .members_centroids
         .transpose()                                                                   // wide to long
         .map { meta, seq_members, seq_centroids, json_file ->
-            def lazy_json = WorkflowCommons.getMapFromJson(json_file)                  // convert cluster metadata to Map
+            def lazy_json = getMapFromJson(json_file)                  // convert cluster metadata to Map
             def map_json = [
                 id : "${meta.sample}_${lazy_json.cluster_id}",                         // rename meta.id to include cluster number
                 centroid: lazy_json.centroid,

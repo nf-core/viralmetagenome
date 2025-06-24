@@ -22,7 +22,7 @@
 
 **Viralmetagenome** is a bioinformatics best-practice analysis pipeline for reconstructing consensus genomes and to identify intra-host variants from metagenomic sequencing data or enriched based sequencing data like hybrid capture.
 
-![viralmetagenome-workflow](docs/images/metromap_style_pipeline_workflow_viralmetagenome.svg)
+![viralmetagenome-workflow](docs/images/metromap_style_pipeline_workflow_viralmetagenome.png)
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Performs optional read pre-processing

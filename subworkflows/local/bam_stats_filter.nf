@@ -1,8 +1,9 @@
 // Take in a bam file and remove those that don't have any reads aligned
 
-include {failedMappedReadsToMultiQC } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
-include { SAMTOOLS_INDEX            } from '../../modules/nf-core/samtools/index/main'
-include { SAMTOOLS_STATS            } from '../../modules/nf-core/samtools/stats/main'
+include { failedMappedReadsToMultiQC } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { getStatsMappedReads        } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { SAMTOOLS_INDEX             } from '../../modules/nf-core/samtools/index/main'
+include { SAMTOOLS_STATS             } from '../../modules/nf-core/samtools/stats/main'
 
 workflow BAM_STATS_FILTER {
 
@@ -34,7 +35,7 @@ workflow BAM_STATS_FILTER {
         .out
         .stats
         .join(ch_bam, by: [0] )
-        .map{ meta, stats, bam -> [ meta, bam, WorkflowCommons.getStatsMappedReads(stats) ] }
+        .map{ meta, stats, bam -> [ meta, bam, getStatsMappedReads(stats) ] }
         .branch { meta, bam, mapped_reads ->
             pass: mapped_reads > min_mapped_reads
                 return [ meta, bam ]

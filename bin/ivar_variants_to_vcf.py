@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-# Taken from https://github.com/nf-core/viralrecon/blob/master/bin/ivar_varaints_to_vcf.py
-#!/usr/bin/env python
+
+# Copied from nf-core/viralrecon and adjusted
+# https://github.com/nf-core/viralrecon/blob/master/bin/ivar_varaints_to_vcf.py
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
 
 import os
 import sys

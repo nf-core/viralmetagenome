@@ -96,6 +96,7 @@ class IvarVariants:
     ):
         self.file_in = file_in
         self.file_out = file_out
+        self.basename = os.path.splitext(os.path.basename(self.file_out))[0]
         if os.path.exists(self.file_out):
             self.filename = str(os.path.splitext(self.file_in)[0])
         else:
@@ -132,6 +133,8 @@ class IvarVariants:
         else:
             self.ref_fasta = None
 
+        self.processed_vcf = None
+
         if self.file_in:
             try:
                 self.raw_ivar_df = pd.read_csv(self.file_in, sep="\t")
@@ -139,8 +142,6 @@ class IvarVariants:
                 exit(f"Could not read input file: {file_in}")
         else:
             exit("Input file not provided. Aborting...")
-        if self.raw_ivar_df.empty:
-            exit("Input tsv was empty")
 
     def strand_bias_filter(self, row):
         """Calculate strand-bias fisher test.
@@ -721,8 +722,55 @@ class IvarVariants:
         header = header_source + header_info + header_filter + header_format
         return header
 
+    def write_empty_vcf(self):
+        """Create an empty VCF file with only the header when no variants are present"""
+        vcf_header = "\n".join(self.get_vcf_header())
+
+        # Create column headers for the VCF table
+        column_headers = ["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT", self.filename]
+        vcf_content = vcf_header + "\n" + "\t".join(column_headers) + "\n"
+
+        # Write consensus VCF file
+        with open(self.file_out, "w") as file_out:
+            file_out.write(vcf_content)
+
+        return
+
+    def write_stdout(self):
+        """Summarize variant counts to pass to MultiQC"""
+        variant_types = ["SNP", "DEL", "INS"]
+
+        # Handle empty dataframe case
+        if self.raw_ivar_df.empty or self.processed_vcf is None:
+            var_count_dict = {var_type: 0 for var_type in variant_types}
+        else:
+            variant_col: pd.Series = self.processed_vcf["INFO"].str.replace("TYPE=", "")
+            variant_counts = variant_col.value_counts().to_dict()
+            var_count_dict = {var_type: variant_counts.get(var_type, 0) for var_type in variant_types}
+
+        var_count_list = [(k, str(v)) for k, v in sorted(var_count_dict.items())]
+
+        def create_f_string(str_size, placement="^"):
+            row_size = "{: " + placement + str(str_size) + "}"
+            return row_size
+
+        row = create_f_string(30, "<")  # an arbitraily long value to fit most sample names
+        row += create_f_string(10) * len(var_count_list)  # A spacing of ten looks pretty
+
+        headers = ["sample"]
+        headers.extend([x[0] for x in var_count_list])
+        data = [self.basename]
+        data.extend([x[1] for x in var_count_list])
+        print(row.format(*headers))
+        print(row.format(*data))
+
+
     def write_vcf(self):
         """Process ivar.tsv, merge the vcf header and table and write them into a file"""
+        if self.raw_ivar_df.empty:
+            self.write_empty_vcf()
+            return
+
         vcf_header = "\n".join(self.get_vcf_header())
         vcf_table = self.initiate_vcf_df()
 
@@ -741,11 +789,11 @@ class IvarVariants:
             processed_vcf = processed_vcf.rename(
                 columns={"REGION": "#CHROM", "FILENAME": self.filename}
             )
+            self.processed_vcf = processed_vcf
             if consensus:
                 filepath = self.file_out
             else:
-                basename = os.path.splitext(os.path.basename(self.file_out))[0]
-                filename = str(basename) + "_all_hap.vcf"
+                filename = str(self.basename) + "_all_hap.vcf"
                 filepath = os.path.join(os.path.dirname(self.file_out), filename)
             with open(filepath, "w") as file_out:
                 file_out.write(vcf_header + "\n")
@@ -788,6 +836,7 @@ def main(args=None):
         fasta=args.fasta,
     )
     ivar_to_vcf.write_vcf()
+    ivar_to_vcf.write_stdout()
     return
 
 

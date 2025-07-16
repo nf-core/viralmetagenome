@@ -9,6 +9,16 @@
 ----------------------------------------------------------------------------------------
 */
 
+nextflow.enable.dsl = 2
+params.global_prefix = getGlobalPrefix(workflow, params)
+def getGlobalPrefix(workflow,params) {
+    def date_stamp = new java.util.Date().format( 'yyyyMMdd')
+    if (params.prefix) {
+        return "${params.prefix}_${date_stamp}_${workflow.manifest.version}_${workflow.runName}".replaceAll("\\s+", "_")
+    }
+    return null
+}
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS

@@ -1,0 +1,9 @@
+name: blast_filter
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::pandas=2.2.3
+  - pip
+  - pip:
+      - biopython==1.85

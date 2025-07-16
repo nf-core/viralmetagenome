@@ -1,0 +1,19 @@
+Changes in component 'nf-core/cdhit/cdhitest'
+'modules/nf-core/cdhit/cdhitest/environment.yml' is unchanged
+'modules/nf-core/cdhit/cdhitest/meta.yml' is unchanged
+Changes in 'cdhit/cdhitest/main.nf':
+--- modules/nf-core/cdhit/cdhitest/main.nf
++++ modules/nf-core/cdhit/cdhitest/main.nf
+@@ -33,7 +33,7 @@
+     cd-hit-est \\
+         $args \\
+         -i ${sequences} \\
+-        -o ${meta.id}.${suffix} \\
++        -o ${prefix}.${suffix} \\
+         -M $avail_mem \\
+         -T $task.cpus
+ 
+
+'modules/nf-core/cdhit/cdhitest/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/cdhit/cdhitest/tests/main.nf.test' is unchanged
+************************************************************

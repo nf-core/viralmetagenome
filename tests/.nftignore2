@@ -9,5 +9,6 @@ multiqc/multiqc_data/fastqc_top_overrepresented_sequences_table.txt
 **/fastqc/*_fastqc.{html,zip}
 **/pipeline_info/*.{html,json,txt,yml}
 **/picard/*
-picard/**
+picard/
+*CollectMultipleMetrics*
 *.{bam,bam.bai,cram,cram.crai}

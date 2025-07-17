@@ -1,0 +1,13 @@
+name: ivar_variants_to_vcf
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - conda-forge::python=3.9.5
+  - conda-forge::matplotlib=3.5.1
+  - conda-forge::pandas=1.3.5
+  - conda-forge::r-sys=3.4
+  - conda-forge::regex=2021.11.10
+  - conda-forge::scipy=1.7.3
+  - conda-forge::biopython=1.79

@@ -116,12 +116,12 @@
                     },
                     "checkv/downloaddatabase": {
                         "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "git_sha": "53db90beb140ec02a4bf829986282f9d1a94ba7a",
                         "installed_by": ["modules"]
                     },
                     "checkv/endtoend": {
                         "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "git_sha": "53db90beb140ec02a4bf829986282f9d1a94ba7a",
                         "installed_by": ["modules"]
                     },
                     "emboss/cons": {
@@ -152,8 +152,7 @@
                     "ivar/consensus": {
                         "branch": "master",
                         "git_sha": "fa30cb23a4ad91e509b0c91399ab3b0cc76e858f",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/ivar/consensus/ivar-consensus.diff"
+                        "installed_by": ["modules"]
                     },
                     "ivar/variants": {
                         "branch": "master",
@@ -193,11 +192,11 @@
                         "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["modules"]
                     },
-                    "mafft": {
+                    "mafft/align": {
                         "branch": "master",
-                        "git_sha": "faf557ba56156ac0e5de76a25c1e3df11c944f59",
+                        "git_sha": "c7cfb9446fb3098e525089198ff232d795c20ef2",
                         "installed_by": ["modules"],
-                        "patch": "modules/nf-core/mafft/mafft.diff"
+                        "patch": "modules/nf-core/mafft/align/mafft-align.diff"
                     },
                     "mash/dist": {
                         "branch": "master",

@@ -77,7 +77,7 @@ workflow PREPROCESSING_ILLUMINA {
 
     // Keeping track of failed reads for reporting
     trim_read_count
-        .filter{meta,num_reads -> num_reads < params.min_trimmed_reads.toLong() }
+        .filter{meta, num_reads -> num_reads < params.min_trimmed_reads.toLong() }
         .set { failed_reads }
 
     // deduplicate UMI's with HUMID
@@ -114,7 +114,6 @@ workflow PREPROCESSING_ILLUMINA {
             BBMAP_BBDUK (
                 ch_reads_dedup_joined,
                 ch_contaminants,
-                params.decomplexifier
             )
             ch_reads_decomplexified = BBMAP_BBDUK.out.reads
             ch_multiqc_files        = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
@@ -137,7 +136,6 @@ workflow PREPROCESSING_ILLUMINA {
         FASTQ_KRAKEN_HOST_REMOVE (
             ch_reads_decomplexified,
             ch_kraken2_host_db,
-            params.host_k2_library,
             params.skip_host_fastqc,
             params.min_trimmed_reads,
         )

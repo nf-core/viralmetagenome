@@ -1,5 +1,6 @@
 Changes in component 'nf-core/umitools/dedup'
 'modules/nf-core/umitools/dedup/environment.yml' is unchanged
+'modules/nf-core/umitools/dedup/meta.yml' is unchanged
 Changes in 'umitools/dedup/main.nf':
 --- modules/nf-core/umitools/dedup/main.nf
 +++ modules/nf-core/umitools/dedup/main.nf
@@ -21,8 +22,7 @@ Changes in 'umitools/dedup/main.nf':
      cat <<-END_VERSIONS > versions.yml
      "${task.process}":
 
-'modules/nf-core/umitools/dedup/meta.yml' is unchanged
+'modules/nf-core/umitools/dedup/tests/main.nf.test.snap' is unchanged
 'modules/nf-core/umitools/dedup/tests/nextflow.config' is unchanged
 'modules/nf-core/umitools/dedup/tests/main.nf.test' is unchanged
-'modules/nf-core/umitools/dedup/tests/main.nf.test.snap' is unchanged
 ************************************************************

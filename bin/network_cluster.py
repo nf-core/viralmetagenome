@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Originally written by Joon Klaps and released under the MIT license.
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
+
 """Cluster based on a the created network generated from tools"""
 
 import argparse

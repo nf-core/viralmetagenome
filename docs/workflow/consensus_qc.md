@@ -65,7 +65,7 @@ MMseqs was used for the annotation step instead of BLAST because of the ability 
 
 [SnpSift](https://pcingola.github.io/SnpEff/SnpSift.html) is a toolbox that allows you to filter and manipulate annotated files. The ExtractFields tool is used to extract specific information from the annotated VCF files into a tabular format for easier analysis.
 
-Viralgenie uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
+Viralmetagenome uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
 
 The annotation process provides valuable information about the impact of variants, including:
 

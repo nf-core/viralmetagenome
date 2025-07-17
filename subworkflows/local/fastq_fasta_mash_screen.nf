@@ -6,6 +6,7 @@ include { CAT_CAT as CAT_CAT_READS } from '../../modules/nf-core/cat/cat/main'
 include { MASH_SKETCH              } from '../../modules/nf-core/mash/sketch/main'
 include { MASH_SCREEN              } from '../../modules/nf-core/mash/screen/main'
 include { SELECT_REFERENCE         } from '../../modules/local/select_reference/main'
+include { getMapFromJson           } from '../../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 
 workflow FASTQ_FASTA_MASH_SCREEN {
 
@@ -57,7 +58,7 @@ workflow FASTQ_FASTA_MASH_SCREEN {
         }
         .map{ meta, json, fasta, reads ->
             // see #174 - removing unecessary lazy-maps
-            // lazy_json = WorkflowCommons.getMapFromJson(json)
+            // lazy_json = getMapFromJson(json)
             // return [meta + map_json, fasta, reads]
             [meta, fasta, reads]
         }

@@ -19,6 +19,8 @@ include { methodsDescriptionText          } from '../subworkflows/local/utils_nf
 include { createFileChannel               } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { createChannel                   } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { noContigSamplesToMultiQC        } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { getLengthAndAmbigous            } from '../subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+
 // Preprocessing
 include { PREPROCESSING_ILLUMINA          } from '../subworkflows/local/preprocessing_illumina'
 // metagenomic diversity
@@ -164,9 +166,11 @@ workflow VIRALMETAGENOME {
         ch_versions     = ch_versions.mix(BLAST_MAKEBLASTDB.out.versions)
     }
 
+    ch_reads.view()
+
     // If we don't preprocess reads, remove samples with 0 reads
-    ch_host_trim_reads      = ch_reads.filter{ meta, reads -> meta.single_end ? reads.countFastq() > 0 : reads[0].countFastq() > 0}
-    ch_decomplex_trim_reads = ch_reads.filter{ meta, reads -> meta.single_end ? reads.countFastq() > 0 : reads[0].countFastq() > 0}
+    ch_host_trim_reads      = ch_reads.filter{ meta, reads -> reads[0].countFastq() > 0}
+    ch_decomplex_trim_reads = ch_reads.filter{ meta, reads -> reads[0].countFastq() > 0}
     // preprocessing illumina reads
     if (!params.skip_preprocessing){
         PREPROCESSING_ILLUMINA (
@@ -421,7 +425,7 @@ workflow VIRALMETAGENOME {
     // Run several sumarisation tools on the variant calling results
     if ( !params.skip_consensus_qc  && (!params.skip_assembly || !params.skip_variant_calling) ) {
         ch_consensus_filter = ch_consensus
-            .filter{meta, fasta -> WorkflowCommons.getLengthAndAmbigous(fasta).contig_size > 0}
+            .filter{meta, fasta -> getLengthAndAmbigous(fasta).contig_size > 0}
         CONSENSUS_QC(
             ch_consensus_filter,
             ch_unaligned_raw_contigs,

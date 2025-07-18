@@ -16,11 +16,7 @@ nextflow_pipeline {
             // stable_name: All files + folders in ${params.outdir}/ with a stable name
             def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_path: All files in ${params.outdir}/ with stable content
-            def stable_path1 = getAllFilesFromDir(params.outdir, includeDir:true, ignoreFile: 'tests/.nftignore')
-            def stable_path2 = getAllFilesFromDir(params.outdir, includeDir:true, ignoreFile: 'tests/.nftignore2')
-            def stable_path3 = getAllFilesFromDir(params.outdir, includeDir:true, ignoreFile: 'tests/.nftignore3')
-            def stable_path4 = getAllFilesFromDir(params.outdir, includeDir:true, ignoreFile: 'tests/.nftignore4')
-            def stable_path5 = getAllFilesFromDir(params.outdir, includeDir:true, ignoreFile: 'tests/.nftignore5')
+            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
 
             def stable_bam_files = getAllFilesFromDir(params.outdir, include: ['**/*.bam'])
 
@@ -34,7 +30,7 @@ nextflow_pipeline {
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
-                    stable_path1,stable_path2,stable_path3,stable_path4,stable_path5,
+                    stable_path,
                     stable_bam_files.collect{ file -> [ file.getName(), bam(file.toString()).getReadsMD5() ] }
                 ).match() }
             )

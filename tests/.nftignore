@@ -1,4 +1,15 @@
+# =============================================================================
+# nf-test ignore patterns for viralmetagenome pipeline
+# =============================================================================
+
+# ------------------------------------------------------------------------------
+# System files
+# ------------------------------------------------------------------------------
 .DS_Store
+
+# ------------------------------------------------------------------------------
+# MultiQC reports and data
+# ------------------------------------------------------------------------------
 multiqc/multiqc_data/multiqc.log
 multiqc/multiqc_data/multiqc_data.json
 multiqc/multiqc_data/multiqc_sources.txt
@@ -16,30 +27,66 @@ multiqc/multiqc_data/samtools_alignment_plot.txt
 multiqc/multiqc_data/samtools-flagstat-dp_Percentage_of_total.txt
 multiqc/multiqc_data/samtools-flagstat-dp_Read_counts.txt
 multiqc/multiqc_data/samtools-stats-dp.txt
+multiqc/multiqc_data/mosdepth*
 multiqc/multiqc_plots/{svg,pdf,png}/*.{svg,pdf,png}
 multiqc/multiqc_report.html
+
+# ------------------------------------------------------------------------------
+# Pipeline info and overview tables
+# ------------------------------------------------------------------------------
+pipeline_info/*.{html,json,txt,yml}
 overview-tables/samples_overview.tsv
 overview-tables/contigs_overview-with-iterations.tsv
 overview-tables/contigs_overview.tsv
 overview-tables/mapping_overview.tsv
-pipeline_info/*.{html,json,txt,yml}
+
+# ------------------------------------------------------------------------------
+# Quality control outputs
+# ------------------------------------------------------------------------------
 **/fastqc/**_fastqc.{html,zip}
 **/fastp/**fastp.html
-**/picard/**
-**/stats/**
-**/prokka/**/*.log
-**/intermediate/blast/**
-variants/mapping-info/metrics/stats/**
-**/*kraken2_host.unclassified*.fastq.gz
-**/bam/*
-**/mosdepth/*
-**/flagstat/*
+
+# ------------------------------------------------------------------------------
+# Alignment and mapping outputs
+# ------------------------------------------------------------------------------
 **/*.bam
-**/*filtered.vcf.gz
+**/bam/**
+
+# ------------------------------------------------------------------------------
+# Mapping statistics and metrics
+# ------------------------------------------------------------------------------
+**/mosdepth/**
+**/picard/**
+**/flagstat/**
+
+# ------------------------------------------------------------------------------
+# Variant calling outputs
+# ------------------------------------------------------------------------------
 **/*.mpileup
-**/*_good_out.fasta
-**/*.log
-**/*kaiju.tsv
 **/*.qual.txt
+**/*filtered.vcf.gz
+
+# ------------------------------------------------------------------------------
+# Log files
+# ------------------------------------------------------------------------------
+**/*.log
+
+# ------------------------------------------------------------------------------
+# Assembly outputs - might not have consitent order of sequences
+# ------------------------------------------------------------------------------
+**/*_good_out.fasta
+**/assemblers/idxstats/*
+**/*.combined.fa
+
+# ------------------------------------------------------------------------------
+# Classification and search results
+# ------------------------------------------------------------------------------
+**/*kaiju.tsv
+**/*.classifiedreads.txt
+**/*kraken2_host.unclassified*.fastq.gz
 **/all_genomes.txt
 **/all_genomes.tsv
+**/intermediate/blast/**
+**/polishing/blast/**
+**/intermediate/cluster/*/*.json
+**/intermediate/cluster/*/*cluster.tsv

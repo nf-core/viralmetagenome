@@ -90,7 +90,7 @@ overview-tables/mapping_overview.tsv
 **/intermediate/blast/**
 **/polishing/blast/**
 **/intermediate/cluster/*/*.json
-**/intermediate/cluster/*/*cluster.tsv
+**/polishing/**/*clusters.tsv
 
 # ------------------------------------------------------------------------------
 # Consensus quality control

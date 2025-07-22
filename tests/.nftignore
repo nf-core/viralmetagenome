@@ -41,7 +41,7 @@ overview-tables/contigs_overview.tsv
 overview-tables/mapping_overview.tsv
 
 # ------------------------------------------------------------------------------
-# Quality control outputs
+# Preprocessing outputs
 # ------------------------------------------------------------------------------
 **/fastqc/**_fastqc.{html,zip}
 **/fastp/**fastp.html
@@ -58,6 +58,7 @@ overview-tables/mapping_overview.tsv
 **/mosdepth/**
 **/picard/**
 **/flagstat/**
+**/metrics/stats/**
 
 # ------------------------------------------------------------------------------
 # Variant calling outputs
@@ -75,7 +76,7 @@ overview-tables/mapping_overview.tsv
 # Assembly outputs - might not have consitent order of sequences
 # ------------------------------------------------------------------------------
 **/*_good_out.fasta
-**/assemblers/idxstats/*
+**/assemblers/*/idxstats/*.idxstats
 **/*.combined.fa
 
 # ------------------------------------------------------------------------------
@@ -90,3 +91,9 @@ overview-tables/mapping_overview.tsv
 **/polishing/blast/**
 **/intermediate/cluster/*/*.json
 **/intermediate/cluster/*/*cluster.tsv
+
+# ------------------------------------------------------------------------------
+# Consensus quality control
+# ------------------------------------------------------------------------------
+**/prokka/**/*.gbk
+**/prokka/**/*.sqn

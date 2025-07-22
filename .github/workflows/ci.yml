@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         NXF_VER:
-          - "24.10.2"
+          - "24.10.5"
           - "latest-everything"
         VARIANT_CALLER:
           - "bcftools"
@@ -113,7 +113,7 @@ jobs:
     strategy:
       matrix:
         NXF_VER:
-          - "24.10.2"
+          - "24.10.5"
           - "latest-everything"
         CLUSTER_METHOD:
           - "vsearch"
@@ -197,7 +197,7 @@ jobs:
     strategy:
       matrix:
         NXF_VER:
-          - "24.10.2"
+          - "24.10.5"
           - "latest-everything"
         profile:
           - "conda"

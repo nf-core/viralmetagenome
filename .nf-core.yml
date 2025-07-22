@@ -5,7 +5,7 @@ lint:
     - conf/igenomes.config
     - conf/igenomes_ignored.config
   multiqc_config: false
-nf_core_version: 3.3.1
+nf_core_version: 3.3.2
 repository_type: pipeline
 template:
   author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
@@ -19,5 +19,4 @@ template:
   outdir: .
   skip_features:
     - igenomes
-    - multiqc
   version: 0.1.3dev

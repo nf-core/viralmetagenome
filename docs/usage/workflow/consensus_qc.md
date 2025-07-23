@@ -1,7 +1,8 @@
 ---
-title: Report generation and quality control
-subtitle: Summary reporting and consensus genome validation
+order: 6
 ---
+
+# Report generation and quality control
 
 Viralmetagenome's report and result interpretation heavily relies on MultiQC. MultiQC is a tool to create a single report from multiple analysis results. It is designed to be used with a wide range of bioinformatics tools and is compatible with a wide range of data formats. Almost all tools are summarised within the MultiQC report that have interactive plots and data tables. However, due to the number of tools included, some results are summarised in the directory `overview-tables` to reduce the size of the MultiQC report.
 

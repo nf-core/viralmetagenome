@@ -1,7 +1,4 @@
----
-title: Usage
-subtitle: How to run nf-core/viralmetagenome
----
+# Usage
 
 ## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/viralmetagenome/usage](https://nf-co.re/viralmetagenome/usage)
 

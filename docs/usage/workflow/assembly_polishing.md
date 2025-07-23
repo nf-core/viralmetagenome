@@ -1,7 +1,8 @@
 ---
-title: Assembly & polishing
-subtitle: De novo genome assembly and consensus polishing
+order: 4
 ---
+
+# Assembly & polishing
 
 Viralmetagenome offers an elaborate workflow for the assembly and polishing of viral genomes:
 
@@ -96,7 +97,7 @@ The pre-clustering step can be used to simplify the taxonomy of the contigs, let
 :::warning
 Providing lists to the extract precluster script is done by encapsulating values with `"` and separating them with a space. For example: `--arguments_extract_precluster "--precluster-exclude-taxa taxon1 taxon2 taxon3"`.
 :::
-:::
+
 
 1. Options here are 'species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom' or 'superkingdom'.
 

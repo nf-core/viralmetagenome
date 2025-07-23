@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: bam_call_consensus
+description: Call consensus sequences from BAM files using either bcftools or ivar
+keywords:
+  - consensus
+  - variant calling
+  - bam
+  - bcftools
+  - ivar
+  - fasta
+components:
+  - ivar/consensus
+  - rename_fasta_header
+  - bam_vcf_consensus_bcftools
+input:
+  - bam_ref:
+      description: |
+        The input channel containing BAM files with their corresponding reference sequences
+        Structure: [ val(meta), path(bam), path(fasta) ]
+  - vcf:
+      description: |
+        The input channel containing VCF files for variant calling
+        Structure: [ val(meta), path(vcf) ]
+  - consensus_caller:
+      description: |
+        The consensus calling method to use
+        Type: value
+        Pattern: "bcftools|ivar"
+  - mapping_stats:
+      description: |
+        Whether to save mapping statistics (mpileup files for ivar)
+        Type: value
+        Pattern: "true|false"
+output:
+  - consensus:
+      description: |
+        Consensus sequences with renamed headers
+        Structure: [ val(meta), path(fasta) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

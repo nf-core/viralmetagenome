@@ -50,6 +50,7 @@ workflow NFCORE_VIRALMETAGENOME {
     VIRALMETAGENOME (
         samplesheet
     )
+
     emit:
     multiqc_report = VIRALMETAGENOME.out.multiqc_report // channel: /path/to/multiqc_report.html
 }

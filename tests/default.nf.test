@@ -17,6 +17,11 @@ nextflow_pipeline {
             def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_path: All files in ${params.outdir}/ with stable content
             def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def output_samples_csv = path(params.outdir + '/overview-tables/samples_overview.tsv').csv(sep:"\t")
+            def output_contigs_csv = path(params.outdir + '/overview-tables/contigs_overview-with-iterations.tsv').csv(sep:"\t")
+            def stable_bam_files = getAllFilesFromDir(params.outdir, include: ['**/*.bam'])
+            def stable_vcf_files = getAllFilesFromDir(params.outdir, include: ['**/*.vcf.gz'])
+
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
@@ -27,8 +32,17 @@ nextflow_pipeline {
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
-                    stable_path
-                ).match() }
+                    stable_path,
+                    // Samples overview file with stable content
+                    stable_bam_files.collect{ file -> [ file.getName(), bam(file.toString()).getStatistics() ] },
+                    stable_vcf_files.collect{ file -> [ file.getName(), path(file.toString()).vcf.getVariantsMD5() ] }
+                ).match() },
+                { assert snapshot(
+                    output_samples_csv.columnNames,
+                    output_samples_csv.columns["sample"].sort(),
+                    output_contigs_csv.columnNames,
+                    output_contigs_csv.columns["index"].sort(),
+                ).match("output samplesheets")}
             )
         }
     }

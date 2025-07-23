@@ -99,7 +99,7 @@
             },
             "mentions": [
                 {
-                    "@id": "#861e2e2a-6220-4486-bc1e-417f45be66c2"
+                    "@id": "#8ab4aadd-eaf2-4c65-9872-a43bfe622f09"
                 }
             ],
             "name": "nf-core/viralmetagenome"
@@ -127,11 +127,17 @@
                 "ComputationalWorkflow"
             ],
             "dateCreated": "",
-            "dateModified": "2025-06-10T14:39:15Z",
+            "dateModified": "2025-07-08T11:39:28Z",
             "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
             "keywords": [
                 "nf-core",
-                "nextflow"
+                "nextflow",
+                "epidemiology",
+                "fastq",
+                "ngs",
+                "viral-metagenomics",
+                "virology",
+                "virus-genomes"
             ],
             "license": [
                 "MIT"
@@ -163,14 +169,14 @@
             "url": {
                 "@id": "https://www.nextflow.io/"
             },
-            "version": "!>=24.04.2"
+            "version": "!>=24.10.5"
         },
         {
-            "@id": "#861e2e2a-6220-4486-bc1e-417f45be66c2",
+            "@id": "#8ab4aadd-eaf2-4c65-9872-a43bfe622f09",
             "@type": "TestSuite",
             "instance": [
                 {
-                    "@id": "#6e85243e-1dd5-4c54-a6a9-858cde919b64"
+                    "@id": "#ebb6e0c1-66c0-41c4-b265-45b14512e77a"
                 }
             ],
             "mainEntity": {
@@ -179,7 +185,7 @@
             "name": "Test suite for nf-core/viralmetagenome"
         },
         {
-            "@id": "#6e85243e-1dd5-4c54-a6a9-858cde919b64",
+            "@id": "#ebb6e0c1-66c0-41c4-b265-45b14512e77a",
             "@type": "TestInstance",
             "name": "GitHub Actions workflow for testing nf-core/viralmetagenome",
             "resource": "repos/nf-core/viralmetagenome/actions/workflows/nf-test.yml",

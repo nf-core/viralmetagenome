@@ -5,7 +5,8 @@ subtitle: Pipeline output files and reports
 
 ## Introduction
 
-This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarizes results at the end of the pipeline.
+This document describes the output produced by the pipeline.
+Most of the plots are taken from the MultiQC report, which summarizes results at the end of the pipeline.
 
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
@@ -821,7 +822,7 @@ Consensus quality control is done with multiple tools, the results are stored in
 
 ### Prokka
 
-[`Prokka`](https://github.com/tseemann/prokka) is a whole genome annotation pipeline for identifying features of interest in a set of genomic DNA sequences, and labelling them with useful information. Prokka is a software tool to annotate bacterial, archaeal and viral genomes.)
+[`Prokka`](https://github.com/tseemann/prokka) is a whole genome annotation pipeline for identifying features of interest in a set of genomic DNA sequences, and labelling them with useful information. Prokka is a software tool to annotate bacterial, archaeal and viral genomes.
 
 :::abstract{title="Output files" collapse}
 

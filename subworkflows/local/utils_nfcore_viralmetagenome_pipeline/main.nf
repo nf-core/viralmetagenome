@@ -166,7 +166,7 @@ def toolCitationText() {
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def citation_text = [
             "Tools used in the workflow included:",
-            "Viralmetagenome (Klaps et al.)",
+            "Viralmetagenome (Klaps et al., 2025)",
             "nf-core (Ewels et al. 2020)",
             "Nextflow (Di Tommaso et al. 2017)",
             "Bbduk (Bushnell 2022)",

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add option to annotate snps with Snpeff for mapping constraint route ([#186](https://github.com/Joon-Klaps/viralgenie/pull/186))
 - Add `nf-tests` for `test` profile ([#189](https://github.com/nf-core/viralmetagenome/pull/189))
 - Update docs ([#200](https://github.com/nf-core/viralmetagenome/pull/200))
+- Template update for nf-core/tools v3.3.2 ([#202](https://github.com/nf-core/viralmetagenome/pull/202))
 
 ### `Fixed`
 

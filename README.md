@@ -29,22 +29,22 @@
    - Adapter trimming([`fastp`](https://github.com/OpenGene/fastp), [`Trimmomatic`](https://github.com/usadellab/Trimmomatic))
    - Read UMI deduplication ([`HUMID`](https://humid.readthedocs.io/en/latest/usage.html))
    - [Optional] Combining of reads (CAT)
-   - Low complexity and quality filtering ([`bbduk`](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/), [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus))
+   - Low complexity and quality filtering ([`bbduk`](https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/), [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus))
    - Host-read removal ([`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/))
 3. Metagenomic diversity mapping
    - Performs taxonomic classification and/or profiling using one or more of:
      - [`Kraken2`](https://ccb.jhu.edu/software/kraken2/)
      - [`Bracken`](https://ccb.jhu.edu/software/bracken/)(optional)
-     - [`Kaiju`](https://kaiju.binf.ku.dk/)
+     - [`Kaiju`](https://bioinformatics-centre.github.io/kaiju/)
    - Plotting Kraken2 and Kaiju ([`Krona`](https://hpc.nih.gov/apps/kronatools.html))
-4. Denovo assembly ([`SPAdes`](http://cab.spbu.ru/software/spades/), [`TRINITY`](https://github.com/trinityrnaseq/trinityrnaseq), [`megahit`](https://github.com/voutcn/megahit)), combine contigs.
+4. Denovo assembly ([`SPAdes`](https://ablab.github.io/spades/), [`TRINITY`](https://github.com/trinityrnaseq/trinityrnaseq), [`megahit`](https://github.com/voutcn/megahit)), combine contigs.
 5. [Optional] extend the contigs with [sspace_basic](https://github.com/nsoranzo/sspace_basic) and filter with [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus)
 6. [Optional] Map reads to contigs for coverage estimation ([`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/),[`BWAmem2`](https://github.com/bwa-mem2/bwa-mem2) and [`BWA`](https://github.com/lh3/bwa))
 7. Contig reference idententification ([`blastn`](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastSearch))
    - Identify top 5 blast hits
    - Merge blast hit and all contigs of a sample
 8. [Optional] Precluster contigs based on taxonomy
-   - Identify taxonomy [`Kraken2`](https://ccb.jhu.edu/software/kraken2/) and\or [`Kaiju`](https://kaiju.binf.ku.dk/)
+   - Identify taxonomy [`Kraken2`](https://ccb.jhu.edu/software/kraken2/) and\or [`Kaiju`](https://bioinformatics-centre.github.io/kaiju/)
    - Resolve potential inconsistencies in taxonomy & taxon filtering | simplification `bin/extract_precluster.py`
 9. Cluster contigs (or every taxonomic bin) of samples, options are:
    - [`cdhitest`](https://sites.google.com/view/cd-hit)
@@ -72,7 +72,7 @@
     - [`prokka`](http://github.com/tseemann/prokka)
     - [`mmseqs-search`](https://github.com/soedinglab/MMseqs2/wiki#batch-sequence-searching-using-mmseqs-search)
     - [`MAFFT` - alignment of contigs vs iterations & consensus](https://mafft.cbrc.jp/alignment/software/)
-21. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](http://multiqc.info/))
+21. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](https://docs.seqera.io/multiqc))
 
 ## Usage
 

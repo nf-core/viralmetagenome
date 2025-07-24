@@ -60,8 +60,8 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC {
                 .out
                 .reads
                 .map {
-                    meta, reads ->
-                        meta.single_end ? [ meta, reads ] : [ meta + [single_end: true], reads[umi_discard_read % 2] ]
+                    meta, fastq ->
+                        meta.single_end ? [ meta, fastq ] : [ meta + [single_end: true], fastq[umi_discard_read % 2] ]
                 }
                 .set { umi_reads }
         }
@@ -79,7 +79,7 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC {
             reads
         )
         trim_summ             = TRIMMOMATIC.out.summary
-        trim_log              = TRIMMOMATIC.out.log
+        trim_log              = TRIMMOMATIC.out.trim_log
         trim_unpaired_reads   = TRIMMOMATIC.out.unpaired_reads
         ch_versions           = ch_versions.mix(TRIMMOMATIC.out.versions.first())
 
@@ -90,16 +90,16 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC {
             .out
             .trimmed_reads
             .join(trim_summ)
-            .map { meta, reads, summ -> [ meta, reads, getTrimmomaticReadsAfterFiltering(summ) ] }
+            .map { meta, fastq, summ -> [ meta, fastq, getTrimmomaticReadsAfterFiltering(summ) ] }
             .set { ch_num_trimmed_reads }
 
         ch_num_trimmed_reads
-            .filter { meta, reads, num_reads -> num_reads >= min_trimmed_reads.toInteger() }
-            .map { meta, reads, num_reads -> [ meta, reads ] }
+            .filter { meta, fastq, num_reads -> num_reads >= min_trimmed_reads.toInteger() }
+            .map { meta, fastq, num_reads -> [ meta, fastq ] }
             .set { trim_reads }
 
         ch_num_trimmed_reads
-            .map { meta, reads, num_reads -> [ meta, num_reads ] }
+            .map { meta, fastq, num_reads -> [ meta, num_reads ] }
             .set { trim_read_count }
 
         if (!skip_fastqc) {

@@ -14,7 +14,7 @@ workflow BAM_DEDUPLICATE {
     ch_versions = Channel.empty()
     ch_multiqc  = Channel.empty()
 
-    ch_bam         = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, bam ] }
+    ch_bam      = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, bam ] }
     reference   = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, fasta ] }
     faidx       = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, fai ] }
 

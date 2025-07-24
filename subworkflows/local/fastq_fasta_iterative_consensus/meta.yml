@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: fastq_fasta_iterative_consensus
+description: Perform iterative consensus calling (up to 4 iterations) to improve sequence quality through repeated mapping and consensus generation
+keywords:
+  - iterative
+  - consensus
+  - mapping
+  - refinement
+  - variants
+  - quality improvement
+  - iterations
+components:
+  - fastq_fasta_map_consensus
+input:
+  - reference_reads:
+      description: |
+        Input reference sequences and corresponding reads
+        Structure: [ val(meta), path(reference), path(fastq) ]
+  - repeats:
+      description: |
+        Number of iterative consensus rounds to perform
+        Type: value
+        Pattern: "0|1|2|3|4"
+  - intermediate_mapper:
+      description: |
+        Mapping algorithm to use for intermediate iterations
+        Type: value
+        Pattern: "bwamem2|bowtie2"
+  - umi:
+      description: |
+        Whether UMI-based deduplication should be used
+        Type: value
+        Pattern: "true|false"
+  - deduplicate:
+      description: |
+        Whether to perform deduplication of mapped reads
+        Type: value
+        Pattern: "true|false"
+  - call_intermediate_variants:
+      description: |
+        Whether to call variants during intermediate iterations
+        Type: value
+        Pattern: "true|false"
+  - intermediate_variant_caller:
+      description: |
+        Variant calling method for intermediate iterations
+        Type: value
+        Pattern: "bcftools|ivar"
+  - intermediate_consensus_caller:
+      description: |
+        Consensus calling method for intermediate iterations
+        Type: value
+        Pattern: "bcftools|ivar"
+  - intermediate_mapping_stats:
+      description: |
+        Whether to generate mapping statistics during iterations
+        Type: value
+        Pattern: "true|false"
+  - min_mapped_reads:
+      description: |
+        Minimum number of mapped reads required to proceed
+        Type: integer
+  - min_len:
+      description: |
+        Minimum consensus sequence length for quality filtering
+        Type: integer
+  - n_100:
+      description: |
+        Maximum number of consecutive Ns allowed in consensus sequences
+        Type: integer
+output:
+  - consensus_reads:
+      description: |
+        Final consensus sequences with their corresponding reads after all iterations
+        Structure: [ val(meta), path(fasta), path(fastq) ]
+  - consensus_allsteps:
+      description: |
+        Consensus sequences from all iteration steps
+        Structure: [ val(meta), path(fasta) ]
+  - bam:
+      description: |
+        Final BAM files from the last iteration
+        Structure: [ val(meta), path(bam) ]
+  - vcf:
+      description: |
+        Final raw variant calls from the last iteration
+        Structure: [ val(meta), path(vcf) ]
+  - vcf_filter:
+      description: |
+        Final filtered variant calls from the last iteration
+        Structure: [ val(meta), path(vcf) ]
+  - consensus:
+      description: |
+        Final consensus sequences from the last iteration
+        Structure: [ val(meta), path(fasta) ]
+  - mqc:
+      description: |
+        MultiQC files from all iterations
+        Structure: [ val(meta), path(mqc) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

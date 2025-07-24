@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: fastq_kraken_kaiju
+description: Metagenomic taxonomic classification using Kraken2, Bracken, and Kaiju with Krona visualization
+keywords:
+  - taxonomy
+  - classification
+  - metagenomics
+  - kraken2
+  - bracken
+  - kaiju
+  - krona
+  - visualization
+components:
+  - kraken2/kraken2
+  - krakentools/kreport2krona
+  - bracken/bracken
+  - kaiju/kaiju
+  - kaiju/kaiju2table
+  - kaiju/kaiju2krona
+  - krona_cleanup
+  - krona/ktimporttext
+input:
+  - reads:
+      description: |
+        Input FASTQ files for taxonomic classification
+        Structure: [ val(meta), path(fastq) ]
+  - read_classifiers:
+      description: |
+        List of classifiers to use for taxonomic classification
+        Type: value
+        Pattern: "kraken2|kaiju|bracken"
+  - kraken2_db:
+      description: |
+        Kraken2 database for taxonomic classification
+        Structure: [ path(kraken2_db) ]
+  - bracken_db:
+      description: |
+        Bracken database for abundance estimation
+        Structure: [ path(bracken_db) ]
+  - kaiju_db:
+      description: |
+        Kaiju database for taxonomic classification
+        Structure: [ path(kaiju_db) ]
+output:
+  - read_classifications:
+      description: |
+        Raw read classification assignments
+        Structure: [ val(meta), path(classified_reads) ]
+  - krona_html:
+      description: |
+        Krona HTML visualizations of taxonomic classifications
+        Structure: [ val(meta), path(html) ]
+  - mqc:
+      description: |
+        MultiQC files containing classification reports and summaries
+        Structure: [ val(meta), path(multiqc_file) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

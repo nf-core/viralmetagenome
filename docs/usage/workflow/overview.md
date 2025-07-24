@@ -1,7 +1,8 @@
 ---
-title: Workflow overview
-subtitle: Complete analysis pipeline for viral metagenomics
+order: 1
 ---
+
+# Workflow overview
 
 Viralmetagenome takes in a set of reads and performs 5 major analyses, each of them are explained in more detail in the following sections:
 

@@ -1,7 +1,8 @@
 ---
-title: Custom configuration of modules
-subtitle: Modifying tool arguments and pipeline parameters
+order: 3
 ---
+
+# Custom configuration of modules
 
 ## Using `--argument_tool_name` parameters
 

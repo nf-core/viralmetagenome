@@ -1,7 +1,4 @@
----
-title: Output
-subtitle: Pipeline output files and reports
----
+# Output
 
 ## Introduction
 

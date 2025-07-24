@@ -6,7 +6,6 @@ include { CAT_CAT as CAT_CAT_READS } from '../../../modules/nf-core/cat/cat/main
 include { MASH_SKETCH              } from '../../../modules/nf-core/mash/sketch/main'
 include { MASH_SCREEN              } from '../../../modules/nf-core/mash/screen/main'
 include { SELECT_REFERENCE         } from '../../../modules/local/select_reference/main'
-include { getMapFromJson           } from '../utils_nfcore_viralmetagenome_pipeline'
 
 workflow FASTQ_FASTA_MASH_SCREEN {
 

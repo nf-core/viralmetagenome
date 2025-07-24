@@ -17,6 +17,7 @@ components:
   - kaiju/kaiju
   - kaiju/kaiju2table
   - kaiju/kaiju2krona
+  - krona/cleanup
   - krona_cleanup
   - krona/ktimporttext
 input:

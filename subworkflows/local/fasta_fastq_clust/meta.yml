@@ -20,6 +20,7 @@ components:
   - mmseqs/createtsv
   - vrhyme/vrhyme
   - mash/dist
+  - network/cluster
   - network_cluster
 input:
   - fasta_fastq:

@@ -15,8 +15,10 @@ components:
   - fasta_blast_refsel
   - fasta_fastq_clust
   - fasta_contig_preclust
+  - extract/cluster
   - extract_cluster
   - utils_nfcore_viralmetagenome_pipeline
+  - getmapfromjson
 input:
   - fasta_fastq:
       description: |

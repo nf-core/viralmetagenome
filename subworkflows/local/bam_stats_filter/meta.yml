@@ -12,6 +12,8 @@ components:
   - samtools/index
   - samtools/stats
   - utils_nfcore_viralmetagenome_pipeline
+  - failedmappedreadstomultiqc
+  - getstatsmappedreads
 input:
   - ch_bam:
       description: |

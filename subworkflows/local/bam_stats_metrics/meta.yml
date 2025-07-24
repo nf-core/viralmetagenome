@@ -16,6 +16,7 @@ components:
   - picard/collectmultiplemetrics
   - mosdepth
   - bam_stats_samtools
+  - custom/mpileup
   - custom_mpileup
 input:
   - sort_bam_ref:

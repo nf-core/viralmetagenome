@@ -11,8 +11,10 @@ keywords:
   - genomics
 components:
   - snpeff_build
+  - snpeff/build
   - snpeff/snpeff
   - snpsift_extractfields
+  - snpsift/extractfields
 input:
   - ch_vcf_ref:
       description: |

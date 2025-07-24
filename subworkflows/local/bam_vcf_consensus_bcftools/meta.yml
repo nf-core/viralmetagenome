@@ -15,6 +15,7 @@ components:
   - bedtools/maskfasta
   - bcftools/consensus
   - make_bed_mask
+  - make/bed/mask
 input:
   - bam:
       description: |

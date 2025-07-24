@@ -26,6 +26,7 @@ components:
   - fastq_fastqc_umitools_fastp
   - fastq_kraken_host_remove
   - utils_nfcore_viralmetagenome_pipeline
+  - lowreadsamplestomultiqc
 input:
   - ch_reads:
       description: |

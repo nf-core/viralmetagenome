@@ -9,8 +9,10 @@ keywords:
   - sequence similarity
 components:
   - blast/blastn
+  - blast/filter
   - blast_filter
   - utils_nfcore_viralmetagenome_pipeline
+  - noblasthitstomultiqc
 input:
   - ch_fasta:
       description: |

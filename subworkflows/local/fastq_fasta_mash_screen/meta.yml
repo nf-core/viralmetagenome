@@ -12,8 +12,7 @@ components:
   - cat/cat
   - mash/sketch
   - mash/screen
-  - select_reference
-  - utils_nfcore_viralmetagenome_pipeline
+  - select/reference
 input:
   - fasta_reads:
       description: |

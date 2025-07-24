@@ -10,8 +10,10 @@ keywords:
   - fasta
 components:
   - ivar/consensus
+  - rename/fasta/header
   - rename_fasta_header
   - bam_vcf_consensus_bcftools
+  - bam/vcf/consensus/bcftools
 input:
   - bam_ref:
       description: |

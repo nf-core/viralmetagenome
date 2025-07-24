@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: singleton_filtering
-description: Filter singleton contigs based on minimum size and maximum N percentage with header renaming
+description: Filter singleton (clusters) contigs based on minimum size and maximum N percentage with header renaming
 keywords:
   - singleton
   - filtering
@@ -9,8 +9,10 @@ keywords:
   - size filtering
   - header renaming
 components:
+  - rename/fasta/header
   - rename_fasta_header
   - utils_nfcore_viralmetagenome_pipeline
+  - filtercontigs
 input:
   - fasta:
       description: |

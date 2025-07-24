@@ -19,6 +19,7 @@ components:
   - cat/cat
   - prinseqplusplus
   - utils_nfcore_viralmetagenome_pipeline
+  - nocontigsamplestomultiqc
 input:
   - ch_reads:
       description: |

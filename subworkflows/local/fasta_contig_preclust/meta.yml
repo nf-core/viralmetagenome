@@ -12,8 +12,10 @@ keywords:
 components:
   - kaiju/kaiju
   - kraken2/kraken2
+  - extract/precluster
   - extract_precluster
   - utils_nfcore_viralmetagenome_pipeline
+  - getmapfromjson
 input:
   - ch_contigs_reads:
       description: |

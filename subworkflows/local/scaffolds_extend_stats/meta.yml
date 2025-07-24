@@ -12,6 +12,7 @@ keywords:
   - statistics
 components:
   - quast
+  - sspace/basic
   - sspace_basic
   - samtools/index
   - samtools/idxstats

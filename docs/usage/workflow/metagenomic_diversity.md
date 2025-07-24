@@ -1,7 +1,8 @@
 ---
-title: Read classification
-subtitle: Metagenomic taxonomic classification and diversity analysis
+order: 3
 ---
+
+# Read classification
 
 Viralmetagenome offers two main tools for the classification of reads and a summary visualisation tool:
 

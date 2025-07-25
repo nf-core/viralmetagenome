@@ -4,5 +4,7 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - conda-forge::python=3.12.5
+  - conda-forge::numpy=2.1.1
   - conda-forge::biopython=1.84
   - conda-forge::matplotlib=3.9.2

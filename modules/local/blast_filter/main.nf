@@ -4,8 +4,8 @@ process BLAST_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/biopython_pandas_python:346d5cc1b18470bb':
-        'community.wave.seqera.io/library/pandas_pip_biopython:465ab8e47f7a0510' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a8a21d1213de3306767d894969c2b371925665e5bf8d0766913fb26a3e287638/data':
+        'community.wave.seqera.io/library/biopython_pandas_python:022b3faa54d6ce14' }"
 
     input:
     tuple val(meta), path(blast)

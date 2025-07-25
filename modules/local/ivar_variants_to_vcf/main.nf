@@ -5,7 +5,7 @@ process IVAR_VARIANTS_TO_VCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/python_pip_biopython_pandas_scipy:2f4494c1bae6db96' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e5b77713d1c484a5d154f87cc3b491ad175787cba119febd6ee0f36b61192a/data' :
         'community.wave.seqera.io/library/python_pip_biopython_pandas_scipy:8c61b990627f38e4' }"
 
     input:

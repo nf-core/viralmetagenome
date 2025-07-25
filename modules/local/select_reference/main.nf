@@ -4,8 +4,8 @@ process SELECT_REFERENCE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a8a21d1213de3306767d894969c2b371925665e5bf8d0766913fb26a3e287638/data':
-        'community.wave.seqera.io/library/biopython_pandas_python:022b3faa54d6ce14' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16fd0599cbc5e52a5ac51f8668ed2c6988b4f44d461606e37953afcd581cd52d/data':
+        'community.wave.seqera.io/library/biopython_pandas_python:671653bb7f9c4d5b' }"
 
     input:
     tuple val(meta), path(screen), path(reference), path(reads)

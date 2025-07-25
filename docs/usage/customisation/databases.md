@@ -1,7 +1,8 @@
 ---
-title: Databases
-subtitle: Custom database configuration and setup
+order: 2
 ---
+
+# Databases
 
 ## Introduction
 
@@ -103,7 +104,7 @@ You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blo
 
 Viralmetagenome uses Kraken2 to remove contaminated reads.
 
-::: info "Why kraken2 for host removal?"
+:::info{title="Why kraken2 for host removal?"}
 The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
 
 - [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)

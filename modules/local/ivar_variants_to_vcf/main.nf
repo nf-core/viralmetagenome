@@ -5,8 +5,8 @@ process IVAR_VARIANTS_TO_VCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ff46c3f421ca930fcc54e67ab61c8e1bcbddfe22:1ad3da14f705eb0cdff6b5a44fea4909307524b4-0' :
-        'biocontainers/mulled-v2-ff46c3f421ca930fcc54e67ab61c8e1bcbddfe22:1ad3da14f705eb0cdff6b5a44fea4909307524b4-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e5b77713d1c484a5d154f87cc3b491ad175787cba119febd6ee0f36b61192a/data' :
+        'community.wave.seqera.io/library/python_pip_biopython_pandas_scipy:8c61b990627f38e4' }"
 
     input:
     tuple val(meta), path(tsv), path(fasta)

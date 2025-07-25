@@ -5,3 +5,4 @@ channels:
   - bioconda
 dependencies:
   - bioconda::ivar=1.4.4
+  - bioconda::samtools=1.21

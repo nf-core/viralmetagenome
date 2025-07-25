@@ -1,7 +1,8 @@
 ---
-title: Preprocessing
-subtitle: Read quality control, trimming, and host removal
+order: 2
 ---
+
+# Preprocessing
 
 Viralmetagenome offers three main preprocessing steps for the preprocessing of raw sequencing reads:
 
@@ -80,7 +81,7 @@ Complexity filtering is done with [`Bbduk`](https://jgi.doe.gov/data-and-tools/s
 
 Contamination, whether derived from experiments or computational processes, looms large in next-generation sequencing data. Such contamination can compromise results from WGS as well as metagenomics studies, and can even lead to the inadvertent disclosure of personal information. To avoid this, host read-removal is performed. Host read-removal is performed by the tool `Kraken2`.
 
-::: info "Interesting reads"
+:::info{title="Interesting reads"}
 The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
 
 - [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)

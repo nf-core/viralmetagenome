@@ -14,12 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add option for sample merging based on group coulumn in samplesheet ([#180](https://github.com/nf-core/viralmetagenome/pull/180))
 - Creating testdatasets using nf-core repo ([#183](https://github.com/nf-core/viralmetagenome/pull/183))
 - Add option to annotate snps with Snpeff for mapping constraint route ([#186](https://github.com/Joon-Klaps/viralgenie/pull/186))
+- Add `nf-tests` for `test` profile ([#189](https://github.com/nf-core/viralmetagenome/pull/189))
+- Update docs ([#200](https://github.com/nf-core/viralmetagenome/pull/200))
 - Template update for nf-core/tools v3.3.2 ([#202](https://github.com/nf-core/viralmetagenome/pull/202))
 
 ### `Fixed`
 
 - Fix local module `ivar_variants_to_vcf` to handle empty tsv files ([#197](https://github.com/Joon-Klaps/viralmetagenome/pull/197/))
 - Migrate lib dir functions to utils_nfcore_viralmetagenome_pipeline ([#194](https://github.com/nf-core/viralmetagenome/pull/194))
+- Fix inconsistent dependency versions across modules ([#208](https://github.com/nf-core/viralmetagenome/pull/208))
 
 ### `Parameters`
 

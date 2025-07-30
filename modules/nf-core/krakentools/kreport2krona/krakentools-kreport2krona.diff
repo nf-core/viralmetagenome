@@ -1,6 +1,4 @@
 Changes in component 'nf-core/krakentools/kreport2krona'
-'modules/nf-core/krakentools/kreport2krona/environment.yml' is unchanged
-'modules/nf-core/krakentools/kreport2krona/meta.yml' is unchanged
 Changes in 'krakentools/kreport2krona/main.nf':
 --- modules/nf-core/krakentools/kreport2krona/main.nf
 +++ modules/nf-core/krakentools/kreport2krona/main.nf
@@ -14,6 +12,8 @@ Changes in 'krakentools/kreport2krona/main.nf':
          -r ${kreport} \\
          -o ${prefix}.txt \\
 
-'modules/nf-core/krakentools/kreport2krona/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/krakentools/kreport2krona/environment.yml' is unchanged
+'modules/nf-core/krakentools/kreport2krona/meta.yml' is unchanged
 'modules/nf-core/krakentools/kreport2krona/tests/main.nf.test' is unchanged
+'modules/nf-core/krakentools/kreport2krona/tests/main.nf.test.snap' is unchanged
 ************************************************************

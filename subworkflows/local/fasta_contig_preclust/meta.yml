@@ -22,10 +22,10 @@ input:
         Input contigs with their corresponding reads
         Structure: [ val(meta), path(fasta), path(fastq) ]
   - contig_classifiers:
+      type: string
       description: |
         List of taxonomic classifiers to use
-        Type: value
-        Pattern: "kaiju|kraken2"
+      enum: ["kaiju", "kraken2"]
   - ch_kaiju_db:
       description: |
         Kaiju database for taxonomic classification

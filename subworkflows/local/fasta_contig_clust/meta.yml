@@ -45,10 +45,10 @@ input:
         Kaiju database for taxonomic classification
         Structure: [ val(meta), path(db) ]
   - contig_classifiers:
+      type: string
       description: |
         List of taxonomic classifiers to use for preclustering
-        Type: value
-        Pattern: "['kraken2','kaiju']"
+      enum: ["kraken2", "kaiju"]
 output:
   - clusters:
       description: |

@@ -24,9 +24,9 @@ input:
         Reference FASTA sequences for statistics calculation
         Structure: [ val(meta), path(fasta) ]
   - min_mapped_reads:
+      type: integer
       description: |
         Minimum number of mapped reads required to pass filtering
-        Type: integer
 output:
   - bam_pass:
       description: |

@@ -21,13 +21,13 @@ input:
         Kraken2 database containing host reference sequences
         Structure: [ path(kraken2_host_db) ]
   - skip_fastqc:
+      type: boolean
       description: |
         Whether to skip FastQC quality control analysis
-        Type: boolean
   - min_reads:
+      type: integer
       description: |
         Minimum number of reads required after host removal to pass filtering
-        Type: integer
 output:
   - reads_hostremoved:
       description: |

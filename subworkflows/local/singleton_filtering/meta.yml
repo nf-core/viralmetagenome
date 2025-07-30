@@ -19,13 +19,13 @@ input:
         FASTA files containing singleton contigs to be filtered
         Structure: [ val(meta), path(fasta) ]
   - min_contig_size:
+      type: integer
       description: |
         Minimum contig size threshold for filtering
-        Type: integer
   - max_n_perc:
+      type: integer
       description: |
         Maximum percentage of N bases allowed in contigs
-        Type: integer
 output:
   - filtered:
       description: |

@@ -26,10 +26,10 @@ input:
         Input FASTQ files for taxonomic classification
         Structure: [ val(meta), path(fastq) ]
   - read_classifiers:
+      type: string
       description: |
         List of classifiers to use for taxonomic classification
-        Type: value
-        Pattern: "kraken2|kaiju|bracken"
+      enum: ["kraken2", "kaiju", "bracken"]
   - kraken2_db:
       description: |
         Kraken2 database for taxonomic classification

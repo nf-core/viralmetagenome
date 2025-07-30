@@ -17,57 +17,53 @@ input:
         Input reference sequences and corresponding reads
         Structure: [ val(meta), path(reference), path(fastq) ]
   - repeats:
+      type: string
       description: |
         Number of iterative consensus rounds to perform
-        Type: value
-        Pattern: "0|1|2|3|4"
+      enum: ["0", "1", "2", "3", "4"]
   - intermediate_mapper:
+      type: string
       description: |
         Mapping algorithm to use for intermediate iterations
-        Type: value
-        Pattern: "bwamem2|bowtie2"
+      enum: ["bwamem2", "bowtie2"]
   - umi:
+      type: boolean
       description: |
         Whether UMI-based deduplication should be used
-        Type: value
-        Pattern: "true|false"
   - deduplicate:
+      type: boolean
       description: |
         Whether to perform deduplication of mapped reads
-        Type: value
-        Pattern: "true|false"
   - call_intermediate_variants:
+      type: boolean
       description: |
         Whether to call variants during intermediate iterations
-        Type: value
-        Pattern: "true|false"
   - intermediate_variant_caller:
+      type: string
       description: |
         Variant calling method for intermediate iterations
-        Type: value
-        Pattern: "bcftools|ivar"
+      enum: ["bcftools", "ivar"]
   - intermediate_consensus_caller:
+      type: string
       description: |
         Consensus calling method for intermediate iterations
-        Type: value
-        Pattern: "bcftools|ivar"
+      enum: ["bcftools", "ivar"]
   - intermediate_mapping_stats:
+      type: boolean
       description: |
         Whether to generate mapping statistics during iterations
-        Type: value
-        Pattern: "true|false"
   - min_mapped_reads:
+      type: integer
       description: |
         Minimum number of mapped reads required to proceed
-        Type: integer
   - min_len:
+      type: integer
       description: |
         Minimum consensus sequence length for quality filtering
-        Type: integer
   - n_100:
+      type: integer
       description: |
         Maximum number of consecutive Ns allowed in consensus sequences
-        Type: integer
 output:
   - consensus_reads:
       description: |

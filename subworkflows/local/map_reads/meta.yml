@@ -23,10 +23,10 @@ input:
         The input channel containing reference sequences and sequencing reads
         Structure: [ val(meta), path(fasta), path(reads) ]
   - mapper:
+      type: string
       description: |
         The mapping algorithm to use
-        Type: value
-        Pattern: "bwamem2|bowtie2|bwa"
+      enum: ["bwamem2", "bowtie2", "bwa"]
 output:
   - bam:
       description: |

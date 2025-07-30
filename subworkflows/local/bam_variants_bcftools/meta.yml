@@ -19,10 +19,9 @@ input:
         The input channel containing BAM files with their corresponding reference sequences
         Structure: [ val(meta), path(bam), path(fasta) ]
   - save_stats:
+      type: boolean
       description: |
         Whether to save variant statistics (mpileup statistics)
-        Type: value
-        Pattern: "true|false"
 output:
   - vcf:
       description: |

@@ -24,15 +24,14 @@ input:
         The input channel containing VCF files for variant calling
         Structure: [ val(meta), path(vcf) ]
   - consensus_caller:
+      type: string
       description: |
         The consensus calling method to use
-        Type: value
-        Pattern: "bcftools|ivar"
+      enum: ["bcftools", "ivar"]
   - mapping_stats:
+      type: boolean
       description: |
         Whether to save mapping statistics (mpileup files for ivar)
-        Type: value
-        Pattern: "true|false"
 output:
   - consensus:
       description: |

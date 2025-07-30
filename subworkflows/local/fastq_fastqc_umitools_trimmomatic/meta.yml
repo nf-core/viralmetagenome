@@ -21,38 +21,38 @@ input:
         Input FASTQ files for processing
         Structure: [ val(meta), path(reads) ]
   - skip_fastqc:
+      type: boolean
       description: |
         Whether to skip FastQC quality control analysis
-        Type: boolean
   - with_umi:
+      type: boolean
       description: |
         Whether the reads contain UMIs that need extraction
-        Type: boolean
   - skip_umi_extract:
+      type: boolean
       description: |
         Whether to skip UMI extraction even if with_umi is true
-        Type: boolean
   - umi_discard_read:
+      type: string
       description: |
         Which read to discard after UMI extraction (0=keep both, 1=discard R1, 2=discard R2)
-        Type: integer
-        Pattern: "0|1|2"
+      enum: ["0", "1", "2"]
   - skip_trimming:
+      type: boolean
       description: |
         Whether to skip adapter trimming with Trimmomatic
-        Type: boolean
   - save_trimmed_fail:
+      type: boolean
       description: |
         Whether to save reads that failed trimming quality filters
-        Type: boolean
   - save_merged:
+      type: boolean
       description: |
         Whether to save merged paired-end reads
-        Type: boolean
   - min_trimmed_reads:
+      type: integer
       description: |
         Minimum number of trimmed reads required to pass filtering
-        Type: integer
 output:
   - reads:
       description: |

@@ -20,15 +20,13 @@ input:
         The input channel containing BAM files with their corresponding reference sequences and index
         Structure: [ val(meta), path(bam), path(fasta), path(fai) ]
   - umi:
+      type: boolean
       description: |
         Whether UMI-based deduplication should be used
-        Type: value
-        Pattern: "true|false"
   - mapping_stats:
+      type: boolean
       description: |
         Whether to save mapping statistics and MultiQC files
-        Type: value
-        Pattern: "true|false"
 output:
   - bam:
       description: |

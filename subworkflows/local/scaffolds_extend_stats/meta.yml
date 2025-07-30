@@ -27,10 +27,10 @@ input:
         Raw scaffold/contig sequences to be processed
         Structure: [ val(meta), path(scaffolds) ]
   - name:
+      type: string
       description: |
         Name identifier for the assembly method used
-        Type: value
-        Pattern: "spades|trinity|megahit"
+      enum: ["spades", "trinity", "megahit"]
 output:
   - scaffolds:
       description: |

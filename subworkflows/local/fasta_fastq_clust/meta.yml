@@ -28,10 +28,10 @@ input:
         Input sequences and reads for clustering
         Structure: [ val(meta), path(fasta), path(fastq) ]
   - cluster_method:
+      type: string
       description: |
         Clustering algorithm to use
-        Type: string
-        Pattern: "vsearch|cdhitest|mmseqs-linclust|mmseqs-cluster|vrhyme|mash"
+      enum: ["vsearch", "cdhitest", "mmseqs-linclust", "mmseqs-cluster", "vrhyme", "mash"]
 output:
   - clusters:
       description: |

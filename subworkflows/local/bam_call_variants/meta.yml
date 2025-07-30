@@ -19,15 +19,14 @@ input:
         The input channel containing BAM files with their corresponding reference sequences
         Structure: [ val(meta), path(bam), path(fasta) ]
   - variant_caller:
+      type: string
       description: |
         The variant calling method to use
-        Type: value
-        Pattern: "bcftools|ivar"
+      enum: ["bcftools", "ivar"]
   - save_stats:
+      type: boolean
       description: |
         Whether to save variant statistics and generate tabix indices
-        Type: value
-        Pattern: "true|false"
 output:
   - vcf:
       description: |

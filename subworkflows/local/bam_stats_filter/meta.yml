@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: bam_stats_filter
+description: Filter BAM files based on minimum mapped reads threshold with statistics generation
+keywords:
+  - bam
+  - filtering
+  - samtools
+  - statistics
+  - mapped reads
+  - quality control
+components:
+  - samtools/index
+  - samtools/stats
+  - utils_nfcore_viralmetagenome_pipeline
+  - failedmappedreadstomultiqc
+  - getstatsmappedreads
+input:
+  - ch_bam:
+      description: |
+        BAM files to be filtered
+        Structure: [ val(meta), path(bam) ]
+  - ch_reference:
+      description: |
+        Reference FASTA sequences for statistics calculation
+        Structure: [ val(meta), path(fasta) ]
+  - min_mapped_reads:
+      type: integer
+      description: |
+        Minimum number of mapped reads required to pass filtering
+output:
+  - bam_pass:
+      description: |
+        BAM files that passed the minimum mapped reads threshold
+        Structure: [ val(meta), path(bam) ]
+  - stats:
+      description: |
+        Samtools statistics files for all BAM files
+        Structure: [ val(meta), path(stats) ]
+  - bam_fail_mqc:
+      description: |
+        MultiQC-compatible file reporting samples that failed mapping threshold
+        Structure: [ path(tsv) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

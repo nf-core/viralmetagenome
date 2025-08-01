@@ -23,14 +23,14 @@ input:
         description: Bed feature file
         pattern: "*.{bed}"
         ontologies: []
-    - fasta:
-        type: file
-        description: Input fasta file
-        pattern: "*.{fa,fasta}"
-        ontologies: []
-output:
   - fasta:
-      - meta:
+      type: file
+      description: Input fasta file
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+output:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,13 +40,13 @@ output:
           description: Output masked fasta file
           pattern: "*.{fa}"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"

@@ -1,38 +1,6 @@
 Changes in component 'nf-core/bedtools/maskfasta'
+'modules/nf-core/bedtools/maskfasta/meta.yml' is unchanged
 'modules/nf-core/bedtools/maskfasta/environment.yml' is unchanged
-Changes in 'bedtools/maskfasta/meta.yml':
---- modules/nf-core/bedtools/maskfasta/meta.yml
-+++ modules/nf-core/bedtools/maskfasta/meta.yml
-@@ -22,10 +22,12 @@
-         type: file
-         description: Bed feature file
-         pattern: "*.{bed}"
--  - - fasta:
-+        ontologies: []
-+    - fasta:
-         type: file
-         description: Input fasta file
-         pattern: "*.{fa,fasta}"
-+        ontologies: []
- output:
-   - fasta:
-       - meta:
-@@ -37,11 +39,14 @@
-           type: file
-           description: Output masked fasta file
-           pattern: "*.{fa}"
-+          ontologies: []
-   - versions:
-       - versions.yml:
-           type: file
-           description: File containing software versions
-           pattern: "versions.yml"
-+          ontologies:
-+            - edam: http://edamontology.org/format_3750 # YAML
- authors:
-   - "@joseespinosa"
-   - "@drpatelh"
-
 Changes in 'bedtools/maskfasta/main.nf':
 --- modules/nf-core/bedtools/maskfasta/main.nf
 +++ modules/nf-core/bedtools/maskfasta/main.nf

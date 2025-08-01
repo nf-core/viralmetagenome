@@ -1,7 +1,7 @@
 
 include { IVAR_CONSENSUS                                                } from '../../modules/nf-core/ivar/consensus/main'
 include { BAM_VCF_CONSENSUS_BCFTOOLS                                    } from './bam_vcf_consensus_bcftools.nf'
-include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_CALLED_CONSENSUS   } from '../../modules/local/rename_fasta_header'
+include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_CALLED_CONSENSUS   } from '../../modules/local/rename_fasta_header/main'
 
 workflow BAM_CALL_CONSENSUS {
 

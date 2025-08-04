@@ -2,7 +2,7 @@ process SNPEFF_BUILD {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::snpeff=5.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1' :
         'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' }"

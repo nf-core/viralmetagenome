@@ -47,7 +47,7 @@ Raw sequencing read processing in the form of adapter clipping and paired-end re
 Unique Molecular Identifiers (UMIs) are short sequences that are added during library preparation. They are used to identify and remove PCR duplicates. The tool [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html) is used to remove PCR duplicates based on the UMI sequences. HUMID supports two ways to group reads using their UMI. By default, HUMID uses the directional method, which takes into account the expected errors based on the PCR process. Specify the allowed amount of errors to see reads coming from the same original fragment with `--arguments_humid '-m 5'`, for a distance of 5 [default : 1]. Alternatively, HUMID supports the maximum clustering method, where all reads that are within the specified distance are grouped together.
 
 :::tip{title="Directional vs maximum clustering"}
-![HUMID UMI clustering](../../images/umi-clustering-humid.png){.center : style="height:230px;width:450px"}
+![HUMID UMI clustering](../../images/umi-clustering-humid.png)
 
 <p style="text-align: center;">_Taken from [UMI-tools: 'The network based deduplication methods'](https://umi-tools.readthedocs.io/en/latest/the_methods.html)_ </p>
 

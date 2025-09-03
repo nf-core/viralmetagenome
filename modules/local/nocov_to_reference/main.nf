@@ -45,6 +45,8 @@ process NOCOV_TO_REFERENCE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fa
+    touch ${prefix}.txt
+    touch ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

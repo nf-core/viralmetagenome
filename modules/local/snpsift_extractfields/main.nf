@@ -49,4 +49,23 @@ process SNPSIFT_EXTRACTFIELDS {
         snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def avail_mem = 4
+    if (!task.memory) {
+        log.info '[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
+    """
+    touch ${prefix}.snpsift.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+    END_VERSIONS
+    """
 }

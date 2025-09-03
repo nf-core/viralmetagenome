@@ -59,8 +59,11 @@ process SSPACE_BASIC {
     def reads = reads.join('\t')
     def version = "2.1.1" // version not available through CLI of tool
     """
-    touch ${prefix}.final.scaffolds.fasta
     touch ${prefix}.final.renamed.scaffolds.fa
+    touch ${prefix}.final.scaffolds.fasta
+    touch ${prefix}.library.txt
+    touch ${prefix}.logfile.txt
+    touch ${prefix}.summaryfile.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

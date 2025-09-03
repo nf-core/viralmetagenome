@@ -544,10 +544,10 @@ Deduplication results are also visualized within the MultiQC report.
 [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html) is a set of tools for handling Unique Molecular Identifiers (UMIs) in NGS data. The deduplication is done by the `dedup` tool.
 
 **Number of deduplicated reads**:
-![MultiQC - UMI-tools deduplication plot](images/mqc_umitools_deduplication_barplot.png){.center}
+![MultiQC - UMI-tools deduplication plot](images/mqc_umitools_deduplication_barplot.png)
 
 **Summary statistics**:
-![MultiQC - UMI-tools violin plot](images/mqc_umitools_stats_violin.png){.center}
+![MultiQC - UMI-tools violin plot](images/mqc_umitools_stats_violin.png)
 
 :::abstract{title="Output files - variants" collapse}
 
@@ -607,8 +607,8 @@ If `--deduplicate` is set to `true` [default], all metrics will be calculated on
 
 [Samtools](http://www.htslib.org/) is a suite of programs for interacting with high-throughput sequencing data. We use samtools in this pipeline to obtain mapping statistics from three tools: `flagstat`, `idxstats` and `stats`.
 
-![MultiQC - Samtools stats statistics](images/mqc_samtools_alignment_plot.png){.center}
-![MultiQC - Samtools flagstat statistics](images/mqc_samtools-flagstat-dp.png){.center}
+![MultiQC - Samtools stats statistics](images/mqc_samtools_alignment_plot.png)
+![MultiQC - Samtools flagstat statistics](images/mqc_samtools-flagstat-dp.png)
 
 :::abstract{title="Output files - variants" collapse}
 
@@ -675,8 +675,8 @@ Where $N$ is the total bases at a position, $k$ is the pseudocount (default 50),
 
 [mosdepth](https://github.com/brentp/mosdepth) is a fast BAM/CRAM depth calculation for WGS, exome, or targeted sequencing. mosdepth is used in this pipeline to obtain genome-wide coverage values in 200bp windows. The results are rendered in MultiQC (genome-wide coverage).
 
-![MultiQC - Mosdepth cumulative coverage plot](images/mqc_mosdepth-cumcoverage-dist-id.png){.center}
-![MultiQC - Mosdepth coverage plot](images/mqc_mosdepth-coverage-per-contig-single.png){.center}
+![MultiQC - Mosdepth cumulative coverage plot](images/mqc_mosdepth-cumcoverage-dist-id.png)
+![MultiQC - Mosdepth coverage plot](images/mqc_mosdepth-coverage-per-contig-single.png)
 
 :::abstract{title="Output files - variants" collapse}
 
@@ -704,7 +704,7 @@ Variant calling is done with [`BCFTools mpileup`](http://samtools.github.io/bcft
 
 Variant files are visualized in the MultiQC report.
 
-![MultiQC - BCFTools variant calling plot](images/mqc_bcftools-stats-subtypes.png){.center}
+![MultiQC - BCFTools variant calling plot](images/mqc_bcftools-stats-subtypes.png)
 
 :::abstract{title="Output files - variants" collapse}
 
@@ -921,7 +921,7 @@ It is used to align the following genomic data:
 
 Alignment can then be opened with MSA viewer, for example Jalview
 
-![MSA alignment jalview](images/mafft_example_alignment_jalview.png){.center}
+![MSA alignment jalview](images/mafft_example_alignment_jalview.png)
 
 ## MultiQC
 

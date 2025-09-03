@@ -138,10 +138,10 @@ There are again a couple of differences between the iVar and BCFtools:
 2. Ambiguous nucleotides for multi-allelic sites in iVar.
    > iVar is capable to give lower frequency nucleotides ambiguous bases a summarising annotation instead of 'N'. For example at a certain position, the frequency of 'A' is 40% and of 'G' is 40%. Instead of reporting an 'N', iVar will report 'R'.
    >
-   > ![multi-allelic sites ivar vs bcftools](../../images/multi_allelic_sites_ivar_vs_bcftools.png){.center}
+   > ![multi-allelic sites ivar vs bcftools](../../images/multi_allelic_sites_ivar_vs_bcftools.png)
 3. Ambiguous nucleotides for low read depth.
    > In case of a low read depth at a certain position, if it doesn't get flagged by bcftools during variant calling, it will not be considered as a variant and the consensus will not be updated. iVar will update the consensus with an ambiguous base in case of low read depth.
    >
-   > ![low depth ivar vs bcftools](../../images/low_depth_ivar_vs_bcftools.png){.center}
+   > ![low depth ivar vs bcftools](../../images/low_depth_ivar_vs_bcftools.png)
 
 > The consensus caller can be specified with the `--consensus_caller` parameter, the default is `ivar`. The intermediate consensus caller (for intermediate refinement cycles) can be specified with `--intermediate_consensus_caller` and is by default `bcftools`.

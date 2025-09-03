@@ -7,19 +7,19 @@ include { CUSTOM_MPILEUP                } from '../../../modules/local/custom_mp
 workflow BAM_STATS_METRICS {
 
     take:
-    sort_bam_ref    // channel: [ val(meta), [ bam ], [ ref ] ]
+    ch_sort_bam_ref    // channel: [ val(meta), [ bam ], [ ref ] ]
 
     main:
 
     ch_versions = Channel.empty()
     ch_multiqc  = Channel.empty()
 
-    sort_bam    = sort_bam_ref.map{meta, bam, ref -> [ meta, bam ]}
+    sort_bam    = ch_sort_bam_ref.map{meta, bam, ref -> [ meta, bam ]}
 
     SAMTOOLS_INDEX ( sort_bam )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
-    input_metrics = sort_bam_ref
+    input_metrics = ch_sort_bam_ref
         .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
         .multiMap{
             meta, bam, ref, bai ->
@@ -28,7 +28,7 @@ workflow BAM_STATS_METRICS {
             bam_bai_bed: [meta, bam, bai, []]
         }
 
-    CUSTOM_MPILEUP (sort_bam_ref)
+    CUSTOM_MPILEUP (ch_sort_bam_ref)
     ch_versions = ch_versions.mix(CUSTOM_MPILEUP.out.versions)
 
     PICARD_COLLECTMULTIPLEMETRICS ( input_metrics.bam_bai, input_metrics.ref, [[:], []] )

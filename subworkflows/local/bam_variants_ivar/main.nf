@@ -8,16 +8,16 @@ include { BCFTOOLS_FILTER       } from '../../../modules/nf-core/bcftools/filter
 workflow BAM_VARIANTS_IVAR {
 
     take:
-    bam_fasta   // channel: [ val(meta), [ bam ] , [ fasta ]]
+    ch_bam_fasta   // channel: [ val(meta), [ bam ] , [ fasta ]]
     save_stats  // value: [ true | false ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    ch_bam     = bam_fasta.map{ meta, bam, fasta -> [ meta, bam ] }
-    ch_fasta   = bam_fasta.map{ meta, bam, fasta -> [ fasta ] }
-    meta_fasta = bam_fasta.map{ meta, bam, fasta -> [ meta, fasta ] }
+    ch_bam     = ch_bam_fasta.map{ meta, bam, _fasta -> [ meta, bam ] }
+    ch_fasta   = ch_bam_fasta.map{ _meta, _bam, fasta -> [ fasta ] }
+    meta_fasta = ch_bam_fasta.map{ meta, _bam, fasta -> [ meta, fasta ] }
 
     //
     // Call variants
@@ -31,10 +31,7 @@ workflow BAM_VARIANTS_IVAR {
     )
     ch_versions = ch_versions.mix(IVAR_VARIANTS.out.versions.first())
 
-    IVAR_VARIANTS
-        .out
-        .tsv
-        .set { ch_ivar_tsv }
+    ch_ivar_tsv = IVAR_VARIANTS.out.tsv
 
     //
     // Convert original iVar output to VCF, zip and index
@@ -43,12 +40,8 @@ workflow BAM_VARIANTS_IVAR {
         file( params.ivar_header, checkIfExists: true ) :
         file("$projectDir/assets/ivar_variants_header_mqc.txt", checkIfExists: true)
 
-    ch_ivar_tsv
-        .join( meta_fasta, by : [0] )
-        .set { ch_ivar_tsv_fasta }
-
     IVAR_VARIANTS_TO_VCF (
-        ch_ivar_tsv_fasta,
+        ch_ivar_tsv.join( meta_fasta, by : [0] ),
         ch_ivar_vcf_header
     )
     ch_versions = ch_versions.mix(IVAR_VARIANTS_TO_VCF.out.versions.first())

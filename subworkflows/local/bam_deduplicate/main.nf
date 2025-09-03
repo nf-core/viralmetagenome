@@ -5,7 +5,7 @@ include { PICARD_MARKDUPLICATES } from '../../../modules/nf-core/picard/markdupl
 workflow BAM_DEDUPLICATE {
 
     take:
-    bam_ref_fai     // channel: [ val(meta), [ bam ], [ fasta ], [ fai ] ]
+    ch_bam_ref_fai     // channel: [ val(meta), [ bam ], [ fasta ], [ fai ] ]
     umi             // val: [ true | false ]
     mapping_stats   // val: [ true | false ]
 
@@ -14,9 +14,9 @@ workflow BAM_DEDUPLICATE {
     ch_versions = Channel.empty()
     ch_multiqc  = Channel.empty()
 
-    ch_bam      = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, bam ] }
-    reference   = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, fasta ] }
-    faidx       = bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, fai ] }
+    ch_bam      = ch_bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, bam ] }
+    reference   = ch_bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, fasta ] }
+    faidx       = ch_bam_ref_fai.map{meta, bam, fasta, fai -> [ meta, fai ] }
 
     if ( params.with_umi && ['mapping','both'].contains(params.umi_deduplicate) ) {
             SAMTOOLS_INDEX( ch_bam )

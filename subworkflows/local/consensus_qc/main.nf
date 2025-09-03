@@ -10,12 +10,12 @@ include { MMSEQS_ANNOTATE                   } from '../mmseqs_annotate'
 workflow CONSENSUS_QC  {
 
     take:
-    ch_genome              // channel: [ val(meta), [ genome ] ]
-    ch_aligned_raw_contigs // channel: [ val(meta), [ genome ] ]
-    checkv_db              // channel: [ checkv_db ]
-    refpool_db             // channel: [ val(meta), [refpool_db] ]
-    annotation_db          // channel: [ val(meta), [annotation_db] ]
-    prokka_db              // channel: [ val(meta), [prokka_db] ]
+    ch_genome                 // channel: [ val(meta), [ genome ] ]
+    ch_aligned_raw_contigs    // channel: [ val(meta), [ genome ] ]
+    ch_checkv_db              // channel: [ checkv_db ]
+    ch_refpool_db             // channel: [ val(meta), [refpool_db] ]
+    ch_annotation_db          // channel: [ val(meta), [annotation_db] ]
+    ch_prokka_db              // channel: [ val(meta), [prokka_db] ]
 
     main:
 
@@ -28,24 +28,22 @@ workflow CONSENSUS_QC  {
     ch_genome_grouped   = Channel.empty()
 
     // Combine all genomes into a single file
-    ch_genome
+    ch_genomes_all = ch_genome
         .collectFile(name: "all_genomes.fa"){it[1]}
         .map{it -> [[id:"all_genomes"], it]}
-        .set{ch_genomes_all}
 
     // combine the different iterations of a single consensus
-    ch_genome
+    ch_genomes_mapped = ch_genome
         .multiMap{ meta, fasta ->
             metadata: [meta.id, meta.subMap('id','cluster_id','sample')]
             fasta: [meta.id, fasta]
         }
-        .set{ch_genomes_mapped}
-    ch_genomes_mapped.fasta.collectFile{ id, genome ->
+
+    ch_genome_grouped = ch_genomes_mapped.fasta.collectFile{ id, genome ->
             ["${id}.fa", genome]
         }.map{ file -> [file.simpleName, file]}
         .join(ch_genomes_mapped.metadata.unique())
         .map{ id, genome, meta -> [meta, genome]}
-        .set{ch_genome_grouped}
 
     // Contig summary statistics
     if ( !params.skip_quast ) {
@@ -56,14 +54,14 @@ workflow CONSENSUS_QC  {
 
     // Identify closest reference from the reference pool database using blast
     if ( !params.skip_blast_qc ){
-        BLASTN_QC (ch_genomes_all, refpool_db)
+        BLASTN_QC (ch_genomes_all, ch_refpool_db)
         blast       = BLASTN_QC.out.txt
         ch_versions = ch_versions.mix(BLASTN_QC.out.versions)
     }
 
     // use MMSEQS easy search to find best hits against annotation db
     if ( !params.skip_consensus_annotation){
-        MMSEQS_ANNOTATE(ch_genomes_all,annotation_db)
+        MMSEQS_ANNOTATE(ch_genomes_all, ch_annotation_db)
         annotation  = MMSEQS_ANNOTATE.out.tsv
         ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions)
     }
@@ -78,7 +76,7 @@ workflow CONSENSUS_QC  {
                 }
             .set { ch_genomes_final }
 
-        PROKKA(ch_genomes_final, prokka_db, [])
+        PROKKA(ch_genomes_final, ch_prokka_db, [])
         ch_versions = ch_versions.mix(PROKKA.out.versions)
     }
 
@@ -87,12 +85,12 @@ workflow CONSENSUS_QC  {
     if ( !params.skip_checkv ) {
         if ( !params.checkv_db ) {
             CHECKV_DOWNLOADDATABASE()
-            checkv_db   = CHECKV_DOWNLOADDATABASE.out.checkv_db
+            ch_checkv_db   = CHECKV_DOWNLOADDATABASE.out.checkv_db
             ch_versions = ch_versions.mix(CHECKV_DOWNLOADDATABASE.out.versions)
         }
 
         // uses HMM and AA alignment to deterimine completeness
-        CHECKV_ENDTOEND ( ch_genome_grouped, checkv_db)
+        CHECKV_ENDTOEND ( ch_genome_grouped, ch_checkv_db)
         checkv      = CHECKV_ENDTOEND.out.quality_summary
         ch_versions = ch_versions.mix(CHECKV_ENDTOEND.out.versions)
     }

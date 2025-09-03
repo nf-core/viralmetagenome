@@ -29,7 +29,7 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     MINIMAP2_CONTIG_INDEX(ch_references)
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_INDEX.out.versions.first())
 
-    MINIMAP2_CONTIG_INDEX
+    ch_splitup = MINIMAP2_CONTIG_INDEX
         .out
         .index
         .join( ch_references_members, by: [0] )
@@ -40,7 +40,6 @@ workflow ALIGN_COLLAPSE_CONTIGS {
             internal: true
                 return [meta, index, comb]
         }
-        .set{ ch_splitup }
 
     ch_index_contigs = ch_splitup.external.mix(ch_splitup.internal)
 
@@ -50,10 +49,9 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     MINIMAP2_CONTIG_ALIGN(ch_contigs, ch_index, true, "bai", false, false )
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_ALIGN.out.versions.first())
 
-    ch_references_members
+    ch_references_bam = ch_references_members
         .join( MINIMAP2_CONTIG_ALIGN.out.bam, by: [0] )
         .map{ meta, references, members, bam -> [meta, references, bam] }
-        .set{ ch_references_bam }
 
     ivar_bam   = ch_references_bam.map{ meta, references, bam -> [meta, bam] }
     ivar_fasta = ch_references_bam.map{ meta, references, bam -> [references] }
@@ -68,33 +66,27 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.versions.first())
 
     // If external, there possibly regions that require patching
-    RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta
+     ch_consensus = RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta
         .branch{ meta, fasta ->
             external: meta.external_reference
             internal: true
         }
-        .set{ ch_consensus }
 
     // Combine input for custom annotation script.
-    ch_references_bam
+    ch_ref_cons_mpileup = ch_references_bam
         .join( ch_consensus.external, by: [0] )
         .join( IVAR_CONTIG_CONSENSUS.out.mpileup, by:[0])
         .map{ meta, references, bam, consensus, mpileup -> [meta, references, consensus, mpileup] }
-        .set{ ch_ref_cons_mpileup }
-
 
     aligned_txt = Channel.empty()
     // Custom script that replaces region in consensus with orignally 0 coverage with regions from the reference.
     if (!params.skip_nocov_to_reference) {
         NOCOV_TO_REFERENCE( ch_ref_cons_mpileup)
-        ch_versions = ch_versions.mix(NOCOV_TO_REFERENCE.out.versions.first())
-        aligned_txt = NOCOV_TO_REFERENCE.out.txt
-
-        NOCOV_TO_REFERENCE
-            .out
-            .sequence
+        aligned_txt       = NOCOV_TO_REFERENCE.out.txt
+        ch_versions       = ch_versions.mix(NOCOV_TO_REFERENCE.out.versions.first())
+        consensus_patched = NOCOV_TO_REFERENCE.out.sequence
             .mix( ch_consensus.internal )
-            .set{ consensus_patched }
+
     } else {
         consensus_patched = RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta
     }

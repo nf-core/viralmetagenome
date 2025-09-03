@@ -16,7 +16,7 @@ components:
   - bcftools/sort
   - bcftools/filter
 input:
-  - bam_fasta:
+  - ch_bam_fasta:
       description: |
         The input channel containing BAM files with their corresponding reference sequences
         Structure: [ val(meta), path(bam), path(fasta) ]

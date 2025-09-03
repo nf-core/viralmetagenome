@@ -6,15 +6,15 @@ include { BCFTOOLS_FILTER  } from '../../../modules/nf-core/bcftools/filter/main
 workflow BAM_VARIANTS_BCFTOOLS {
 
     take:
-    bam_fasta   // channel: [ val(meta), [ bam ], [ fasta ] ]
+    ch_bam_fasta   // channel: [ val(meta), [ bam ], [ fasta ] ]
     save_stats  // value: [ true | false ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    ch_bam   = bam_fasta.map{ meta, bam, fasta -> [ meta, bam ] }
-    ch_fasta = bam_fasta.map{ meta, bam, fasta -> [ meta, fasta ] }
+    ch_bam   = ch_bam_fasta.map{ meta, bam, _fasta -> [ meta, bam ] }
+    ch_fasta = ch_bam_fasta.map{ meta, _bam, fasta -> [ meta, fasta ] }
 
     //
     // Call variants
@@ -27,7 +27,7 @@ workflow BAM_VARIANTS_BCFTOOLS {
     ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions.first())
 
     // Filter out samples with 0 variants, don't think I wan this?
-    BCFTOOLS_MPILEUP
+    ch_bcfnorm_in = BCFTOOLS_MPILEUP
         .out
         .vcf
         .join(BCFTOOLS_MPILEUP.out.tbi)
@@ -38,14 +38,13 @@ workflow BAM_VARIANTS_BCFTOOLS {
             vcf_tbi : [ meta, vcf, tbi ]
             fasta : [ meta, fasta ]
         }
-        .set { bcfnorm_in }
 
     //
     // Split multi-allelic positions
     //
     BCFTOOLS_NORM (
-        bcfnorm_in.vcf_tbi,
-        bcfnorm_in.fasta
+        ch_bcfnorm_in.vcf_tbi,
+        ch_bcfnorm_in.fasta
     )
     ch_versions = ch_versions.mix(BCFTOOLS_NORM.out.versions.first())
 

@@ -5,22 +5,22 @@ include { BAM_VCF_CONSENSUS_BCFTOOLS                                    } from '
 workflow BAM_CALL_CONSENSUS {
 
     take:
-    bam_ref          // channel: [ val(meta), [ bam ], [ fasta ] ]
-    vcf              // channel: [ val(meta), [ vcf ] ]
+    ch_bam_ref          // channel: [ val(meta), [ bam ], [ fasta ] ]
+    ch_vcf              // channel: [ val(meta), [ vcf ] ]
     consensus_caller // value: [ bcftools | ivar ]
     mapping_stats        // value: [ true | false ]
 
     main:
 
     ch_versions = Channel.empty()
-    ch_bam      = bam_ref.map{ meta, bam, fasta -> [ meta, bam ] }
-    fasta       = bam_ref.map{ meta, bam, fasta -> [ meta, fasta ] }
+    ch_bam      = ch_bam_ref.map{ meta, bam, fasta -> [ meta, bam ] }
+    ch_fasta    = ch_bam_ref.map{ meta, bam, fasta -> [ meta, fasta ] }
 
     if (consensus_caller == "bcftools"){
         BAM_VCF_CONSENSUS_BCFTOOLS (
             ch_bam,
-            vcf,
-            fasta,
+            ch_vcf,
+            ch_fasta,
             mapping_stats
         )
         ch_consensus = BAM_VCF_CONSENSUS_BCFTOOLS.out.consensus
@@ -29,7 +29,7 @@ workflow BAM_CALL_CONSENSUS {
     else if (consensus_caller == "ivar"){
         IVAR_CONSENSUS (
             ch_bam,
-            fasta.map{it[1]},
+            ch_fasta.map{it[1]},
             mapping_stats // save mpileup
         )
         ch_consensus = IVAR_CONSENSUS.out.fasta

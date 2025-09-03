@@ -5,7 +5,7 @@ include { VCF_TABIX_STATS       } from '../vcf_tabix_stats'
 workflow BAM_CALL_VARIANTS {
 
     take:
-    bam_ref         // channel: [ val(meta), [ bam ], [ fasta ] ]
+    ch_bam_ref         // channel: [ val(meta), [ bam ], [ fasta ] ]
     variant_caller  // value: [ bcftools | ivar ]
     save_stats      // value: [ true | false ]
 
@@ -16,11 +16,11 @@ workflow BAM_CALL_VARIANTS {
     ch_versions = Channel.empty()
     ch_multiqc  = Channel.empty()
 
-    meta_fasta  = bam_ref.map{ meta, bam, fasta -> [ meta, fasta ] }
+    meta_fasta  = ch_bam_ref.map{ meta, bam, fasta -> [ meta, fasta ] }
 
     if (variant_caller == "bcftools"){
         BAM_VARIANTS_BCFTOOLS (
-            bam_ref,
+            ch_bam_ref,
             save_stats
         )
         ch_vcf        = BAM_VARIANTS_BCFTOOLS.out.vcf
@@ -29,7 +29,7 @@ workflow BAM_CALL_VARIANTS {
     }
     else if (variant_caller == "ivar"){
         BAM_VARIANTS_IVAR (
-            bam_ref,
+            ch_bam_ref,
             save_stats
         )
         ch_vcf        = BAM_VARIANTS_IVAR.out.vcf
@@ -40,21 +40,20 @@ workflow BAM_CALL_VARIANTS {
 
     if (save_stats){
         // run stats on all variants not only those that pass the filter
-        ch_vcf
+        ch_tabix_in = ch_vcf
             .join(meta_fasta, by: [0])
             .multiMap{ meta, vcf, fasta ->
                 vcf : [ meta, vcf ]
                 fasta : [ meta, fasta ]
             }
-            .set{tabix_in}
 
         VCF_TABIX_STATS (
-            tabix_in.vcf,
+            ch_tabix_in.vcf,
             [[:],[]], // targets
             [[:],[]], // regions
             [[:],[]], // samples
             [[:],[]], // exons
-            tabix_in.fasta
+            ch_tabix_in.fasta
         )
         ch_tbi      = VCF_TABIX_STATS.out.tbi
         ch_csi      = VCF_TABIX_STATS.out.csi

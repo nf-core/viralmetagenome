@@ -15,7 +15,7 @@ components:
   - umitools/dedup
   - picard/markduplicates
 input:
-  - bam_ref_fai:
+  - ch_bam_ref_fai:
       description: |
         The input channel containing BAM files with their corresponding reference sequences and index
         Structure: [ val(meta), path(bam), path(fasta), path(fai) ]

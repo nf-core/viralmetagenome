@@ -30,7 +30,7 @@
    - Read UMI deduplication ([`HUMID`](https://humid.readthedocs.io/en/latest/usage.html))
    - [Optional] Combining of reads (CAT)
    - Low complexity and quality filtering ([`bbduk`](https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/), [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus))
-   - Host-read removal ([`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/))
+   - Host-read removal ([`Kraken2`](https://ccb.jhu.edu/software/kraken2/))
 3. Metagenomic diversity mapping
    - Performs taxonomic classification and/or profiling using one or more of:
      - [`Kraken2`](https://ccb.jhu.edu/software/kraken2/)

@@ -14,6 +14,7 @@ Viralmetagenome offers three main preprocessing steps for the preprocessing of r
 
 ![preprocessing](../../images/preprocessing.png)
 
+> [!INFO]
 > Preprocessing can be entirely skipped with the option `--skip_preprocessing`.
 > See the [parameters preprocessing section](../parameters.md#preprocessing-options) for all relevant arguments to control the preprocessing steps.
 
@@ -40,6 +41,7 @@ graph LR;
 
 Raw sequencing read processing in the form of adapter clipping and paired-end read merging is performed by the tools [`fastp`](https://github.com/OpenGene/fastp) or [`Trimmomatic`](https://github.com/usadellab/Trimmomatic). The tool `fastp` is a fast all-in-one tool for preprocessing fastq files. The tool `Trimmomatic` is a flexible read trimming tool for Illumina NGS data. Both tools can be used to remove adapters and low-quality reads from the raw sequencing reads. An adapter file can be provided through the argument `--adapter_fasta`.
 
+> [!INFO]
 > Specify the tool to use for read processing with the `--trim_tool` parameter, the default is `fastp`.
 
 ## 2. UMI deduplication
@@ -59,12 +61,14 @@ Unique Molecular Identifiers (UMIs) are short sequences that are added during li
 
 Viralmetagenome supports both deduplication on a read level as well as a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
 
+> [!INFO]
 > By default, viralmetagenome doesn't assume UMIs are present in the reads. If UMIs are present, specify the `--with_umi` parameter and `--deduplicate`.
 
 ## 3. Read merging
 
 Certain patients or original samples can be sequenced in multiple times. This step involves merging reads from these different sequencing methods to create a comprehensive dataset for analysis.
 
+> [!INFO]
 > only R1 will be merged with R1 and R2 with R2. Single end and paired end reads will not be merged.
 
 This is done with `CAT`.
@@ -75,6 +79,7 @@ Complexity filtering is primarily a run-time optimization step. Low-complexity s
 
 Complexity filtering is done with [`Bbduk`](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/) which is part of [`BBtools`](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/) where the "duk" stands for Decontamination Using Kmers. Alternatively, complexity filtering can be done with [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus).
 
+> [!INFO]
 > By default, this step is skipped. If this step shouldn't be skipped, specify `--skip_complexity_filtering false`. Specify the tool to use for complexity filtering with the `--decomplexifier` parameter, `bbduk` or `prinseq` [default].
 
 ## 5. Host read-removal
@@ -90,4 +95,5 @@ The reason why we use Kraken2 for host removal over regular read mappers is nice
 
 :::
 
+> [!INFO]
 > Specify the host database with the `--host_k2_db` parameter. The default is a small subset of the human genome and **we highly suggest that you make this database more elaborate** (for example, complete human genome, common sequencer contaminants, bacterial genomes, ...). For this, read the section on [creating custom kraken2 host databases](../customisation/databases.md#kraken2-databases).

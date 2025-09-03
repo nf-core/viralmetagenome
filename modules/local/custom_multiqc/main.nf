@@ -71,20 +71,27 @@ process CUSTOM_MULTIQC {
         python: \$(python --version | sed 's/Python //g')
         pandas: \$(pip show pandas | grep Version: | sed 's/Version: //g')
         yaml: \$(pip show pyyaml | grep Version: | sed 's/Version: //g')
+        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     """
-    touch cluster_summary_mqc.tsv
-    touch sample_metadata_mqc.tsv
+    touch contigs_overview.tsv
+    touch contigs_overview-with-iterations.tsv
+    touch mapping_overview.tsv
+    touch samples_overview.tsv
+    touch multiqc_report.html
+    mkdir -p data
+    mkdir -p plots
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed 's/Python //g')
         pandas: \$(pip show pandas | grep Version: | sed 's/Version: //g')
         yaml: \$(pip show pyyaml | grep Version: | sed 's/Version: //g')
+        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
     END_VERSIONS
     """
 }

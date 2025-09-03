@@ -16,6 +16,7 @@ Viralmetagenome offers two main tools for the classification of reads and a summ
 Feel free to reach out and suggest more classifiers. However, if the main goal of your project is to establish the presence of a virus within a sample and are therefore only focused on metagenomic diversity, have a look at [taxprofiler](https://nf-co.re/taxprofiler/)
 :::
 
+> [!INFO]
 > The read classification can be skipped with the argument `--skip_read_classification`, classifiers should be specified with the parameter `--read_classifiers 'kaiju,kraken2'` (no spaces, no caps). See the [parameters classification section](../parameters.md#metagenomic-diversity) for all relevant arguments to control the classification steps.
 
 ## Kaiju

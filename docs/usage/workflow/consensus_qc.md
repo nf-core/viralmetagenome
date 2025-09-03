@@ -20,12 +20,14 @@ Within the MultiQC report, Viralmetagenome provides a number of custom tables ba
 - [mafft](#mafft): MAFFT is a multiple sequence alignment program.
 - [SnpEff and SnpSift](#snpeff-and-snpsift): SnpEff is a genetic variant annotation and functional effect prediction tool. SnpSift is a toolbox that allows you to filter and manipulate annotated files.
 
+> [!INFO]
 > Consensus genome quality control can be skipped with `--skip_consensus_qc`.
 
 ## QUAST
 
 [QUAST](http://quast.sourceforge.net/quast) is a quality assessment tool for genome assemblies. It calculates various metrics such as N50, L50, number of contigs, and total length. However, in the summary table, it is mainly used to get the number of ambiguous bases in the consensus genome.
 
+> [!INFO]
 > QUAST can be skipped with `--skip_quast`.
 
 ## CheckV
@@ -36,6 +38,7 @@ Within the MultiQC report, Viralmetagenome provides a number of custom tables ba
 CheckV estimates the completeness of a virus based on all genome segments. If a virus has multiple segments, the completeness of the virus is calculated based on the length of the concatenated segments. For example, Lassa virus has 2 segments L: 7.2kb and S: 3.4kb. The completeness of the virus is calculated based on the length of the concatenated segments (7.2kb + 3.4kb = 10.6kb) and so if the generated consensus genome of the L segment is 7.1kb it will report the completeness as 7.1/10.6 ~ 67%.
 :::
 
+> [!INFO]
 > CheckV can be skipped with `--skip_checkv`.
 
 ## Prokka
@@ -50,12 +53,14 @@ Prokka was initially designed for bacterial and archaeal genomes, and may not be
 Prokka can be given a custom protein database to annotate your genomes with, have a look at [prot-RVDB](https://rvdb-prot.pasteur.fr/) for viral protein databases. Supply the database using `--prokka_db`.
 :::
 
+> [!INFO]
 > Prokka can be skipped with `--skip_prokka`.
 
 ## BLAST
 
 [blastn](https://blast.ncbi.nlm.nih.gov/Blast.cgi) is a tool for comparing primary biological sequence information. It calculates the similarity between the consensus genome and the reference genome. The similarity is calculated based on the number of identical bases between the two sequences. Viralmetagenome uses blastn to compare the sequences against the supplied `--reference_pool` dataset.
 
+> [!INFO]
 > BLASTn can be skipped with `--skip_blast_qc`.
 
 ## MMseqs-search
@@ -66,6 +71,7 @@ Prokka can be given a custom protein database to annotate your genomes with, hav
 MMseqs was used for the annotation step instead of BLAST because of the ability to query using a tblastx search for highly diverging viruses while supplying a nucleotide annotation database. To specify another type of search (e.g. blastp, blastx, etc.), please refer to the [parameters consensus-qc section](../parameters.md#consensus-qc).
 :::
 
+> [!INFO]
 > MMseqs-search can be skipped with `--skip_consensus_annotation`.
 
 ## SnpEff and SnpSift
@@ -83,6 +89,7 @@ The annotation process provides valuable information about the impact of variant
 - Potential impact severity (HIGH, MODERATE, LOW, MODIFIER)
 - Gene and transcript information
 
+> [!INFO]
 > Variant annotation can be skipped with `--skip_vcf_annotation`.
 
 ## MAFFT
@@ -94,6 +101,7 @@ The annotation process provides valuable information about the impact of variant
 - The de novo contigs from each assembler (that constituted the final consensus genome)
 - Each consensus genome from the iterative refinement steps.
 
+> [!INFO]
 > MAFFT can be skipped with `--skip_alignment_qc`.
 
 ## MultiQC

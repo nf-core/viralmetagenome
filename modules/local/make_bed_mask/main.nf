@@ -45,4 +45,20 @@ process MAKE_BED_MASK {
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: 5
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
+    """
+    touch ${prefix}.bed
+    touch ${prefix}.mpileup
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        python: \$(python --version | sed 's/Python //g')
+    END_VERSIONS
+    """
 }

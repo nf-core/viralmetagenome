@@ -24,7 +24,6 @@ process IVAR_VARIANTS_TO_VCF {
     script:  // This script is bundled with the pipeline, in viralmetagenome/bin/
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     ivar_variants_to_vcf.py \\
         $tsv \\
@@ -40,4 +39,19 @@ process IVAR_VARIANTS_TO_VCF {
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}.vcf
+    touch ${prefix}.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed 's/Python //g')
+    END_VERSIONS
+    """
+
 }

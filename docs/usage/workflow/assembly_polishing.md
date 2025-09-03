@@ -18,8 +18,10 @@ Viralmetagenome offers an elaborate workflow for the assembly and polishing of v
 
 ![assembly_polishing](../../images/assembly_polishing.png)
 
+> [!INFO]
 > The overall workflow of creating reference assisted assemblies can be skipped with the argument `--skip_assembly`. See the [parameters assembly section](../parameters.md#assembly) for all relevant arguments to control the assembly steps.
 
+> [!INFO]
 > The overall refinement of contigs can be skipped with the argument `--skip_polishing`. See the [parameters polishing section](../parameters.md#polishing) for all relevant arguments to control the polishing steps.
 
 The consensus genome of all clusters are then sent to the [variant analysis & iterative refinement](variant_and_refinement.md) step.
@@ -28,8 +30,10 @@ The consensus genome of all clusters are then sent to the [variant analysis & it
 
 Three assemblers are used, [SPAdes](http://cab.spbu.ru/software/spades/), [Megahit](https://github.com/voutcn/megahit), and [Trinity](https://github.com/trinityrnaseq/trinityrnaseq). The resulting contigs of all specified assemblers, are combined and processed further together.
 
+> [!INFO]
 > Modify the spades mode with `--spades_mode [default: rnaviral]` and supply specific params with `--spades_yml` or a hmm model with `--spades_hmm`.
 
+> [!INFO]
 > Specify the assemblers to use with the `--assemblers` parameter where the assemblers are separated with a ','. The default is `spades,megahit,trinity`.
 
 Low complexity contigs can be filtered out using prinseq++ with the `--skip_contig_prinseq false` parameter. Complexity filtering is primarily a run-time optimisation step. Low-complexity sequences are defined as having commonly found stretches of nucleotides with limited information content (e.g. the dinucleotide repeat CACACACACA). Such sequences can produce a large number of high-scoring but biologically insignificant results in database searches. Removing these reads therefore saves computational time and resources.
@@ -38,12 +42,14 @@ Low complexity contigs can be filtered out using prinseq++ with the `--skip_cont
 
 Contigs can be extended using [SSPACE Basic](https://github.com/nsoranzo/sspace_basic) with the `--skip_sspace_basic false` parameter. SSPACE is a tool for scaffolding contigs using paired-end reads. It is modified from SSAKE assembler and has the feature of extending contigs using reads that are unmappable in the contig assembly step. To maximize its efficiency, consider specifying the arguments `--read_distance`, `--read_distance_sd`, and `--read_orientation`. For more information on these arguments, see the [parameters assembly section](../parameters.md#assembly).
 
+> [!INFO]
 > The extension of contigs is run by default, to skip this step, use `--skip_sspace_basic`.
 
 ## 3. Coverage calculation
 
 Processed reads are mapped back against the contigs to determine the number of reads mapping towards each contig. This is done with [`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/),[`BWAmem2`](https://github.com/bwa-mem2/bwa-mem2) or [`BWA`](https://github.com/lh3/bwa). This step is used to remove contig clusters that have little to no coverage downstream.
 
+> [!INFO]
 > Specify the mapper to use with the `--mapper` parameter. The default is [`BWAmem2`](https://github.com/bwa-mem2/bwa-mem2). To skip contig filtering specify `--perc_reads_contig 0`.
 
 ## 4. Reference Matching
@@ -52,6 +58,7 @@ The newly assembled contigs are compared to a reference sequence pool (`--refere
 
 The top 5 hits for each contig are combined with the de novo contigs and sent to the clustering step.
 
+> [!INFO]
 > The reference pool can be specified with the `--reference_pool` parameter. The default is the latest clustered [Reference Viral DataBase (RVDB)](https://rvdb.dbi.udel.edu/).
 
 ## 5. Taxonomy guided Clustering
@@ -69,6 +76,7 @@ graph LR;
 
 The contigs along with their references have their taxonomy assigned using [Kraken2](https://ccb.jhu.edu/software/kraken2/) and [Kaiju](https://kaiju.binf.ku.dk/).
 
+> [!INFO]
 > The default databases are the same ones used for read classification:
 >
 > - Kraken2: viral refseq database, `--kraken2_db`
@@ -126,6 +134,7 @@ Providing lists to the extract precluster script is done by encapsulating values
 
    Dotted lines represent exclusion of taxa.
 
+> [!INFO]
 > The pre-clustering step will be run by default but can be skipped with the argument `--skip_preclustering`. Specify which classifier to use with `--precluster_classifiers` parameter. The default is `kaiju,kraken2`. Contig taxon filtering is still enabled despite not having to solve for inconsistencies if only Kaiju or Kraken2 is run.
 
 ### 5.2 Actual clustering on nucleotide similarity
@@ -145,10 +154,13 @@ These methods all come with their own advantages and disadvantages. For example,
 When pre-clustering is performed, it is recommended to set a lower identity_threshold (60-70% ANI) as the new goal becomes to separate genome segments within the same bin.
 :::
 
+> [!INFO]
 > The clustering method can be specified with the `--clustering_method` parameter. The default is `cdhitest`.
 
+> [!INFO]
 > The network clustering method for `mash` can be specified with the `--network_clustering` parameter. The default is `connected_components`, alternative is [`leiden`](https://www.nature.com/articles/s41598-019-41695-z).
 
+> [!INFO]
 > The similarity threshold can be specified with the `--similarity_threshold` parameter. The default is `0.85`.
 
 ## 6. Coverage filtering
@@ -164,6 +176,7 @@ If the `--perc_reads_contig` is set to `5`, the cumulative sum of the contigs fr
 
 :::
 
+> [!INFO]
 > The default is `5` and can be specified with the `--perc_reads_contig` parameter.
 
 ## 7. Scaffolding
@@ -174,4 +187,5 @@ After classifying all contigs and their top BLAST hits into distinct clusters or
 
 Regions with 0-depth coverage are annotated with the reference sequence. This is done with a [custom script](https://github.com/nf-core/viralmetagenome/blob/dev/bin/nocov_to_reference.py) that uses the coverage of the de novo contigs towards the reference sequence to identify regions with 0-depth coverage. The reference sequence is then annotated to these regions.
 
+> [!INFO]
 > This step can be skipped using `--skip_nocov_to_reference` parameter.

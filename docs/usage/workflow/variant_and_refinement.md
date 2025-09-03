@@ -76,6 +76,7 @@ The comparison of Bowtie2 and BWA-mem was done for [Yao et al. (2020)](https://d
 
 All three methods are supported to keep protocol compatibility with other pipelines and to allow the user to choose the best method for their data.
 
+> [!INFO]
 > The mapping tool can be specified with the `--mapper` parameter, the default is `bwamem2`, in case the intermediate mapper (for intermediate refinement cycles) needs to be different, this can be specified with `--intermediate_mapper` otherwise it uses the supplied `--mapper` tool.
 
 ### 2.1 Deduplication
@@ -83,8 +84,10 @@ All three methods are supported to keep protocol compatibility with other pipeli
 Read deduplication is an optional step that can be performed with [`Picard`](https://broadinstitute.github.io/picard/) or if UMIs are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html). Unless you are using [UMIs](https://dnatech.genomecenter.ucdavis.edu/faqs/what-are-umis-and-why-are-they-used-in-high-throughput-sequencing/) it is not possible to establish whether the fragments you have sequenced from your sample were derived via true biological duplication (i.e. sequencing independent template fragments) or as a result of PCR biases introduced during the library preparation. To correct your reads, use picard MarkDuplicates to mark the duplicate reads identified amongst the alignments to allow you to gauge the overall level of duplication in your samples.
 So if you have UMI’s, no need to use Picard, instead use UMI-tools to deduplicate your reads. Where instead of mapping location and read similarity, UMI-tools uses the UMI to identify PCR duplicates.
 
+> [!INFO]
 > Specify `--deduplicate` to enable deduplication, the default is `true`. If UMIs are used, specify `--with_umi` and `--umi_deduplicate 'mapping' | 'both'` to enable UMI-tools deduplication. UMIs can be in the read header, if it is not in the header specify `--skip_umi_extract false`, the default is `true`.
 
+> [!INFO]
 > By default the UMIs are separated in the header by ':' (for `bcl2fastq` when demultiplexing) if this is different, specify with `arguments_umitools_extract '--umi-separator "_"'` and `arguments_umitools_dedup '--umi-separator "_"'` .
 
 ### 2.2 Mapping statistics
@@ -99,6 +102,7 @@ Viralmetagenome uses multiple tools to get statistics on the variants and on the
 
 There is a little overlap between the tools, but they all provide a different perspective on the mapping statistics.
 
+> [!INFO]
 > By default, all these tools are run, but they can be skipped with the argument `--mapping_stats false`. In case the intermediate mapping statistics (for intermediate refinement cycles) don't need to be determined set `--intermediate_mapping_stats false`.
 
 ## 3. Variant calling
@@ -113,6 +117,7 @@ There are multiple studies on the benchmarking of variant callers as this is an 
 Bcftools doesn't handle well multiallelic sites, so if you have a lot of multiallelic sites, iVar is the better choice. iVar is also the better choice if you have a lot of low-frequency variants.
 :::
 
+> [!INFO]
 > The variant caller can be specified with the `--variant_caller` parameter, the default is `ivar`. In case the intermediate variant caller (for intermediate refinement cycles) needs to be different, this can be specified with `--intermediate_variant_caller` otherwise it uses the supplied `--variant_caller` tool.
 
 ### Variant filtering
@@ -144,4 +149,5 @@ There are again a couple of differences between the iVar and BCFtools:
    >
    > ![low depth ivar vs bcftools](../../images/low_depth_ivar_vs_bcftools.png)
 
+> [!INFO]
 > The consensus caller can be specified with the `--consensus_caller` parameter, the default is `ivar`. The intermediate consensus caller (for intermediate refinement cycles) can be specified with `--intermediate_consensus_caller` and is by default `bcftools`.

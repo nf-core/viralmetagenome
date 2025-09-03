@@ -110,7 +110,7 @@ workflow VIRALMETAGENOME {
         ch_db_raw = ch_db.mix(ch_ref_pool,ch_kraken2_db, ch_kaiju_db, ch_checkv_db, ch_bracken_db, ch_k2_host, ch_annotation_db, ch_prokka_db)
         UNPACK_DB (ch_db_raw)
 
-        UNPACK_DB.out.db
+        ch_db = UNPACK_DB.out.db
             .branch { meta, unpacked ->
                 k2_host: meta.id == 'k2_host'
                     return [ unpacked ]
@@ -129,7 +129,6 @@ workflow VIRALMETAGENOME {
                 prokka: meta.id == 'prokka'
                     return [ unpacked ]
             }
-            .set{ch_db}
         ch_versions = ch_versions.mix(UNPACK_DB.out.versions)
 
         // transfer to value channels so processes are not just done once
@@ -152,16 +151,12 @@ workflow VIRALMETAGENOME {
         ch_blastdb_in = ch_blastdb_in.mix(ch_ref_pool)
 
         BLAST_MAKEBLASTDB ( ch_blastdb_in )
-        BLAST_MAKEBLASTDB
-            .out
-            .db
+        ch_blastdb_out = BLAST_MAKEBLASTDB.out.db
             .branch { meta, db ->
                 reference: meta.id == 'reference'
                     return [ meta, db ]
-                // annotation: meta.id == 'annotation'
-                //     return [ meta, db ]
             }
-            .set{ch_blastdb_out}
+
         ch_blast_refdb  = ch_blastdb_out.reference.collect{it[1]}.ifEmpty([]).map{it -> [[id: 'reference'], it]}
         ch_versions     = ch_versions.mix(BLAST_MAKEBLASTDB.out.versions)
     }
@@ -200,10 +195,13 @@ workflow VIRALMETAGENOME {
 
     // Assembly
     ch_unaligned_raw_contigs   = Channel.empty()
+    ch_unaligned_contigs       = Channel.empty()
+    ch_polishing_consensus_reads = Channel.empty()
+
     // Channel for consensus sequences that have been generated across different iteration
     ch_consensus               = Channel.empty()
     // Channel for consensus sequences that have been generated at the LAST iteration
-    ch_consensus_results_reads = Channel.empty()
+    ch_consensus_reads         = Channel.empty()
     // Channel for summary table of clusters to include in mqc report
     ch_clusters_summary        = Channel.empty()
     // Channel for summary coverages of each contig
@@ -219,9 +217,8 @@ workflow VIRALMETAGENOME {
 
         if (!params.skip_polishing){
             // blast contigs against reference & identify clusters of (contigs & references)
-            ch_contigs
+            ch_contigs_reads = ch_contigs
                 .join(ch_host_trim_reads, by: [0], remainder: false)
-                .set{ch_contigs_reads}
 
             FASTA_CONTIG_CLUST (
                 ch_contigs_reads,
@@ -235,9 +232,7 @@ workflow VIRALMETAGENOME {
             ch_versions = ch_versions.mix(FASTA_CONTIG_CLUST.out.versions)
 
             // Split up clusters into singletons and clusters of multiple contigs
-            FASTA_CONTIG_CLUST
-                .out
-                .centroids_members
+            ch_centroids_members = FASTA_CONTIG_CLUST.out.centroids_members
                 .map { meta, centroids, members ->
                     [ meta, centroids, members ]
                 }
@@ -247,7 +242,6 @@ workflow VIRALMETAGENOME {
                     multiple: meta.cluster_size >   0
                         return [ meta + [step:"consensus"], centroids, members ]
                 }
-                .set{ch_centroids_members}
 
             ch_clusters_summary    = FASTA_CONTIG_CLUST.out.clusters_summary.collect{it[1]}.ifEmpty([])
             ch_clusters_tsv        = FASTA_CONTIG_CLUST.out.clusters_tsv.collect{it[1]}.ifEmpty([])
@@ -266,37 +260,30 @@ workflow VIRALMETAGENOME {
                 )
             ch_versions = ch_versions.mix(SINGLETON_FILTERING.out.versions)
 
-            ALIGN_COLLAPSE_CONTIGS
+            ch_consensus = ALIGN_COLLAPSE_CONTIGS
                 .out
                 .consensus
                 .mix( SINGLETON_FILTERING.out.filtered )
-                .set{ ch_consensus }
 
             ch_unaligned_raw_contigs = ALIGN_COLLAPSE_CONTIGS.out.unaligned_fasta
-            ch_unaligned_raw_contigs = ch_unaligned_raw_contigs.mix( SINGLETON_FILTERING.out.filtered )
+                .mix( SINGLETON_FILTERING.out.filtered )
 
             // We want the meta from the reference channel to be used downstream as this is our varying factor
             // To do this we combine the channels based on sample
             // Extract the reference meta's and reads
             // Make cartesian product of identified references & reads so all references will be mapped against again.
-                ch_decomplex_trim_reads
-                    .map{meta, fastq -> [meta.sample,meta, fastq]}
-                    .set{ch_reads_tmp}
+                ch_reads_tmp     = ch_decomplex_trim_reads.map { meta, fastq -> [meta.sample,meta, fastq]}
+                ch_consensus_tmp = ch_consensus.map { meta, fasta -> [meta.sample,meta, fasta] }
 
-                ch_consensus
-                    .map{meta, fasta -> [meta.sample,meta, fasta]}
-                    .set{ch_consensus_tmp}
-
-                ch_consensus_tmp
+                ch_consensus_reads_intermediate = ch_consensus_tmp
                     .combine(ch_reads_tmp, by: [0])
                     .map{
                         sample, meta_ref, fasta, meta_reads, fastq -> [meta_ref, fasta, fastq]
                     }
-                    .set{ch_consensus_results_reads_intermediate}
 
             if (!params.skip_iterative_refinement) {
                 FASTQ_FASTA_ITERATIVE_CONSENSUS (
-                    ch_consensus_results_reads_intermediate,
+                    ch_consensus_reads_intermediate,
                     params.iterative_refinement_cycles,
                     params.intermediate_mapper,
                     params.with_umi,
@@ -309,40 +296,40 @@ workflow VIRALMETAGENOME {
                     params.min_contig_size,
                     params.max_n_perc
                 )
-                ch_consensus               = ch_consensus.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_allsteps)
-                ch_consensus_results_reads = FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_reads
-                ch_versions                = ch_versions.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.versions)
-                ch_multiqc_files           = ch_multiqc_files.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.mqc.ifEmpty([])) //collect already done in subworkflow
+                ch_consensus                 = ch_consensus.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_allsteps)
+                ch_polishing_consensus_reads = FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_reads
+                ch_versions                  = ch_versions.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.versions)
+                ch_multiqc_files             = ch_multiqc_files.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.mqc.ifEmpty([])) //collect already done in subworkflow
             } else {
-                ch_consensus_results_reads = ch_consensus_results_reads_intermediate
+                ch_polishing_consensus_reads = ch_consensus_reads_intermediate
             }
         }
     }
 
     // add last step to it
-    ch_consensus_results_reads
+    ch_consensus_reads = ch_polishing_consensus_reads
         .map{ meta, fasta, fastq ->
             [meta + [step: "variant-calling", iteration:'variant-calling', previous_step: meta.step], fasta, fastq]
-            }
-        .set{ch_consensus_results_reads}
+        }
 
     ch_mash_screen = Channel.empty()
 
     if (params.mapping_constraints && !params.skip_variant_calling ) {
         // Importing samplesheet
-        Channel
+        ch_mapping_constraints = Channel
             .fromList(samplesheetToList(params.mapping_constraints, "${projectDir}/assets/schemas/mapping_constraints.json"))
             .map{ meta, sequence ->
                 def samples = meta.samples == [] ? null : tuple(meta.samples.split(";"))  // Split up samples if meta.samples is not null
                 [meta, samples, sequence]
             }
-            .transpose(remainder: true)                                                         // Unnest
-            .set{ch_mapping_constraints}
+            .transpose(remainder: true)                                                   // Unnest
 
         // Joining all the reads with the mapping constraints, filter for those specified or keep everything if none specified.
-        ch_decomplex_trim_reads
+        ch_map_seq_anno_combined = ch_decomplex_trim_reads
             .combine( ch_mapping_constraints )
-            .filter{ meta_reads, fastq, meta_mapping, mapping_samples, sequence -> mapping_samples == null || mapping_samples == meta_reads.sample}
+            .filter{ meta_reads, fastq, meta_mapping, mapping_samples, sequence ->
+                mapping_samples == null || mapping_samples == meta_reads.sample
+            }
             .map
                 {
                     meta, reads, meta_mapping, samples, sequence_mapping ->
@@ -358,32 +345,30 @@ workflow VIRALMETAGENOME {
                         ]
                     return [new_meta, sequence_mapping]
                 }
-            .set{ch_map_seq_anno_combined}
 
         // Map with both reads and mapping constraints
-        ch_map_seq_anno_combined
+        ch_constraint_consensus_reads = ch_map_seq_anno_combined
             .map{ it -> return [it[0], it[1], it[0].reads] }
             .branch{
                 meta, fasta, fastq ->
                 multiFastaSelection : meta.selection == true
                 singleFastaSelection : meta.selection == false
             }
-            .set{constraint_consensus_reads}
 
         // Select the correct reference
         FASTQ_FASTA_MASH_SCREEN (
-            constraint_consensus_reads.multiFastaSelection
+            ch_constraint_consensus_reads.multiFastaSelection
         )
-        ch_versions = ch_versions.mix(FASTQ_FASTA_MASH_SCREEN.out.versions)
         ch_mash_screen = FASTQ_FASTA_MASH_SCREEN.out.json.collect{it[1]}
+        ch_versions    = ch_versions.mix(FASTQ_FASTA_MASH_SCREEN.out.versions)
 
         // For QC we keep original sequence to compare to
-        ch_unaligned_raw_contigs = ch_unaligned_raw_contigs
+        ch_unaligned_contigs = ch_unaligned_raw_contigs
             .mix(constraint_consensus_reads.singleFastaSelection.map{meta, fasta, reads -> [meta, fasta]})
             .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq.map{meta, fasta, reads -> [meta, fasta]})
 
         //Add to the consensus channel, which will be used for variant calling
-        ch_consensus_results_reads = ch_consensus_results_reads
+        ch_consensus_reads = ch_consensus_reads
             .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq)
             .mix(constraint_consensus_reads.singleFastaSelection)
     }
@@ -392,7 +377,7 @@ workflow VIRALMETAGENOME {
     if ( !params.skip_variant_calling ) {
 
         FASTQ_FASTA_MAP_CONSENSUS(
-            ch_consensus_results_reads,
+            ch_consensus_reads,
             params.mapper,
             params.with_umi,
             params.deduplicate,
@@ -428,7 +413,7 @@ workflow VIRALMETAGENOME {
             .filter{meta, fasta -> getLengthAndAmbigous(fasta).contig_size > 0}
         CONSENSUS_QC(
             ch_consensus_filter,
-            ch_unaligned_raw_contigs,
+            ch_unaligned_contigs,
             ch_checkv_db,
             ch_blast_refdb,
             ch_annotation_db,

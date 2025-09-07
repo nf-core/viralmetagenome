@@ -5,7 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.0.0 - [date]
 
-### Enhancement
+### `Added`
 
 - Add argument to control the maximum mpileup depth in `custom_mpileup.py` script ([#176](https://github.com/nf-core/viralmetagenome/pull/176)) (by @Joon-Klaps)
 - Removing redundant `samtools_sort` after `BAM_DEDUPLICATE` ([#177](https://github.com/nf-core/viralmetagenome/pull/177)) (by @Joon-Klaps)
@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Second release of the viralmetagenome pipeline. Focusing on user experience and bug fixes.
 
-### `Enhancement`
+### `Added`
 
 - Set default umitools dedup strategy to cluster ([#126](https://github.com/nf-core/viralmetagenome/pull/126)) (by @Joon-Klaps)
 - Include both krakenreport &nodes.dmp in taxonomy filtering ([#128](https://github.com/nf-core/viralmetagenome/pull/128)) (by @Joon-Klaps)

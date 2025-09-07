@@ -44,7 +44,7 @@
    - Identify top 5 blast hits
    - Merge blast hit and all contigs of a sample
 8. [Optional] Precluster contigs based on taxonomy
-   - Identify taxonomy [`Kraken2`](https://ccb.jhu.edu/software/kraken2/) and\or [`Kaiju`](https://bioinformatics-centre.github.io/kaiju/)
+   - Identify taxonomy [`Kraken2`](https://ccb.jhu.edu/software/kraken2/) and/or [`Kaiju`](https://bioinformatics-centre.github.io/kaiju/)
    - Resolve potential inconsistencies in taxonomy & taxon filtering | simplification `bin/extract_precluster.py`
 9. Cluster contigs (or every taxonomic bin) of samples, options are:
    - [`cdhitest`](https://sites.google.com/view/cd-hit)

@@ -65,35 +65,8 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     RENAME_FASTA_HEADER_CONTIG_CONSENSUS( IVAR_CONTIG_CONSENSUS.out.fasta, [])
     ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.versions.first())
 
-    // If external, there possibly regions that require patching
-     ch_consensus = RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta
-        .branch{ meta, fasta ->
-            external: meta.external_reference
-            internal: true
-        }
-
-    // Combine input for custom annotation script.
-    ch_ref_cons_mpileup = ch_references_bam
-        .join( ch_consensus.external, by: [0] )
-        .join( IVAR_CONTIG_CONSENSUS.out.mpileup, by:[0])
-        .map{ meta, references, bam, consensus, mpileup -> [meta, references, consensus, mpileup] }
-
-    aligned_txt = Channel.empty()
-    // Custom script that replaces region in consensus with orignally 0 coverage with regions from the reference.
-    if (!params.skip_nocov_to_reference) {
-        NOCOV_TO_REFERENCE( ch_ref_cons_mpileup)
-        aligned_txt       = NOCOV_TO_REFERENCE.out.txt
-        ch_versions       = ch_versions.mix(NOCOV_TO_REFERENCE.out.versions.first())
-        consensus_patched = NOCOV_TO_REFERENCE.out.sequence
-            .mix( ch_consensus.internal )
-
-    } else {
-        consensus_patched = RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta
-    }
-
     emit:
-    consensus       = consensus_patched                 // channel: [ val(meta), [ fasta ] ]
-    aligned_txt     = aligned_txt                       // channel: [ val(meta), [ txt ] ]
-    unaligned_fasta = CAT_CLUSTER.out.file_out          // channel: [ val(meta), [ fasta ] ]
-    versions        = ch_versions                       // channel: [ versions.yml ]
+    consensus       =  RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta   // channel: [ val(meta), [ fasta ] ]
+    unaligned_fasta = CAT_CLUSTER.out.file_out                          // channel: [ val(meta), [ fasta ] ]
+    versions        = ch_versions                                       // channel: [ versions.yml ]
 }

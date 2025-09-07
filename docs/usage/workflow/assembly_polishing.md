@@ -183,9 +183,3 @@ If the `--perc_reads_contig` is set to `5`, the cumulative sum of the contigs fr
 
 After classifying all contigs and their top BLAST hits into distinct clusters or bins, the contigs are then scaffolded to the centroid of each bin. Any external references that are not centroids of the cluster are subsequently removed to prevent further bias. All members of the cluster are consequently mapped towards their centroid with [Minimap2](https://github.com/lh3/minimap2) and consensus is called using [iVar-consensus](https://andersen-lab.github.io/ivar/html/manualpage.html).
 
-## 8. Annotation with Reference
-
-Regions with 0-depth coverage are annotated with the reference sequence. This is done with a [custom script](https://github.com/nf-core/viralmetagenome/blob/dev/bin/nocov_to_reference.py) that uses the coverage of the de novo contigs towards the reference sequence to identify regions with 0-depth coverage. The reference sequence is then annotated to these regions.
-
-> [!INFO]
-> This step can be skipped using `--skip_nocov_to_reference` parameter.

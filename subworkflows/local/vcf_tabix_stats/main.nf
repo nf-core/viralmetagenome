@@ -23,22 +23,21 @@ workflow VCF_TABIX_STATS {
         ch_vcf
     )
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
-    ch_vcf
+    ch_stats_in = ch_vcf
         .join(TABIX_TABIX.out.tbi, by: [0])
         .join(ch_fasta, by: [0])
         .multiMap{meta, vcf, tbi, fasta ->
             vcf_tbi : [ meta, vcf, tbi]
             fasta : [ meta, fasta ]
         }
-        .set{stats_in}
 
     BCFTOOLS_STATS (
-        stats_in.vcf_tbi,
+        ch_stats_in.vcf_tbi,
         ch_regions,
         ch_targets,
         ch_samples,
         ch_exons,
-        stats_in.fasta
+        ch_stats_in.fasta
     )
     ch_versions = ch_versions.mix(BCFTOOLS_STATS.out.versions.first())
 

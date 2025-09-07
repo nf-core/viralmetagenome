@@ -21,7 +21,7 @@ components:
   - krona_cleanup
   - krona/ktimporttext
 input:
-  - reads:
+  - ch_reads:
       description: |
         Input FASTQ files for taxonomic classification
         Structure: [ val(meta), path(fastq) ]
@@ -30,15 +30,15 @@ input:
       description: |
         List of classifiers to use for taxonomic classification
       enum: ["kraken2", "kaiju", "bracken"]
-  - kraken2_db:
+  - ch_kraken2_db:
       description: |
         Kraken2 database for taxonomic classification
         Structure: [ path(kraken2_db) ]
-  - bracken_db:
+  - ch_bracken_db:
       description: |
         Bracken database for abundance estimation
         Structure: [ path(bracken_db) ]
-  - kaiju_db:
+  - ch_kaiju_db:
       description: |
         Kaiju database for taxonomic classification
         Structure: [ path(kaiju_db) ]

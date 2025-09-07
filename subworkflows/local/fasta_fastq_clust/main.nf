@@ -12,12 +12,12 @@ include { NETWORK_CLUSTER          } from '../../../modules/local/network_cluste
 workflow FASTA_FASTQ_CLUST {
 
     take:
-    fasta_fastq // channel: [ val(meta), [ fasta ], [ fastq ] ]
+    ch_fasta_fastq // channel: [ val(meta), [ fasta ], [ fastq ] ]
     cluster_method // string
 
     main:
     ch_versions = Channel.empty()
-    ch_fasta    = fasta_fastq.map{ meta, fasta, fastq -> [meta, fasta] }
+    ch_fasta    = ch_fasta_fastq.map{ meta, fasta, _fastq -> [meta, fasta] }
     ch_dist     = Channel.empty()
 
     // cluster our reference hits and contigs should make this a subworkflow
@@ -64,7 +64,7 @@ workflow FASTA_FASTQ_CLUST {
         ch_versions = ch_versions.mix(MMSEQS_CREATETSV.out.versions.first())
     }
     else if (cluster_method == "vrhyme") {
-        vhryme_in = fasta_fastq
+        vhryme_in = ch_fasta_fastq
             .branch{ meta, fasta, reads ->
                 fasta: [meta, fasta]
                 reads: [meta, reads]

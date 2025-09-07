@@ -12,11 +12,11 @@ components:
   - kraken2/kraken2
   - fastqc
 input:
-  - reads:
+  - ch_reads:
       description: |
         Input FASTQ files potentially containing host contamination
         Structure: [ val(meta), path(reads) ]
-  - kraken2_host_db:
+  - ch_kraken2_host_db:
       description: |
         Kraken2 database containing host reference sequences
         Structure: [ path(kraken2_host_db) ]

@@ -7,41 +7,40 @@ include { getMapFromJson          } from '../utils_nfcore_viralmetagenome_pipeli
 workflow FASTA_CONTIG_CLUST {
 
     take:
-    fasta_fastq        // channel: [ val(meta), [ fasta ],  [ fastq ] ]
-    ch_coverages       // channel: [ val(meta), [ idxstats* ] ]
-    blast_db           // channel: [ val(meta), path(db) ]
-    blast_db_fasta     // channel: [ val(meta), path(fasta) ]
-    kraken2_db         // channel: [ val(meta), path(db) ]
-    kaiju_db           // channel: [ val(meta), path(db) ]
-    contig_classifiers // value ['kraken2','kaiju']
+    ch_fasta_fastq        // channel: [ val(meta), [ fasta ],  [ fastq ] ]
+    ch_coverages          // channel: [ val(meta), [ idxstats* ] ]
+    ch_blast_db           // channel: [ val(meta), path(db) ]
+    ch_blast_db_fasta     // channel: [ val(meta), path(fasta) ]
+    ch_kraken2_db         // channel: [ val(meta), path(db) ]
+    ch_kaiju_db           // channel: [ val(meta), path(db) ]
+    contig_classifiers    // value ['kraken2','kaiju']
 
     main:
     ch_versions        = Channel.empty()
-    ch_fasta           = fasta_fastq.map{ meta, fasta, fastq -> [meta, fasta] }
+    ch_fasta           = ch_fasta_fastq.map{ meta, fasta, _fastq -> [meta, fasta] }
 
     // Blast contigs to a reference database, to find a reference genome can be used for scaffolding
     FASTA_BLAST_REFSEL (
         ch_fasta,
-        blast_db,
-        blast_db_fasta
+        ch_blast_db,
+        ch_blast_db_fasta
     )
     ch_versions       = ch_versions.mix(FASTA_BLAST_REFSEL.out.versions)
     no_blast_hits     = FASTA_BLAST_REFSEL.out.no_blast_hits
     fasta_ref_contigs = FASTA_BLAST_REFSEL.out.fasta_ref_contigs
 
     // Combine with reads if vrhyme is used
-    fasta_ref_contigs
-        .join(fasta_fastq, by: [0])
-        .map{meta, contigs_joined, contigs, reads -> [meta + [ntaxa: 1], contigs_joined, reads]} // ntaxa will use later
-        .set{ch_contigs_reads}
+    ch_contigs_reads = fasta_ref_contigs
+        .join(ch_fasta_fastq, by: [0])
+        .map{meta, contigs_joined, _contigs, reads -> [meta + [ntaxa: 1], contigs_joined, reads]} // ntaxa will use later
 
     // precluster our reference hits and contigs using kraken & Kaiju to delineate contigs at a species level
     if (!params.skip_precluster) {
         FASTA_CONTIG_PRECLUST (
             ch_contigs_reads,
             contig_classifiers,
-            kaiju_db,
-            kraken2_db
+            ch_kaiju_db,
+            ch_kraken2_db
         )
         ch_versions      = ch_versions.mix(FASTA_CONTIG_PRECLUST.out.versions)
         ch_contigs_reads = FASTA_CONTIG_PRECLUST.out.contigs_reads
@@ -65,13 +64,13 @@ workflow FASTA_CONTIG_CLUST {
         sample_fasta_ref_contigs = fasta_ref_contigs
             .map{ meta, fasta -> [meta.sample, meta, fasta] }                  // add sample for join
             .join(sample_coverages, by: [0])                                   // join with coverages
-            .map{ sample, meta_fasta, fasta, meta_coverages, coverages ->      // remove meta coverages
+            .map{ sample, meta_fasta, fasta, _meta_coverages, coverages ->      // remove meta coverages
                 [sample, meta_fasta, fasta, coverages]
                 }
     }
 
     // Join cluster files with contigs & group based on number of preclusters (ntaxa)
-    FASTA_FASTQ_CLUST
+    ch_clusters_contigs_coverages = FASTA_FASTQ_CLUST
         .out
         .clusters
         .map{ meta, clusters ->
@@ -80,10 +79,9 @@ workflow FASTA_CONTIG_CLUST {
         .groupTuple(remainder: true)                                           // Has to be grouped to link different taxa preclusters to the same sample
         .combine(sample_fasta_ref_contigs)                                     // combine with contigs (regural join doesn't work)
         .filter{it -> it[0]==it[3]}                                            // filter for matching samples
-        .map{ sample, meta_clust, clusters, sample2, meta_contig, contigs, coverages ->
+        .map{ _sample, _meta_clust, clusters, _sample2, meta_contig, contigs, coverages ->
             [meta_contig, clusters, contigs, coverages]                        // get rid of meta_clust & sample
         }
-        .set{ch_clusters_contigs_coverages}
 
     EXTRACT_CLUSTER (
         ch_clusters_contigs_coverages,
@@ -91,7 +89,7 @@ workflow FASTA_CONTIG_CLUST {
     )
     ch_versions = ch_versions.mix(EXTRACT_CLUSTER.out.versions.first())
 
-    EXTRACT_CLUSTER
+    ch_seq_centroids_members = EXTRACT_CLUSTER
         .out
         .members_centroids
         .transpose()                                                                   // wide to long
@@ -109,13 +107,12 @@ workflow FASTA_CONTIG_CLUST {
             ]
             return [meta + map_json, seq_centroids, seq_members]
         }
-        .set{seq_centroids_members}
 
-    seq_centroids_members.dump{tag:"json"}
+    ch_seq_centroids_members.dump{tag:"json"}
 
     emit:
     clusters              = FASTA_FASTQ_CLUST.out.clusters // channel: [ [ meta ], [ clusters ] ]
-    centroids_members     = seq_centroids_members          // channel: [ [ meta ], [ seq_centroids.fa], [ seq_members.fa] ]
+    centroids_members     = ch_seq_centroids_members       // channel: [ [ meta ], [ seq_centroids.fa], [ seq_members.fa] ]
     clusters_tsv          = EXTRACT_CLUSTER.out.tsv        // channel: [ [ meta ], [ tsv ] ]
     clusters_summary      = EXTRACT_CLUSTER.out.summary    // channel: [ [ meta ], [ tsv ] ]
     no_blast_hits_mqc     = no_blast_hits                  // channel: [ tsv ]

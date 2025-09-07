@@ -21,10 +21,10 @@ workflow CONSENSUS_QC  {
 
     ch_versions         = Channel.empty()
     ch_multiqc_files    = Channel.empty()
-    blast               = Channel.empty()
-    checkv              = Channel.empty()
-    quast               = Channel.empty()
-    annotation          = Channel.empty()
+    ch_blast               = Channel.empty()
+    ch_checkv              = Channel.empty()
+    ch_quast               = Channel.empty()
+    ch_annotation          = Channel.empty()
     ch_genome_grouped   = Channel.empty()
 
     // Combine all genomes into a single file
@@ -48,33 +48,32 @@ workflow CONSENSUS_QC  {
     // Contig summary statistics
     if ( !params.skip_quast ) {
         QUAST_QC ( ch_genome, [[:],[]], [[:],[]])
-        quast         = QUAST_QC.out.tsv
+        ch_quast         = QUAST_QC.out.tsv
         ch_versions   = ch_versions.mix(QUAST_QC.out.versions)
     }
 
     // Identify closest reference from the reference pool database using blast
     if ( !params.skip_blast_qc ){
         BLASTN_QC (ch_genomes_all, ch_refpool_db)
-        blast       = BLASTN_QC.out.txt
+        ch_blast       = BLASTN_QC.out.txt
         ch_versions = ch_versions.mix(BLASTN_QC.out.versions)
     }
 
     // use MMSEQS easy search to find best hits against annotation db
     if ( !params.skip_consensus_annotation){
         MMSEQS_ANNOTATE(ch_genomes_all, ch_annotation_db)
-        annotation  = MMSEQS_ANNOTATE.out.tsv
+        ch_annotation  = MMSEQS_ANNOTATE.out.tsv
         ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions)
     }
 
     // Annotate proteins with prokka
     if (!params.skip_prokka){
         // Run
-        ch_genome
-            .filter{ meta, genome ->
+         ch_genomes_final = ch_genome
+            .filter{ meta, _genome ->
                 def isConstraint = meta.containsKey('isConstraint') ? meta.isConstraint : false
                 isConstraint || meta.iteration == params.iterative_refinement_cycles
                 }
-            .set { ch_genomes_final }
 
         PROKKA(ch_genomes_final, ch_prokka_db, [])
         ch_versions = ch_versions.mix(PROKKA.out.versions)
@@ -91,7 +90,7 @@ workflow CONSENSUS_QC  {
 
         // uses HMM and AA alignment to deterimine completeness
         CHECKV_ENDTOEND ( ch_genome_grouped, ch_checkv_db)
-        checkv      = CHECKV_ENDTOEND.out.quality_summary
+        ch_checkv      = CHECKV_ENDTOEND.out.quality_summary
         ch_versions = ch_versions.mix(CHECKV_ENDTOEND.out.versions)
     }
 
@@ -99,12 +98,11 @@ workflow CONSENSUS_QC  {
     if ( !params.skip_alignment_qc){
 
         // MAFFT doesn't like those that have only one sequence
-        ch_genome_grouped
-            .branch { meta, scaffolds ->
+        ch_genome_grouped_branch = ch_genome_grouped
+            .branch { _meta, scaffolds ->
                 pass: scaffolds.countFasta() > 1
                 fail: scaffolds.countFasta() == 1
             }
-            .set{ch_genome_grouped_branch}
 
         MAFFT_ITERATIONS ( ch_genome_grouped_branch.pass, [[:],[]], [[:],[]], [[:],[]], [[:],[]], [[:],[]], false )
 
@@ -113,28 +111,28 @@ workflow CONSENSUS_QC  {
 
         // Make a channel that contains the alignment of the iterations with
         // the original contigs from the assemblers
-        ch_genome_grouped_branch
-            .fail.mix(MAFFT_ITERATIONS.out.fas)                             // Combine alignments with single results
-            .map{ meta, genome -> [meta.id, meta, genome] }                 // Set common delimiter
-            .join( contigs_mod, by: 0)                                      // Combine with raw contigs
-            .filter{id, meta_genome, scaffolds, meta_contigs, contigs  ->   // Make sure we have at least 2 sequences
+        ch_mafftQC_in = ch_genome_grouped_branch
+            .fail.mix(MAFFT_ITERATIONS.out.fas)                               // Combine alignments with single results
+            .map{ meta, genome -> [meta.id, meta, genome] }                   // Set common delimiter
+            .join( contigs_mod, by: 0)                                        // Combine with raw contigs
+            .filter{_id, _meta_genome, scaffolds,_meta_contigs, contigs  ->   // Make sure we have at least 2 sequences
                 scaffolds.countFasta() + contigs.countFasta() > 1
             }
-            .multiMap{ id, meta_genome, scaffolds, meta_contigs, contigs -> // Split in correct inputs
+            .multiMap{ _id, meta_genome, scaffolds, _meta_contigs, contigs -> // Split in correct inputs
                 scaffolds: [meta_genome, scaffolds]
                 contigs: [meta_genome, contigs]
-            }.set{mafftQC_in}
+            }
 
-        MAFFT_QC ( mafftQC_in.scaffolds, mafftQC_in.contigs, [[:],[]], [[:],[]], [[:],[]], [[:],[]], false)
+        MAFFT_QC ( ch_mafftQC_in.scaffolds, ch_mafftQC_in.contigs, [[:],[]], [[:],[]], [[:],[]], [[:],[]], false)
 
         ch_versions = ch_versions.mix(MAFFT_QC.out.versions)
     }
 
     emit:
-    blast       = blast             // channel: [ val(meta), [ txt ] ]
-    checkv      = checkv            // channel: [ val(meta), [ tsv ] ]
-    quast       = quast             // channel: [ val(meta), [ tsv ] ]
-    annotation  = annotation        // channel: [ val(meta), [ txt ] ]
+    blast       = ch_blast          // channel: [ val(meta), [ txt ] ]
+    checkv      = ch_checkv         // channel: [ val(meta), [ tsv ] ]
+    quast       = ch_quast          // channel: [ val(meta), [ tsv ] ]
+    annotation  = ch_annotation     // channel: [ val(meta), [ txt ] ]
     mqc         = ch_multiqc_files  // channel: [ tsv ]
     versions    = ch_versions       // channel: [ versions.yml ]
 }

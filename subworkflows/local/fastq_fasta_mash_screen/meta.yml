@@ -14,7 +14,7 @@ components:
   - mash/screen
   - select/reference
 input:
-  - fasta_reads:
+  - ch_fasta_reads:
       description: |
         Input channel containing FASTA sequences and corresponding reads
         Structure: [ val(meta), path(fasta), path(reads) ]

@@ -364,13 +364,13 @@ workflow VIRALMETAGENOME {
 
         // For QC we keep original sequence to compare to
         ch_unaligned_contigs = ch_unaligned_raw_contigs
-            .mix(constraint_consensus_reads.singleFastaSelection.map{meta, fasta, reads -> [meta, fasta]})
+            .mix(ch_constraint_consensus_reads.singleFastaSelection.map{meta, fasta, reads -> [meta, fasta]})
             .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq.map{meta, fasta, reads -> [meta, fasta]})
 
         //Add to the consensus channel, which will be used for variant calling
         ch_consensus_reads = ch_consensus_reads
             .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq)
-            .mix(constraint_consensus_reads.singleFastaSelection)
+            .mix(ch_constraint_consensus_reads.singleFastaSelection)
     }
 
     // After consensus sequences have been made, we still have to map against it and call variants

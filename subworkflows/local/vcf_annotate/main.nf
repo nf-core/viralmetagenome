@@ -25,7 +25,7 @@ workflow VCF_ANNOTATE {
     )
     ch_versions = ch_versions.mix(SNPEFF_BUILD.out.versions.first())
 
-    ch_vcf_ref
+    ch_snpeff_in = ch_vcf_ref
         .map{ meta, vcf, ref -> [ [id: meta.cluster_id], meta, ref, vcf ] }
         .combine(SNPEFF_BUILD.out.db, by: [0])
         .multiMap { db_id, meta, _ref, vcf, db, config ->
@@ -33,12 +33,11 @@ workflow VCF_ANNOTATE {
             db: db_id.id
             cache: [meta, db, config]
         }
-        .set { snpeff_in }
 
     SNPEFF_SNPEFF (
-        snpeff_in.vcf,
-        snpeff_in.db,
-        snpeff_in.cache,
+        ch_snpeff_in.vcf,
+        ch_snpeff_in.db,
+        ch_snpeff_in.cache,
     )
     ch_vcf_ann  = SNPEFF_SNPEFF.out.vcf
     ch_versions = ch_versions.mix(SNPEFF_SNPEFF.out.versions.first())

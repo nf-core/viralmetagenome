@@ -10,7 +10,7 @@ include { BAM_STATS_FILTER                        } from '../bam_stats_filter'
 workflow FASTQ_FASTA_MAP_CONSENSUS {
 
     take:
-    reference_reads      // channel: [ val(meta), [ fasta ], [ fastq ] ]
+    ch_reference_reads   // channel: [ val(meta), [ fasta ], [ fastq ] ]
     mapper               // val: [ bwamem2 | bowtie2 ]
     umi                  // val: [ true | false ]
     deduplicate          // val: [ true | false ]
@@ -27,11 +27,10 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     ch_versions     = Channel.empty()
     ch_multiqc      = Channel.empty()
     ch_dedup_bam    = Channel.empty()
-
-    reads_in = reference_reads.map{meta, ref, reads -> [meta,reads] }
+    ch_reads_in     = ch_reference_reads.map{meta, ref, reads -> [meta,reads] }
 
     // mapping of reads using bowtie2 or BWA-MEM2
-    MAP_READS ( reference_reads, mapper )
+    MAP_READS ( ch_reference_reads, mapper )
 
     ch_bam       = MAP_READS.out.bam
     ch_reference = MAP_READS.out.ref
@@ -47,12 +46,9 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     ch_multiqc   = ch_multiqc.mix(BAM_STATS_FILTER.out.bam_fail_mqc.ifEmpty([]))
     ch_versions  = ch_versions.mix(BAM_STATS_FILTER.out.versions)
 
-    BAM_STATS_FILTER
-        .out
-        .bam_pass
+     ch_bam_fa_fai = BAM_STATS_FILTER.out.bam_pass
         .join(ch_reference, by: [0])
         .join(SAMTOOLS_FAIDX.out.fai, by: [0])
-        .set { ch_bam_fa_fai}
 
     // deduplicate bam using umitools (if UMI) or picard
     if (deduplicate) {
@@ -104,28 +100,29 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
         mapping_stats
     )
     ch_versions = ch_versions.mix(BAM_CALL_CONSENSUS.out.versions)
-    consensus_all   = BAM_CALL_CONSENSUS.out.consensus
+    ch_consensus_all      = BAM_CALL_CONSENSUS.out.consensus
 
-    contigs = filterContigs ( consensus_all, min_len, n_100 )
+    // Check if consensus genomes are long enough
+    ch_contigs            = filterContigs ( ch_consensus_all, min_len, n_100 )
+    ch_consensus_filtered = ch_contigs.pass
+    ch_contig_qc_fail_mqc = failedContigsToMultiQC ( ch_contigs.fail, min_len, n_100 )
+    ch_consensus_reads    = ch_consensus_filtered.join(ch_reads_in, by: [0])
 
-    contig_qc_fail_mqc = failedContigsToMultiQC ( contigs.fail, min_len, n_100 )
+    // Vcf & bam files
     ch_vcf_ref         = ch_vcf.join(ch_reference, by: [0])
-
-    consensus_filtered = contigs.pass
-    ch_multiqc         = ch_multiqc.mix(contig_qc_fail_mqc.collectFile(name:'failed_contig_quality_mqc.tsv').ifEmpty([]))
-
-    consensus_reads    = consensus_filtered.join(reads_in, by: [0])
     bam_out            = ch_dedup_bam_ref.map{meta,bam,ref -> [meta,bam] }
 
-    emit:
-    consensus_reads = consensus_reads                    // channel: [ val(meta), [ fasta ], [ fastq ] ]
-    consensus       = consensus_filtered                 // channel: [ val(meta), [ fasta ] ]
-    consensus_all   = consensus_all                      // channel: [ val(meta), [ fasta ] ]
-    bam             = bam_out                            // channel: [ val(meta), [ bam ] ]
-    vcf             = ch_vcf                             // channel: [ val(meta), [ vcf ] ]
-    vcf_ref         = ch_vcf_ref                         // channel: [ val(meta), [ vcf ], [ fasta ] ]
-    vcf_filter      = ch_vcf_filter                      // channel: [ val(meta), [ vcf ] ]
+    ch_multiqc         = ch_multiqc.mix(ch_contig_qc_fail_mqc.collectFile(name:'failed_contig_quality_mqc.tsv').ifEmpty([]))
 
-    mqc             = ch_multiqc                           // channel: [ val(meta), [ csi ] ]
-    versions        = ch_versions                          // channel: [ versions.yml ]
+    emit:
+    ch_consensus_reads = ch_consensus_reads                     // channel: [ val(meta), [ fasta ], [ fastq ] ]
+    ch_consensus       = ch_consensus_filtered                  // channel: [ val(meta), [ fasta ] ]
+    ch_consensus_all   = ch_consensus_all                       // channel: [ val(meta), [ fasta ] ]
+    ch_bam             = bam_out                                // channel: [ val(meta), [ bam ] ]
+    ch_vcf             = ch_vcf                                 // channel: [ val(meta), [ vcf ] ]
+    ch_vcf_ref         = ch_vcf_ref                             // channel: [ val(meta), [ vcf ], [ fasta ] ]
+    ch_vcf_filter      = ch_vcf_filter                          // channel: [ val(meta), [ vcf ] ]
+
+    ch_mqc             = ch_multiqc                             // channel: [ val(meta), [ csi ] ]
+    ch_versions        = ch_versions                            // channel: [ versions.yml ]
 }

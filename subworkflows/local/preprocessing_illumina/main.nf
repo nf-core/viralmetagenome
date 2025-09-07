@@ -20,7 +20,7 @@ workflow PREPROCESSING_ILLUMINA {
     main:
     ch_versions         = Channel.empty()
     ch_multiqc_files    = Channel.empty()
-    trim_read_count     = Channel.empty()
+    ch_trim_read_count     = Channel.empty()
 
     // QC & UMI & Trimming with fastp or trimmomatic
     if (params.trim_tool == 'trimmomatic') {
@@ -35,14 +35,12 @@ workflow PREPROCESSING_ILLUMINA {
             params.save_merged,
             params.min_trimmed_reads
             )
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.versions)
-
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.fastqc_raw_zip)
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.fastqc_trim_html)
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.trim_log)
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.umi_log)
-
-        trim_read_count = trim_read_count.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.trim_read_count)
+        ch_versions        = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.versions)
+        ch_trim_read_count = ch_trim_read_count.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.trim_read_count)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.fastqc_raw_zip)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.fastqc_trim_html)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.trim_log)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.umi_log)
 
         ch_reads_trim = FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.reads
     }
@@ -60,14 +58,13 @@ workflow PREPROCESSING_ILLUMINA {
             params.min_trimmed_reads
             )
 
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
+        ch_trim_read_count = ch_trim_read_count.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count)
+        ch_versions        = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json)
+        ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log)
 
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip)
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json)
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log)
-
-        trim_read_count = trim_read_count.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count)
 
         ch_reads_trim = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
     }
@@ -76,9 +73,8 @@ workflow PREPROCESSING_ILLUMINA {
     }
 
     // Keeping track of failed reads for reporting
-    trim_read_count
-        .filter{meta, num_reads -> num_reads < params.min_trimmed_reads.toLong() }
-        .set { failed_reads }
+    ch_failed_reads = ch_trim_read_count
+        .filter{_meta, num_reads -> num_reads < params.min_trimmed_reads.toLong() }
 
     // deduplicate UMI's with HUMID
     if (params.with_umi && ['read', 'both'].contains(params.umi_deduplicate) && params.deduplicate ) {
@@ -96,10 +92,9 @@ workflow PREPROCESSING_ILLUMINA {
 
     // Merge reads belonging to the same sample / group
     if (params.merge_reads) {
-        ch_reads_dedup
+        ch_reads_grouped = ch_reads_dedup
             .map { meta, reads -> [meta + [id: meta.sample], reads] }
             .groupTuple ()
-            .set { ch_reads_grouped }
 
         CAT_FASTQ ( ch_reads_grouped.map { meta, reads -> [meta, reads.flatten()] } )
         ch_reads_dedup_joined = CAT_FASTQ.out.reads
@@ -141,7 +136,7 @@ workflow PREPROCESSING_ILLUMINA {
         )
 
         ch_reads_hostremoved   = FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved
-        failed_reads           = failed_reads.mix(FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved_fail)
+        ch_failed_reads           = ch_failed_reads.mix(FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved_fail)
         ch_multiqc_files       = ch_multiqc_files.mix( FASTQ_KRAKEN_HOST_REMOVE.out.mqc )
         ch_versions            = ch_versions.mix( FASTQ_KRAKEN_HOST_REMOVE.out.versions )
 
@@ -153,15 +148,15 @@ workflow PREPROCESSING_ILLUMINA {
     //
     // Create a section that reports failed samples and their read counts
     //
-    lowReadSamplesToMultiQC(failed_reads, params.min_trimmed_reads)
+    ch_low_reads_mqc = lowReadSamplesToMultiQC(ch_failed_reads, params.min_trimmed_reads)
         .collectFile(name:'samples_low_reads_mqc.tsv')
-        .set{low_reads_mqc}
+
 
     emit:
     reads                   = ch_reads_hostremoved            // channel: [ [ meta ], [ reads ] ]
     reads_decomplexified    = ch_reads_decomplexified         // channel: [ [ meta ], [ reads ] ]
     reads_trimmed           = ch_reads_dedup                  // channel: [ [ meta ], [ reads ] ]
     mqc                     = ch_multiqc_files                // channel: [ [ meta ], [ mqc ] ]
-    low_reads_mqc           = low_reads_mqc                   // channel: [ mqc ]
+    low_reads_mqc           = ch_low_reads_mqc                // channel: [ mqc ]
     versions                = ch_versions                     // channel: [ versions.yml ]
 }

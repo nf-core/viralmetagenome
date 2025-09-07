@@ -19,10 +19,9 @@ workflow SCAFFOLDS_EXTEND_STATS {
     ch_scaffolds  = Channel.empty()
     ch_multiqc    = Channel.empty()
 
-    ch_scaffolds_raw
-        .filter{meta, contigs -> contigs != null}
-        .filter{meta, contigs -> contigs.countFasta() > 0}
-        .set{ch_scaffolds}
+    ch_scaffolds = ch_scaffolds_raw
+        .filter{_meta, contigs -> contigs != null}
+        .filter{_meta, contigs -> contigs.countFasta() > 0}
 
     // QUAST
     QUAST(ch_scaffolds, [[:],[]], [[:],[]])
@@ -54,9 +53,8 @@ workflow SCAFFOLDS_EXTEND_STATS {
 
     ch_coverages = Channel.empty()
     if (params.perc_reads_contig != 0){
-        ch_scaffolds
+        ch_map_reads_input = ch_scaffolds
             .join(ch_reads)
-            .set{ch_map_reads_input}
 
         MAP_READS_CONTIGS(ch_map_reads_input,params.mapper)
         ch_bam      = MAP_READS_CONTIGS.out.bam

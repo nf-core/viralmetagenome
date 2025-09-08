@@ -469,7 +469,6 @@ workflow VIRALMETAGENOME {
         )
     )
 
-    // TODO UPDATE MULTIQC MODULE WITH CUSTOM MULTIQC
     // Prepare MULTIQC custom tables
     CUSTOM_MULTIQC (
         ch_multiqc_files.collect(),

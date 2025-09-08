@@ -37,10 +37,6 @@ READ_DECLARATION = {
         'namespace_patterns': 'kaiju',
         'suffix': 'R1+R2'
     }
-    #TODO:
-    # - prinseq ++
-    # - bbduk
-
 }
 
 

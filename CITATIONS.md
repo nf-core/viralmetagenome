@@ -2,12 +2,9 @@
 
 # Citations
 
-## [Viralmetagenome](https://github.com/nf-core/viralmetagenome)
+## [Viralmetagenome](https://doi.org/10.1101/2025.06.27.661954)
 
-!!! warning
-Viralmetagenome is currently not Published. Please cite as:
-
-    - Klaps J, Lemey P, Kafetzopoulou L. Viralmetagenome: A metagenomics analysis pipeline for eukaryotic viruses. __Github__ https://github.com/nf-core/viralmetagenome
+> Klaps J, Lemey P, nf-core community, Kafetzopoulou LE. nf-core/viralmetagenome: A Novel Pipeline for Untargeted Viral Genome Reconstruction bioRxiv 2025.06.27.661954; doi:10.1101/2025.06.27.661954
 
 ## [nf-core](https://doi.org/10.1038/s41587-020-0439-x)
 
@@ -27,6 +24,9 @@ Viralmetagenome is currently not Published. Please cite as:
 
   > Danecek, Petr et al. “Twelve years of SAMtools and BCFtools.” GigaScience vol. 10,2 (2021): giab008. doi:10.1093/gigascience/giab008
 
+- [BEDTools](https://doi.org/10.1093/bioinformatics/btq033)
+  > Quinlan AR, Hall IM. BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics. 2010 Mar 15;26(6):841-2. doi: 10.1093/bioinformatics/btq033. Epub 2010 Jan 28. PMID: 20110278; PMCID: PMC2832824.
+
 - [blast](https://doi.org/10.1186/1471-2105-10-421)
 
   > Camacho, Christiam et al. “BLAST+: architecture and applications.” BMC bioinformatics vol. 10 421. 15 Dec. 2009, doi:10.1186/1471-2105-10-421
@@ -34,6 +34,10 @@ Viralmetagenome is currently not Published. Please cite as:
 - [Bowtie2](https://doi.org/10.1038/nmeth.1923)
 
   > Langmead, Ben, and Steven L Salzberg. “Fast gapped-read alignment with Bowtie 2.” Nature methods vol. 9,4 357-9. 4 Mar. 2012, doi:10.1038/nmeth.1923
+
+- [Bracken](https://doi.org/10.7717/peerj-cs.104)
+
+  > Lu J, Breitwieser FP, Thielen P, Salzberg SL. Bracken: estimating species abundance in metagenomics data. PeerJ Comput Sci. 2017;3:e104. doi: 10.7717/peerj-cs.104. Epub 2017 Jan 2. PMID: 40271438; PMCID: PMC12016282.
 
 - [BWA-MEM](https://github.com/lh3/bwa)
 
@@ -79,6 +83,10 @@ Viralmetagenome is currently not Published. Please cite as:
 
   > Traag, V A et al. “From Louvain to Leiden: guaranteeing well-connected communities.” Scientific reports vol. 9,1 5233. 26 Mar. 2019, doi:10.1038/s41598-019-41695-z
 
+- [MAFFT](https://doi.org/10.1109/TCBB.2016.2530064)
+
+  >Zheng W, Li K, Li K, So HC. A Modified Multiple Alignment Fast Fourier Transform with Higher Efficiency. IEEE/ACM Trans Comput Biol Bioinform. 2017 May-Jun;14(3):634-645. doi: 10.1109/TCBB.2016.2530064. Epub 2016 Feb 15. PMID: 26890922.
+
 - [Mash](https://doi.org/10.1186/s13059-016-0997-x)
 
   > Ondov, Brian D et al. “Mash: fast genome and metagenome distance estimation using MinHash.” Genome biology vol. 17,1 132. 20 Jun. 2016, doi:10.1186/s13059-016-0997-x
@@ -105,6 +113,10 @@ Viralmetagenome is currently not Published. Please cite as:
 
 - [picard-tools](http://broadinstitute.github.io/picard)
 
+- [prinseq++](https://doi.org/10.7287/peerj.preprints.27553v1)
+
+  > Cantu VA, Sadural J, Edwards R. (2019). PRINSEQ++, a multi-threaded tool for fast and efficient quality control and preprocessing of sequencing datasets (e27553v1). PeerJ Preprints. doi: 10.7287/peerj.preprints.27553v1
+
 - [prokka](https://doi.org/10.1093/bioinformatics/btu153)
 
   > Seemann, Torsten. “Prokka: rapid prokaryotic genome annotation.” Bioinformatics (Oxford, England) vol. 30,14 (2014): 2068-9. doi:10.1093/bioinformatics/btu153
@@ -116,6 +128,10 @@ Viralmetagenome is currently not Published. Please cite as:
 - [SAMtools](https://doi.org/10.1093/bioinformatics/btr509)
 
   > Li H. A statistical framework for SNP calling, mutation discovery, association mapping and population genetical parameter estimation from sequencing data. Bioinformatics. 2011 Nov 1;27(21):2987-93. doi: 10.1093/bioinformatics/btr509. Epub 2011 Sep 8. PMID: 21903627; PMCID: PMC3198575.
+
+- [SNPeff](https://doi.org/10.4161/fly.19695)
+
+  > Cingolani P, Platts A, Wang le L, Coon M, Nguyen T, Wang L, Land SJ, Lu X, Ruden DM. A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w1118; iso-2; iso-3. Fly (Austin). 2012 Apr-Jun;6(2):80-92. doi: 10.4161/fly.19695. PMID: 22728672; PMCID: PMC3679285.
 
 - [SPAdes](https://doi.org/10.1089/cmb.2012.0021)
 

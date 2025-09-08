@@ -3702,7 +3702,6 @@
      x="9.207221"
      y="171.61844"
      d="m 16.207221,171.61844 89.171399,0 a 7,7 45 0 1 7,7 v 33.42018 a 7,7 135 0 1 -7,7 l -89.171399,0 a 7,7 45 0 1 -7,-7 v -33.42018 a 7,7 135 0 1 7,-7 z" /><a
-     xlink:href="https://joon-klaps.github.io/viralmetagenome/latest/workflow/preprocessing/"
      id="a202"
      transform="translate(-1.0430813e-7,-0.40337456)"><path
        style="fill:#e7e7e7;fill-opacity:1;stroke:none;stroke-width:1.77889;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:47.4436;paint-order:stroke fill markers"
@@ -3712,7 +3711,6 @@
        x="9.3021641"
        y="21.09972"
        d="M 16.302164,21.09972 H 160.99186 a 7,7 45 0 1 7,7 v 45.526535 a 7,7 135 0 1 -7,7 H 16.302164 a 7,7 45 0 1 -6.9999999,-7 V 28.09972 a 7,7 135 0 1 6.9999999,-7 z" /></a><a
-     xlink:href="https://joon-klaps.github.io/viralmetagenome/latest/workflow/metagenomic_diversity/"
      id="a205"
      transform="translate(-1.0430813e-7,-0.40337456)"><path
        style="fill:#e7e7e7;fill-opacity:1;stroke:none;stroke-width:0.901745;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:47.4436;paint-order:stroke fill markers"
@@ -3722,13 +3720,11 @@
        x="173.37155"
        y="4.5631433"
        d="m 180.37155,4.5631433 h 60.64867 a 7,7 45 0 1 7,6.9999997 v 18.516846 a 7,7 135 0 1 -7,7 h -60.64867 a 7,7 45 0 1 -7,-7 V 11.563143 a 7,7 135 0 1 7,-6.9999997 z" /></a><a
-     xlink:href="https://joon-klaps.github.io/viralmetagenome/latest/workflow/assembly_polishing/"
      id="a208"
      transform="translate(-1.0430813e-7,-0.40337456)"><path
        id="rect5496-5-2"
        style="fill:#e7e7e7;fill-opacity:1;stroke:none;stroke-width:1.713;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:47.4436;paint-order:stroke fill markers"
        d="m 173.41836,48.219189 v 25.469426 a 7,7 45 0 0 7,7 h 86.47035 a 7,7 45 0 1 7,7 v 73.323355 a 7,7 45 0 0 7,7 h 107.45822 a 7,7 135 0 0 7,-7 V 87.688615 77.215959 48.219189 a 7,7 45 0 0 -7,-7 H 180.41836 a 7,7 135 0 0 -7,7 z" /></a><a
-     xlink:href="https://joon-klaps.github.io/viralmetagenome/latest/workflow/variant_and_refinement/"
      id="a211"
      transform="translate(-1.0430813e-7,-0.40337456)"><path
        style="fill:#e7e7e7;fill-opacity:1;stroke:none;stroke-width:2.24226;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:47.4436;paint-order:stroke fill markers"
@@ -3738,7 +3734,6 @@
        x="90.041061"
        y="84.569"
        d="M 97.041061,84.569 H 262.90999 a 7,7 45 0 1 7,7 v 69.44054 a 7,7 135 0 1 -7,7 H 97.041061 a 7,7 45 0 1 -7,-7 V 91.569 a 7,7 135 0 1 7,-7 z" /></a><a
-     xlink:href="https://joon-klaps.github.io/viralmetagenome/latest/workflow/consensus_qc/"
      id="a214"
      transform="translate(-1.0430813e-7,-0.40337456)"><path
        style="fill:#e7e7e7;fill-opacity:1;stroke:none;stroke-width:1.46364;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:47.4436;paint-order:stroke fill markers"

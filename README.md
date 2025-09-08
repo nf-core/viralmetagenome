@@ -100,7 +100,7 @@ We thank the following people for their extensive assistance in the development 
 
 ## Contributions and Support
 
-If you would like to contribute to this pipeline, please see the [contributing guidelines](https://joon-klaps.github.io/viralmetagenome/latest/CONTRIBUTING).
+If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
 
 For further information or help, don't hesitate to get in touch on the [Slack `#viralmetagenome` channel](https://nfcore.slack.com/channels/viralmetagenome) (you can join with [this invite](https://nf-co.re/join/slack)).
 
@@ -112,7 +112,7 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 > Viralmetagenome is currently not Published. Please cite as:
 > Klaps J, Lemey P, Kafetzopoulou L. Viralmetagenome: A metagenomics analysis pipeline for eukaryotic viruses. **Github** <https://github.com/nf-core/viralmetagenome>
 
-An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](https://joon-klaps.github.io/viralmetagenome/latest/CITATIONS) file.
+An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
 <!-- You can cite the `nf-core` publication as follows: -->
 

@@ -115,14 +115,14 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     ch_multiqc         = ch_multiqc.mix(ch_contig_qc_fail_mqc.collectFile(name:'failed_contig_quality_mqc.tsv').ifEmpty([]))
 
     emit:
-    ch_consensus_reads = ch_consensus_reads                     // channel: [ val(meta), [ fasta ], [ fastq ] ]
-    ch_consensus       = ch_consensus_filtered                  // channel: [ val(meta), [ fasta ] ]
-    ch_consensus_all   = ch_consensus_all                       // channel: [ val(meta), [ fasta ] ]
-    ch_bam             = bam_out                                // channel: [ val(meta), [ bam ] ]
-    ch_vcf             = ch_vcf                                 // channel: [ val(meta), [ vcf ] ]
-    ch_vcf_ref         = ch_vcf_ref                             // channel: [ val(meta), [ vcf ], [ fasta ] ]
-    ch_vcf_filter      = ch_vcf_filter                          // channel: [ val(meta), [ vcf ] ]
+    consensus_reads = ch_consensus_reads                     // channel: [ val(meta), [ fasta ], [ fastq ] ]
+    consensus       = ch_consensus_filtered                  // channel: [ val(meta), [ fasta ] ]
+    consensus_all   = ch_consensus_all                       // channel: [ val(meta), [ fasta ] ]
+    bam             = bam_out                                // channel: [ val(meta), [ bam ] ]
+    vcf             = ch_vcf                                 // channel: [ val(meta), [ vcf ] ]
+    vcf_ref         = ch_vcf_ref                             // channel: [ val(meta), [ vcf ], [ fasta ] ]
+    vcf_filter      = ch_vcf_filter                          // channel: [ val(meta), [ vcf ] ]
 
-    ch_mqc             = ch_multiqc                             // channel: [ val(meta), [ csi ] ]
-    ch_versions        = ch_versions                            // channel: [ versions.yml ]
+    mqc             = ch_multiqc                             // channel: [ val(meta), [ csi ] ]
+    versions        = ch_versions                            // channel: [ versions.yml ]
 }

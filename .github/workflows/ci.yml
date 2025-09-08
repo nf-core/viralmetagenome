@@ -205,7 +205,7 @@ jobs:
           - "singularity"
         test_name:
           - "test_full"
-          - "test_nothing"
+          - "test_minimal"
           - "test_group"
           - "test_fail_mapped"
           - "test_fail_db"

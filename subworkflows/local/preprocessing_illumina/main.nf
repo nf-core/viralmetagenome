@@ -98,6 +98,7 @@ workflow PREPROCESSING_ILLUMINA {
 
         CAT_FASTQ ( ch_reads_grouped.map { meta, reads -> [meta, reads.flatten()] } )
         ch_reads_dedup_joined = CAT_FASTQ.out.reads
+        ch_versions           = ch_versions.mix(CAT_FASTQ.out.versions)
     } else {
         ch_reads_dedup_joined = ch_reads_dedup
     }

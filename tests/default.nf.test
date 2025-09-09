@@ -46,4 +46,170 @@ nextflow_pipeline {
             )
         }
     }
+
+    // ------------------------------------------------------------------
+    // Variant caller matrix tests (same `test` profile, different params)
+    // These mirror the combinations used in .github/workflows/ci.yml
+    // ------------------------------------------------------------------
+    test("-profile test - variant_caller bcftools - consensus_caller bcftools") {
+        when {
+            params {
+                outdir = "$outputDir"
+                variant_caller = "bcftools"
+                consensus_caller = "bcftools"
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - variant_caller bcftools - consensus_caller ivar") {
+        when {
+            params {
+                outdir = "$outputDir"
+                variant_caller = "bcftools"
+                consensus_caller = "ivar"
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - variant_caller ivar - consensus_caller bcftools") {
+        when {
+            params {
+                outdir = "$outputDir"
+                variant_caller = "ivar"
+                consensus_caller = "bcftools"
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - variant_caller ivar - consensus_caller ivar") {
+        when {
+            params {
+                outdir = "$outputDir"
+                variant_caller = "ivar"
+                consensus_caller = "ivar"
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Cluster method matrix tests (same `test` profile, different params)
+    // These set the skip flags to match the CI invocation for cluster tests
+    // ------------------------------------------------------------------
+    test("-profile test - cluster_method vsearch") {
+        when {
+            params {
+                outdir = "$outputDir"
+                cluster_method = "vsearch"
+                skip_iterative_refinement = true
+                skip_variant_calling = true
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - cluster_method mmseqs-cluster") {
+        when {
+            params {
+                outdir = "$outputDir"
+                cluster_method = "mmseqs-cluster"
+                skip_iterative_refinement = true
+                skip_variant_calling = true
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - cluster_method mmseqs-linclust") {
+        when {
+            params {
+                outdir = "$outputDir"
+                cluster_method = "mmseqs-linclust"
+                skip_iterative_refinement = true
+                skip_variant_calling = true
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - cluster_method mash") {
+        when {
+            params {
+                outdir = "$outputDir"
+                cluster_method = "mash"
+                skip_iterative_refinement = true
+                skip_variant_calling = true
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
+
+    test("-profile test - cluster_method cdhitest") {
+        when {
+            params {
+                outdir = "$outputDir"
+                cluster_method = "cdhitest"
+                skip_iterative_refinement = true
+                skip_variant_calling = true
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.trace.succeeded().size(),
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
+            ).match()
+        }
+    }
 }

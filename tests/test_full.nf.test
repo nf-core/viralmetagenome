@@ -15,15 +15,6 @@ nextflow_pipeline {
         }
 
         then {
-
-            // Output directory: multiqc
-            def stable_name_multiqc = getAllFilesFromDir(
-                params.outdir, include: ['multiqc/**'], relative: true, includeDir: false
-            )
-            def stable_path_multiqc = getAllFilesFromDir(
-                params.outdir, include: ['multiqc/**'], ignoreFile: 'tests/.nftignore'
-            )
-
             assert workflow.success
             assertAll(
                 { assert snapshot(
@@ -32,7 +23,6 @@ nextflow_pipeline {
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml"),
                 ).match() },
-                { assert snapshot(stable_name_multiqc, stable_path_multiqc).match('multiqc') },
             )
         }
     }

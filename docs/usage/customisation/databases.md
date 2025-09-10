@@ -125,7 +125,7 @@ Set it with the variable `--kraken2_db`
 
 ## Annotation sequences
 
-Identifying the species and the segment of the final genome constructs is done based on a tblastx search (with MMSEQS) to an annotated sequencing dataset. This dataset is by default the [Virosaurus](https://viralzone.expasy.org/8676) as it contains a good representation of the viral genomes and is annotated.
+Identifying the species and the segment of the final genome constructs is done based on a tblastx search (with MMseqs2) to an annotated sequencing dataset. This dataset is by default the [Virosaurus](https://viralzone.expasy.org/8676) as it contains a good representation of the viral genomes and is annotated.
 
 This annotation database can be specified using `--annotation_db`
 

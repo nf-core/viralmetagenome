@@ -47,10 +47,10 @@ Contigs can be extended using [SSPACE Basic](https://github.com/nsoranzo/sspace_
 
 ## 3. Coverage calculation
 
-Processed reads are mapped back against the contigs to determine the number of reads mapping towards each contig. This is done with [`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/),[`BWAmem2`](https://github.com/bwa-mem2/bwa-mem2) or [`BWA`](https://github.com/lh3/bwa). This step is used to remove contig clusters that have little to no coverage downstream.
+Processed reads are mapped back against the contigs to determine the number of reads mapping towards each contig. This is done with [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/), [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2) or [`BWA`](https://github.com/lh3/bwa). This step is used to remove contig clusters that have little to no coverage downstream.
 
 > [!INFO]
-> Specify the mapper to use with the `--mapper` parameter. The default is [`BWAmem2`](https://github.com/bwa-mem2/bwa-mem2). To skip contig filtering specify `--perc_reads_contig 0`.
+> Specify the mapper to use with the `--mapper` parameter. The default is [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2). To skip contig filtering specify `--perc_reads_contig 0`.
 
 ## 4. Reference Matching
 
@@ -141,12 +141,12 @@ Providing lists to the extract precluster script is done by encapsulating values
 
 The clustering is performed with one of the following tools:
 
-- [`cdhitest`](https://sites.google.com/view/cd-hit)
+- [`CD-HIT-EST`](https://sites.google.com/view/cd-hit)
 - [`vsearch`](https://github.com/torognes/vsearch/wiki/Clustering)
 - [`mmseqs-linclust`](https://github.com/soedinglab/MMseqs2/wiki#linear-time-clustering-using-mmseqs-linclust)
 - [`mmseqs-cluster`](https://github.com/soedinglab/MMseqs2/wiki#cascaded-clustering)
 - [`vRhyme`](https://github.com/AnantharamanLab/vRhyme)
-- [`mash`](https://github.com/marbl/Mash)
+- [`Mash`](https://github.com/marbl/Mash)
 
 These methods all come with their own advantages and disadvantages. For example, cdhitest is very fast but cannot be used for large viruses >10Mb and similarity threshold cannot go below 80% which is not preferable for highly diverse RNA viruses. Vsearch is slower but accurate. Mmseqs-linclust is the fastest but tends to create a large amount of bins. Mmseqs-cluster is slower but can handle larger datasets and is more accurate. vRhyme is a new method that is still under development but has shown promising results but can sometimes not output any bins when segments are small. Mash is a very fast comparison method is linked with a custom script that identifies communities within a network.
 

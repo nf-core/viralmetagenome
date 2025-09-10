@@ -1,6 +1,6 @@
 # Workflow overview
 
-Viralmetagenome takes in a set of reads and performs 5 major analyses, each of them are explained in more detail in the following sections:
+nf-core/viralmetagenome takes in a set of reads and performs 5 major analyses, each of them are explained in more detail in the following sections:
 
 1. [Preprocessing](2_preprocessing.md)
 2. [Metagenomic diversity](3_metagenomic_diversity.md)

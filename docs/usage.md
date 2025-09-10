@@ -42,7 +42,7 @@ sample3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
 
 ### Mapping constraints
 
-Viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
+nf-core/viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
 
 An example mapping constraint samplesheet file consisting of 5 references, may look something like the one below.
 

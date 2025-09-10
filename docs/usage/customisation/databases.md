@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Viralmetagenome uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
+nf-core/viralmetagenome uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
 
 :::tip
 Building custom databases for taxonomic profilers, can be challenging. [nf-core createtaxdb](https://nf-co.re/createtaxdb/) adresses this issue!
@@ -102,7 +102,7 @@ You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blo
 
 ### Host read removal
 
-Viralmetagenome uses Kraken2 to remove contaminated reads.
+nf-core/viralmetagenome uses Kraken2 to remove contaminated reads.
 
 :::info{title="Why kraken2 for host removal?"}
 The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:

@@ -1,18 +1,18 @@
 # Report generation and quality control
 
-Viralmetagenome's report and result interpretation heavily relies on MultiQC. MultiQC is a tool to create a single report from multiple analysis results. It is designed to be used with a wide range of bioinformatics tools and is compatible with a wide range of data formats. Almost all tools are summarised within the MultiQC report that have interactive plots and data tables. However, due to the number of tools included, some results are summarised in the directory `overview-tables` to reduce the size of the MultiQC report.
+nf-core/viralmetagenome's report and result interpretation heavily relies on MultiQC. MultiQC is a tool to create a single report from multiple analysis results. It is designed to be used with a wide range of bioinformatics tools and is compatible with a wide range of data formats. Almost all tools are summarised within the MultiQC report that have interactive plots and data tables. However, due to the number of tools included, some results are summarised in the directory `overview-tables` to reduce the size of the MultiQC report.
 
 :::tip
 Complete output descriptions of files and images can be found in the [output section](../output.md).
 :::
 
-Within the MultiQC report,nf-core/viralmetagenome provides a number of custom tables based on consensus genome quality control data. These tools are:
+Within the MultiQC report, nf-core/viralmetagenome provides a number of custom tables based on consensus genome quality control data. These tools are:
 
 - [QUAST](#quast): QUAST is a quality assessment tool for genome assemblies. It calculates various metrics such as N50, L50, number of contigs, and total length.
 - [CheckV](#checkv): CheckV is a tool for assessing the quality of metagenome-assembled viral genomes. It calculates various metrics such as completeness, contamination, and strain heterogeneity.
 - [Prokka](#prokka): Prokka is a whole genome annotation pipeline for identifying features of interest in a set of genomic DNA sequences, and labelling them with useful information.
 - [blastn](#blast): BLAST is a tool for comparing primary biological sequence information. It calculates the similarity between the consensus genome and the reference genome.
-- [mmseqs-search](#mmseqs-search) - included as 'annotation': MMseqs is an ultra-fast and sensitive search tool for protein and nucleotide databases.nf-core/viralmetagenome uses MMseqs to annotate the consensus genomes and assign them a species name, segment name, expected host, etc.
+- [mmseqs-search](#mmseqs-search) - included as 'annotation': MMseqs is an ultra-fast and sensitive search tool for protein and nucleotide databases. nf-core/viralmetagenome uses MMseqs to annotate the consensus genomes and assign them a species name, segment name, expected host, etc.
 - [mafft](#mafft): MAFFT is a multiple sequence alignment program.
 - [SnpEff and SnpSift](#snpeff-and-snpsift): SnpEff is a genetic variant annotation and functional effect prediction tool. SnpSift is a toolbox that allows you to filter and manipulate annotated files.
 
@@ -76,7 +76,7 @@ MMseqs was used for the annotation step instead of BLAST because of the ability 
 
 [SnpSift](https://pcingola.github.io/SnpEff/SnpSift.html) is a toolbox that allows you to filter and manipulate annotated files. The ExtractFields tool is used to extract specific information from the annotated VCF files into a tabular format for easier analysis.
 
-Viralgenie uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
+nf-core/viralmetagenome uses SnpEff to annotate variants identified by the variant calling process with functional information, and SnpSift ExtractFields to extract key information from the annotated variants into a more accessible tabular format.
 
 The annotation process provides valuable information about the impact of variants, including:
 

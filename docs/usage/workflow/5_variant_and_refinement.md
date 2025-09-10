@@ -41,7 +41,7 @@ The variant calling and consensus refinement step can be skipped with the argume
 
 ## 1a. Selection of reference
 
-The reference genome(s) can be supplied with the [samplesheet `--mapping_constraints`](../usage.md#mapping-constraints), here the reference can be a multiFasta file representing a range of genomes that could be valid reference genomes. Here,nf-core/viralmetagenome supports a selection procedure where the reference genomes that share the highest number of [k-mers](https://ucdavis-bioinformatics-training.github.io/2020-Genome_Assembly_Workshop/kmers/kmers#:~:text=A%20K%2Dmer%20is%20a,%2C%20GGC%2C%20GCC%2C%20CCG.) with the read files will be selected and kept for read mapping, variant calling and consensus genome reconstruction.
+The reference genome(s) can be supplied with the [samplesheet `--mapping_constraints`](../usage.md#mapping-constraints), here the reference can be a multiFasta file representing a range of genomes that could be valid reference genomes. Here, nf-core/viralmetagenome supports a selection procedure where the reference genomes that share the highest number of [k-mers](https://ucdavis-bioinformatics-training.github.io/2020-Genome_Assembly_Workshop/kmers/kmers#:~:text=A%20K%2Dmer%20is%20a,%2C%20GGC%2C%20GCC%2C%20CCG.) with the read files will be selected and kept for read mapping, variant calling and consensus genome reconstruction.
 
 ```mermaid
 graph LR
@@ -88,7 +88,7 @@ So if you have UMI’s, no need to use Picard, instead use UMI-tools to deduplic
 
 ### 2.2 Mapping statistics
 
-Viralmetagenome uses multiple tools to get statistics on the variants and on the read mapping. These tools are:
+nf-core/viralmetagenome uses multiple tools to get statistics on the variants and on the read mapping. These tools are:
 
 - [`samtools flagstat`](https://www.htslib.org/doc/samtools-flagstat.html) to get the number of reads that are mapped, unmapped, paired, etc.
 - [`samtools idxstats`](https://www.htslib.org/doc/samtools-idxstats.html) to get the number of reads that are mapped to each reference sequence.

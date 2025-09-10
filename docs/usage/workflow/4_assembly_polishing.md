@@ -1,6 +1,6 @@
 # Assembly & polishing
 
-Viralmetagenome offers an elaborate workflow for the assembly and polishing of viral genomes:
+nf-core/viralmetagenome offers an elaborate workflow for the assembly and polishing of viral genomes:
 
 1. [Assembly](#1-de-novo-assembly): combining the results of multiple assemblers.
 1. [Extension](#2-extension): extending contigs using paired-end reads.

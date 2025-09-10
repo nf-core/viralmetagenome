@@ -39,7 +39,7 @@ This schema is a simplification as there are some additional steps:
 The variant calling and consensus refinement step can be skipped with the argument `--skip_iterative_refinement` and `--skip_variant_calling`, see the [parameters iterative refinement section](../parameters.md#iterative-consensus-refinement) and [parameters variant analysis section](../parameters.md#variant-analysis), respectively, for all relevant arguments to control the variant analysis steps.
 :::
 
-## 1a. Selection of reference
+## 1. Selection of reference - Only for external reference based analysis
 
 The reference genome(s) can be supplied with the [samplesheet `--mapping_constraints`](../usage.md#mapping-constraints), here the reference can be a multiFasta file representing a range of genomes that could be valid reference genomes. Here, nf-core/viralmetagenome supports a selection procedure where the reference genomes that share the highest number of [k-mers](https://ucdavis-bioinformatics-training.github.io/2020-Genome_Assembly_Workshop/kmers/kmers#:~:text=A%20K%2Dmer%20is%20a,%2C%20GGC%2C%20GCC%2C%20CCG.) with the read files will be selected and kept for read mapping, variant calling and consensus genome reconstruction.
 

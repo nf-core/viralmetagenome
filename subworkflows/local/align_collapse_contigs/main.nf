@@ -3,7 +3,6 @@ include { MINIMAP2_INDEX as MINIMAP2_CONTIG_INDEX                     } from '..
 include { MINIMAP2_ALIGN as MINIMAP2_CONTIG_ALIGN                     } from '../../../modules/nf-core/minimap2/align/main'
 include { IVAR_CONSENSUS as IVAR_CONTIG_CONSENSUS                     } from '../../../modules/nf-core/ivar/consensus/main'
 include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_CONTIG_CONSENSUS } from '../../../modules/local/rename_fasta_header/main'
-include { NOCOV_TO_REFERENCE                                          } from '../../../modules/local/nocov_to_reference/main'
 
 workflow ALIGN_COLLAPSE_CONTIGS {
 
@@ -34,7 +33,7 @@ workflow ALIGN_COLLAPSE_CONTIGS {
         .index
         .join( ch_references_members, by: [0] )
         .join( CAT_CLUSTER.out.file_out, by: [0] )
-        .branch{ meta, index, references, members, comb ->
+        .branch{ meta, index, _references, members, comb ->
             external: meta.external_reference
                 return [meta, index, members]
             internal: true
@@ -43,18 +42,18 @@ workflow ALIGN_COLLAPSE_CONTIGS {
 
     ch_index_contigs = ch_splitup.external.mix(ch_splitup.internal)
 
-    ch_index = ch_index_contigs.map{ meta, index, contigs -> [meta, index] }
-    ch_contigs = ch_index_contigs.map{ meta, index, contigs -> [meta, contigs] }
+    ch_index = ch_index_contigs.map{ meta, index, _contigs -> [meta, index] }
+    ch_contigs = ch_index_contigs.map{ meta, _index, contigs -> [meta, contigs] }
 
     MINIMAP2_CONTIG_ALIGN(ch_contigs, ch_index, true, "bai", false, false )
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_ALIGN.out.versions.first())
 
     ch_references_bam = ch_references_members
         .join( MINIMAP2_CONTIG_ALIGN.out.bam, by: [0] )
-        .map{ meta, references, members, bam -> [meta, references, bam] }
+        .map{ meta, references, _members, bam -> [meta, references, bam] }
 
-    ivar_bam   = ch_references_bam.map{ meta, references, bam -> [meta, bam] }
-    ivar_fasta = ch_references_bam.map{ meta, references, bam -> [references] }
+    ivar_bam   = ch_references_bam.map{ meta, _references, bam -> [meta, bam] }
+    ivar_fasta = ch_references_bam.map{ _meta, references, _bam -> [references] }
     IVAR_CONTIG_CONSENSUS(
         ivar_bam,
         ivar_fasta,

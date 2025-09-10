@@ -43,16 +43,15 @@
 9. Cluster contigs (or every taxonomic bin) with any of the following tools: [`CD-HIT-EST`](https://sites.google.com/view/cd-hit), [`vsearch`](https://github.com/torognes/vsearch/wiki/Clustering), [`mmseqs-linclust`](https://github.com/soedinglab/MMseqs2/wiki#linear-time-clustering-using-mmseqs-linclust), [`mmseqs-cluster`](https://github.com/soedinglab/MMseqs2/wiki#cascaded-clustering), [`vRhyme`](https://github.com/AnantharamanLab/vRhyme) or [`Mash`](https://github.com/marbl/Mash)
 10. [Optional] Remove clusters with low read coverage. `bin/extract_clusters.py`
 11. Scaffolding of contigs to centroid ([`Minimap2`](https://github.com/lh3/minimap2), [`iVar-consensus`](https://andersen-lab.github.io/ivar/html/manualpage.html))
-12. [Optional] Annotate 0-depth regions with external reference `bin/nocov_to_reference.py`.
-13. [Optional] Select best reference from `--mapping_constraints`: ([`Mash sketch`](https://github.com/marbl/Mash), [`Mash screen`](https://github.com/marbl/Mash))
-14. Mapping filtered reads to supercontig and mapping constraints ([`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/),[`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2) and [`BWA`](https://github.com/lh3/bwa))
-15. [Optional] Deduplicate reads ([`Picard`](https://broadinstitute.github.io/picard/) or if UMI's are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html))
-16. Variant calling and filtering ([`BCFtools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
-17. Create consensus genome ([`BCFtools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
-18. Iterative refinement, repeat step 14-17 multiple times for the denovo contig route
-19. [Optional] Variant annotation ([`SnpEff`](https://pcingola.github.io/SnpEff/),[`SnpSift`](https://pcingola.github.io/SnpEff/SnpSift.html))
-20. [Optional] Consensus evaluation and annotation with multiple tools([`QUAST`](http://quast.sourceforge.net/quast), [`CheckV`](https://bitbucket.org/berkeleylab/checkv/src/master/), [`blastn`](https://blast.ncbi.nlm.nih.gov/Blast.cgi), [`prokka`](http://github.com/tseemann/prokka), [`mmseqs-search`](https://github.com/soedinglab/MMseqs2/wiki#batch-sequence-searching-using-mmseqs-search), [`MAFFT` - alignment of contigs vs iterations & consensus](https://mafft.cbrc.jp/alignment/software/)).
-21. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](https://docs.seqera.io/multiqc))
+12. [Optional] Select best reference from `--mapping_constraints`: ([`Mash sketch`](https://github.com/marbl/Mash), [`Mash screen`](https://github.com/marbl/Mash))
+13. Mapping filtered reads to supercontig and mapping constraints ([`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/),[`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2) and [`BWA`](https://github.com/lh3/bwa))
+14. [Optional] Deduplicate reads ([`Picard`](https://broadinstitute.github.io/picard/) or if UMI's are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html))
+15. Variant calling and filtering ([`BCFtools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
+16. Create consensus genome ([`BCFtools`](http://samtools.github.io/bcftools/bcftools.html),[`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html))
+17. Iterative refinement, repeat step 13-16 multiple times for the denovo contig route
+18. [Optional] Variant annotation ([`SnpEff`](https://pcingola.github.io/SnpEff/),[`SnpSift`](https://pcingola.github.io/SnpEff/SnpSift.html))
+19. [Optional] Consensus evaluation and annotation with multiple tools([`QUAST`](http://quast.sourceforge.net/quast), [`CheckV`](https://bitbucket.org/berkeleylab/checkv/src/master/), [`blastn`](https://blast.ncbi.nlm.nih.gov/Blast.cgi), [`prokka`](http://github.com/tseemann/prokka), [`mmseqs-search`](https://github.com/soedinglab/MMseqs2/wiki#batch-sequence-searching-using-mmseqs-search), [`MAFFT` - alignment of contigs vs iterations & consensus](https://mafft.cbrc.jp/alignment/software/)).
+20. Result summary visualisation for raw read, alignment, assembly, variant calling and consensus calling results ([`MultiQC`](https://docs.seqera.io/multiqc))
 
 ## Usage
 

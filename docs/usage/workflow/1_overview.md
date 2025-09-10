@@ -16,6 +16,4 @@ All steps can be skipped and the pipeline can be run with only the desired steps
 
 ## Subway map
 
-<!-- can't parse images with snippets -->
-
 ![viralmetagenome-workflow](../../images/metromap_style_pipeline_workflow_viralmetagenome.png)

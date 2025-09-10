@@ -1,6 +1,3 @@
----
-order: 3
----
 
 # Read classification
 

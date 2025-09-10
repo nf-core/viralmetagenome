@@ -1,7 +1,3 @@
----
-order: 4
----
-
 # Assembly & polishing
 
 Viralmetagenome offers an elaborate workflow for the assembly and polishing of viral genomes:

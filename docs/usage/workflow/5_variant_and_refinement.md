@@ -1,7 +1,3 @@
----
-order: 5
----
-
 # Variant calling and consensus refinement
 
 This subworkflow supports two distinct starting points:

@@ -1,7 +1,3 @@
----
-order: 2
----
-
 # Preprocessing
 
 Viralmetagenome offers three main preprocessing steps for the preprocessing of raw sequencing reads:

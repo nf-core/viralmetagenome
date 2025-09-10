@@ -1,16 +1,12 @@
----
-order: 1
----
-
 # Workflow overview
 
 Viralmetagenome takes in a set of reads and performs 5 major analyses, each of them are explained in more detail in the following sections:
 
-1. [Preprocessing](preprocessing.md)
-2. [Metagenomic diversity](metagenomic_diversity.md)
-3. [Assembly & Polishing](assembly_polishing.md)
-4. [Variant analysis & iterative refinement](variant_and_refinement.md)
-5. [Consensus evaluation](consensus_qc.md)
+1. [Preprocessing](2_preprocessing.md)
+2. [Metagenomic diversity](3_metagenomic_diversity.md)
+3. [Assembly & Polishing](4_assembly_polishing.md)
+4. [Variant analysis & iterative refinement](5_variant_and_refinement.md)
+5. [Consensus evaluation](6_consensus_qc.md)
 
 By default all analyses are run.
 

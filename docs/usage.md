@@ -79,7 +79,7 @@ NC038711.1 HAZV S false S-NC_038711.1.fasta Hazara virus isolate JC280 segment S
 
 ### Metadata
 
-Sample metadata can be provided to the pipeline with the argument `--metadata`. This metadata will not affect the analysis in any way and is only used to annotate the final report. Any metadata can be provided as long as the first value is the `sample` value.
+Sample metadata can optionally be provided to the pipeline with the argument `--metadata`. This metadata will not affect the analysis in any way and is only used to annotate the final report. Any metadata can be provided as long as the first value is the `sample` value.
 
 ```csv title="metadata.csv"
 sample,sample_accession,secondary_sample_accession,study_accession,run_alias,library_layout
@@ -100,10 +100,10 @@ This will launch the pipeline with the `docker` configuration profile. See below
 Note that the pipeline will create the following files in your working directory:
 
 ```bash
-work          #(1)!
-<OUTDIR>      #(2)!
-.nextflow_log #(3)!
-...           #(4)!
+work                # Directory containing the nextflow working files
+<OUTDIR>            # Finished results in specified location (defined with --outdir)
+.nextflow_log       # Log file from Nextflow
+# Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
@@ -206,6 +206,33 @@ You can also supply a run name to resume a specific run: `-resume [run-name]`. U
 Specify the path to a specific config file (this is a core Nextflow command). See the [nf-core website documentation](https://nf-co.re/usage/configuration) for more information.
 
 ## Custom configuration
+
+## Using `--argument_tool_name` parameters
+
+The viralmetagenome pipeline uses a set of tools to perform the analysis. Each tool has its own set of arguments that can be modified. The pipeline has a default configuration but this can be overwritten by supplying a custom configuration file. This file can be provided to viralmetagenome using the `--argument_tool_name` Nextflow option.
+
+For example, to change the minimum depth to call consensus to 5 and the minimum quality score of base to 30 for the `ivar consensus` module, we can use the `--ivar_consensus` parameter:
+
+```bash {3-4}
+nextflow run nf-core/viralmetagenome \
+    -profile docker \
+    --arguments_ivar_consensus1 '-q 30 -m 5' \
+    --arguments_ivar_consensus2 '--min-BQ 30' \
+    --input samplesheet.csv ...
+```
+
+:::info
+This will overwrite all default arguments of viralmetagenome for the `ivar consensus` module. Similarly the remove the default values of viralmetagenome, specifiy the argument with an empty string:
+
+```bash {3-4}
+nextflow run nf-core/viralmetagenome \
+    -profile docker \
+    --arguments_ivar_consensus1 '' \
+    --arguments_ivar_consensus2 '' \
+    --input samplesheet.csv ...
+```
+
+:::
 
 ### Resource requests
 

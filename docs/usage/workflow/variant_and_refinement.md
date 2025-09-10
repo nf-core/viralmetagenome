@@ -1,3 +1,7 @@
+---
+order: 5
+---
+
 # Variant calling and consensus refinement
 
 This subworkflow supports two distinct starting points:
@@ -66,13 +70,12 @@ This procedure is done with [`Mash`](https://mash.readthedocs.io/en/latest/) whe
 
 ## 2. Mapping of reads
 
-Mapping filtered reads to supercontig or mapping constraints is done with [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/), [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2) and [`BWA`](https://github.com/lh3/bwa).
+Mapping filtered reads to supercontig or mapping constraints is done with [`BowTie2`](http://bowtie-bio.sourceforge.net/bowtie2/),[`BWAmem2`](https://github.com/bwa-mem2/bwa-mem2) and [`BWA`](https://github.com/lh3/bwa).
 
-The comparison of Bowtie2 and BWA-MEM was done for [Yao et al. (2020)](https://doi.org/10.1186/s12859-020-03704-1) where they found that BWA-MEM2 had a higher mapping rate (faster) and better accuracy. BWA-MEM detected more variant bases in mapping reads than Bowtie2. The tool BWA-MEM2 is the next version of the BWA-MEM algorithm in [BWA](https://github.com/lh3/bwa). It produces alignments identical to BWA and is ~1.3-3.1x faster depending on the use-case, dataset and the running machine.
+The comparison of Bowtie2 and BWA-mem was done for [Yao et al. (2020)](https://doi.org/10.1186/s12859-020-03704-1) where they found that BWA-MEM2 had a higher mapping rate (faster) and better accuracy. BWA-mem detected more variant bases in mapping reads than Bowtie2. The tool bwa-mem2 is the next version of the bwa-mem algorithm in [bwa](https://github.com/lh3/bwa). It produces alignment identical to bwa and is ~1.3-3.1x faster depending on the use-case, dataset and the running machine.
 
 All three methods are supported to keep protocol compatibility with other pipelines and to allow the user to choose the best method for their data.
 
-> [!INFO]
 > The mapping tool can be specified with the `--mapper` parameter, the default is `bwamem2`, in case the intermediate mapper (for intermediate refinement cycles) needs to be different, this can be specified with `--intermediate_mapper` otherwise it uses the supplied `--mapper` tool.
 
 ### 2.1 Deduplication
@@ -80,10 +83,8 @@ All three methods are supported to keep protocol compatibility with other pipeli
 Read deduplication is an optional step that can be performed with [`Picard`](https://broadinstitute.github.io/picard/) or if UMIs are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html). Unless you are using [UMIs](https://dnatech.genomecenter.ucdavis.edu/faqs/what-are-umis-and-why-are-they-used-in-high-throughput-sequencing/) it is not possible to establish whether the fragments you have sequenced from your sample were derived via true biological duplication (i.e. sequencing independent template fragments) or as a result of PCR biases introduced during the library preparation. To correct your reads, use picard MarkDuplicates to mark the duplicate reads identified amongst the alignments to allow you to gauge the overall level of duplication in your samples.
 So if you have UMI’s, no need to use Picard, instead use UMI-tools to deduplicate your reads. Where instead of mapping location and read similarity, UMI-tools uses the UMI to identify PCR duplicates.
 
-> [!INFO]
 > Specify `--deduplicate` to enable deduplication, the default is `true`. If UMIs are used, specify `--with_umi` and `--umi_deduplicate 'mapping' | 'both'` to enable UMI-tools deduplication. UMIs can be in the read header, if it is not in the header specify `--skip_umi_extract false`, the default is `true`.
 
-> [!INFO]
 > By default the UMIs are separated in the header by ':' (for `bcl2fastq` when demultiplexing) if this is different, specify with `arguments_umitools_extract '--umi-separator "_"'` and `arguments_umitools_dedup '--umi-separator "_"'` .
 
 ### 2.2 Mapping statistics
@@ -98,22 +99,20 @@ Viralmetagenome uses multiple tools to get statistics on the variants and on the
 
 There is a little overlap between the tools, but they all provide a different perspective on the mapping statistics.
 
-> [!INFO]
 > By default, all these tools are run, but they can be skipped with the argument `--mapping_stats false`. In case the intermediate mapping statistics (for intermediate refinement cycles) don't need to be determined set `--intermediate_mapping_stats false`.
 
 ## 3. Variant calling
 
-Variant calling is done with [`BCFtools`](http://samtools.github.io/bcftools/bcftools.html) and [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), here a SNP will need to have at least a depth of 10 and a base quality of 20.
+Variant calling is done with [`BCFTools`](http://samtools.github.io/bcftools/bcftools.html) and [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), here a SNP will need to have at least a depth of 10 and a base quality of 20.
 
 BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. iVar is a computational package that contains functions broadly useful for viral amplicon-based sequencing while each of iVar functions can be accomplished using existing tools, iVar contains an intersection of functionality from multiple tools that are required to call iSNVs and consensus sequences from viral sequencing data across multiple replicates.
 
 There are multiple studies on the benchmarking of variant callers as this is an area with active development. For instance [Bassano _et al._ (2023)](https://doi.org/10.1099/mgen.0.000933) noticed that BCFtools called mutations with higher precision and recall than iVar. However, the reason behind this is that iVar has a lower precision than the others within their setup as it detects a lot of ‘additional’ variants within the sample, resulting in a higher amount of false positives but also true positives.
 
 :::tip
-BCFtools doesn't handle well multiallelic sites, so if you have a lot of multiallelic sites, iVar is the better choice. iVar is also the better choice if you have a lot of low-frequency variants.
+Bcftools doesn't handle well multiallelic sites, so if you have a lot of multiallelic sites, iVar is the better choice. iVar is also the better choice if you have a lot of low-frequency variants.
 :::
 
-> [!INFO]
 > The variant caller can be specified with the `--variant_caller` parameter, the default is `ivar`. In case the intermediate variant caller (for intermediate refinement cycles) needs to be different, this can be specified with `--intermediate_variant_caller` otherwise it uses the supplied `--variant_caller` tool.
 
 ### Variant filtering
@@ -139,11 +138,10 @@ There are again a couple of differences between the iVar and BCFtools:
 2. Ambiguous nucleotides for multi-allelic sites in iVar.
    > iVar is capable to give lower frequency nucleotides ambiguous bases a summarising annotation instead of 'N'. For example at a certain position, the frequency of 'A' is 40% and of 'G' is 40%. Instead of reporting an 'N', iVar will report 'R'.
    >
-   > ![multi-allelic sites ivar vs bcftools](../../images/multi_allelic_sites_ivar_vs_bcftools.png)
+   > ![multi-allelic sites ivar vs bcftools](../../images/multi_allelic_sites_ivar_vs_bcftools.png){.center}
 3. Ambiguous nucleotides for low read depth.
    > In case of a low read depth at a certain position, if it doesn't get flagged by bcftools during variant calling, it will not be considered as a variant and the consensus will not be updated. iVar will update the consensus with an ambiguous base in case of low read depth.
    >
-   > ![low depth ivar vs bcftools](../../images/low_depth_ivar_vs_bcftools.png)
+   > ![low depth ivar vs bcftools](../../images/low_depth_ivar_vs_bcftools.png){.center}
 
-> [!INFO]
 > The consensus caller can be specified with the `--consensus_caller` parameter, the default is `ivar`. The intermediate consensus caller (for intermediate refinement cycles) can be specified with `--intermediate_consensus_caller` and is by default `bcftools`.

@@ -5,12 +5,16 @@
 Viralmetagenome uses a multitude of databases in order to analyze reads, contigs, and consensus constructs. The default databases will be sufficient in most cases but there are always exceptions. This document will guide you towards the right documentation location for creating your custom databases.
 
 :::tip
-Keep an eye out for [nf-core createtaxdb](https://nf-co.re/createtaxdb/) as it can be used for the customization of the main databases but the pipeline is still under development.
+Building custom databases for taxonomic profilers, can be challenging. [nf-core createtaxdb](https://nf-co.re/createtaxdb/) adresses this issue!
 :::
 
 ## Reference pool
 
-The reference pool dataset is used to identify potential references for scaffolding. It's a fasta file that will be used to make a blast database within the pipeline. The default database is the [clustered Reference Viral DataBase (C-RVDB)](https://rvdb.dbi.udel.edu/) a database that was built for enhancing virus detection using high-throughput/next-generation sequencing (HTS/NGS) technologies. An alternative reference pool is the [Virosaurus](https://viralzone.expasy.org/8676) database which is a manually curated database of viral genomes.
+The reference pool dataset is used to identify potential references for scaffolding. It's a multifasta file of diverse viral genomes in nucleotide format, for which a blast database will be made within the pipeline.
+
+The default database is the [latest version of clustered Reference Viral DataBase (C-RVDB)](https://rvdb.dbi.udel.edu/) a database that was built for enhancing virus detection using high-throughput/next-generation sequencing (HTS/NGS) technologies. The RVDB is updated biannually.
+
+An alternative reference pool is the [Virosaurus](https://viralzone.expasy.org/8676) database which is a manually curated database of viral genomes, which was last updated in 2020.
 
 Any nucleotide fasta file will do. Specify it with the parameter `--reference_pool`.
 

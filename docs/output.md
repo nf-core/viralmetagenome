@@ -47,7 +47,7 @@ The FastQC plots displayed in the MultiQC report show _untrimmed_, _trimmed_, an
 
 :::
 
-By default, viralmetagenome will only provide the report and log files if fastp is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`. Similarly, the saving of the output reads can be enabled with `--save_trimmed_fail`.
+By default, nf-core/viralmetagenome will only provide the report and log files if fastp is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`. Similarly, the saving of the output reads can be enabled with `--save_trimmed_fail`.
 
 ### Trimmomatic
 
@@ -61,11 +61,11 @@ By default, viralmetagenome will only provide the report and log files if fastp 
 
 :::
 
-By default, viralmetagenome will only provide the report and log files if Trimmomatic is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`.
+By default, nf-core/viralmetagenome will only provide the report and log files if Trimmomatic is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`.
 
 ### UMI-deduplication
 
-UMI-deduplication can be done at the read level using [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html). Viralmetagenome also provides the opportunity to extract the UMI from the read using [`UMI-tools extract`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html#step-3--extract-the-umis) if the UMI is not in the header. Results will be stored in the `preprocessing/umi` directory.
+UMI-deduplication can be done at the read level using [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html). nf-core/viralmetagenome also provides the opportunity to extract the UMI from the read using [`UMI-tools extract`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html#step-3--extract-the-umis) if the UMI is not in the header. Results will be stored in the `preprocessing/umi` directory.
 
 :::note{title="Output files" collapse}
 
@@ -80,13 +80,13 @@ UMI-deduplication can be done at the read level using [`HUMID`](https://humid.re
 
 :::
 
-By default, viralmetagenome will not assume reads have UMIs. To enable this, use the parameter `--with_umi`. Specify where UMI deduplication should occur with `--umi_deduplicate` if at a `read` level, on a `mapping` level, or `both` at a read and mapping level. The deduplicated reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'deduplication'`.
+By default, nf-core/viralmetagenome will not assume reads have UMIs. To enable this, use the parameter `--with_umi`. Specify where UMI deduplication should occur with `--umi_deduplicate` if at a `read` level, on a `mapping` level, or `both` at a read and mapping level. The deduplicated reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'deduplication'`.
 
 ### BBDuk
 
 [BBDuk](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/) stands for Decontamination Using Kmers. BBDuk was developed to combine most common data-quality-related trimming, filtering, and masking operations into a single high-performance tool.
 
-It is used in viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
+It is used in nf-core/viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
 
 :::note{title="Output files" collapse}
 
@@ -96,11 +96,11 @@ It is used in viralmetagenome for complexity filtering using different algorithm
 
 :::
 
-By default, viralmetagenome will only provide the log files of BBDuk. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
+By default, nf-core/viralmetagenome will only provide the log files of BBDuk. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
 
 ### prinseq++
 
-[`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used in viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
+[`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used in nf-core/viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
 
 :::note{title="Output files" collapse}
 
@@ -110,7 +110,7 @@ By default, viralmetagenome will only provide the log files of BBDuk. The filter
 
 :::
 
-By default, viralmetagenome will only provide the log files of prinseq. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
+By default, nf-core/viralmetagenome will only provide the log files of prinseq. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
 
 ### Hostremoval-Kraken2
 
@@ -124,7 +124,7 @@ By default, viralmetagenome will only provide the log files of prinseq. The filt
 
 :::
 
-By default, viralmetagenome will only provide the log files of Kraken2 which are visualized in [MultiQC](#multiqc). The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'host'`.
+By default, nf-core/viralmetagenome will only provide the log files of Kraken2 which are visualized in [MultiQC](#multiqc). The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'host'`.
 
 ## Metagenomic Diversity
 
@@ -147,7 +147,7 @@ The results of the metagenomic diversity analysis are stored in the directory `m
 :::
 
 > [!INFO]
-> By default, viralmetagenome will provide any classified or unclassified fastq files, specify this with `--kraken2_save_reads`. Similarly, for the classified reads table, specify this with `--kraken2_save_readclassification`.
+> By default, nf-core/viralmetagenome will provide any classified or unclassified fastq files, specify this with `--kraken2_save_reads`. Similarly, for the classified reads table, specify this with `--kraken2_save_readclassification`.
 
 ### Kaiju
 
@@ -231,9 +231,9 @@ QUAST results are also summarized and plotted in the MultiQC report.
 
 ### BLAST
 
-[BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) is a sequence comparison tool that can be used to compare a query sequence against a database of sequences. In viralmetagenome, BLAST is used to compare the contigs generated by the assemblers to a database of viral sequences.
+[BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) is a sequence comparison tool that can be used to compare a query sequence against a database of sequences. In nf-core/viralmetagenome, BLAST is used to compare the contigs generated by the assemblers to a database of viral sequences.
 
-By default, viralmetagenome will only provide the BLAST results in a tabular format. It will have selected only for the top five hits and will also have a filtered version where it will only include hits with an e-value of 0.01 or lower, a bitscore of 50 or higher, and an alignment percentage of 0.80 or higher.
+By default, nf-core/viralmetagenome will only provide the BLAST results in a tabular format. It will have selected only for the top five hits and will also have a filtered version where it will only include hits with an e-value of 0.01 or lower, a bitscore of 50 or higher, and an alignment percentage of 0.80 or higher.
 
 :::info{title="Column names" collapse}
 
@@ -265,7 +265,7 @@ By default, viralmetagenome will only provide the BLAST results in a tabular for
 :::
 
 > [!INFO]
-> By default, viralmetagenome will only provide the filtered blast.txt file. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> By default, nf-core/viralmetagenome will only provide the filtered blast.txt file. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### Preclustering - Kaiju & Kraken2
 
@@ -285,7 +285,7 @@ By default, viralmetagenome will only provide the BLAST results in a tabular for
 :::
 
 > [!INFO]
-> By default, viralmetagenome will not provide any preclustering files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> By default, nf-core/viralmetagenome will not provide any preclustering files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### Clustering
 
@@ -304,7 +304,7 @@ Whenever there is a 'cl#' in the file name, it refers to the cluster number of t
 :::
 
 > [!INFO]
-> By default, viralmetagenome will not provide any clustering overview files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> By default, nf-core/viralmetagenome will not provide any clustering overview files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 #### CD-HIT-EST
 
@@ -394,7 +394,7 @@ Most assemblers tend to give each contig name a specific prefix. For example,
 
 :::
 
-Based on these prefixes viralmetagenome separates external references from denovo contigs. If any assemblers are added, consider specifying a specific regex for `--assembler_patterns`.
+Based on these prefixes nf-core/viralmetagenome separates external references from denovo contigs. If any assemblers are added, consider specifying a specific regex for `--assembler_patterns`.
 
 ### Minimap2
 
@@ -409,7 +409,7 @@ Based on these prefixes viralmetagenome separates external references from denov
 :::
 
 > [!INFO]
-> By default, viralmetagenome will not provide the minimap output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> By default, nf-core/viralmetagenome will not provide the minimap output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### iVar contig consensus
 
@@ -428,7 +428,7 @@ Based on these prefixes viralmetagenome separates external references from denov
 :::
 
 > [!INFO]
-> By default, viralmetagenome will not provide the iVar output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> By default, nf-core/viralmetagenome will not provide the iVar output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 A visualization is made to show which regions came from the external reference (red) and which from the denovo contigs (green). For example,
 
@@ -449,7 +449,7 @@ Mapping constraints are combined with the specified samples, here, the identifie
 The results from the iterations are stored with the same structure as the final round of polishing in the `assembly/polishing/iterations/it#` directory.
 
 :::info
-To be able to make a distinction between the output files of the iterations, viralmetagenome follows a schema where it starts from `singletons` or a `consensus` goes through the iterations and ends with the `variant-calling`. The output files will have the following structure:
+To be able to make a distinction between the output files of the iterations, nf-core/viralmetagenome follows a schema where it starts from `singletons` or a `consensus` goes through the iterations and ends with the `variant-calling`. The output files will have the following structure:
 
 ```mermaid
 graph LR
@@ -868,7 +868,7 @@ Modifying these columns can be done through a custom config file and by updating
 
 ### MMseqs-search (annotation)
 
-[MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases. Viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virousarus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](customisation/databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that is embedded within the database.
+[MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases. nf-core/viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virousarus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](customisation/databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that is embedded within the database.
 
 :::info{title="Column names" collapse}
 
@@ -931,7 +931,7 @@ Alignment can then be opened with MSA viewer, for example Jalview
 
 Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
 
-Furthermore, viralmetagenome runs MultiQC 2 times, as it uses the output from multiqc to create multiple summary tables of the consensus genomes and their iterations.
+Furthermore, nf-core/viralmetagenome runs MultiQC 2 times, as it uses the output from multiqc to create multiple summary tables of the consensus genomes and their iterations.
 
 :::note{title="Output files Multiqc" collapse}
 

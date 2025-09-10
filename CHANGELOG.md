@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v0.1.2 - 2025-02-28
 
-Second release of the viralmetagenome pipeline. Focusing on user experience and bug fixes.
+Second release of thenf-core/viralmetagenome pipeline. Focusing on user experience and bug fixes.
 
 ### `Added`
 

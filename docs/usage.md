@@ -209,7 +209,7 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ## Using `--argument_tool_name` parameters
 
-The viralmetagenome pipeline uses a set of tools to perform the analysis. Each tool has its own set of arguments that can be modified. The pipeline has a default configuration but this can be overwritten by supplying a custom configuration file. This file can be provided to viralmetagenome using the `--argument_tool_name` Nextflow option.
+The nf-core/viralmetagenome pipeline uses a set of tools to perform the analysis. Each tool has its own set of arguments that can be modified. The pipeline has a default configuration but this can be overwritten by supplying a custom configuration file. This file can be provided to nf-core/viralmetagenome using the `--argument_tool_name` Nextflow option.
 
 For example, to change the minimum depth to call consensus to 5 and the minimum quality score of base to 30 for the `ivar consensus` module, we can use the `--ivar_consensus` parameter:
 
@@ -222,7 +222,7 @@ nextflow run nf-core/viralmetagenome \
 ```
 
 :::info
-This will overwrite all default arguments of viralmetagenome for the `ivar consensus` module. Similarly the remove the default values of viralmetagenome, specifiy the argument with an empty string:
+This will overwrite all default arguments of nf-core/viralmetagenome for the `ivar consensus` module. Similarly the remove the default values of nf-core/viralmetagenome, specifiy the argument with an empty string:
 
 ```bash {3-4}
 nextflow run nf-core/viralmetagenome \
@@ -254,7 +254,7 @@ To learn how to provide additional arguments to a particular tool of the pipelin
 
 ### nf-core/configs
 
-In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running Viralmetagenome regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
+In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running nf-core/viralmetagenome regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
 
 See the main [Nextflow documentation](https://www.nextflow.io/docs/latest/config.html) for more information about creating your own configuration files.
 

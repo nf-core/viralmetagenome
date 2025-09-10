@@ -1,0 +1,122 @@
+{
+    "-profile test_fail_db": {
+        "content": [
+            54,
+            {
+                "BLASTN_QC": {
+                    "blast": "2.16.0+"
+                },
+                "BLAST_BLASTN": {
+                    "blast": "2.16.0+"
+                },
+                "BLAST_FILTER": {
+                    "python": "3.9.21",
+                    "pandas": "2.2.3",
+                    "biopython": 1.85
+                },
+                "BLAST_MAKEBLASTDB": {
+                    "blast": "2.16.0+"
+                },
+                "BWAMEM2_INDEX": {
+                    "bwamem2": "2.2.1"
+                },
+                "BWAMEM2_MEM": {
+                    "bwamem2": "2.2.1",
+                    "samtools": 1.21
+                },
+                "CAT_ASSEMBLERS": {
+                    "pigz": "2.3.4"
+                },
+                "CDHIT_CDHITEST": {
+                    "cdhit": "4.8.1"
+                },
+                "CONTIG_IDXSTATS": {
+                    "samtools": 1.21
+                },
+                "CONTIG_INDEX": {
+                    "samtools": 1.21
+                },
+                "EXTRACT_CLUSTER": {
+                    "python": "3.12.0",
+                    "biopython": 1.81
+                },
+                "EXTRACT_PRECLUSTER": {
+                    "python": "3.9.1",
+                    "biopython": 1.78
+                },
+                "FASTP": {
+                    "fastp": "0.24.0"
+                },
+                "FASTQC_RAW": {
+                    "fastqc": "0.12.1"
+                },
+                "FASTQC_TRIM": {
+                    "fastqc": "0.12.1"
+                },
+                "GUNZIP_DB": {
+                    "gunzip": 1.13
+                },
+                "KAIJU_CONTIG": {
+                    "kaiju": "1.10.0"
+                },
+                "KRAKEN2_CONTIG": {
+                    "kraken2": "2.1.5",
+                    "pigz": 2.8
+                },
+                "MMSEQS_CREATEANNOTATIONDB": {
+                    "mmseqs": "17.b804f"
+                },
+                "MMSEQS_EASYSEARCH": {
+                    "mmseqs": "17.b804f"
+                },
+                "PRINSEQ_CONTIG": {
+                    "prinseqplusplus": 1.2
+                },
+                "PRINSEQ_READS": {
+                    "prinseqplusplus": 1.2
+                },
+                "QUAST": {
+                    "quast": "5.3.0"
+                },
+                "QUAST_QC": {
+                    "quast": "5.3.0"
+                },
+                "RENAME_FASTA_HEADER_SINGLETON": {
+                    "sed": 4.7
+                },
+                "SPADES": {
+                    "spades": "4.1.0"
+                },
+                "SSPACE_BASIC": {
+                    "sspace_base": "2.1.1"
+                },
+                "UNTAR_DB": {
+                    "untar": 1.34
+                },
+                "Workflow": {
+                    "nf-core/viralmetagenome": "v0.1.3dev"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-09-10T11:48:47.363862822"
+    },
+    "multiqc": {
+        "content": [
+            [
+                
+            ],
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-09-10T11:48:47.367320041"
+    }
+}

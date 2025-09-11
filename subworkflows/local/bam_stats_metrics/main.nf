@@ -5,49 +5,45 @@ include { BAM_STATS_SAMTOOLS            } from '../../nf-core/bam_stats_samtools
 include { CUSTOM_MPILEUP                } from '../../../modules/local/custom_mpileup/main'
 
 workflow BAM_STATS_METRICS {
-
     take:
-    ch_sort_bam_ref    // channel: [ val(meta), [ bam ], [ ref ] ]
+    ch_sort_bam_ref // channel: [ val(meta), [ bam ], [ ref ] ]
 
     main:
 
     ch_versions = Channel.empty()
-    ch_multiqc  = Channel.empty()
+    ch_multiqc = Channel.empty()
 
-    sort_bam    = ch_sort_bam_ref.map{meta, bam, ref -> [ meta, bam ]}
+    sort_bam = ch_sort_bam_ref.map { meta, bam, ref -> [meta, bam] }
 
-    SAMTOOLS_INDEX ( sort_bam )
+    SAMTOOLS_INDEX(sort_bam)
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     input_metrics = ch_sort_bam_ref
         .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
-        .multiMap{
-            meta, bam, ref, bai ->
-            bam_bai : [meta, bam, bai]
+        .multiMap { meta, bam, ref, bai ->
+            bam_bai: [meta, bam, bai]
             ref: [meta, ref]
             bam_bai_bed: [meta, bam, bai, []]
         }
 
-    CUSTOM_MPILEUP (ch_sort_bam_ref)
+    CUSTOM_MPILEUP(ch_sort_bam_ref)
     ch_versions = ch_versions.mix(CUSTOM_MPILEUP.out.versions)
 
-    PICARD_COLLECTMULTIPLEMETRICS ( input_metrics.bam_bai, input_metrics.ref, [[:], []] )
+    PICARD_COLLECTMULTIPLEMETRICS(input_metrics.bam_bai, input_metrics.ref, [[:], []])
     ch_versions = ch_versions.mix(PICARD_COLLECTMULTIPLEMETRICS.out.versions)
 
     MOSDEPTH(input_metrics.bam_bai_bed, input_metrics.ref)
     ch_versions = ch_versions.mix(MOSDEPTH.out.versions)
-    ch_multiqc  = ch_multiqc.mix(MOSDEPTH.out.global_txt)
-    ch_multiqc  = ch_multiqc.mix(MOSDEPTH.out.summary_txt)
+    ch_multiqc = ch_multiqc.mix(MOSDEPTH.out.global_txt)
+    ch_multiqc = ch_multiqc.mix(MOSDEPTH.out.summary_txt)
 
-    BAM_STATS_SAMTOOLS ( input_metrics.bam_bai, input_metrics.ref )
+    BAM_STATS_SAMTOOLS(input_metrics.bam_bai, input_metrics.ref)
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
-    ch_multiqc  = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.stats)
-    ch_multiqc  = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.flagstat)
-    // ch_multiqc   = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.idxstats)
+    ch_multiqc = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.stats)
+    ch_multiqc = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.flagstat)
 
     emit:
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    mqc      = ch_multiqc                      // channel: [ multiqc  ]
-
-    versions = ch_versions                     // channel: [ versions.yml ]
+    bai      = SAMTOOLS_INDEX.out.bai // channel: [ val(meta), [ bai ] ]
+    mqc      = ch_multiqc // channel: [ multiqc  ]
+    versions = ch_versions // channel: [ versions.yml ]
 }

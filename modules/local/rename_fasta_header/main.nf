@@ -1,28 +1,28 @@
 process RENAME_FASTA_HEADER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ubuntu:20.04'
+        : 'nf-core/ubuntu:20.04'}"
 
     input:
     tuple val(meta), path(fasta)
-    val(string)
+    val string
 
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
-    path "versions.yml"             , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    string_val = string ? "_$string": ""
+    string_val = string ? "_${string}" : ""
     """
-    sed "s/>.*\$/>${prefix}${string_val} /g" $fasta > ${prefix}.fasta
+    sed "s/>.*\$/>${prefix}${string_val} /g" ${fasta} > ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,7 +32,7 @@ process RENAME_FASTA_HEADER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    string_val = string ? "_$string": ""
+    string_val = string ? "_${string}" : ""
     """
     touch ${prefix}.fasta
 

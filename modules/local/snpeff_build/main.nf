@@ -1,11 +1,11 @@
 process SNPEFF_BUILD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1' :
-        'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1'
+        : 'quay.io/biocontainers/snpeff:5.0--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta), path(gff)
@@ -23,22 +23,24 @@ process SNPEFF_BUILD {
     def extension = gff.getExtension().replace("3", "")
     if (extension == "gtf") {
         format = "gtf22"
-    } else {
+    }
+    else {
         format = "gff3"
     }
 
     def avail_mem = 4
     if (!task.memory) {
-        log.info '[snpEff] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
-    } else {
+        log.info('[snpEff] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')
+    }
+    else {
         avail_mem = task.memory.giga
     }
     """
     mkdir -p snpeff_db/genomes/
     mkdir -p snpeff_db/${prefix}/
 
-    ln -s ../../$fasta snpeff_db/genomes/${prefix}.fa
-    ln -s ../../$gff snpeff_db/${prefix}/genes.$extension
+    ln -s ../../${fasta} snpeff_db/genomes/${prefix}.fa
+    ln -s ../../${gff} snpeff_db/${prefix}/genes.${extension}
 
     echo "${prefix}.genome : ${prefix}" > snpeff.config
 
@@ -48,7 +50,7 @@ process SNPEFF_BUILD {
         -config snpeff.config \\
         -dataDir ./snpeff_db \\
         -${format} \\
-        $args \\
+        ${args} \\
         -v \\
         ${prefix}
 
@@ -64,14 +66,16 @@ process SNPEFF_BUILD {
     def extension = gff.getExtension().replace("3", "")
     if (extension == "gtf") {
         format = "gtf22"
-    } else {
+    }
+    else {
         format = "gff3"
     }
 
     def avail_mem = 4
     if (!task.memory) {
-        log.info '[snpEff] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
-    } else {
+        log.info('[snpEff] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')
+    }
+    else {
         avail_mem = task.memory.giga
     }
     """

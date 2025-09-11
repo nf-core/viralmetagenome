@@ -1,18 +1,18 @@
 process SNPSIFT_EXTRACTFIELDS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3'
+        : 'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3'}"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.snpsift.txt"), emit: txt
-    path "versions.yml"                   , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,16 +23,17 @@ process SNPSIFT_EXTRACTFIELDS {
 
     def avail_mem = 4
     if (!task.memory) {
-        log.info '[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
-    } else {
+        log.info('[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')
+    }
+    else {
         avail_mem = task.memory.giga
     }
     """
     SnpSift \\
         -Xmx${avail_mem}g \\
         extractFields \\
-        $args \\
-        $vcf \\
+        ${args} \\
+        ${vcf} \\
         CHROM POS REF ALT \\
         "ANN[*].GENE" "ANN[*].GENEID" \\
         "ANN[*].IMPACT" "ANN[*].EFFECT" \\
@@ -56,8 +57,9 @@ process SNPSIFT_EXTRACTFIELDS {
 
     def avail_mem = 4
     if (!task.memory) {
-        log.info '[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
-    } else {
+        log.info('[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')
+    }
+    else {
         avail_mem = task.memory.giga
     }
     """

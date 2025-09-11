@@ -5,14 +5,13 @@ include { IVAR_CONSENSUS as IVAR_CONTIG_CONSENSUS                     } from '..
 include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_CONTIG_CONSENSUS } from '../../../modules/local/rename_fasta_header/main'
 
 workflow ALIGN_COLLAPSE_CONTIGS {
-
     take:
     ch_references_members
 
     main:
     ch_versions = Channel.empty()
 
-    ch_sequences = ch_references_members.map{ meta, references, members -> [meta, [references, members]] }
+    ch_sequences = ch_references_members.map { meta, references, members -> [meta, [references, members]] }
 
     CAT_CLUSTER(ch_sequences)
     ch_versions = ch_versions.mix(CAT_CLUSTER.out.versions.first())
@@ -23,49 +22,44 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     // Call consensus using IVAR_consensus with low treshholds (eg. 1) (needs only 1 coverage)
     // If there are ambigous bases in the consensus due to low coverage we populate it with the reference sequence.
 
-    ch_references = ch_references_members.map{ meta, references, members -> [meta, references] }
+    ch_references = ch_references_members.map { meta, references, members -> [meta, references] }
 
     MINIMAP2_CONTIG_INDEX(ch_references)
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_INDEX.out.versions.first())
 
-    ch_splitup = MINIMAP2_CONTIG_INDEX
-        .out
-        .index
-        .join( ch_references_members, by: [0] )
-        .join( CAT_CLUSTER.out.file_out, by: [0] )
-        .branch{ meta, index, _references, members, comb ->
-            external: meta.external_reference
-                return [meta, index, members]
-            internal: true
-                return [meta, index, comb]
-        }
+    ch_splitup = MINIMAP2_CONTIG_INDEX.out.index.join(ch_references_members, by: [0]).join(CAT_CLUSTER.out.file_out, by: [0]).branch { meta, index, _references, members, comb ->
+        external: meta.external_reference
+        return [meta, index, members]
+        internal: true
+        return [meta, index, comb]
+    }
 
     ch_index_contigs = ch_splitup.external.mix(ch_splitup.internal)
 
-    ch_index = ch_index_contigs.map{ meta, index, _contigs -> [meta, index] }
-    ch_contigs = ch_index_contigs.map{ meta, _index, contigs -> [meta, contigs] }
+    ch_index = ch_index_contigs.map { meta, index, _contigs -> [meta, index] }
+    ch_contigs = ch_index_contigs.map { meta, _index, contigs -> [meta, contigs] }
 
-    MINIMAP2_CONTIG_ALIGN(ch_contigs, ch_index, true, "bai", false, false )
+    MINIMAP2_CONTIG_ALIGN(ch_contigs, ch_index, true, "bai", false, false)
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_ALIGN.out.versions.first())
 
     ch_references_bam = ch_references_members
-        .join( MINIMAP2_CONTIG_ALIGN.out.bam, by: [0] )
-        .map{ meta, references, _members, bam -> [meta, references, bam] }
+        .join(MINIMAP2_CONTIG_ALIGN.out.bam, by: [0])
+        .map { meta, references, _members, bam -> [meta, references, bam] }
 
-    ivar_bam   = ch_references_bam.map{ meta, _references, bam -> [meta, bam] }
-    ivar_fasta = ch_references_bam.map{ _meta, references, _bam -> [references] }
+    ivar_bam = ch_references_bam.map { meta, _references, bam -> [meta, bam] }
+    ivar_fasta = ch_references_bam.map { _meta, references, _bam -> [references] }
     IVAR_CONTIG_CONSENSUS(
         ivar_bam,
         ivar_fasta,
-        true
+        true,
     )
-    ch_versions= ch_versions.mix(IVAR_CONTIG_CONSENSUS.out.versions.first())
+    ch_versions = ch_versions.mix(IVAR_CONTIG_CONSENSUS.out.versions.first())
 
-    RENAME_FASTA_HEADER_CONTIG_CONSENSUS( IVAR_CONTIG_CONSENSUS.out.fasta, [])
+    RENAME_FASTA_HEADER_CONTIG_CONSENSUS(IVAR_CONTIG_CONSENSUS.out.fasta, [])
     ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.versions.first())
 
     emit:
-    consensus       =  RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta   // channel: [ val(meta), [ fasta ] ]
-    unaligned_fasta = CAT_CLUSTER.out.file_out                          // channel: [ val(meta), [ fasta ] ]
-    versions        = ch_versions                                       // channel: [ versions.yml ]
+    consensus       = RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta // channel: [ val(meta), [ fasta ] ]
+    unaligned_fasta = CAT_CLUSTER.out.file_out // channel: [ val(meta), [ fasta ] ]
+    versions        = ch_versions // channel: [ versions.yml ]
 }

@@ -57,6 +57,7 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC {
     ch_fastqc_trim_html    = Channel.empty()
     ch_fastqc_trim_zip     = Channel.empty()
     ch_trim_read_count     = Channel.empty()
+
     if (!skip_trimming) {
         TRIMMOMATIC(
             ch_reads

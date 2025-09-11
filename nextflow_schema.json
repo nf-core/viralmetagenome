@@ -510,7 +510,7 @@
                     "type": "string",
                     "default": "cdhitest",
                     "description": "Cluster algorithm used for contigs",
-                    "enum": ["cdhitest", "vsearch", "mmseqs-linclust", "mmseqs-cluster", "vrhyme", "mash", "diamond"],
+                    "enum": ["cdhitest", "vsearch", "mmseqs-linclust", "mmseqs-cluster", "vrhyme", "mash"],
                     "fa_icon": "fas fa-bezier-curve"
                 },
                 "network_clustering": {

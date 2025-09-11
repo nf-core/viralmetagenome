@@ -20,8 +20,8 @@ workflow FASTQ_KRAKEN_HOST_REMOVE {
         true,
     )
 
-    ch_versions = ch_versions.mix(KRAKEN2_HOST_REMOVE.out.versions.first())
-    ch_multiqc_files = ch_multiqc_files.mix(KRAKEN2_HOST_REMOVE.out.report)
+    ch_versions          = ch_versions.mix(KRAKEN2_HOST_REMOVE.out.versions.first())
+    ch_multiqc_files     = ch_multiqc_files.mix(KRAKEN2_HOST_REMOVE.out.report)
     ch_reads_hostremoved = KRAKEN2_HOST_REMOVE.out.unclassified_reads_fastq
         .join(KRAKEN2_HOST_REMOVE.out.report)
         .map { meta, fastq, tsv -> [meta, fastq, getReadsAfterHostRemove(tsv)] }

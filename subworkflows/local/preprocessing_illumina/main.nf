@@ -68,9 +68,6 @@ workflow PREPROCESSING_ILLUMINA {
 
         ch_reads_trim = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
     }
-    else {
-        throw new Exception("Unknown trim tool: ${params.trim_tool}")
-    }
 
     // Keeping track of failed reads for reporting
     ch_failed_reads = ch_trim_read_count

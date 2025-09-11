@@ -161,8 +161,6 @@ workflow VIRALMETAGENOME {
         ch_versions     = ch_versions.mix(BLAST_MAKEBLASTDB.out.versions)
     }
 
-    ch_reads.view()
-
     // If we don't preprocess reads, remove samples with 0 reads
     ch_host_trim_reads      = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
     ch_decomplex_trim_reads = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
@@ -261,10 +259,7 @@ workflow VIRALMETAGENOME {
                 )
             ch_versions = ch_versions.mix(SINGLETON_FILTERING.out.versions)
 
-            ch_consensus = ALIGN_COLLAPSE_CONTIGS
-                .out
-                .consensus
-                .mix( SINGLETON_FILTERING.out.filtered )
+            ch_consensus = ALIGN_COLLAPSE_CONTIGS.out.consensus.mix( SINGLETON_FILTERING.out.filtered )
 
             ch_unaligned_raw_contigs = ALIGN_COLLAPSE_CONTIGS.out.unaligned_fasta
                 .mix( SINGLETON_FILTERING.out.filtered )
@@ -392,6 +387,7 @@ workflow VIRALMETAGENOME {
         )
         ch_consensus     = ch_consensus.mix(FASTQ_FASTA_MAP_CONSENSUS.out.consensus_all)
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTA_MAP_CONSENSUS.out.mqc.ifEmpty([])) // collect already done in subworkflow
+        ch_versions      = ch_versions.mix(FASTQ_FASTA_MAP_CONSENSUS.out.versions)
 
     }
 

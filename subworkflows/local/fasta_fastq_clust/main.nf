@@ -77,9 +77,6 @@ workflow FASTA_FASTQ_CLUST {
         ch_versions = ch_versions.mix(MASH_DIST.out.versions.first())
         ch_dist = MASH_DIST.out.dist
     }
-    else {
-        error("Unknown cluster method: ${cluster_method}")
-    }
 
     // Calculate clusters for distance based methods (mash)
     if (cluster_method in ["mash"]) {

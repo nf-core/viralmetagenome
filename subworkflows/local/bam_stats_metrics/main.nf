@@ -13,7 +13,7 @@ workflow BAM_STATS_METRICS {
     ch_versions = Channel.empty()
     ch_multiqc = Channel.empty()
 
-    sort_bam = ch_sort_bam_ref.map { meta, bam, ref -> [meta, bam] }
+    sort_bam = ch_sort_bam_ref.map { meta, bam, _ref -> [meta, bam] }
 
     SAMTOOLS_INDEX(sort_bam)
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
@@ -34,13 +34,11 @@ workflow BAM_STATS_METRICS {
 
     MOSDEPTH(input_metrics.bam_bai_bed, input_metrics.ref)
     ch_versions = ch_versions.mix(MOSDEPTH.out.versions.first())
-    ch_multiqc  = ch_multiqc.mix(MOSDEPTH.out.global_txt)
-    ch_multiqc  = ch_multiqc.mix(MOSDEPTH.out.summary_txt)
+    ch_multiqc  = ch_multiqc.mix(MOSDEPTH.out.global_txt, MOSDEPTH.out.summary_txt)
 
     BAM_STATS_SAMTOOLS(input_metrics.bam_bai, input_metrics.ref)
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions.first())
-    ch_multiqc  = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.stats)
-    ch_multiqc  = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.flagstat)
+    ch_multiqc  = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.stats, BAM_STATS_SAMTOOLS.out.flagstat)
 
     emit:
     bai      = SAMTOOLS_INDEX.out.bai // channel: [ val(meta), [ bai ] ]

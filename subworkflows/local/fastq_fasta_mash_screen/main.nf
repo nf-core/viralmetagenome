@@ -54,9 +54,6 @@ workflow FASTQ_FASTA_MASH_SCREEN {
             fasta.countFasta() > 0
         }
         .map { meta, _json, fasta, reads ->
-            // see #174 - removing unecessary lazy-maps
-            // lazy_json = getMapFromJson(json)
-            // return [meta + map_json, fasta, reads]
             [meta, fasta, reads]
         }
 

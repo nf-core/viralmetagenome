@@ -73,9 +73,6 @@ workflow MAP_READS {
 
         ch_bam = BWA_MEM.out.bam
     }
-    else {
-        error("Unknown mapper: ${mapper}")
-    }
 
     emit:
     bam      = ch_bam       // channel: [ val(meta), [ bam ] ]

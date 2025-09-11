@@ -108,8 +108,6 @@ workflow FASTA_CONTIG_CLUST {
             return [meta + map_json, seq_centroids, seq_members]
         }
 
-    ch_seq_centroids_members.dump{tag:"json"}
-
     emit:
     clusters              = FASTA_FASTQ_CLUST.out.clusters // channel: [ [ meta ], [ clusters ] ]
     centroids_members     = ch_seq_centroids_members       // channel: [ [ meta ], [ seq_centroids.fa], [ seq_members.fa] ]

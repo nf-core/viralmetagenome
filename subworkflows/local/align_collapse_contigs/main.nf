@@ -27,12 +27,15 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     MINIMAP2_CONTIG_INDEX(ch_references)
     ch_versions = ch_versions.mix(MINIMAP2_CONTIG_INDEX.out.versions.first())
 
-    ch_splitup = MINIMAP2_CONTIG_INDEX.out.index.join(ch_references_members, by: [0]).join(CAT_CLUSTER.out.file_out, by: [0]).branch { meta, index, _references, members, comb ->
-        external: meta.external_reference
-        return [meta, index, members]
-        internal: true
-        return [meta, index, comb]
-    }
+    ch_splitup = MINIMAP2_CONTIG_INDEX.out.index
+        .join(ch_references_members, by: [0])
+        .join(CAT_CLUSTER.out.file_out, by: [0])
+        .branch { meta, index, _references, members, comb ->
+            external: meta.external_reference
+            return [meta, index, members]
+            internal: true
+            return [meta, index, comb]
+        }
 
     ch_index_contigs = ch_splitup.external.mix(ch_splitup.internal)
 

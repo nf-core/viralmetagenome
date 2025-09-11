@@ -26,10 +26,14 @@ workflow BAM_VARIANTS_BCFTOOLS {
     ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions.first())
 
     // Filter out samples with 0 variants, don't think I wan this?
-    ch_bcfnorm_in = BCFTOOLS_MPILEUP.out.vcf.join(BCFTOOLS_MPILEUP.out.tbi).join(BCFTOOLS_MPILEUP.out.stats).join(ch_fasta).multiMap { meta, vcf, tbi, stats, fasta ->
-        vcf_tbi: [meta, vcf, tbi]
-        fasta: [meta, fasta]
-    }
+    ch_bcfnorm_in = BCFTOOLS_MPILEUP.out.vcf
+        .join(BCFTOOLS_MPILEUP.out.tbi)
+        .join(BCFTOOLS_MPILEUP.out.stats)
+        .join(ch_fasta)
+        .multiMap { meta, vcf, tbi, stats, fasta ->
+            vcf_tbi: [meta, vcf, tbi]
+            fasta: [meta, fasta]
+        }
 
     //
     // Split multi-allelic positions

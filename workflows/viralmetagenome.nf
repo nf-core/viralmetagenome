@@ -164,15 +164,16 @@ workflow VIRALMETAGENOME {
     ch_reads.view()
 
     // If we don't preprocess reads, remove samples with 0 reads
-    ch_host_trim_reads      = ch_reads.filter{ meta, reads -> reads[0].countFastq() > 0}
-    ch_decomplex_trim_reads = ch_reads.filter{ meta, reads -> reads[0].countFastq() > 0}
+    ch_host_trim_reads      = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
+    ch_decomplex_trim_reads = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
     // preprocessing illumina reads
     if (!params.skip_preprocessing){
         PREPROCESSING_ILLUMINA (
             ch_reads,
             ch_k2_host,
             ch_adapter_fasta,
-            ch_contaminants)
+            ch_contaminants
+            )
         ch_host_trim_reads      = PREPROCESSING_ILLUMINA.out.reads
         ch_decomplex_trim_reads = PREPROCESSING_ILLUMINA.out.reads_decomplexified
         ch_multiqc_files        = ch_multiqc_files.mix(PREPROCESSING_ILLUMINA.out.mqc.collect{it[1]}.ifEmpty([]))
@@ -278,7 +279,7 @@ workflow VIRALMETAGENOME {
                 ch_consensus_reads_intermediate = ch_consensus_tmp
                     .combine(ch_reads_tmp, by: [0])
                     .map{
-                        sample, meta_ref, fasta, meta_reads, fastq -> [meta_ref, fasta, fastq]
+                        _sample, meta_ref, fasta, _meta_reads, fastq -> [meta_ref, fasta, fastq]
                     }
 
             if (!params.skip_iterative_refinement) {
@@ -327,12 +328,12 @@ workflow VIRALMETAGENOME {
         // Joining all the reads with the mapping constraints, filter for those specified or keep everything if none specified.
         ch_map_seq_anno_combined = ch_decomplex_trim_reads
             .combine( ch_mapping_constraints )
-            .filter{ meta_reads, fastq, meta_mapping, mapping_samples, sequence ->
+            .filter{ meta_reads, _fastq, _meta_mapping, mapping_samples, _sequence ->
                 mapping_samples == null || mapping_samples == meta_reads.sample
             }
             .map
                 {
-                    meta, reads, meta_mapping, samples, sequence_mapping ->
+                    meta, reads, meta_mapping, _samples, sequence_mapping ->
                     def id = "${meta.sample}_${meta_mapping.id}-CONSTRAINT"
                     def new_meta = meta + meta_mapping + [
                         id: id,
@@ -350,7 +351,7 @@ workflow VIRALMETAGENOME {
         ch_constraint_consensus_reads = ch_map_seq_anno_combined
             .map{ it -> return [it[0], it[1], it[0].reads] }
             .branch{
-                meta, fasta, fastq ->
+                meta, _fasta, _fastq ->
                 multiFastaSelection : meta.selection == true
                 singleFastaSelection : meta.selection == false
             }
@@ -364,8 +365,8 @@ workflow VIRALMETAGENOME {
 
         // For QC we keep original sequence to compare to
         ch_unaligned_contigs = ch_unaligned_raw_contigs
-            .mix(ch_constraint_consensus_reads.singleFastaSelection.map{meta, fasta, reads -> [meta, fasta]})
-            .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq.map{meta, fasta, reads -> [meta, fasta]})
+            .mix(ch_constraint_consensus_reads.singleFastaSelection.map{meta, fasta, _reads -> [meta, fasta]})
+            .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq.map{meta, fasta, _reads -> [meta, fasta]})
 
         //Add to the consensus channel, which will be used for variant calling
         ch_consensus_reads = ch_consensus_reads
@@ -410,7 +411,7 @@ workflow VIRALMETAGENOME {
     // Run several sumarisation tools on the variant calling results
     if ( !params.skip_consensus_qc  && (!params.skip_assembly || !params.skip_variant_calling) ) {
         ch_consensus_filter = ch_consensus
-            .filter{meta, fasta -> getLengthAndAmbigous(fasta).contig_size > 0}
+            .filter{_meta, fasta -> getLengthAndAmbigous(fasta).contig_size > 0}
         CONSENSUS_QC(
             ch_consensus_filter,
             ch_unaligned_contigs,

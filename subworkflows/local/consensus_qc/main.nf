@@ -109,13 +109,18 @@ workflow CONSENSUS_QC {
 
         // Make a channel that contains the alignment of the iterations with
         // the original contigs from the assemblers
-        ch_mafftQC_in = ch_genome_grouped_branch.fail.mix(MAFFT_ITERATIONS.out.fas).map { meta, genome -> [meta.id, meta, genome] }.join(contigs_mod, by: 0).filter { _id, _meta_genome, scaffolds, _meta_contigs, contigs ->
-            // Make sure we have at least 2 sequences
-            scaffolds.countFasta() + contigs.countFasta() > 1
-        }.multiMap { _id, meta_genome, scaffolds, _meta_contigs, contigs ->
-            scaffolds: [meta_genome, scaffolds]
-            contigs: [meta_genome, contigs]
-        }
+        ch_mafftQC_in = ch_genome_grouped_branch.fail
+            .mix(MAFFT_ITERATIONS.out.fas)
+            .map { meta, genome -> [meta.id, meta, genome] }
+            .join(contigs_mod, by: 0)
+            .filter { _id, _meta_genome, scaffolds, _meta_contigs, contigs ->
+                // Make sure we have at least 2 sequences
+                scaffolds.countFasta() + contigs.countFasta() > 1
+            }
+            .multiMap { _id, meta_genome, scaffolds, _meta_contigs, contigs ->
+                scaffolds: [meta_genome, scaffolds]
+                contigs: [meta_genome, contigs]
+            }
 
         MAFFT_QC(ch_mafftQC_in.scaffolds, ch_mafftQC_in.contigs, [[:], []], [[:], []], [[:], []], [[:], []], false)
 

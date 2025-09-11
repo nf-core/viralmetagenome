@@ -46,7 +46,7 @@ Unique Molecular Identifiers (UMIs) are short sequences that are added during li
 :::tip{title="Directional vs maximum clustering"}
 ![HUMID UMI clustering](../../images/umi-clustering-humid.png)
 
-<p style="text-align: center;">_Taken from [UMI-tools: 'The network based deduplication methods'](https://umi-tools.readthedocs.io/en/latest/the_methods.html)_ </p>
+<p style="text-align: center;">Taken from <a href=https://umi-tools.readthedocs.io/en/latest/the_methods.html>UMI-tools: 'The network based deduplication methods'</a></p>
 
 - **cluster**: Form networks of connected UMIs with a mismatch distance of 1. Each connected component is a read group. In the above example, all the UMIs are contained in a single connected component and thus there is one read group containing all reads, with ACGT as the ‘selected’ UMI.
 - **directional** (default for both HUMID and UMI-tools): Form networks with edges defined based on distance threshold and $$ \text{ node A counts} \geq (2 \cdot \text{node B counts}) - 1$$

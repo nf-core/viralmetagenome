@@ -13,9 +13,9 @@ process EXTRACT_CLUSTER {
 
     output:
     tuple val(meta), path('*_members.fa'), path('*_centroid.fa'), path('*.json'), emit: members_centroids
-    tuple val(meta), path("*.clusters.tsv"), emit: tsv
-    tuple val(meta), path("*.summary_mqc.tsv"), emit: summary
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.clusters.tsv")                                     , emit: tsv
+    tuple val(meta), path("*.summary_mqc.tsv")                                  , emit: summary
+    path "versions.yml"                                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

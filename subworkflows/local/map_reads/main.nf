@@ -78,8 +78,8 @@ workflow MAP_READS {
     }
 
     emit:
-    bam      = ch_bam // channel: [ val(meta), [ bam ] ]
+    bam      = ch_bam       // channel: [ val(meta), [ bam ] ]
     ref      = ch_reference // channel: [ val(meta), [ fasta ] ]
-    mqc      = ch_multiqc // channel: [ multiqc ]
-    versions = ch_versions // channel: [ versions.yml ]
+    mqc      = ch_multiqc   // channel: [ multiqc ]
+    versions = ch_versions  // channel: [ versions.yml ]
 }

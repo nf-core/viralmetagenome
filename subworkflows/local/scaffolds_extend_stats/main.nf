@@ -60,16 +60,16 @@ workflow SCAFFOLDS_EXTEND_STATS {
 
         CONTIG_INDEX(ch_bam)
         ch_bam_bai = ch_bam.join(CONTIG_INDEX.out.bai)
-        ch_versions = ch_versions.mix(CONTIG_INDEX.out.versions)
+        ch_versions = ch_versions.mix(CONTIG_INDEX.out.versions.first())
 
         CONTIG_IDXSTATS(ch_bam_bai)
         ch_coverages = CONTIG_IDXSTATS.out.idxstats
-        ch_versions = ch_versions.mix(CONTIG_IDXSTATS.out.versions)
+        ch_versions = ch_versions.mix(CONTIG_IDXSTATS.out.versions.first())
     }
 
     emit:
     scaffolds = ch_scaffolds // channel: [ val(meta), [ scaffolds] ]
     coverages = ch_coverages // channel: [ val(meta), [ idxstats ] ]
-    mqc       = ch_multiqc // channel: [ val(meta), [ mqc ] ]
-    versions  = ch_versions // channel: [ versions.yml ]
+    mqc       = ch_multiqc   // channel: [ val(meta), [ mqc ] ]
+    versions  = ch_versions  // channel: [ versions.yml ]
 }

@@ -19,9 +19,9 @@ workflow FASTQ_KRAKEN_KAIJU {
     ch_kaiju_db      // channel: [ path(kaiju_db) ]
 
     main:
-    ch_versions = Channel.empty()
-    ch_multiqc_files = Channel.empty()
-    ch_krona_text = Channel.empty()
+    ch_versions            = Channel.empty()
+    ch_multiqc_files       = Channel.empty()
+    ch_krona_text          = Channel.empty()
     ch_raw_classifications = Channel.empty()
 
 
@@ -30,18 +30,18 @@ workflow FASTQ_KRAKEN_KAIJU {
         KRAKEN2_KRAKEN2(ch_reads, ch_kraken2_db, params.kraken2_save_reads, params.kraken2_save_readclassification)
         ch_raw_classifications = ch_raw_classifications.mix(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
         kraken2_report = KRAKEN2_KRAKEN2.out.report.map { meta, report -> [meta + [tool: 'kraken2'], report] }
-        ch_versions = ch_versions.mix(KRAKEN2_KRAKEN2.out.versions.first())
+        ch_versions    = ch_versions.mix(KRAKEN2_KRAKEN2.out.versions.first())
 
         // Bracken: get more accurate estimates of abundance
         if ('bracken' in read_classifiers) {
             BRACKEN_BRACKEN(kraken2_report, ch_bracken_db)
-            ch_versions = ch_versions.mix(BRACKEN_BRACKEN.out.versions.first())
+            ch_versions    = ch_versions.mix(BRACKEN_BRACKEN.out.versions.first())
             kraken2_report = BRACKEN_BRACKEN.out.reports.map { meta, report -> [meta + [tool: 'bracken'], report] }
         }
 
         KRAKENTOOLS_KREPORT2KRONA(kraken2_report)
-        ch_krona_text = ch_krona_text.mix(KRAKENTOOLS_KREPORT2KRONA.out.txt)
-        ch_versions = ch_versions.mix(KRAKENTOOLS_KREPORT2KRONA.out.versions.first())
+        ch_krona_text    = ch_krona_text.mix(KRAKENTOOLS_KREPORT2KRONA.out.txt)
+        ch_versions      = ch_versions.mix(KRAKENTOOLS_KREPORT2KRONA.out.versions.first())
         ch_multiqc_files = ch_multiqc_files.mix(kraken2_report)
     }
 
@@ -49,15 +49,15 @@ workflow FASTQ_KRAKEN_KAIJU {
     if ('kaiju' in read_classifiers) {
         KAIJU_KAIJU(ch_reads, ch_kaiju_db)
         kaiju_report = KAIJU_KAIJU.out.results.map { meta, report -> [meta + [tool: 'kaiju'], report] }
-        ch_versions = ch_versions.mix(KAIJU_KAIJU.out.versions.first())
+        ch_versions  = ch_versions.mix(KAIJU_KAIJU.out.versions.first())
 
         KAIJU_KAIJU2TABLE(kaiju_report, ch_kaiju_db, params.kaiju_taxon_rank)
         ch_multiqc_files = ch_multiqc_files.mix(KAIJU_KAIJU2TABLE.out.summary)
-        ch_versions = ch_versions.mix(KAIJU_KAIJU2TABLE.out.versions)
+        ch_versions      = ch_versions.mix(KAIJU_KAIJU2TABLE.out.versions.first())
 
         KAIJU_KAIJU2KRONA(kaiju_report, ch_kaiju_db)
         ch_krona_text = ch_krona_text.mix(KAIJU_KAIJU2KRONA.out.txt)
-        ch_versions = ch_versions.mix(KAIJU_KAIJU2KRONA.out.versions.first())
+        ch_versions   = ch_versions.mix(KAIJU_KAIJU2KRONA.out.versions.first())
     }
 
     /*
@@ -65,7 +65,7 @@ workflow FASTQ_KRAKEN_KAIJU {
     */
     KRONA_CLEANUP(ch_krona_text)
     ch_cleaned_krona_text = KRONA_CLEANUP.out.txt
-    ch_versions = ch_versions.mix(KRONA_CLEANUP.out.versions.first())
+    ch_versions           = ch_versions.mix(KRONA_CLEANUP.out.versions.first())
 
     /*
         Convert Krona text files into html Krona visualizations
@@ -76,7 +76,7 @@ workflow FASTQ_KRAKEN_KAIJU {
 
     KRONA_KTIMPORTTEXT(ch_krona_text_for_import)
     ch_krona_html = KRONA_KTIMPORTTEXT.out.html
-    ch_versions = ch_versions.mix(KRONA_KTIMPORTTEXT.out.versions.first())
+    ch_versions   = ch_versions.mix(KRONA_KTIMPORTTEXT.out.versions.first())
 
     emit:
     read_classifications = ch_raw_classifications // channel: [ val(meta), [ classified_reads ] ]

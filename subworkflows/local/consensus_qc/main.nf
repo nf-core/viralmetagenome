@@ -18,13 +18,13 @@ workflow CONSENSUS_QC {
 
     main:
 
-    ch_versions = Channel.empty()
-    ch_multiqc_files = Channel.empty()
-    ch_blast = Channel.empty()
-    ch_checkv = Channel.empty()
-    ch_quast = Channel.empty()
-    ch_annotation = Channel.empty()
-    ch_genome_grouped = Channel.empty()
+    ch_versions        = Channel.empty()
+    ch_multiqc_files   = Channel.empty()
+    ch_blast           = Channel.empty()
+    ch_checkv          = Channel.empty()
+    ch_quast           = Channel.empty()
+    ch_annotation      = Channel.empty()
+    ch_genome_grouped  = Channel.empty()
 
     // Combine all genomes into a single file
     ch_genomes_all = ch_genome
@@ -49,21 +49,21 @@ workflow CONSENSUS_QC {
     if (!params.skip_quast) {
         QUAST_QC(ch_genome, [[:], []], [[:], []])
         ch_quast = QUAST_QC.out.tsv
-        ch_versions = ch_versions.mix(QUAST_QC.out.versions)
+        ch_versions = ch_versions.mix(QUAST_QC.out.versions.first())
     }
 
     // Identify closest reference from the reference pool database using blast
     if (!params.skip_blast_qc) {
         BLASTN_QC(ch_genomes_all, ch_refpool_db)
         ch_blast = BLASTN_QC.out.txt
-        ch_versions = ch_versions.mix(BLASTN_QC.out.versions)
+        ch_versions = ch_versions.mix(BLASTN_QC.out.versions.first())
     }
 
     // use MMSEQS easy search to find best hits against annotation db
     if (!params.skip_consensus_annotation) {
         MMSEQS_ANNOTATE(ch_genomes_all, ch_annotation_db)
         ch_annotation = MMSEQS_ANNOTATE.out.tsv
-        ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions)
+        ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions.first())
     }
 
     // Annotate proteins with prokka
@@ -75,7 +75,7 @@ workflow CONSENSUS_QC {
         }
 
         PROKKA(ch_genomes_final, ch_prokka_db, [])
-        ch_versions = ch_versions.mix(PROKKA.out.versions)
+        ch_versions = ch_versions.mix(PROKKA.out.versions.first())
     }
 
 
@@ -84,13 +84,13 @@ workflow CONSENSUS_QC {
         if (!params.checkv_db) {
             CHECKV_DOWNLOADDATABASE()
             ch_checkv_db = CHECKV_DOWNLOADDATABASE.out.checkv_db
-            ch_versions = ch_versions.mix(CHECKV_DOWNLOADDATABASE.out.versions)
+            ch_versions = ch_versions.mix(CHECKV_DOWNLOADDATABASE.out.versions.first())
         }
 
         // uses HMM and AA alignment to deterimine completeness
         CHECKV_ENDTOEND(ch_genome_grouped, ch_checkv_db)
         ch_checkv = CHECKV_ENDTOEND.out.quality_summary
-        ch_versions = ch_versions.mix(CHECKV_ENDTOEND.out.versions)
+        ch_versions = ch_versions.mix(CHECKV_ENDTOEND.out.versions.first())
     }
 
     // Align the different steps to each other to see how the sequences have changed
@@ -104,7 +104,7 @@ workflow CONSENSUS_QC {
 
         MAFFT_ITERATIONS(ch_genome_grouped_branch.pass, [[:], []], [[:], []], [[:], []], [[:], []], [[:], []], false)
 
-        ch_versions = ch_versions.mix(MAFFT_ITERATIONS.out.versions)
+        ch_versions = ch_versions.mix(MAFFT_ITERATIONS.out.versions.first())
         contigs_mod = ch_aligned_raw_contigs.map { meta, genome -> [meta.id, meta, genome] }
 
         // Make a channel that contains the alignment of the iterations with
@@ -124,14 +124,14 @@ workflow CONSENSUS_QC {
 
         MAFFT_QC(ch_mafftQC_in.scaffolds, ch_mafftQC_in.contigs, [[:], []], [[:], []], [[:], []], [[:], []], false)
 
-        ch_versions = ch_versions.mix(MAFFT_QC.out.versions)
+        ch_versions = ch_versions.mix(MAFFT_QC.out.versions.first())
     }
 
     emit:
-    blast      = ch_blast // channel: [ val(meta), [ txt ] ]
-    checkv     = ch_checkv // channel: [ val(meta), [ tsv ] ]
-    quast      = ch_quast // channel: [ val(meta), [ tsv ] ]
-    annotation = ch_annotation // channel: [ val(meta), [ txt ] ]
+    blast      = ch_blast         // channel: [ val(meta), [ txt ] ]
+    checkv     = ch_checkv        // channel: [ val(meta), [ tsv ] ]
+    quast      = ch_quast         // channel: [ val(meta), [ tsv ] ]
+    annotation = ch_annotation    // channel: [ val(meta), [ txt ] ]
     mqc        = ch_multiqc_files // channel: [ tsv ]
-    versions   = ch_versions // channel: [ versions.yml ]
+    versions   = ch_versions      // channel: [ versions.yml ]
 }

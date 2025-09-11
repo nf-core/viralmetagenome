@@ -19,7 +19,7 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     //
     ch_input_cat = ch_fasta_reads.map { meta, _fasta, reads -> [meta, reads] }
     CAT_CAT_READS(ch_input_cat)
-    ch_versions = ch_versions.mix(CAT_CAT_READS.out.versions)
+    ch_versions = ch_versions.mix(CAT_CAT_READS.out.versions.first())
 
 
     //
@@ -27,7 +27,7 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     //
     ch_input_sketch = ch_fasta_reads.map { meta, fasta, _reads -> [meta, fasta] }
     MASH_SKETCH(ch_input_sketch)
-    ch_versions = ch_versions.mix(MASH_SKETCH.out.versions)
+    ch_versions = ch_versions.mix(MASH_SKETCH.out.versions.first())
 
     ch_input_screen = CAT_CAT_READS.out.file_out
         .join(MASH_SKETCH.out.mash)
@@ -40,14 +40,14 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     // Identify best hits from the reference sketch.
     //
     MASH_SCREEN(ch_input_screen.query, ch_input_screen.sequences)
-    ch_versions = ch_versions.mix(MASH_SCREEN.out.versions)
+    ch_versions = ch_versions.mix(MASH_SCREEN.out.versions.first())
 
     //
     // Isolate/extract the best hit from mash screen using custom script select_reference
     //
     ch_input_select_reference = MASH_SCREEN.out.screen.join(ch_fasta_reads)
     SELECT_REFERENCE(ch_input_select_reference)
-    ch_versions = ch_versions.mix(SELECT_REFERENCE.out.versions)
+    ch_versions = ch_versions.mix(SELECT_REFERENCE.out.versions.first())
 
     ch_reference_fastq = SELECT_REFERENCE.out.fasta_reads
         .filter { _meta, _json, fasta, _reads ->
@@ -64,6 +64,6 @@ workflow FASTQ_FASTA_MASH_SCREEN {
 
     emit:
     reference_fastq = ch_reference_fastq // channel: [meta, fasta, reads ]
-    json            = ch_json // channel: [meta, json ]
-    versions        = ch_versions // channel: [ versions.yml ]
+    json            = ch_json            // channel: [meta, json ]
+    versions        = ch_versions        // channel: [ versions.yml ]
 }

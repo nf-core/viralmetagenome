@@ -9,7 +9,7 @@ workflow FASTQ_KRAKEN_HOST_REMOVE {
     min_reads
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions      = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
     // remove host reads & keep unclassified reads [true, true]
@@ -39,14 +39,14 @@ workflow FASTQ_KRAKEN_HOST_REMOVE {
         )
         ch_multiqc_files = ch_multiqc_files.mix(FASTQC_HOST.out.html)
         ch_multiqc_files = ch_multiqc_files.mix(FASTQC_HOST.out.zip)
-        ch_versions = ch_versions.mix(FASTQC_HOST.out.versions.first())
+        ch_versions      = ch_versions.mix(FASTQC_HOST.out.versions.first())
     }
 
     emit:
     reads_hostremoved      = ch_reads_hostremoved.pass // channel: [ [ meta ], [ fastq ] ]
     reads_hostremoved_fail = ch_reads_hostremoved.fail // channel: [ [ meta ], [ n_reads ] ]
-    mqc                    = ch_multiqc_files // channel: [ multiqc_files ]
-    versions               = ch_versions // channel: [ versions.yml ]
+    mqc                    = ch_multiqc_files          // channel: [ multiqc_files ]
+    versions               = ch_versions               // channel: [ versions.yml ]
 }
 
 def getReadsAfterHostRemove(tsv) {

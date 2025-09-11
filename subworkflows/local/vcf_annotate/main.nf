@@ -46,7 +46,7 @@ workflow VCF_ANNOTATE {
     ch_versions = ch_versions.mix(SNPSIFT_EXTRACTFIELDS.out.versions.first())
 
     emit:
-    vcf      = ch_vcf_ann // channel: [ val(meta), [ tsv ] ]
+    vcf      = ch_vcf_ann                    // channel: [ val(meta), [ tsv ] ]
     txt      = SNPSIFT_EXTRACTFIELDS.out.txt // channel: [ val(meta), [ txt ] ]
-    versions = ch_versions // channel: [ versions.yml ]
+    versions = ch_versions                   // channel: [ versions.yml ]
 }

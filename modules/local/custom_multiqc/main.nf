@@ -7,29 +7,29 @@ process CUSTOM_MULTIQC {
         : 'community.wave.seqera.io/library/pip_multiqc_pandas:bffcc4521f62d9ac'}"
 
     input:
-    path multiqc_files, stageAs: "multiqc_files/?/*"
+    path multiqc_files          , stageAs: "multiqc_files/?/*"
     path multiqc_config
     path clusters_summary_files
     path sample_metadata
-    path checkv_files, stageAs: "?/checkv/*"
-    path quast_files, stageAs: "?/quast/*"
-    path blast_files, stageAs: "?/blast/*"
+    path checkv_files           , stageAs: "?/checkv/*"
+    path quast_files            , stageAs: "?/quast/*"
+    path blast_files            , stageAs: "?/blast/*"
     path mapping_constraints
-    path anno_files, stageAs: "?/annotation/*"
-    path clusters_tsv, stageAs: "?/clusters/*"
-    path screen_files, stageAs: "?/screen/*"
+    path anno_files             , stageAs: "?/annotation/*"
+    path clusters_tsv           , stageAs: "?/clusters/*"
+    path screen_files           , stageAs: "?/screen/*"
     path custom_table_headers
 
     output:
 
-    path "contigs_overview.tsv", emit: contigs_table, optional: true
-    path "contigs_overview-with-iterations.tsv", emit: contigs_it, optional: true
-    path "mapping_overview.tsv", emit: mapping_table, optional: true
-    path "samples_overview.tsv", emit: samples_table, optional: true
-    path "*multiqc_report.html", emit: report, optional: true
-    path "*_data", emit: data, optional: true
-    path "*_plots", emit: plots, optional: true
-    path "versions.yml", emit: versions
+    path "contigs_overview.tsv"                , emit: contigs_table, optional: true
+    path "contigs_overview-with-iterations.tsv", emit: contigs_it   , optional: true
+    path "mapping_overview.tsv"                , emit: mapping_table, optional: true
+    path "samples_overview.tsv"                , emit: samples_table, optional: true
+    path "*multiqc_report.html"                , emit: report       , optional: true
+    path "*_data"                              , emit: data         , optional: true
+    path "*_plots"                             , emit: plots        , optional: true
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,7 +37,6 @@ process CUSTOM_MULTIQC {
     script:
     def args = task.ext.args ?: ''
     def multiqc_files_command = multiqc_files ? "--multiqc_files multiqc_files" : ''
-    // Just refer to the dir for now.
     def multiqc_config_command = multiqc_config ? "--multiqc_config ${multiqc_config}" : ''
     def clusters_summary_files_command = clusters_summary_files ? "--clusters_summary ${clusters_summary_files}" : ''
     def sample_metadata_command = sample_metadata ? "--sample_metadata ${sample_metadata}" : ''

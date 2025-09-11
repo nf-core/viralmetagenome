@@ -15,7 +15,7 @@ process NETWORK_CLUSTER {
     output:
     tuple val(meta), path("*.tsv"), emit: clusters
     tuple val(meta), path("*.png"), emit: png, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

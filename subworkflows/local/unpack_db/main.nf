@@ -30,5 +30,5 @@ workflow UNPACK_DB {
 
     emit:
     db       = ch_db_unpacked // channel: [ db ]
-    versions = ch_versions // channel: [ versions.yml ]
+    versions = ch_versions    // channel: [ versions.yml ]
 }

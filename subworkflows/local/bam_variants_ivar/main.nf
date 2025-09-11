@@ -14,8 +14,8 @@ workflow BAM_VARIANTS_IVAR {
 
     ch_versions = Channel.empty()
 
-    ch_bam = ch_bam_fasta.map { meta, bam, _fasta -> [meta, bam] }
-    ch_fasta = ch_bam_fasta.map { _meta, _bam, fasta -> [fasta] }
+    ch_bam     = ch_bam_fasta.map { meta, bam, _fasta -> [meta, bam] }
+    ch_fasta   = ch_bam_fasta.map { _meta, _bam, fasta -> [fasta] }
     meta_fasta = ch_bam_fasta.map { meta, _bam, fasta -> [meta, fasta] }
 
     //

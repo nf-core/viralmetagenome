@@ -30,7 +30,7 @@ workflow BAM_VARIANTS_BCFTOOLS {
         .join(BCFTOOLS_MPILEUP.out.tbi)
         .join(BCFTOOLS_MPILEUP.out.stats)
         .join(ch_fasta)
-        .multiMap { meta, vcf, tbi, stats, fasta ->
+        .multiMap { meta, vcf, tbi, _stats, fasta ->
             vcf_tbi: [meta, vcf, tbi]
             fasta: [meta, fasta]
         }
@@ -53,7 +53,7 @@ workflow BAM_VARIANTS_BCFTOOLS {
     ch_versions = ch_versions.mix(BCFTOOLS_FILTER.out.versions.first())
 
     emit:
-    vcf        = BCFTOOLS_NORM.out.vcf // channel: [ val(meta), [ vcf ] ]
+    vcf        = BCFTOOLS_NORM.out.vcf   // channel: [ val(meta), [ vcf ] ]
     vcf_filter = BCFTOOLS_FILTER.out.vcf // channel: [ val(meta), [ vcf ] ]
-    versions   = ch_versions // channel: [ versions.yml ]
+    versions   = ch_versions             // channel: [ versions.yml ]
 }

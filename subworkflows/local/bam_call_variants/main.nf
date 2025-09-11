@@ -15,7 +15,7 @@ workflow BAM_CALL_VARIANTS {
     ch_versions = Channel.empty()
     ch_multiqc = Channel.empty()
 
-    meta_fasta = ch_bam_ref.map { meta, bam, fasta -> [meta, fasta] }
+    meta_fasta = ch_bam_ref.map { meta, _bam, fasta -> [meta, fasta] }
 
     if (variant_caller == "bcftools") {
         BAM_VARIANTS_BCFTOOLS(
@@ -63,11 +63,11 @@ workflow BAM_CALL_VARIANTS {
     }
 
     emit:
-    vcf        = ch_vcf // channel: [ val(meta), [ vcf ] ]
+    vcf        = ch_vcf        // channel: [ val(meta), [ vcf ] ]
     vcf_filter = ch_vcf_filter // channel: [ val(meta), [ vcf ] ]
-    tbi        = ch_tbi // channel: [ val(meta), [ tbi ] ]
-    csi        = ch_csi // channel: [ val(meta), [ csi ] ]
-    stats      = ch_stats // channel: [ val(meta), [ stats ] ]
-    mqc        = ch_multiqc // channel: [ val(meta), [ mqc ] ]
-    versions   = ch_versions // channel: [ versions.yml ]
+    tbi        = ch_tbi        // channel: [ val(meta), [ tbi ] ]
+    csi        = ch_csi        // channel: [ val(meta), [ csi ] ]
+    stats      = ch_stats      // channel: [ val(meta), [ stats ] ]
+    mqc        = ch_multiqc    // channel: [ val(meta), [ mqc ] ]
+    versions   = ch_versions   // channel: [ versions.yml ]
 }

@@ -12,7 +12,7 @@ process SNPEFF_BUILD {
 
     output:
     tuple val(meta), path('snpeff_db'), path("*.config"), emit: db
-    path "versions.yml", emit: versions
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

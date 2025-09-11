@@ -13,9 +13,9 @@ process MAKE_BED_MASK {
     val save_mpileup
 
     output:
-    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path("*.bed")    , emit: bed
     tuple val(meta), path("*.mpileup"), optional: true, emit: mpileup
-    path "versions.yml", emit: versions
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

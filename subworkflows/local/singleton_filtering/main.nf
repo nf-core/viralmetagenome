@@ -20,7 +20,7 @@ workflow SINGLETON_FILTERING {
         ch_contig,
         []
         )
-    ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_SINGLETON.out.versions)
+    ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_SINGLETON.out.versions.first())
 
 
     emit:

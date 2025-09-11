@@ -11,7 +11,7 @@ workflow MMSEQS_ANNOTATE {
 
     // create mmseqs annotation db
     MMSEQS_CREATEANNOTATIONDB(ch_db)
-    ch_versions = ch_versions.mix(MMSEQS_CREATEANNOTATIONDB.out.versions)
+    ch_versions = ch_versions.mix(MMSEQS_CREATEANNOTATIONDB.out.versions.first())
 
     // search the genomes against the annotation db
     MMSEQS_EASYSEARCH(ch_genomes, MMSEQS_CREATEANNOTATIONDB.out.db)
@@ -19,5 +19,5 @@ workflow MMSEQS_ANNOTATE {
 
     emit:
     tsv      = MMSEQS_EASYSEARCH.out.tsv // channel: [ val(meta), [ tsv ] ]
-    versions = ch_versions // channel: [ versions.yml ]
+    versions = ch_versions               // channel: [ versions.yml ]
 }

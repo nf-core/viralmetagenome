@@ -25,6 +25,7 @@
 ![viralmetagenome-workflow](docs/images/metromap_style_pipeline_workflow_viralmetagenome.png)
 
 > [!NOTE]
+>
 > - `|` indicate the need tot chose a tool
 > - `&` indicate that output of tools can be combined and ran in parallel.
 
@@ -106,7 +107,6 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 ## Citations
 
 > Klaps J, Lemey P, nf-core community, Kafetzopoulou LE. nf-core/viralmetagenome: A Novel Pipeline for Untargeted Viral Genome Reconstruction bioRxiv 2025.06.27.661954; doi:10.1101/2025.06.27.661954
-
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 

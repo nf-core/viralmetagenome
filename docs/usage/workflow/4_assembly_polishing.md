@@ -178,4 +178,3 @@ If the `--perc_reads_contig` is set to `5`, the cumulative sum of the contigs fr
 ## 7. Scaffolding
 
 After classifying all contigs and their top BLAST hits into distinct clusters or bins, the contigs are then scaffolded to the centroid of each bin. Any external references that are not centroids of the cluster are subsequently removed to prevent further bias. All members of the cluster are consequently mapped towards their centroid with [Minimap2](https://github.com/lh3/minimap2) and consensus is called using [iVar-consensus](https://andersen-lab.github.io/ivar/html/manualpage.html).
-

@@ -25,6 +25,7 @@
   > Danecek, Petr et al. “Twelve years of SAMtools and BCFtools.” GigaScience vol. 10,2 (2021): giab008. doi:10.1093/gigascience/giab008
 
 - [BEDTools](https://doi.org/10.1093/bioinformatics/btq033)
+
   > Quinlan AR, Hall IM. BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics. 2010 Mar 15;26(6):841-2. doi: 10.1093/bioinformatics/btq033. Epub 2010 Jan 28. PMID: 20110278; PMCID: PMC2832824.
 
 - [blast](https://doi.org/10.1186/1471-2105-10-421)
@@ -85,7 +86,7 @@
 
 - [MAFFT](https://doi.org/10.1109/TCBB.2016.2530064)
 
-  >Zheng W, Li K, Li K, So HC. A Modified Multiple Alignment Fast Fourier Transform with Higher Efficiency. IEEE/ACM Trans Comput Biol Bioinform. 2017 May-Jun;14(3):634-645. doi: 10.1109/TCBB.2016.2530064. Epub 2016 Feb 15. PMID: 26890922.
+  > Zheng W, Li K, Li K, So HC. A Modified Multiple Alignment Fast Fourier Transform with Higher Efficiency. IEEE/ACM Trans Comput Biol Bioinform. 2017 May-Jun;14(3):634-645. doi: 10.1109/TCBB.2016.2530064. Epub 2016 Feb 15. PMID: 26890922.
 
 - [Mash](https://doi.org/10.1186/s13059-016-0997-x)
 

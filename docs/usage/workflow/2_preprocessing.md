@@ -1,4 +1,5 @@
 # Preprocessing
+
 nf-core/viralmetagenome offers three main preprocessing steps for the preprocessing of raw sequencing reads:
 
 1. [Adapter trimming](#1-adapter-trimming): adapter clipping and pair-merging.

@@ -33,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor `params.skip_annotation` to `params.skip_consensus_annotation`([#181](https://github.com/nf-core/viralmetagenome/pull/181)) (by @Joon-Klaps)
 - Deprecate `params.skip_nocov_to_reference` ([#212](https://github.com/nf-core/viralmetagenome/pull/212)) (by @Joon-Klaps)
 
-
 ## v0.1.2 - 2025-02-28
 
 Second release of thenf-core/viralmetagenome pipeline. Focusing on user experience and bug fixes.

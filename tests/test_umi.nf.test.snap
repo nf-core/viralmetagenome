@@ -1,7 +1,7 @@
 {
     "-profile test_umi": {
         "content": [
-            359,
+            351,
             {
                 "BCFTOOLS_CONSENSUS": {
                     "bcftools": 1.21
@@ -192,15 +192,6 @@
                     "pandas": "2.2.3",
                     "biopython": 1.85
                 },
-                "SNPEFF_BUILD": {
-                    "snpeff": "5.0e"
-                },
-                "SNPEFF_SNPEFF": {
-                    "snpeff": "5.1d"
-                },
-                "SNPSIFT_EXTRACTFIELDS": {
-                    "snpsift": 4.3
-                },
                 "SPADES": {
                     "spades": "4.1.0"
                 },
@@ -228,7 +219,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-10T12:19:33.176731032"
+        "timestamp": "2025-09-11T13:23:01.524328412"
     },
     "multiqc": {
         "content": [

@@ -63,7 +63,7 @@ workflow CONSENSUS_QC {
     if (!params.skip_consensus_annotation) {
         MMSEQS_ANNOTATE(ch_genomes_all, ch_annotation_db)
         ch_annotation = MMSEQS_ANNOTATE.out.tsv
-        ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions.first())
+        ch_versions = ch_versions.mix(MMSEQS_ANNOTATE.out.versions)
     }
 
     // Annotate proteins with prokka

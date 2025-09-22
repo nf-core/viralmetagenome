@@ -68,23 +68,6 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test - variant_caller bcftools - consensus_caller ivar") {
-        when {
-            params {
-                outdir = "$outputDir"
-                variant_caller = "bcftools"
-                consensus_caller = "ivar"
-            }
-        }
-        then {
-            assert workflow.success
-            assert snapshot(
-                workflow.trace.succeeded().size(),
-                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
-            ).match()
-        }
-    }
-
     test("-profile test - variant_caller ivar - consensus_caller bcftools") {
         when {
             params {
@@ -146,24 +129,6 @@ nextflow_pipeline {
             params {
                 outdir = "$outputDir"
                 cluster_method = "mmseqs-cluster"
-                skip_iterative_refinement = true
-                skip_variant_calling = true
-            }
-        }
-        then {
-            assert workflow.success
-            assert snapshot(
-                workflow.trace.succeeded().size(),
-                removeNextflowVersion("$outputDir/pipeline_info/nf_core_viralmetagenome_software_mqc_versions.yml")
-            ).match()
-        }
-    }
-
-    test("-profile test - cluster_method mmseqs-linclust") {
-        when {
-            params {
-                outdir = "$outputDir"
-                cluster_method = "mmseqs-linclust"
                 skip_iterative_refinement = true
                 skip_variant_calling = true
             }

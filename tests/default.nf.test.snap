@@ -171,6 +171,9 @@
                 "SAMTOOLS_FAIDX": {
                     "samtools": 1.21
                 },
+                "SAMTOOLS_FLAGSTAT": {
+                    "samtools": 1.21
+                },
                 "SAMTOOLS_IDXSTATS": {
                     "samtools": 1.21
                 },
@@ -212,7 +215,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T12:52:06.17640578"
+        "timestamp": "2025-09-22T16:19:06.859801385"
     },
     "-profile test - cluster_method mash": {
         "content": [
@@ -307,12 +310,14 @@
                 "MMSEQS_CREATEANNOTATIONDB": {
                     "mmseqs": "17.b804f"
                 },
+                "MMSEQS_EASYSEARCH": {
+                    "mmseqs": "17.b804f"
+                },
                 "NETWORK_CLUSTER": {
-                    "python": "3.12.0",
-                    "numpy": "1.26.2",
+                    "leidenalg": "0.10.1",
+                    "pandas": "2.1.3",
                     "matplotlib": "3.8.2",
-                    "igraph": "0.11.3",
-                    "leidenalg": "0.10.1"
+                    "pycairo": "1.25.1"
                 },
                 "PRINSEQ_CONTIG": {
                     "prinseqplusplus": 1.2
@@ -344,7 +349,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T13:00:33.566294349"
+        "timestamp": "2025-09-22T16:27:21.140073486"
     },
     "-profile test - cluster_method cdhitest": {
         "content": [
@@ -644,6 +649,9 @@
                     "sed": 4.7
                 },
                 "SAMTOOLS_FAIDX": {
+                    "samtools": 1.21
+                },
+                "SAMTOOLS_FLAGSTAT": {
                     "samtools": 1.21
                 },
                 "SAMTOOLS_IDXSTATS": {
@@ -1882,7 +1890,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T12:50:22.023872711"
+        "timestamp": "2025-09-22T16:17:21.936979349"
     },
     "-profile test - variant_caller ivar - consensus_caller ivar": {
         "content": [
@@ -2056,6 +2064,9 @@
                 "SAMTOOLS_FAIDX": {
                     "samtools": 1.21
                 },
+                "SAMTOOLS_FLAGSTAT": {
+                    "samtools": 1.21
+                },
                 "SAMTOOLS_IDXSTATS": {
                     "samtools": 1.21
                 },
@@ -2097,7 +2108,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T12:55:46.888122793"
+        "timestamp": "2025-09-22T16:22:38.484033918"
     },
     "-profile test - cluster_method mmseqs-cluster": {
         "content": [
@@ -2840,6 +2851,9 @@
                 "SAMTOOLS_FAIDX": {
                     "samtools": 1.21
                 },
+                "SAMTOOLS_FLAGSTAT": {
+                    "samtools": 1.21
+                },
                 "SAMTOOLS_IDXSTATS": {
                     "samtools": 1.21
                 },
@@ -2881,6 +2895,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T12:53:58.874515798"
+        "timestamp": "2025-09-22T16:20:54.819698605"
     }
 }

@@ -33,11 +33,10 @@ process NETWORK_CLUSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
-        numpy: \$(pip show numpy | grep Version | sed 's/Version: //g')
-        matplotlib: \$(pip show matplotlib | grep Version | sed 's/Version: //g')
-        igraph: \$(pip show igraph | grep Version | sed 's/Version: //g')
         leidenalg: \$(pip show leidenalg | grep Version | sed 's/Version: //g')
+        pandas: \$(pip show pandas | grep Version | sed 's/Version: //g')
+        matplotlib: \$(pip show matplotlib | grep Version | sed 's/Version: //g')
+        pycairo: \$(pip show pycairo | grep Version | sed 's/Version: //g')
     END_VERSIONS
     """
 
@@ -50,11 +49,10 @@ process NETWORK_CLUSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
-        numpy: \$(pip show numpy | grep Version | sed 's/Version: //g')
-        matplotlib: \$(pip show matplotlib | grep Version | sed 's/Version: //g')
-        igraph: \$(pip show igraph | grep Version | sed 's/Version: //g')
         leidenalg: \$(pip show leidenalg | grep Version | sed 's/Version: //g')
+        pandas: \$(pip show pandas | grep Version | sed 's/Version: //g')
+        matplotlib: \$(pip show matplotlib | grep Version | sed 's/Version: //g')
+        pycairo: \$(pip show pycairo | grep Version | sed 's/Version: //g')
     END_VERSIONS
     """
 }

@@ -37,7 +37,7 @@ workflow BAM_STATS_METRICS {
     ch_multiqc  = ch_multiqc.mix(MOSDEPTH.out.global_txt, MOSDEPTH.out.summary_txt)
 
     BAM_STATS_SAMTOOLS(input_metrics.bam_bai, input_metrics.ref)
-    ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions.first())
+    ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
     ch_multiqc  = ch_multiqc.mix(BAM_STATS_SAMTOOLS.out.stats, BAM_STATS_SAMTOOLS.out.flagstat)
 
     emit:

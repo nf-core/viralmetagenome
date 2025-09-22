@@ -1301,6 +1301,12 @@
                     "description": "Prefix of all output files followed by [date]_[pipelineversion]_[runName]",
                     "fa_icon": "fab fa-autoprefixer",
                     "help_text": "In order to track your files better, you can add a custom prefix to all output files. The prefix will be followed by the date, pipeline version and run name."
+                },
+                "global_prefix": {
+                    "type": "string",
+                    "fa_icon": "fas fa-tag",
+                    "description": "Global prefix set if you don't want metadata embedded in the output filenames",
+                    "hidden": true
                 }
             }
         }

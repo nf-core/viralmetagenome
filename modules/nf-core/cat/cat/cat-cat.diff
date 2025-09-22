@@ -1,4 +1,5 @@
 Changes in component 'nf-core/cat/cat'
+'modules/nf-core/cat/cat/meta.yml' is unchanged
 Changes in 'cat/cat/main.nf':
 --- modules/nf-core/cat/cat/main.nf
 +++ modules/nf-core/cat/cat/main.nf
@@ -11,6 +12,15 @@ Changes in 'cat/cat/main.nf':
  
      output:
      tuple val(meta), path("${prefix}"), emit: file_out
+@@ -34,7 +34,7 @@
+     // Use input file ending as default
+     prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
+     out_zip  = prefix.endsWith('.gz')
+-    in_zip   = file_list[0].endsWith('.gz')
++    in_zip   = file_list.any { it.endsWith('.gz') }
+     command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
+     command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
+     if(file_list.contains(prefix.trim())) {
 @@ -44,7 +44,7 @@
      """
      $command1 \\
@@ -22,9 +32,8 @@ Changes in 'cat/cat/main.nf':
  
 
 'modules/nf-core/cat/cat/environment.yml' is unchanged
-'modules/nf-core/cat/cat/meta.yml' is unchanged
+'modules/nf-core/cat/cat/tests/nextflow_zipped_unzipped.config' is unchanged
+'modules/nf-core/cat/cat/tests/nextflow_unzipped_zipped.config' is unchanged
 'modules/nf-core/cat/cat/tests/main.nf.test' is unchanged
 'modules/nf-core/cat/cat/tests/main.nf.test.snap' is unchanged
-'modules/nf-core/cat/cat/tests/nextflow_unzipped_zipped.config' is unchanged
-'modules/nf-core/cat/cat/tests/nextflow_zipped_unzipped.config' is unchanged
 ************************************************************

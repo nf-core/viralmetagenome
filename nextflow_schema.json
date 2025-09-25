@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/viralmetagenome/master/nextflow_schema.json",
     "title": "nf-core/viralmetagenome pipeline parameters",
-    "description": "a bioinformatics best-practice analysis pipeline for untargeted viral genome reconstruction and to identify intra-host variants from metagenomic sequencing data.",
+    "description": "A bioinformatics best-practice analysis pipeline for untargeted viral genome reconstruction and to identify intra-host variants from metagenomic sequencing data.",
     "type": "object",
     "$defs": {
         "input_output_options": {
@@ -125,12 +125,12 @@
                 "min_trimmed_reads": {
                     "type": "integer",
                     "default": 1,
-                    "description": "Inputs with fewer than this reads will be filtered out of the \"reads\" output channel",
+                    "description": "Input files with fewer than these reads will be filtered out of the \"reads\" output channel",
                     "fa_icon": "fas fa-compress-alt"
                 },
                 "merge_reads": {
                     "type": "boolean",
-                    "description": "Specify if reads coming from the same group or orignal sample should be merged for the downstream analyses",
+                    "description": "Specify if reads coming from the same group or original sample should be merged for the downstream analyses",
                     "fa_icon": "fas fa-compress-alt"
                 },
                 "skip_complexity_filtering": {

@@ -64,7 +64,7 @@ workflow FASTA_CONTIG_CLUST {
         sample_fasta_ref_contigs = fasta_ref_contigs
             .map{ meta, fasta -> [meta.sample, meta, fasta] }                  // add sample for join
             .join(sample_coverages, by: [0])                                   // join with coverages
-            .map{ sample, meta_fasta, fasta, _meta_coverages, coverages ->      // remove meta coverages
+            .map{ sample, meta_fasta, fasta, _meta_coverages, coverages ->     // remove meta coverages
                 [sample, meta_fasta, fasta, coverages]
                 }
     }
@@ -94,7 +94,7 @@ workflow FASTA_CONTIG_CLUST {
         .members_centroids
         .transpose()                                                                   // wide to long
         .map { meta, seq_members, seq_centroids, json_file ->
-            def lazy_json = getMapFromJson(json_file)                  // convert cluster metadata to Map
+            def lazy_json = getMapFromJson(json_file)                                  // convert cluster metadata to Map
             def map_json = [
                 id : "${meta.sample}_${lazy_json.cluster_id}",                         // rename meta.id to include cluster number
                 centroid: lazy_json.centroid,

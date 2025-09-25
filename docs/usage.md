@@ -222,7 +222,7 @@ nextflow run nf-core/viralmetagenome \
 ```
 
 :::info
-This will overwrite all default arguments of nf-core/viralmetagenome for the `ivar consensus` module. Similarly the remove the default values of nf-core/viralmetagenome, specifiy the argument with an empty string:
+This will overwrite all default arguments of nf-core/viralmetagenome for the `ivar consensus` module. Similarly, to remove the default values of nf-core/viralmetagenome, specify the argument with an empty string:
 
 ```bash {3-4}
 nextflow run nf-core/viralmetagenome \

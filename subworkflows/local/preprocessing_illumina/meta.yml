@@ -24,7 +24,7 @@ components:
   - cat/fastq
   - fastq_fastqc_umitools_trimmomatic
   - fastq_fastqc_umitools_fastp
-  - fastq_kraken_host_remove
+  - fastq_bowtie2_kraken_host_remove
   - utils_nfcore_viralmetagenome_pipeline
   - lowreadsamplestomultiqc
 input:

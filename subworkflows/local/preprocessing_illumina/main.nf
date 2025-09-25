@@ -7,13 +7,14 @@ include { BBMAP_BBDUK                        } from '../../../modules/nf-core/bb
 include { CAT_FASTQ                          } from '../../../modules/nf-core/cat/fastq/main'
 include { FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC  } from '../fastq_fastqc_umitools_trimmomatic'
 include { FASTQ_FASTQC_UMITOOLS_FASTP        } from '../../nf-core/fastq_fastqc_umitools_fastp/main'
-include { FASTQ_KRAKEN_HOST_REMOVE           } from '../fastq_kraken_host_remove'
+include { FASTQ_BOWTIE2_KRAKEN_HOST_REMOVE   } from '../fastq_bowtie2_kraken_host_remove'
 
 workflow PREPROCESSING_ILLUMINA {
 
     take:
     ch_reads                   // channel: [ [ meta ], [ ch_reads ] ]
     ch_kraken2_host_db         // channel: [ path(kraken2_host_db) ]
+    ch_host_bowtie2_reference  // channel: [ path(bowtie2_host_fna) ]
     ch_adapter_fasta           // channel: [ path(adapter_fasta) ]
     ch_contaminants            // channel: [ path(contaminants_fasta) ]
 
@@ -126,17 +127,19 @@ workflow PREPROCESSING_ILLUMINA {
 
     // Host removal with kraken2
     if (!params.skip_hostremoval){
-        FASTQ_KRAKEN_HOST_REMOVE (
+        FASTQ_BOWTIE2_KRAKEN_HOST_REMOVE (
             ch_reads_decomplexified,
             ch_kraken2_host_db,
+            ch_host_bowtie2_reference,
+            params.host_removal_tool,
             params.skip_host_fastqc,
             params.min_trimmed_reads,
         )
 
-        ch_reads_hostremoved   = FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved
-        ch_failed_reads        = ch_failed_reads.mix(FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved_fail)
-        ch_multiqc_files       = ch_multiqc_files.mix( FASTQ_KRAKEN_HOST_REMOVE.out.mqc )
-        ch_versions            = ch_versions.mix( FASTQ_KRAKEN_HOST_REMOVE.out.versions )
+        ch_reads_hostremoved   = FASTQ_BOWTIE2_KRAKEN_HOST_REMOVE.out.reads_hostremoved
+        ch_failed_reads        = ch_failed_reads.mix(FASTQ_BOWTIE2_KRAKEN_HOST_REMOVE.out.reads_hostremoved_fail)
+        ch_multiqc_files       = ch_multiqc_files.mix( FASTQ_BOWTIE2_KRAKEN_HOST_REMOVE.out.mqc )
+        ch_versions            = ch_versions.mix( FASTQ_BOWTIE2_KRAKEN_HOST_REMOVE.out.versions )
 
     } else {
         ch_reads_hostremoved = ch_reads_decomplexified

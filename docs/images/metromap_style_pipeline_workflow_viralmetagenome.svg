@@ -28,13 +28,13 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.72323945"
-     inkscape:cx="414.10905"
-     inkscape:cy="416.87438"
+     inkscape:zoom="0.50133234"
+     inkscape:cx="716.09184"
+     inkscape:cy="332.11502"
      inkscape:window-width="1720"
      inkscape:window-height="1051"
      inkscape:window-x="0"
-     inkscape:window-y="38"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg1248"><inkscape:grid
        type="xygrid"
@@ -3914,12 +3914,12 @@
      transform="rotate(-0.01709753,87435.421,-96379.222)"><tspan
        x="176.14853"
        y="46.156284"
-       id="tspan4669">SPAdes &amp;<tspan
+       id="tspan2359">SPAdes &amp;<tspan
    y="46.156284"
-   id="tspan4671"> </tspan></tspan><tspan
+   id="tspan2361"> </tspan></tspan><tspan
        x="176.14853"
        y="51.447949"
-       id="tspan4673">Megahit &amp; Trinity</tspan></text><g
+       id="tspan2363">Megahit &amp; Trinity</tspan></text><g
      id="g44604"
      transform="translate(29.827257,11.736073)"><path
        style="display:inline;fill:#000000;fill-opacity:0;stroke:#48a365;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -3936,11 +3936,11 @@
      transform="rotate(-0.017098,-730341.04,-272676.73)"><tspan
        x="208.05066"
        y="333.48804"
-       id="tspan4675">iVar
+       id="tspan2365">iVar
 </tspan><tspan
        x="208.05066"
        y="338.77971"
-       id="tspan4677">(consensus)
+       id="tspan2367">(consensus)
 </tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;display:inline;stroke-width:0.264583"
@@ -3960,11 +3960,11 @@
      transform="rotate(-0.017098,138658.56,-345957.61)"><tspan
        x="207.53401"
        y="25.483385"
-       id="tspan4679"> Kraken2 &amp; Kaiju
+       id="tspan2369"> Kraken2 &amp; Kaiju
 </tspan><tspan
        x="207.53401"
        y="30.775046"
-       id="tspan4681">(contig precluster)</tspan></text><text
+       id="tspan2371">(contig precluster)</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;white-space:pre;inline-size:43.576;display:inline;stroke-width:0.264583"
      x="238.59105"
@@ -3973,17 +3973,17 @@
      transform="rotate(-0.017098,188483.13,-444911.99)"><tspan
        x="238.59105"
        y="18.429796"
-       id="tspan4683">MMseqs | vsearch<tspan
+       id="tspan2373">MMseqs | vsearch<tspan
    y="18.429796"
-   id="tspan4685"> </tspan></tspan><tspan
+   id="tspan2375"> </tspan></tspan><tspan
        x="238.59105"
        y="23.721459"
-       id="tspan4687">| cdhit | vRhyme<tspan
+       id="tspan2377">| cdhit | vRhyme<tspan
    y="23.721459"
-   id="tspan4689"> </tspan></tspan><tspan
+   id="tspan2379"> </tspan></tspan><tspan
        x="238.59105"
        y="29.013122"
-       id="tspan4691">| mash</tspan></text><text
+       id="tspan2381">| mash</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;display:inline;stroke-width:0.264583"
      x="312.60104"
@@ -4046,11 +4046,11 @@
        transform="rotate(0.85762749,182.40023,135.37671)"><tspan
          x="116.99726"
          y="111.95447"
-         id="tspan4693">Fastp |
+         id="tspan2383">Fastp |
 </tspan><tspan
          x="116.99726"
          y="117.24613"
-         id="tspan4695">Trimmomatic</tspan></text></g><g
+         id="tspan2385">Trimmomatic</tspan></text></g><g
      id="g137505-7"
      transform="rotate(0.31607048,7323.9225,-1506.9829)"><text
        xml:space="preserve"
@@ -4061,11 +4061,11 @@
        transform="translate(0.34147551,-0.97627043)"><tspan
          x="116.99726"
          y="111.95447"
-         id="tspan4697">bbduk |
+         id="tspan2387">bbduk |
 </tspan><tspan
          x="116.99726"
          y="117.24613"
-         id="tspan4699">prinseq++</tspan></text></g><path
+         id="tspan2389">prinseq++</tspan></text></g><path
      style="display:inline;fill:#000000;fill-opacity:0;stroke:#48a365;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 59.523044,54.315997 7.36321,0.0324 c 3.94413,0.0174 4.62816,-10.69989 8.57232,-10.6912 l 6.17582,0.0136"
      id="path1232-7-2-75-7" /><path
@@ -4092,10 +4092,10 @@
      transform="rotate(-0.01709753,144405.12,-122072.17)"><tspan
        x="168.21419"
        y="-31.999367"
-       id="tspan4701">Kraken2</tspan><tspan
+       id="tspan2391">Kraken2</tspan><tspan
        x="168.21419"
        y="-26.707704"
-       id="tspan4703">&amp; Kaiju</tspan></text><text
+       id="tspan2393">&amp; Kaiju</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;display:inline;stroke-width:0.264583"
      x="231.46556"
@@ -4138,7 +4138,7 @@
        transform="rotate(0.85333119,2871.6681,288.23391)"><tspan
          x="116.99726"
          y="111.95447"
-         id="tspan4705">HUMID</tspan></text></g><text
+         id="tspan2395">HUMID</tspan></text></g><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;white-space:pre;inline-size:44.0259;display:inline;stroke-width:0.264583"
      x="191.62799"
@@ -4147,12 +4147,12 @@
      transform="rotate(-0.01709753,-27297.11,-20856.346)"><tspan
        x="191.62799"
        y="149.2088"
-       id="tspan4707">BWAmem2 | BWA<tspan
+       id="tspan2397">BWAmem2 | BWA<tspan
    y="149.2088"
-   id="tspan4709"> </tspan></tspan><tspan
+   id="tspan2399"> </tspan></tspan><tspan
        x="191.62799"
        y="154.50045"
-       id="tspan4711">| Bowtie2</tspan></text><text
+       id="tspan2401">| Bowtie2</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;white-space:pre;inline-size:44.6165;display:inline;stroke-width:0.264583"
      x="176.46585"
@@ -4161,11 +4161,11 @@
      transform="rotate(-0.01709753,64841.944,19620.306)"><tspan
        x="176.46585"
        y="93.990738"
-       id="tspan4713">Picard | UMItools
+       id="tspan2403">Picard | UMItools
 </tspan><tspan
        x="176.46585"
        y="99.282399"
-       id="tspan4715">(dedup)</tspan></text><text
+       id="tspan2405">(dedup)</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;white-space:pre;inline-size:39.5196;display:inline;stroke-width:0.264583"
      x="154.01434"
@@ -4174,13 +4174,13 @@
      transform="rotate(-0.01709753,54996.209,55209.153)"><tspan
        x="154.01434"
        y="124.03875"
-       id="tspan4717">Bcftools | iVar
+       id="tspan2407">Bcftools | iVar
 </tspan><tspan
        x="154.01434"
        y="129.33041"
-       id="tspan4719">(variants)<tspan
+       id="tspan2409">(variants)<tspan
    y="129.33041"
-   id="tspan4721"> </tspan></tspan></text><text
+   id="tspan2411"> </tspan></tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;white-space:pre;inline-size:38.2461;display:inline;stroke-width:0.264583"
      x="124.74976"
@@ -4189,11 +4189,11 @@
      transform="rotate(-0.01709753,64502.87,38976.814)"><tspan
        x="124.74976"
        y="94.222786"
-       id="tspan4723">Bcftools | iVar
+       id="tspan2413">Bcftools | iVar
 </tspan><tspan
        x="124.74976"
        y="99.514447"
-       id="tspan4725">(consensus)</tspan></text><text
+       id="tspan2415">(consensus)</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444px;line-height:1.35;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:0px;text-anchor:middle;display:inline;fill:#d0694a;fill-opacity:1;stroke:none;stroke-width:0.165;stroke-dasharray:none;stroke-opacity:1"
      x="151.16957"
@@ -4254,26 +4254,26 @@
      transform="rotate(-0.01709753,-10040.334,209021.84)"><tspan
        x="124.74976"
        y="94.222786"
-       id="tspan4727">
+       id="tspan2417">
 </tspan><tspan
        x="124.74976"
        y="99.514447"
-       id="tspan4729">MMseqs &amp;<tspan
+       id="tspan2419">MMseqs &amp;<tspan
    y="99.514447"
-   id="tspan4731"> </tspan></tspan><tspan
+   id="tspan2421"> </tspan></tspan><tspan
        x="124.74976"
        y="104.80611"
-       id="tspan4733">MAFFT &amp; BLAST<tspan
+       id="tspan2423">MAFFT &amp; BLAST<tspan
    y="104.80611"
-   id="tspan4735"> </tspan></tspan><tspan
+   id="tspan2425"> </tspan></tspan><tspan
        x="124.74976"
        y="110.09778"
-       id="tspan4737">&amp; CheckV &amp;<tspan
+       id="tspan2427">&amp; CheckV &amp;<tspan
    y="110.09778"
-   id="tspan4739"> </tspan></tspan><tspan
+   id="tspan2429"> </tspan></tspan><tspan
        x="124.74976"
        y="115.38944"
-       id="tspan4741">QUAST</tspan></text><g
+       id="tspan2431">QUAST</tspan></text><g
      id="g10256-0"
      transform="matrix(0.00174533,-0.99999848,-0.99999848,-0.00174533,252.04107,240.17963)"><path
        style="display:inline;fill:none;stroke:#4c72a5;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -4302,7 +4302,7 @@
      transform="rotate(-0.01709753,150931.76,342294.17)"><tspan
        x="124.74976"
        y="94.222786"
-       id="tspan4743">MultiQC</tspan></text><path
+       id="tspan2433">MultiQC</tspan></text><path
      style="fill:none;stroke:#000000;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 36.024436,119.23021 0.0252,10.58334"
      id="path159" /><rect
@@ -4407,12 +4407,12 @@
      transform="rotate(-0.01709753,-262057.9,-218450.69)"><tspan
        x="191.62799"
        y="149.2088"
-       id="tspan4745">BWAmem2 | BWA<tspan
+       id="tspan2435">BWAmem2 | BWA<tspan
    y="149.2088"
-   id="tspan4747"> </tspan></tspan><tspan
+   id="tspan2437"> </tspan></tspan><tspan
        x="191.62799"
        y="154.50045"
-       id="tspan4749">| Bowtie2</tspan></text><path
+       id="tspan2439">| Bowtie2</tspan></text><path
      style="fill:none;stroke:#d0694a;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 338.63452,75.503462 v -5.29166 c 0,-3.94417 -2.5027,-7.79437 -5.29165,-10.58332 -2.64585,-2.64584 -6.63917,-5.29168 -10.58334,-5.29168 l -5.29165,-10e-6"
      id="path1232-36-5-6-3-20" /><text
@@ -4424,9 +4424,9 @@
      transform="rotate(-0.01709753,36675.451,-391970.71)"><tspan
        x="107.72614"
        y="79.942879"
-       id="tspan4751">Mash screen<tspan
+       id="tspan2441">Mash screen<tspan
    y="79.942879"
-   id="tspan4753"> </tspan></tspan></text><path
+   id="tspan2443"> </tspan></tspan></text><path
      style="display:inline;fill:none;stroke:#4c72a5;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 249.43301,96.233559 -21.1667,0.0168"
      id="path2500-5-22-5-56-5-0-2-9-5-3-4-4-7-9" /><g
@@ -4536,11 +4536,11 @@
      transform="rotate(-0.01709753,-15538.176,111586.09)"><tspan
        x="176.46585"
        y="93.990738"
-       id="tspan4755">Picard &amp; Mosdepth
+       id="tspan2445">Picard &amp; Mosdepth
 </tspan><tspan
        x="176.46585"
        y="99.282399"
-       id="tspan4757">&amp; samtools</tspan></text><path
+       id="tspan2447">&amp; samtools</tspan></text><path
      style="fill:#000000;fill-opacity:0;stroke:#48a365;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 226.54586,99.294914 v 5.291666 c 0,3.94414 -1.80958,8.58155 -5.19003,11.90441 -2.43845,2.3969 -7.5402,6.458 -11.86693,6.49103 l -6.2768,0.0479"
      id="path1232-36-5-6-3-2-5-3-3" /><path
@@ -4717,27 +4717,27 @@
      transform="rotate(-0.01709753,289984.04,313308.77)"><tspan
        x="104.32312"
        y="94.222786"
-       id="tspan4759">
+       id="tspan2449">
 </tspan><tspan
        x="104.32312"
        y="101.20778"
-       id="tspan4761">1. Pre-processing
+       id="tspan2451">1. Pre-processing
 </tspan><tspan
        x="104.32312"
        y="108.19277"
-       id="tspan4763">2. Metagenomic diversity
+       id="tspan2453">2. Metagenomic diversity
 </tspan><tspan
        x="104.32312"
        y="115.17776"
-       id="tspan4765">3. Assembly &amp; Polishing
+       id="tspan2455">3. Assembly &amp; Polishing
 </tspan><tspan
        x="104.32312"
        y="122.16276"
-       id="tspan4767">4. Variant analysis &amp; Iterative refinement
+       id="tspan2457">4. Variant analysis &amp; Iterative refinement
 </tspan><tspan
        x="104.32312"
        y="129.14775"
-       id="tspan4769">5. Consensus evaluation </tspan></text><text
+       id="tspan2459">5. Consensus evaluation </tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.76111px;line-height:1.65;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;text-anchor:start;white-space:pre;inline-size:158.699;display:inline;stroke-width:0.264583"
      x="104.32312"
@@ -4746,7 +4746,7 @@
      transform="rotate(-0.01709753,284383.85,-446068.45)"><tspan
        x="104.32312"
        y="94.222786"
-       id="tspan4771"> LEGEND</tspan></text><text
+       id="tspan2461"> LEGEND</tspan></text><text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.76111px;line-height:1.65;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;text-anchor:start;white-space:pre;inline-size:158.699;display:inline;stroke-width:0.264583"
      x="104.32312"
@@ -4755,7 +4755,7 @@
      transform="rotate(-0.01709753,287911.72,300901.75)"><tspan
        x="104.32312"
        y="94.222786"
-       id="tspan4773">STAGE</tspan></text><rect
+       id="tspan2463">STAGE</tspan></text><rect
      style="fill:#ffffff;stroke:#000000;stroke-width:2.64583;stroke-linecap:round;paint-order:stroke markers fill;stop-color:#000000"
      id="rect918-8"
      width="5.2916665"
@@ -4892,23 +4892,23 @@
        transform="rotate(-0.0170975,236187.96,-109137.03)"><tspan
          x="104.32312"
          y="94.222786"
-         id="tspan4775">
+         id="tspan2465">
 </tspan><tspan
          x="104.32312"
          y="101.20778"
-         id="tspan4777"> NGS reads
+         id="tspan2467"> NGS reads
 </tspan><tspan
          x="104.32312"
          y="108.19277"
-         id="tspan4779"> Hybrid denovo contigs
+         id="tspan2469"> Hybrid denovo contigs
 </tspan><tspan
          x="104.32312"
          y="115.17776"
-         id="tspan4781"> Reference mapping
+         id="tspan2471"> Reference mapping
 </tspan><tspan
          x="104.32312"
          y="122.16276"
-         id="tspan4783">
+         id="tspan2473">
 </tspan></text><g
        id="g44604-6"
        transform="translate(-61.186772,128.06254)"><path
@@ -4929,27 +4929,27 @@
      transform="rotate(-0.0170975,288337.52,-385470.78)"><tspan
        x="104.32312"
        y="94.222786"
-       id="tspan4785">
+       id="tspan2475">
 </tspan><tspan
        x="104.32312"
        y="101.20778"
-       id="tspan4787"> Single module or tool
+       id="tspan2477"> Single module or tool
 </tspan><tspan
        x="104.32312"
        y="108.19277"
-       id="tspan4791"> 2 modules - mutually exclusive<tspan
+       id="tspan2481"> 2 modules - mutually exclusive<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan4789">†</tspan>
+   id="tspan2479">†</tspan>
 </tspan><tspan
        x="104.32312"
        y="115.17776"
-       id="tspan4795"> 3+ modules - mutually exclusive<tspan
+       id="tspan2485"> 3+ modules - mutually exclusive<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan4793">†</tspan>
+   id="tspan2483">†</tspan>
 </tspan><tspan
        x="104.32312"
        y="122.16276"
-       id="tspan4797">
+       id="tspan2487">
 </tspan></text><g
      id="g72038"
      transform="translate(-7.6003362,18.358751)"><g
@@ -5050,17 +5050,17 @@
        transform="rotate(-0.0170975,343967.36,-241857.62)"><tspan
          x="104.32312"
          y="94.222786"
-         id="tspan4799">
+         id="tspan2489">
 </tspan><tspan
          x="104.32312"
          y="101.20778"
-         id="tspan4807"><tspan
+         id="tspan2497"><tspan
            style="font-size:3.52778px"
-           id="tspan4801"> </tspan><tspan
+           id="tspan2491"> </tspan><tspan
            style="font-size:3.52778px;baseline-shift:super"
-           id="tspan4803">‡</tspan><tspan
+           id="tspan2493">‡</tspan><tspan
            style="font-size:3.52778px"
-           id="tspan4805">module results are combined </tspan></tspan></text><text
+           id="tspan2495">module results are combined </tspan></tspan></text><text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:1.65;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;text-anchor:start;white-space:pre;inline-size:158.699;display:inline;stroke-width:0.264583"
        x="104.32312"
@@ -5069,21 +5069,21 @@
        transform="rotate(-0.0170975,343709.65,51195.913)"><tspan
          x="104.32312"
          y="94.222786"
-         id="tspan4809">
+         id="tspan2499">
 </tspan><tspan
          x="104.32312"
          y="101.20778"
-         id="tspan4817"><tspan
+         id="tspan2507"><tspan
    style="font-size:3.52778px;baseline-shift:baseline"
-   id="tspan4811"> </tspan><tspan
+   id="tspan2501"> </tspan><tspan
    style="font-size:3.52778px;baseline-shift:super"
-   id="tspan4813">†</tspan><tspan
+   id="tspan2503">†</tspan><tspan
    style="font-size:3.52778px;baseline-shift:baseline"
-   id="tspan4815">make a choice between the tools</tspan>
+   id="tspan2505">make a choice between the tools</tspan>
 </tspan><tspan
          x="104.32312"
          y="108.19277"
-         id="tspan4819">
+         id="tspan2509">
 </tspan></text></g><g
      id="g72479"
      transform="translate(1.2977728,15.628962)"><text
@@ -5095,23 +5095,23 @@
        transform="rotate(-0.0170975,258351.16,-726673.69)"><tspan
          x="104.32312"
          y="94.222786"
-         id="tspan4821">
+         id="tspan2511">
 </tspan><tspan
          x="104.32312"
          y="101.20778"
-         id="tspan4825"> 2 modules - run in parallel<tspan
+         id="tspan2515"> 2 modules - run in parallel<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan4823">‡</tspan>
+   id="tspan2513">‡</tspan>
 </tspan><tspan
          x="104.32312"
          y="108.19277"
-         id="tspan4829"> 3+ modules - run in parallel<tspan
+         id="tspan2519"> 3+ modules - run in parallel<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan4827">‡</tspan>
+   id="tspan2517">‡</tspan>
 </tspan><tspan
          x="104.32312"
          y="115.17776"
-         id="tspan4831">
+         id="tspan2521">
 </tspan></text><g
        id="g72237"
        transform="matrix(0,-0.67082386,0.67082386,0,189.02953,360.40719)"><rect
@@ -5326,14 +5326,14 @@
      x="90.689461"
      y="60.937054"
      id="text10160-8-5-8-2-8"
-     transform="rotate(0.003406,-28808.11,769677.94)"><tspan
+     transform="rotate(0.003406,-28807.315,796368.63)"><tspan
        x="90.689461"
        y="60.937054"
-       id="tspan4833">Kraken2
+       id="tspan2523">Kraken2 | Bowtie2
 </tspan><tspan
        x="90.689461"
        y="66.228719"
-       id="tspan4835">(host removal)</tspan></text><circle
+       id="tspan2525">(host removal)</tspan></text><circle
      style="display:inline;fill:#ffffff;stroke:#000000;stroke-width:2.64583;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;stop-color:#000000"
      id="path3447-6-2-1-9"
      cx="83.049614"

@@ -157,11 +157,20 @@
                     "fa_icon": "fas fa-forward",
                     "description": "Skip the removal of host read sequences"
                 },
+                "host_removal_tool": {
+                    "type": "string",
+                    "default": "kraken2",
+                    "enum": ["kraken2", "bowtie2"],
+                    "description": "Specify which tool to use to for the removal of contaminant reads"
+                },
                 "host_k2_db": {
                     "type": "string",
                     "default": "s3://ngi-igenomes/test-data/viralrecon/kraken2_human.tar.gz",
                     "fa_icon": "fas fa-database",
                     "description": "Kraken2 database used to remove host and contamination"
+                },
+                "host_bowtie2_reference": {
+                    "type": "string"
                 },
                 "skip_host_fastqc": {
                     "type": "boolean",
@@ -220,7 +229,21 @@
                 "arguments_kraken2_host": {
                     "type": "string",
                     "description": "Arguments for Kraken2 tool for host removal",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
+                },
+                "arguments_bowtie2_build_host": {
+                    "type": "string",
+                    "description": "Arguments for bowtie2 tool command build for host removal",
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
+                },
+                "arguments_bowtie2_align_host": {
+                    "type": "string",
+                    "default": "--local --very-sensitive-local --seed 1",
+                    "description": "Arguments for bowtie2 tool command aling for host removal",
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
                 }
             },
             "fa_icon": "fas fa-bahai"
@@ -335,7 +358,8 @@
                 "arguments_kreport2krona": {
                     "type": "string",
                     "description": "Arguments for Kreport2Krona tool",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
                 }
             },
             "fa_icon": "fas fa-chart-bar"
@@ -459,7 +483,8 @@
                     "type": "string",
                     "default": "-out_format 1 -lc_dust .20",
                     "description": "Arguments for Prinseq tool for contigs",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
                 }
             },
             "fa_icon": "fas fa-bezier-curve"
@@ -689,7 +714,8 @@
                 "arguments_select_reference": {
                     "type": "string",
                     "description": "Arguments for selecting reference",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
                 }
             },
             "fa_icon": "fas fa-hand-sparkles"
@@ -1016,7 +1042,8 @@
                     "type": "string",
                     "default": "-s \",\" -e \".",
                     "description": "Arguments for SnpSift ExtractFields tool",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
                 }
             },
             "fa_icon": "fas fa-layer-group"
@@ -1136,7 +1163,8 @@
                 "arguments_quast_qc": {
                     "type": "string",
                     "fa_icon": "fas fa-cogs",
-                    "description": "Arguments for QUAST quality control"
+                    "description": "Arguments for QUAST quality control",
+                    "hidden": true
                 }
             },
             "fa_icon": "fas fa-balance-scale"

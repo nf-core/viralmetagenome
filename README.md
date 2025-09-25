@@ -34,7 +34,7 @@
    - Adapter trimming([`fastp`](https://github.com/OpenGene/fastp), [`Trimmomatic`](https://github.com/usadellab/Trimmomatic))
    - Read UMI deduplication ([`HUMID`](https://humid.readthedocs.io/en/latest/usage.html))
    - Low complexity and quality filtering ([`bbduk`](https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/), [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus))
-   - Host-read removal ([`Kraken2`](https://ccb.jhu.edu/software/kraken2/))
+   - Host-read removal ([`Kraken2`](https://ccb.jhu.edu/software/kraken2/) or [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/))
 3. Metagenomic diversity mapping ([`Kraken2`](https://ccb.jhu.edu/software/kraken2/),[`Bracken`](https://ccb.jhu.edu/software/bracken/)[`Kaiju`](https://bioinformatics-centre.github.io/kaiju/))
 4. Denovo assembly ([`SPAdes`](https://ablab.github.io/spades/), [`TRINITY`](https://github.com/trinityrnaseq/trinityrnaseq), [`megahit`](https://github.com/voutcn/megahit)), combine contigs.
 5. [Optional] Extend the contigs with [sspace_basic](https://github.com/nsoranzo/sspace_basic) and filter with [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus)

@@ -44,7 +44,6 @@ include { CUSTOM_MULTIQC                  } from '../modules/local/custom_multiq
 include { FASTQ_FASTA_MAP_CONSENSUS       } from '../subworkflows/local/fastq_fasta_map_consensus'
 include { VCF_ANNOTATE                    } from '../subworkflows/local/vcf_annotate'
 
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -63,26 +62,28 @@ workflow VIRALMETAGENOME {
         PARAMETER INITIALIZATION
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
+    if (!params.skip_preprocessing && !params.skip_hostremoval && params.host_removal_tool=="bowtie2" && !params.host_bowtie2_reference) { error("ERROR: [nf-core/viralmetagenome] Host removal requested with bowtie2 but no --host_bowtie2_reference FASTA supplied. Check input.") }
 
     def read_classifiers   = params.read_classifiers ? params.read_classifiers.split(',').collect{ it.trim().toLowerCase() } : []
     def contig_classifiers = params.precluster_classifiers ? params.precluster_classifiers.split(',').collect{ it.trim().toLowerCase() } : []
     // Optional parameters
-    ch_adapter_fasta  = createFileChannel(params.adapter_fasta)
-    ch_metadata       = createFileChannel(params.metadata)
-    ch_contaminants   = createFileChannel(params.contaminants)
-    ch_spades_yml     = createFileChannel(params.spades_yml)
-    ch_spades_hmm     = createFileChannel(params.spades_hmm)
-    ch_constraint_meta = createFileChannel(params.mapping_constraints)
+    ch_adapter_fasta          = createFileChannel(params.adapter_fasta)
+    ch_metadata               = createFileChannel(params.metadata)
+    ch_contaminants           = createFileChannel(params.contaminants)
+    ch_spades_yml             = createFileChannel(params.spades_yml)
+    ch_spades_hmm             = createFileChannel(params.spades_hmm)
+    ch_constraint_meta        = createFileChannel(params.mapping_constraints)
+    ch_host_bowtie2_reference = createFileChannel(params.host_bowtie2_reference)
 
     // Databases, we really don't want to stage unnecessary databases
-    ch_ref_pool      = (!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc)           ? createChannel( params.reference_pool, "reference", true )                                                         : Channel.empty()
-    ch_kraken2_db    = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kraken2_db, "kraken2", ('kraken2' in read_classifiers || 'kraken2' in contig_classifiers) ) : Channel.empty()
-    ch_kaiju_db      = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kaiju_db, "kaiju", ('kaiju' in read_classifiers || 'kaiju' in contig_classifiers) )         : Channel.empty()
-    ch_checkv_db     = !params.skip_consensus_qc                                                                                           ? createChannel( params.checkv_db, "checkv", !params.skip_checkv )                                                  : Channel.empty()
-    ch_bracken_db    = !params.skip_read_classification                                                                                    ? createChannel( params.bracken_db, "bracken", ('bracken' in read_classifiers) )                                    : Channel.empty()
-    ch_k2_host       = !params.skip_preprocessing                                                                                          ? createChannel( params.host_k2_db, "k2_host", !params.skip_hostremoval )                                           : Channel.empty()
-    ch_annotation_db = !params.skip_consensus_qc                                                                                           ? createChannel( params.annotation_db, "annotation", !params.skip_consensus_annotation )                                      : Channel.empty()
-    ch_prokka_db     = !params.skip_consensus_qc                                                                                           ? createChannel( params.prokka_db, "prokka", !params.skip_prokka )                                                  : Channel.empty()
+    ch_ref_pool               = (!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc)           ? createChannel( params.reference_pool, "reference", true )                                                         : Channel.empty()
+    ch_kraken2_db             = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kraken2_db, "kraken2", ('kraken2' in read_classifiers || 'kraken2' in contig_classifiers) ) : Channel.empty()
+    ch_kaiju_db               = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kaiju_db, "kaiju", ('kaiju' in read_classifiers || 'kaiju' in contig_classifiers) )         : Channel.empty()
+    ch_checkv_db              = !params.skip_consensus_qc                                                                                           ? createChannel( params.checkv_db, "checkv", !params.skip_checkv )                                                  : Channel.empty()
+    ch_bracken_db             = !params.skip_read_classification                                                                                    ? createChannel( params.bracken_db, "bracken", ('bracken' in read_classifiers) )                                    : Channel.empty()
+    ch_k2_host                = !params.skip_preprocessing && !params.skip_hostremoval                                                              ? createChannel( params.host_k2_db, "k2_host", params.host_removal_tool=="kraken2" )                                : Channel.empty()
+    ch_annotation_db          = !params.skip_consensus_qc                                                                                           ? createChannel( params.annotation_db, "annotation", !params.skip_consensus_annotation )                            : Channel.empty()
+    ch_prokka_db              = !params.skip_consensus_qc                                                                                           ? createChannel( params.prokka_db, "prokka", !params.skip_prokka )                                                  : Channel.empty()
 
 
     ch_versions = Channel.empty()
@@ -157,6 +158,7 @@ workflow VIRALMETAGENOME {
         PREPROCESSING_ILLUMINA (
             ch_reads,
             ch_k2_host,
+            ch_host_bowtie2_reference,
             ch_adapter_fasta,
             ch_contaminants
             )

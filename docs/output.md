@@ -449,7 +449,7 @@ Mapping constraints are combined with the specified samples, here, the identifie
 The results from the iterations are stored with the same structure as the final round of polishing in the `assembly/polishing/iterations/it#` directory.
 
 :::info
-To be able to make a distinction between the output files of the iterations, nf-core/viralmetagenome follows a schema where it starts from `singletons` or a `consensus` goes through the iterations and ends with the `variant-calling`. The output files will have the following structure:
+To be able to make a distinction between the output files of the iterations, nf-core/viralmetagenome follows a schema where it starts from `singletons` or a `consensus`, goes through the iterations and ends with the `variant-calling`. The output files will have the following structure:
 
 ```mermaid
 graph LR

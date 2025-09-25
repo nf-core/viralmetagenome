@@ -110,7 +110,7 @@ BCFtools is a set of utilities that manipulate variant calls in the Variant Call
 There are multiple studies on the benchmarking of variant callers as this is an area with active development. For instance [Bassano _et al._ (2023)](https://doi.org/10.1099/mgen.0.000933) noticed that BCFtools called mutations with higher precision and recall than iVar. However, the reason behind this is that iVar has a lower precision than the others within their setup as it detects a lot of ‘additional’ variants within the sample, resulting in a higher amount of false positives but also true positives.
 
 :::tip
-BCFtools doesn't handle well multiallelic sites, so if you have a lot of multiallelic sites, iVar is the better choice. iVar is also the better choice if you have a lot of low-frequency variants.
+BCFtools doesn't handle well multiallelic sites, so if you have a lot of multiallelic sites, iVar is the better choice. iVar is also the preferred choice if you have a lot of low-frequency variants.
 :::
 
 > [!INFO]

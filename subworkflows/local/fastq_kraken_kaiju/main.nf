@@ -32,7 +32,7 @@ workflow FASTQ_KRAKEN_KAIJU {
         kraken2_report = KRAKEN2_KRAKEN2.out.report.map { meta, report -> [meta + [tool: 'kraken2'], report] }
         ch_versions    = ch_versions.mix(KRAKEN2_KRAKEN2.out.versions.first())
 
-        // Bracken: get more accurate estimates of abundance
+        // Bracken: get more accurate estimates of abundance, can only run after kraken2
         if ('bracken' in read_classifiers) {
             BRACKEN_BRACKEN(kraken2_report, ch_bracken_db)
             ch_versions    = ch_versions.mix(BRACKEN_BRACKEN.out.versions.first())

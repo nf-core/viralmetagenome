@@ -20,7 +20,7 @@ workflow PREPROCESSING_ILLUMINA {
     main:
     ch_versions         = Channel.empty()
     ch_multiqc_files    = Channel.empty()
-    ch_trim_read_count     = Channel.empty()
+    ch_trim_read_count  = Channel.empty()
 
     // QC & UMI & Trimming with fastp or trimmomatic
     if (params.trim_tool == 'trimmomatic') {
@@ -134,7 +134,7 @@ workflow PREPROCESSING_ILLUMINA {
         )
 
         ch_reads_hostremoved   = FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved
-        ch_failed_reads           = ch_failed_reads.mix(FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved_fail)
+        ch_failed_reads        = ch_failed_reads.mix(FASTQ_KRAKEN_HOST_REMOVE.out.reads_hostremoved_fail)
         ch_multiqc_files       = ch_multiqc_files.mix( FASTQ_KRAKEN_HOST_REMOVE.out.mqc )
         ch_versions            = ch_versions.mix( FASTQ_KRAKEN_HOST_REMOVE.out.versions )
 

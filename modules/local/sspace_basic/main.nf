@@ -1,11 +1,11 @@
 process SSPACE_BASIC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sspace_basic:2.1.1--hdfd78af_1':
-        'biocontainers/sspace_basic:2.1.1--hdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sspace_basic:2.1.1--hdfd78af_1'
+        : 'biocontainers/sspace_basic:2.1.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(reads)
@@ -29,8 +29,10 @@ process SSPACE_BASIC {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def name_command = name ?: 'sspace'
-    def unzip_contig = "${contigs.getExtension()}" == "gz" ? "gunzip -c ${contigs}": "cat ${contigs}"  // doesn't allow insertion with <() or accepts gunzipped input
-    def version = "2.1.1" // version not available through CLI of tool
+    def unzip_contig = "${contigs.getExtension()}" == "gz" ? "gunzip -c ${contigs}" : "cat ${contigs}"
+    // doesn't allow insertion with <() or accepts gunzipped input
+    def version = "2.1.1"
+    // version not available through CLI of tool
     """
     gunzip -f ${reads[0]}
     gunzip -f ${reads[1]}
@@ -41,8 +43,8 @@ process SSPACE_BASIC {
     sspace_basic \\
         -l ${prefix}.library.txt \\
         -s tmp.fasta \\
-        $args \\
-        -T $task.cpus \\
+        ${args} \\
+        -T ${task.cpus} \\
         -b ${prefix}
 
     sed 's/>/>${name_command}_/g' ${prefix}.final.scaffolds.fasta > ${prefix}.final.renamed.scaffolds.fa
@@ -57,7 +59,8 @@ process SSPACE_BASIC {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads_joined = reads.join('\t')
-    def version = "2.1.1" // version not available through CLI of tool
+    def version = "2.1.1"
+    // version not available through CLI of tool
     """
     echo "${args} ${prefix} ${reads_joined} ${distance} ${deviation} ${complement}" > ${prefix}.library.txt
     touch ${prefix}.final.renamed.scaffolds.fa

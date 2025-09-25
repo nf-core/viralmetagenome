@@ -29,7 +29,6 @@ workflow BAM_DEDUPLICATE {
             ch_multiqc = ch_multiqc.mix(UMITOOLS_DEDUP.out.log)
         }
     }
-
     else {
         PICARD_MARKDUPLICATES(ch_bam, reference, faidx)
         ch_dedup_bam = PICARD_MARKDUPLICATES.out.bam

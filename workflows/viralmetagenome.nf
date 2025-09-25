@@ -181,18 +181,18 @@ workflow VIRALMETAGENOME {
     }
 
     // Assembly
-    ch_unaligned_raw_contigs   = Channel.empty()
-    ch_unaligned_contigs       = Channel.empty()
+    ch_unaligned_raw_contigs     = Channel.empty()
+    ch_unaligned_contigs         = Channel.empty()
     ch_polishing_consensus_reads = Channel.empty()
 
     // Channel for consensus sequences that have been generated across different iteration
-    ch_consensus               = Channel.empty()
+    ch_consensus                 = Channel.empty()
     // Channel for consensus sequences that have been generated at the LAST iteration
-    ch_consensus_reads         = Channel.empty()
+    ch_consensus_reads           = Channel.empty()
     // Channel for summary table of clusters to include in mqc report
-    ch_clusters_summary        = Channel.empty()
+    ch_clusters_summary          = Channel.empty()
     // Channel for summary coverages of each contig
-    ch_clusters_tsv            = Channel.empty()
+    ch_clusters_tsv              = Channel.empty()
 
     if (!params.skip_assembly) {
         // run different assemblers and combine contigs

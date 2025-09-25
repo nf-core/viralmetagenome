@@ -41,7 +41,7 @@ The variant calling and consensus refinement step can be skipped with the argume
 
 ## 1. Selection of reference - Only for external reference based analysis
 
-The reference genome(s) can be supplied with the [samplesheet `--mapping_constraints`](../usage.md#mapping-constraints), here the reference can be a multiFasta file representing a range of genomes that could be valid reference genomes. Here, nf-core/viralmetagenome supports a selection procedure where the reference genomes that share the highest number of [k-mers](https://ucdavis-bioinformatics-training.github.io/2020-Genome_Assembly_Workshop/kmers/kmers#:~:text=A%20K%2Dmer%20is%20a,%2C%20GGC%2C%20GCC%2C%20CCG.) with the read files will be selected and kept for read mapping, variant calling and consensus genome reconstruction.
+The reference genome(s) can be supplied with the [samplesheet `--mapping_constraints`](../usage.md#mapping-constraints). The reference can be a multiFasta file representing a range of genomes that could be valid reference genomes. nf-core/viralmetagenome supports a selection procedure where the reference genomes that share the highest number of [k-mers](https://ucdavis-bioinformatics-training.github.io/2020-Genome_Assembly_Workshop/kmers/kmers#:~:text=A%20K%2Dmer%20is%20a,%2C%20GGC%2C%20GCC%2C%20CCG.) with the read files will be selected and kept for read mapping, variant calling and consensus genome reconstruction.
 
 ```mermaid
 graph LR

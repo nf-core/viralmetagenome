@@ -54,7 +54,7 @@ Unique Molecular Identifiers (UMIs) are short sequences that are added during li
   Each connected component is a read group, with the node with the highest counts selected as the top node for the component. In the example above, the directional edges yield two connected components. One with AAAT by itself and the other with the remaining UMIs with ACGT as the selected node.
 
 :::
-nf-core/viralmetagenome supports both deduplication on a read level as well as a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
+nf-core/viralmetagenome supports both deduplication on a read level as well as on a mapping level. Specify the `--umi_deduplication` with `read` or `mapping` to choose between the two or specify `both` to both deduplicate on a read level as well as on a mapping level (after read mapping with reference).
 
 > [!INFO]
 > By default,nf-core/viralmetagenome doesn't assume UMIs are present in the reads. If UMIs are present, specify the `--with_umi` parameter and `--deduplicate`.

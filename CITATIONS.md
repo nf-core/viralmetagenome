@@ -2,7 +2,7 @@
 
 # Citations
 
-## [Viralmetagenome](https://doi.org/10.1101/2025.06.27.661954)
+## [nf-core/viralmetagenome](https://doi.org/10.1101/2025.06.27.661954)
 
 > Klaps J, Lemey P, nf-core community, Kafetzopoulou LE. nf-core/viralmetagenome: A Novel Pipeline for Untargeted Viral Genome Reconstruction bioRxiv 2025.06.27.661954; doi:10.1101/2025.06.27.661954
 

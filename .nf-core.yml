@@ -5,6 +5,8 @@ lint:
     - conf/igenomes.config
     - conf/igenomes_ignored.config
   multiqc_config: false
+  files_unchanged:
+    - .prettierignore
 nf_core_version: 3.3.2
 repository_type: pipeline
 template:

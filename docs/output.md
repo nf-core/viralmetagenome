@@ -100,7 +100,7 @@ By default, nf-core/viralmetagenome will only provide the log files of BBDuk. Th
 
 ### prinseq++
 
-[`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used in nf-core/viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
+[prinseq++](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used in nf-core/viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
 
 :::note{title="Output files" collapse}
 

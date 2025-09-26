@@ -110,7 +110,7 @@ By default, nf-core/viralmetagenome will only provide the log files of BBDuk. Th
 
 :::
 
-By default, nf-core/viralmetagenome will only provide the log files of prinseq. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
+By default, nf-core/viralmetagenome will only provide the log files of prinseq++. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
 
 ### Hostremoval-Kraken2
 

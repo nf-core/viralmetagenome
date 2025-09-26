@@ -212,11 +212,6 @@ table_columns_visible:
     Largest contig: true
     Total length: false
 
-# Viral reads are not so big
-read_count_multiplier: 1
-read_count_prefix: ""
-read_count_desc: ""
-
 sp:
   fastp:
     fn: "*.fastp.json"

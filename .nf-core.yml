@@ -9,9 +9,9 @@ nf_core_version: 3.3.2
 repository_type: pipeline
 template:
   author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
-  description: a bioinformatics best-practice analysis pipeline for untargeted viral
-    genome reconstruction and to identify intra-host variants from metagenomic sequencing
-    data.
+  description: A bioinformatics best-practice analysis pipeline for untargeted
+    viral genome reconstruction and to identify intra-host variants from
+    metagenomic sequencing data.
   force: false
   is_nfcore: true
   name: viralmetagenome
@@ -19,4 +19,4 @@ template:
   outdir: .
   skip_features:
     - igenomes
-  version: 0.1.3dev
+  version: 1.0.0

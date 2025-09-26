@@ -12,11 +12,11 @@ components:
   - mmseqs/createdb
   - mmseqs/easysearch
 input:
-  - genomes:
+  - ch_genomes:
       description: |
         Genome sequences to be annotated
         Structure: [ val(meta), path(fasta) ]
-  - db:
+  - ch_db:
       description: |
         Reference database sequences for annotation
         Structure: [ val(meta), path(fasta) ]

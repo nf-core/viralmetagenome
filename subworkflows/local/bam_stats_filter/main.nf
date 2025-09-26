@@ -31,7 +31,7 @@ workflow BAM_STATS_FILTER {
     SAMTOOLS_STATS ( stats_in.bam_bai, stats_in.ref )
     ch_versions = ch_versions.mix(SAMTOOLS_STATS.out.versions.first())
 
-    SAMTOOLS_STATS
+    ch_bam_filtered = SAMTOOLS_STATS
         .out
         .stats
         .join(ch_bam, by: [0] )
@@ -42,7 +42,6 @@ workflow BAM_STATS_FILTER {
             fail: mapped_reads <= min_mapped_reads
                 return [ meta, bam, mapped_reads ]
         }
-        .set{ ch_bam_filtered }
 
     bam_pass = ch_bam_filtered.pass
     bam_fail = ch_bam_filtered.fail

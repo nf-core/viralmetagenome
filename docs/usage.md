@@ -6,6 +6,7 @@
 nextflow run nf-core/viralmetagenome -profile test,docker
 ```
 
+> [!INFO]
 > Make sure you have [Nextflow](https://nf-co.re/docs/usage/installation) and a container manager (for example, [Docker](https://docs.docker.com/get-docker/)) installed. See the [installation instructions](installation.md) for more info.
 
 :::tip
@@ -36,15 +37,17 @@ sample3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
 | Value     | Description                                                                                                                                       |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`  | Custom sample name, needs to be unique                                                                                                            |
+| `group`   | [Optional] Group name, samples with the same group name will be merged during preprocessing                                                       |
 | `fastq_1` | Full path (_not_ relative paths) to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz". |
 | `fastq_2` | Full path (_not_ relative paths) to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz". |
 
 ### Mapping constraints
 
-Viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
+nf-core/viralmetagenome can in addition to constructing de novo consensus genomes map the sample reads to a series of references. These references are provided through the parameter `--mapping_constraints`.
 
 An example mapping constraint samplesheet file consisting of 5 references, may look something like the one below.
 
+> [!INFO]
 > This is for 5 references, 2 of them being a multi-fasta file, only one of the multi-fasta needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference).
 
 ```tsv title="constraints-samplesheet.tsv"
@@ -77,7 +80,7 @@ NC038711.1 HAZV S false S-NC_038711.1.fasta Hazara virus isolate JC280 segment S
 
 ### Metadata
 
-Sample metadata can be provided to the pipeline with the argument `--metadata`. This metadata will not affect the analysis in any way and is only used to annotate the final report. Any metadata can be provided as long as the first value is the `sample` value.
+Sample metadata can optionally be provided to the pipeline with the argument `--metadata`. This metadata will not affect the analysis in any way and is only used to annotate the final report. Any metadata can be provided as long as the first value is the `sample` value.
 
 ```csv title="metadata.csv"
 sample,sample_accession,secondary_sample_accession,study_accession,run_alias,library_layout
@@ -98,10 +101,10 @@ This will launch the pipeline with the `docker` configuration profile. See below
 Note that the pipeline will create the following files in your working directory:
 
 ```bash
-work          #(1)!
-<OUTDIR>      #(2)!
-.nextflow_log #(3)!
-...           #(4)!
+work                # Directory containing the nextflow working files
+<OUTDIR>            # Finished results in specified location (defined with --outdir)
+.nextflow_log       # Log file from Nextflow
+# Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
@@ -145,12 +148,12 @@ This version number will be logged in reports when you run the pipeline, so that
 
 To further assist in reproducibility, you can use share and reuse [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
 
-> [!TIP]
+> [!INFO] > [!TIP]
 > If you wish to share such profile (such as upload as supplementary material for academic publications), make sure to NOT include cluster specific paths to files, nor institutional specific profiles.
 
 ## Core Nextflow arguments
 
-> [!NOTE]
+> [!INFO] > [!NOTE]
 > These options are part of Nextflow and use a _single_ hyphen (pipeline parameters use a double-hyphen)
 
 ### The `-profile` parameter
@@ -159,7 +162,7 @@ Use this parameter to choose a configuration profile. Profiles can give configur
 
 Several generic profiles are bundled with the pipeline which instruct the pipeline to use software packaged using different methods (Docker, Singularity, Podman, Shifter, Charliecloud, Apptainer, Conda) - see below.
 
-> [!IMPORTANT]
+> [!INFO] > [!IMPORTANT]
 > We highly recommend the use of Docker or Singularity containers for full pipeline reproducibility, however when this is not possible, Conda is also supported.
 
 The pipeline also dynamically loads configurations from [https://github.com/nf-core/configs](https://github.com/nf-core/configs) when it runs, making multiple config profiles for various institutional clusters available at run time. For more information and to check if your system is supported, please see the [nf-core/configs documentation](https://github.com/nf-core/configs#documentation).
@@ -201,6 +204,33 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ## Custom configuration
 
+## Using `--argument_tool_name` parameters
+
+The nf-core/viralmetagenome pipeline uses a set of tools to perform the analysis. Each tool has its own set of arguments that can be modified. The pipeline has a default configuration but this can be overwritten by supplying a custom configuration file. This file can be provided to nf-core/viralmetagenome using the `--argument_tool_name` Nextflow option.
+
+For example, to change the minimum depth to call consensus to 5 and the minimum quality score of base to 30 for the `ivar consensus` module, we can use the `--ivar_consensus` parameter:
+
+```bash {3-4}
+nextflow run nf-core/viralmetagenome \
+    -profile docker \
+    --arguments_ivar_consensus1 '-q 30 -m 5' \
+    --arguments_ivar_consensus2 '--min-BQ 30' \
+    --input samplesheet.csv ...
+```
+
+:::info
+This will overwrite all default arguments of nf-core/viralmetagenome for the `ivar consensus` module. Similarly, to remove the default values of nf-core/viralmetagenome, specify the argument with an empty string:
+
+```bash {3-4}
+nextflow run nf-core/viralmetagenome \
+    -profile docker \
+    --arguments_ivar_consensus1 '' \
+    --arguments_ivar_consensus2 '' \
+    --input samplesheet.csv ...
+```
+
+:::
+
 ### Resource requests
 
 Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the pipeline steps, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher resources request (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
@@ -221,7 +251,7 @@ To learn how to provide additional arguments to a particular tool of the pipelin
 
 ### nf-core/configs
 
-In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running Viralmetagenome regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
+In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running nf-core/viralmetagenome regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
 
 See the main [Nextflow documentation](https://www.nextflow.io/docs/latest/config.html) for more information about creating your own configuration files.
 

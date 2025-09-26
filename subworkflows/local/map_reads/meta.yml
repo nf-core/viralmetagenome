@@ -18,7 +18,7 @@ components:
   - bwa/index
   - bwa/mem
 input:
-  - reference_reads:
+  - ch_reference_reads:
       description: |
         The input channel containing reference sequences and sequencing reads
         Structure: [ val(meta), path(fasta), path(reads) ]

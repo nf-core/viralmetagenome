@@ -23,7 +23,7 @@ components:
   - network/cluster
   - network_cluster
 input:
-  - fasta_fastq:
+  - ch_fasta_fastq:
       description: |
         Input sequences and reads for clustering
         Structure: [ val(meta), path(fasta), path(fastq) ]

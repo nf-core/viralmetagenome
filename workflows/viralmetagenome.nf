@@ -44,7 +44,6 @@ include { CUSTOM_MULTIQC                  } from '../modules/local/custom_multiq
 include { FASTQ_FASTA_MAP_CONSENSUS       } from '../subworkflows/local/fastq_fasta_map_consensus'
 include { VCF_ANNOTATE                    } from '../subworkflows/local/vcf_annotate'
 
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -63,38 +62,28 @@ workflow VIRALMETAGENOME {
         PARAMETER INITIALIZATION
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
+    if (!params.skip_preprocessing && !params.skip_hostremoval && params.host_removal_tool == "bowtie2" && !params.host_bowtie2_reference) { error("ERROR: [nf-core/viralmetagenome] Host removal requested with bowtie2 but no --host_bowtie2_reference FASTA supplied. Check input.") }
 
     def read_classifiers   = params.read_classifiers ? params.read_classifiers.split(',').collect{ it.trim().toLowerCase() } : []
     def contig_classifiers = params.precluster_classifiers ? params.precluster_classifiers.split(',').collect{ it.trim().toLowerCase() } : []
     // Optional parameters
-    ch_adapter_fasta  = createFileChannel(params.adapter_fasta)
-    ch_metadata       = createFileChannel(params.metadata)
-    ch_contaminants   = createFileChannel(params.contaminants)
-    ch_spades_yml     = createFileChannel(params.spades_yml)
-    ch_spades_hmm     = createFileChannel(params.spades_hmm)
-    ch_constraint_meta = createFileChannel(params.mapping_constraints)
+    ch_adapter_fasta          = createFileChannel(params.adapter_fasta)
+    ch_metadata               = createFileChannel(params.metadata)
+    ch_contaminants           = createFileChannel(params.contaminants)
+    ch_spades_yml             = createFileChannel(params.spades_yml)
+    ch_spades_hmm             = createFileChannel(params.spades_hmm)
+    ch_constraint_meta        = createFileChannel(params.mapping_constraints)
+    ch_host_bowtie2_reference = createFileChannel(params.host_bowtie2_reference)
 
     // Databases, we really don't want to stage unnecessary databases
-    ch_ref_pool      = (!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc)           ? createChannel( params.reference_pool, "reference", true )                                                         : Channel.empty()
-    ch_kraken2_db    = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kraken2_db, "kraken2", ('kraken2' in read_classifiers || 'kraken2' in contig_classifiers) ) : Channel.empty()
-    ch_kaiju_db      = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kaiju_db, "kaiju", ('kaiju' in read_classifiers || 'kaiju' in contig_classifiers) )         : Channel.empty()
-    ch_checkv_db     = !params.skip_consensus_qc                                                                                           ? createChannel( params.checkv_db, "checkv", !params.skip_checkv )                                                  : Channel.empty()
-    ch_bracken_db    = !params.skip_read_classification                                                                                    ? createChannel( params.bracken_db, "bracken", ('bracken' in read_classifiers) )                                    : Channel.empty()
-    ch_k2_host       = !params.skip_preprocessing                                                                                          ? createChannel( params.host_k2_db, "k2_host", !params.skip_hostremoval )                                           : Channel.empty()
-    ch_annotation_db = !params.skip_consensus_qc                                                                                           ? createChannel( params.annotation_db, "annotation", !params.skip_consensus_annotation )                                      : Channel.empty()
-    ch_prokka_db     = !params.skip_consensus_qc                                                                                           ? createChannel( params.prokka_db, "prokka", !params.skip_prokka )                                                  : Channel.empty()
-
-    /*
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        CONFIG FILES
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    */
-
-    ch_multiqc_config                     = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config              = params.multiqc_config ? Channel.fromPath( params.multiqc_config, checkIfExists: true ) : Channel.empty()
-    ch_multiqc_logo                       = params.multiqc_logo   ? Channel.fromPath( params.multiqc_logo, checkIfExists: true ) : Channel.empty()
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    ch_multiqc_custom_table_headers       = params.custom_table_headers        ? Channel.fromPath(params.custom_table_headers, checkIfExists:true ) : Channel.fromPath("$projectDir/assets/custom_table_headers.yml", checkIfExists:true )
+    ch_ref_pool               = (!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc)           ? createChannel( params.reference_pool, "reference", true )                                                         : Channel.empty()
+    ch_kraken2_db             = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kraken2_db, "kraken2", ('kraken2' in read_classifiers || 'kraken2' in contig_classifiers) ) : Channel.empty()
+    ch_kaiju_db               = (!params.skip_assembly && !params.skip_polishing && !params.skip_precluster) || !params.skip_read_classification    ? createChannel( params.kaiju_db, "kaiju", ('kaiju' in read_classifiers || 'kaiju' in contig_classifiers) )         : Channel.empty()
+    ch_checkv_db              = !params.skip_consensus_qc                                                                                           ? createChannel( params.checkv_db, "checkv", !params.skip_checkv )                                                  : Channel.empty()
+    ch_bracken_db             = !params.skip_read_classification                                                                                    ? createChannel( params.bracken_db, "bracken", ('bracken' in read_classifiers) )                                    : Channel.empty()
+    ch_k2_host                = !params.skip_preprocessing && !params.skip_hostremoval                                                              ? createChannel( params.host_k2_db, "k2_host", params.host_removal_tool=="kraken2" )                                : Channel.empty()
+    ch_annotation_db          = !params.skip_consensus_qc                                                                                           ? createChannel( params.annotation_db, "annotation", !params.skip_consensus_annotation )                            : Channel.empty()
+    ch_prokka_db              = !params.skip_consensus_qc                                                                                           ? createChannel( params.prokka_db, "prokka", !params.skip_prokka )                                                  : Channel.empty()
 
 
     ch_versions = Channel.empty()
@@ -110,7 +99,7 @@ workflow VIRALMETAGENOME {
         ch_db_raw = ch_db.mix(ch_ref_pool,ch_kraken2_db, ch_kaiju_db, ch_checkv_db, ch_bracken_db, ch_k2_host, ch_annotation_db, ch_prokka_db)
         UNPACK_DB (ch_db_raw)
 
-        UNPACK_DB.out.db
+        ch_db = UNPACK_DB.out.db
             .branch { meta, unpacked ->
                 k2_host: meta.id == 'k2_host'
                     return [ unpacked ]
@@ -129,7 +118,6 @@ workflow VIRALMETAGENOME {
                 prokka: meta.id == 'prokka'
                     return [ unpacked ]
             }
-            .set{ch_db}
         ch_versions = ch_versions.mix(UNPACK_DB.out.versions)
 
         // transfer to value channels so processes are not just done once
@@ -152,32 +140,28 @@ workflow VIRALMETAGENOME {
         ch_blastdb_in = ch_blastdb_in.mix(ch_ref_pool)
 
         BLAST_MAKEBLASTDB ( ch_blastdb_in )
-        BLAST_MAKEBLASTDB
-            .out
-            .db
+        ch_blastdb_out = BLAST_MAKEBLASTDB.out.db
             .branch { meta, db ->
                 reference: meta.id == 'reference'
                     return [ meta, db ]
-                // annotation: meta.id == 'annotation'
-                //     return [ meta, db ]
             }
-            .set{ch_blastdb_out}
+
         ch_blast_refdb  = ch_blastdb_out.reference.collect{it[1]}.ifEmpty([]).map{it -> [[id: 'reference'], it]}
         ch_versions     = ch_versions.mix(BLAST_MAKEBLASTDB.out.versions)
     }
 
-    ch_reads.view()
-
     // If we don't preprocess reads, remove samples with 0 reads
-    ch_host_trim_reads      = ch_reads.filter{ meta, reads -> reads[0].countFastq() > 0}
-    ch_decomplex_trim_reads = ch_reads.filter{ meta, reads -> reads[0].countFastq() > 0}
+    ch_host_trim_reads      = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
+    ch_decomplex_trim_reads = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
     // preprocessing illumina reads
     if (!params.skip_preprocessing){
         PREPROCESSING_ILLUMINA (
             ch_reads,
             ch_k2_host,
+            ch_host_bowtie2_reference,
             ch_adapter_fasta,
-            ch_contaminants)
+            ch_contaminants
+            )
         ch_host_trim_reads      = PREPROCESSING_ILLUMINA.out.reads
         ch_decomplex_trim_reads = PREPROCESSING_ILLUMINA.out.reads_decomplexified
         ch_multiqc_files        = ch_multiqc_files.mix(PREPROCESSING_ILLUMINA.out.mqc.collect{it[1]}.ifEmpty([]))
@@ -199,15 +183,18 @@ workflow VIRALMETAGENOME {
     }
 
     // Assembly
-    ch_unaligned_raw_contigs   = Channel.empty()
+    ch_unaligned_raw_contigs     = Channel.empty()
+    ch_unaligned_contigs         = Channel.empty()
+    ch_polishing_consensus_reads = Channel.empty()
+
     // Channel for consensus sequences that have been generated across different iteration
-    ch_consensus               = Channel.empty()
+    ch_consensus                 = Channel.empty()
     // Channel for consensus sequences that have been generated at the LAST iteration
-    ch_consensus_results_reads = Channel.empty()
+    ch_consensus_reads           = Channel.empty()
     // Channel for summary table of clusters to include in mqc report
-    ch_clusters_summary        = Channel.empty()
+    ch_clusters_summary          = Channel.empty()
     // Channel for summary coverages of each contig
-    ch_clusters_tsv            = Channel.empty()
+    ch_clusters_tsv              = Channel.empty()
 
     if (!params.skip_assembly) {
         // run different assemblers and combine contigs
@@ -219,9 +206,8 @@ workflow VIRALMETAGENOME {
 
         if (!params.skip_polishing){
             // blast contigs against reference & identify clusters of (contigs & references)
-            ch_contigs
+            ch_contigs_reads = ch_contigs
                 .join(ch_host_trim_reads, by: [0], remainder: false)
-                .set{ch_contigs_reads}
 
             FASTA_CONTIG_CLUST (
                 ch_contigs_reads,
@@ -235,9 +221,7 @@ workflow VIRALMETAGENOME {
             ch_versions = ch_versions.mix(FASTA_CONTIG_CLUST.out.versions)
 
             // Split up clusters into singletons and clusters of multiple contigs
-            FASTA_CONTIG_CLUST
-                .out
-                .centroids_members
+            ch_centroids_members = FASTA_CONTIG_CLUST.out.centroids_members
                 .map { meta, centroids, members ->
                     [ meta, centroids, members ]
                 }
@@ -247,7 +231,6 @@ workflow VIRALMETAGENOME {
                     multiple: meta.cluster_size >   0
                         return [ meta + [step:"consensus"], centroids, members ]
                 }
-                .set{ch_centroids_members}
 
             ch_clusters_summary    = FASTA_CONTIG_CLUST.out.clusters_summary.collect{it[1]}.ifEmpty([])
             ch_clusters_tsv        = FASTA_CONTIG_CLUST.out.clusters_tsv.collect{it[1]}.ifEmpty([])
@@ -266,37 +249,27 @@ workflow VIRALMETAGENOME {
                 )
             ch_versions = ch_versions.mix(SINGLETON_FILTERING.out.versions)
 
-            ALIGN_COLLAPSE_CONTIGS
-                .out
-                .consensus
-                .mix( SINGLETON_FILTERING.out.filtered )
-                .set{ ch_consensus }
+            ch_consensus = ALIGN_COLLAPSE_CONTIGS.out.consensus.mix( SINGLETON_FILTERING.out.filtered )
 
             ch_unaligned_raw_contigs = ALIGN_COLLAPSE_CONTIGS.out.unaligned_fasta
-            ch_unaligned_raw_contigs = ch_unaligned_raw_contigs.mix( SINGLETON_FILTERING.out.filtered )
+                .mix( SINGLETON_FILTERING.out.filtered )
 
             // We want the meta from the reference channel to be used downstream as this is our varying factor
             // To do this we combine the channels based on sample
             // Extract the reference meta's and reads
             // Make cartesian product of identified references & reads so all references will be mapped against again.
-                ch_decomplex_trim_reads
-                    .map{meta, fastq -> [meta.sample,meta, fastq]}
-                    .set{ch_reads_tmp}
+                ch_reads_tmp     = ch_decomplex_trim_reads.map { meta, fastq -> [meta.sample,meta, fastq]}
+                ch_consensus_tmp = ch_consensus.map { meta, fasta -> [meta.sample,meta, fasta] }
 
-                ch_consensus
-                    .map{meta, fasta -> [meta.sample,meta, fasta]}
-                    .set{ch_consensus_tmp}
-
-                ch_consensus_tmp
+                ch_consensus_reads_intermediate = ch_consensus_tmp
                     .combine(ch_reads_tmp, by: [0])
                     .map{
-                        sample, meta_ref, fasta, meta_reads, fastq -> [meta_ref, fasta, fastq]
+                        _sample, meta_ref, fasta, _meta_reads, fastq -> [meta_ref, fasta, fastq]
                     }
-                    .set{ch_consensus_results_reads_intermediate}
 
             if (!params.skip_iterative_refinement) {
                 FASTQ_FASTA_ITERATIVE_CONSENSUS (
-                    ch_consensus_results_reads_intermediate,
+                    ch_consensus_reads_intermediate,
                     params.iterative_refinement_cycles,
                     params.intermediate_mapper,
                     params.with_umi,
@@ -309,43 +282,43 @@ workflow VIRALMETAGENOME {
                     params.min_contig_size,
                     params.max_n_perc
                 )
-                ch_consensus               = ch_consensus.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_allsteps)
-                ch_consensus_results_reads = FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_reads
-                ch_versions                = ch_versions.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.versions)
-                ch_multiqc_files           = ch_multiqc_files.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.mqc.ifEmpty([])) //collect already done in subworkflow
+                ch_consensus                 = ch_consensus.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_allsteps)
+                ch_polishing_consensus_reads = FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_reads
+                ch_versions                  = ch_versions.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.versions)
+                ch_multiqc_files             = ch_multiqc_files.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.mqc.ifEmpty([])) //collect already done in subworkflow
             } else {
-                ch_consensus_results_reads = ch_consensus_results_reads_intermediate
+                ch_polishing_consensus_reads = ch_consensus_reads_intermediate
             }
         }
     }
 
     // add last step to it
-    ch_consensus_results_reads
+    ch_consensus_reads = ch_polishing_consensus_reads
         .map{ meta, fasta, fastq ->
             [meta + [step: "variant-calling", iteration:'variant-calling', previous_step: meta.step], fasta, fastq]
-            }
-        .set{ch_consensus_results_reads}
+        }
 
     ch_mash_screen = Channel.empty()
 
     if (params.mapping_constraints && !params.skip_variant_calling ) {
         // Importing samplesheet
-        Channel
+        ch_mapping_constraints = Channel
             .fromList(samplesheetToList(params.mapping_constraints, "${projectDir}/assets/schemas/mapping_constraints.json"))
             .map{ meta, sequence ->
                 def samples = meta.samples == [] ? null : tuple(meta.samples.split(";"))  // Split up samples if meta.samples is not null
                 [meta, samples, sequence]
             }
-            .transpose(remainder: true)                                                         // Unnest
-            .set{ch_mapping_constraints}
+            .transpose(remainder: true)                                                   // Unnest
 
         // Joining all the reads with the mapping constraints, filter for those specified or keep everything if none specified.
-        ch_decomplex_trim_reads
+        ch_map_seq_anno_combined = ch_decomplex_trim_reads
             .combine( ch_mapping_constraints )
-            .filter{ meta_reads, fastq, meta_mapping, mapping_samples, sequence -> mapping_samples == null || mapping_samples == meta_reads.sample}
+            .filter{ meta_reads, _fastq, _meta_mapping, mapping_samples, _sequence ->
+                mapping_samples == null || mapping_samples == meta_reads.sample
+            }
             .map
                 {
-                    meta, reads, meta_mapping, samples, sequence_mapping ->
+                    meta, reads, meta_mapping, _samples, sequence_mapping ->
                     def id = "${meta.sample}_${meta_mapping.id}-CONSTRAINT"
                     def new_meta = meta + meta_mapping + [
                         id: id,
@@ -358,41 +331,39 @@ workflow VIRALMETAGENOME {
                         ]
                     return [new_meta, sequence_mapping]
                 }
-            .set{ch_map_seq_anno_combined}
 
         // Map with both reads and mapping constraints
-        ch_map_seq_anno_combined
+        ch_constraint_consensus_reads = ch_map_seq_anno_combined
             .map{ it -> return [it[0], it[1], it[0].reads] }
             .branch{
-                meta, fasta, fastq ->
+                meta, _fasta, _fastq ->
                 multiFastaSelection : meta.selection == true
                 singleFastaSelection : meta.selection == false
             }
-            .set{constraint_consensus_reads}
 
         // Select the correct reference
         FASTQ_FASTA_MASH_SCREEN (
-            constraint_consensus_reads.multiFastaSelection
+            ch_constraint_consensus_reads.multiFastaSelection
         )
-        ch_versions = ch_versions.mix(FASTQ_FASTA_MASH_SCREEN.out.versions)
         ch_mash_screen = FASTQ_FASTA_MASH_SCREEN.out.json.collect{it[1]}
+        ch_versions    = ch_versions.mix(FASTQ_FASTA_MASH_SCREEN.out.versions)
 
         // For QC we keep original sequence to compare to
-        ch_unaligned_raw_contigs = ch_unaligned_raw_contigs
-            .mix(constraint_consensus_reads.singleFastaSelection.map{meta, fasta, reads -> [meta, fasta]})
-            .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq.map{meta, fasta, reads -> [meta, fasta]})
+        ch_unaligned_contigs = ch_unaligned_raw_contigs
+            .mix(ch_constraint_consensus_reads.singleFastaSelection.map{meta, fasta, _reads -> [meta, fasta]})
+            .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq.map{meta, fasta, _reads -> [meta, fasta]})
 
         //Add to the consensus channel, which will be used for variant calling
-        ch_consensus_results_reads = ch_consensus_results_reads
+        ch_consensus_reads = ch_consensus_reads
             .mix(FASTQ_FASTA_MASH_SCREEN.out.reference_fastq)
-            .mix(constraint_consensus_reads.singleFastaSelection)
+            .mix(ch_constraint_consensus_reads.singleFastaSelection)
     }
 
     // After consensus sequences have been made, we still have to map against it and call variants
     if ( !params.skip_variant_calling ) {
 
         FASTQ_FASTA_MAP_CONSENSUS(
-            ch_consensus_results_reads,
+            ch_consensus_reads,
             params.mapper,
             params.with_umi,
             params.deduplicate,
@@ -406,6 +377,7 @@ workflow VIRALMETAGENOME {
         )
         ch_consensus     = ch_consensus.mix(FASTQ_FASTA_MAP_CONSENSUS.out.consensus_all)
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTA_MAP_CONSENSUS.out.mqc.ifEmpty([])) // collect already done in subworkflow
+        ch_versions      = ch_versions.mix(FASTQ_FASTA_MAP_CONSENSUS.out.versions)
 
     }
 
@@ -425,10 +397,10 @@ workflow VIRALMETAGENOME {
     // Run several sumarisation tools on the variant calling results
     if ( !params.skip_consensus_qc  && (!params.skip_assembly || !params.skip_variant_calling) ) {
         ch_consensus_filter = ch_consensus
-            .filter{meta, fasta -> getLengthAndAmbigous(fasta).contig_size > 0}
+            .filter{_meta, fasta -> getLengthAndAmbigous(fasta).contig_size > 0}
         CONSENSUS_QC(
             ch_consensus_filter,
-            ch_unaligned_raw_contigs,
+            ch_unaligned_contigs,
             ch_checkv_db,
             ch_blast_refdb,
             ch_annotation_db,
@@ -445,25 +417,16 @@ workflow VIRALMETAGENOME {
     //
     // MODULE: MultiQC
     //
-    ch_multiqc_config        = Channel.fromPath(
-        "$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config = params.multiqc_config ?
-        Channel.fromPath(params.multiqc_config, checkIfExists: true) :
-        Channel.empty()
-    ch_multiqc_logo          = params.multiqc_logo ?
-        Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
-        Channel.empty()
-
-    summary_params      = paramsSummaryMap(
-        workflow, parameters_schema: "nextflow_schema.json")
-    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(summary_params))
-    ch_multiqc_files = ch_multiqc_files.mix(
-        ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
-        file(params.multiqc_methods_description, checkIfExists: true) :
-        file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description = Channel.value(
-        methodsDescriptionText(ch_multiqc_custom_methods_description))
+    ch_multiqc_config                     = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
+    ch_multiqc_custom_config              = params.multiqc_config              ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
+    ch_multiqc_logo                       = params.multiqc_logo                ? Channel.fromPath(params.multiqc_logo, checkIfExists: true) : Channel.empty()
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+    ch_multiqc_custom_table_headers       = params.custom_table_headers        ? Channel.fromPath(params.custom_table_headers, checkIfExists:true ) : Channel.fromPath("$projectDir/assets/custom_table_headers.yml", checkIfExists:true )
+    summary_params                        = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    ch_workflow_summary                   = Channel.value(paramsSummaryMultiqc(summary_params))
+    ch_multiqc_files                      = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+    ch_methods_description                = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
 
     //
     // Collate and save software versions
@@ -484,7 +447,6 @@ workflow VIRALMETAGENOME {
         )
     )
 
-    // TODO UPDATE MULTIQC MODULE WITH CUSTOM MULTIQC
     // Prepare MULTIQC custom tables
     CUSTOM_MULTIQC (
         ch_multiqc_files.collect(),

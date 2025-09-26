@@ -1,11 +1,11 @@
 process CUSTOM_MPILEUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pysamstats:1.1.2--py39he47c912_12':
-        'quay.io/biocontainers/pysamstats:1.1.2--py311h0152c62_12' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pysamstats:1.1.2--py39he47c912_12'
+        : 'quay.io/biocontainers/pysamstats:1.1.2--py311h0152c62_12'}"
 
     input:
     tuple val(meta), path(bam), path(ref)
@@ -22,7 +22,7 @@ process CUSTOM_MPILEUP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     custom_mpileup.py \\
-        $args \\
+        ${args} \\
         --alignment ${bam} \\
         --reference ${ref} \\
         --prefix ${prefix}

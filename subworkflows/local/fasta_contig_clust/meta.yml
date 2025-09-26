@@ -28,23 +28,23 @@ input:
       description: |
         Coverage statistics files from assembly
         Structure: [ val(meta), path(idxstats) ]
-  - blast_db:
+  - ch_blast_db:
       description: |
         BLAST database for reference selection
         Structure: [ val(meta), path(db) ]
-  - blast_db_fasta:
+  - ch_blast_db_fasta:
       description: |
         Reference FASTA sequences corresponding to BLAST database
         Structure: [ val(meta), path(fasta) ]
-  - kraken2_db:
+  - ch_kraken2_db:
       description: |
         Kraken2 database for taxonomic classification
         Structure: [ val(meta), path(db) ]
-  - kaiju_db:
+  - ch_kaiju_db:
       description: |
         Kaiju database for taxonomic classification
         Structure: [ val(meta), path(db) ]
-  - contig_classifiers:
+  - ch_contig_classifiers:
       type: string
       description: |
         List of taxonomic classifiers to use for preclustering

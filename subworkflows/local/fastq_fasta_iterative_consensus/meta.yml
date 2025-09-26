@@ -12,7 +12,7 @@ keywords:
 components:
   - fastq_fasta_map_consensus
 input:
-  - reference_reads:
+  - ch_reference_reads:
       description: |
         Input reference sequences and corresponding reads
         Structure: [ val(meta), path(reference), path(fastq) ]

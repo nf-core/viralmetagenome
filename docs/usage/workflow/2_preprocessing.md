@@ -79,10 +79,12 @@ Complexity filtering is done with [`BBDuk`](https://jgi.doe.gov/data-and-tools/s
 
 ## 5. Host read-removal
 
-Contamination, whether derived from experiments or computational processes, looms large in next-generation sequencing data. Such contamination can compromise results from WGS as well as metagenomics studies, and can even lead to the inadvertent disclosure of personal information. To avoid this, host read-removal is performed. Host read-removal is performed by the tool `Kraken2`.
+Contamination, whether derived from experiments or computational processes, looms large in next-generation sequencing data. Such contamination can compromise results from WGS as well as metagenomics studies, and can even lead to the inadvertent disclosure of personal information. To avoid this, host read-removal is performed. Host read-removal is performed by the tool `Kraken2` or `Bowtie2`.
 
 :::info{title="Interesting reads"}
-The reason why we use Kraken2 for host removal over regular read mappers is nicely explained in the following papers:
+`Kraken2` provides an easy and flexible way to include a wide range of host genomes due to their already large library of prebuild databases. [A recent study](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1) found that `Bowtie2` using `--very-sensitive-local` (default in viralmetagenome) with the T2T-CHM13 reference assembly has an improved human read removal in comparison to `Kraken2` with the standard database (16GB).
+
+For more information on the importance of host read-removal, see:
 
 - [Benchmarking of Human Read Removal Strategies for Viral and Microbial Metagenomics](https://www.biorxiv.org/content/10.1101/2025.03.21.644587v1)
 - [The human “contaminome”: bacterial, viral, and computational contamination in whole genome sequences from 1000 families](https://www.nature.com/articles/s41598-022-13269-z)
@@ -91,4 +93,4 @@ The reason why we use Kraken2 for host removal over regular read mappers is nice
 :::
 
 > [!INFO]
-> Specify the host database with the `--host_k2_db` parameter. The default is a small subset of the human genome and **we highly suggest that you make this database more elaborate** (for example, complete human genome, common sequencer contaminants, bacterial genomes, ...). For this, read the section on [creating custom kraken2 host databases](../customisation/databases.md#kraken2-databases).
+> Specify 'bowtie2' or 'kraken2' with `--host_removal_tool` and the host database with the `--host_k2_db` parameter for kraken2 or `--host_bowtie2_reference` for bowtie2. The default is a small subset of the human genome with kraken2 and **we highly suggest that you make this database more elaborate** (for example, complete human genome, common sequencer contaminants, bacterial genomes, ...). For this, read the section on [creating custom kraken2 host databases](../customisation/databases.md#kraken2-databases).

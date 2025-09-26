@@ -89,7 +89,7 @@ def getReadsAfterHostRemoveKraken(tsv) {
 def getReadsAfterHostRemoveBowtie2(tsv) {
     def n_reads = 0L
     tsv.eachLine { line ->
-        def m = line =~ /^\\s*(\\d+) \\([0-9.]+%\\) aligned 0 times/
+        def m = line =~ /^\s*(\d+)\s+\([0-9.]+%\)\s+aligned\s+0\s+times\s*$/
         if (m.find()) {
             n_reads += m[0][1].toLong()
         }

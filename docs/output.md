@@ -112,7 +112,9 @@ By default, nf-core/viralmetagenome will only provide the log files of BBDuk. Th
 
 By default, nf-core/viralmetagenome will only provide the log files of prinseq. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
 
-### Hostremoval-Kraken2
+### Hostremoval
+
+#### Kraken2
 
 [Kraken2](https://ccb.jhu.edu/software/kraken2/) is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences. Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database. That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 
@@ -125,6 +127,21 @@ By default, nf-core/viralmetagenome will only provide the log files of prinseq. 
 :::
 
 By default, nf-core/viralmetagenome will only provide the log files of Kraken2 which are visualized in [MultiQC](#multiqc). The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'host'`.
+
+#### Bowtie2
+
+[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences.
+
+:::note{title="Output files" collapse}
+
+- `hostremoval-bowtie2/`
+  - `index/bowtie2/`: The index files of the host contamination sequence.
+  - `<sample-id>_bowtie2_host.bowtie2.log`: An overview of the aligned sequences to the given host contamination sequence.
+  - `<sample-id>_bowtie2_host.unmapped_{1,2}.fastq.gz`: resulting FASTQ file with reads that don't have any matches to the given host contamination sequence.
+
+:::
+
+The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'host'`.
 
 ## Metagenomic Diversity
 

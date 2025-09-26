@@ -55,6 +55,10 @@ module_order:
       name: "SAMPLE: Kraken2 (Host-removal)"
       path_filters:
         - "*_kraken2_host.kraken2.report.txt"
+  - "bowtie2":
+      name: "SAMPLE: Bowtie2 (Host-removal)"
+      path_filters:
+        - "*_host.bowtie2.log"
   - "fastqc":
       name: "SAMPLE: FastQC (post-Host-removal)"
       path_filters:

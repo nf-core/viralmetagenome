@@ -12,3 +12,4 @@ testing*
 *.pyc
 bin/
 ro-crate-metadata.json
+.nf-test/

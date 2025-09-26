@@ -26,7 +26,7 @@
 
 > [!NOTE]
 >
-> - `|` indicate the need tot chose a tool
+> - `|` indicate the need to choose a tool
 > - `&` indicate that output of tools can be combined and ran in parallel.
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))

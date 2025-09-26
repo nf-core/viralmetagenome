@@ -62,7 +62,7 @@ workflow VIRALMETAGENOME {
         PARAMETER INITIALIZATION
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
-    if (!params.skip_preprocessing && !params.skip_hostremoval && params.host_removal_tool=="bowtie2" && !params.host_bowtie2_reference) { error("ERROR: [nf-core/viralmetagenome] Host removal requested with bowtie2 but no --host_bowtie2_reference FASTA supplied. Check input.") }
+    if (!params.skip_preprocessing && !params.skip_hostremoval && params.host_removal_tool == "bowtie2" && !params.host_bowtie2_reference) { error("ERROR: [nf-core/viralmetagenome] Host removal requested with bowtie2 but no --host_bowtie2_reference FASTA supplied. Check input.") }
 
     def read_classifiers   = params.read_classifiers ? params.read_classifiers.split(',').collect{ it.trim().toLowerCase() } : []
     def contig_classifiers = params.precluster_classifiers ? params.precluster_classifiers.split(',').collect{ it.trim().toLowerCase() } : []

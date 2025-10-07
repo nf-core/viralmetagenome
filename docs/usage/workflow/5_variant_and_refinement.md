@@ -103,6 +103,11 @@ There is a little overlap between the tools, but they all provide a different pe
 
 Variant calling is done with [`BCFtools`](http://samtools.github.io/bcftools/bcftools.html) and [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), here a SNP will need to have at least a depth of 10 and a base quality of 20.
 
+For the de novo assembly refinement, the final result will be true minor variants. During the refinement itself, variants are optionally called as intermediate results (to enable `--call_intermediate_variants true`). For the External Reference-based Analysis, the variants are called once at the end of the mapping step and these are therefore not true minor variants.
+
+> [!INFO]
+> When calling consensus with BCFtools, a variant file is required, so despite `--call intermediate_variants false`, a variant file will be created. In case of `--consensus_caller ivar`, no intermediate variant file will be created.
+
 BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. iVar is a computational package that contains functions broadly useful for viral amplicon-based sequencing while each of iVar functions can be accomplished using existing tools, iVar contains an intersection of functionality from multiple tools that are required to call iSNVs and consensus sequences from viral sequencing data across multiple replicates.
 
 There are multiple studies on the benchmarking of variant callers as this is an area with active development. For instance [Bassano _et al._ (2023)](https://doi.org/10.1099/mgen.0.000933) noticed that BCFtools called mutations with higher precision and recall than iVar. However, the reason behind this is that iVar has a lower precision than the others within their setup as it detects a lot of ‘additional’ variants within the sample, resulting in a higher amount of false positives but also true positives.

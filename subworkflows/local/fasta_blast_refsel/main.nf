@@ -29,13 +29,12 @@ workflow FASTA_BLAST_REFSEL {
     ch_no_blast_hits_mqc = noBlastHitsToMultiQC(ch_no_blast_hits,params.assemblers).collectFile(name:'samples_no_blast_hits_mqc.tsv')
 
     // Filter out false positve hits that based on query length, alignment length, identity, e-score & bit-score
-    ch_blast_txt.hits
+    input_blast_filter = ch_blast_txt.hits
         .join(ch_fasta, by: [0], remainder: true)
         .multiMap { meta, txt, fasta ->
             hits: [meta, txt ? txt : []]
             contigs: [meta, fasta]
         }
-        .set { input_blast_filter }
 
     BLAST_FILTER(
         input_blast_filter.hits,

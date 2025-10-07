@@ -29,7 +29,7 @@ workflow SCAFFOLDS_EXTEND_STATS {
 
     // SSPACE_BASIC
     if (!params.skip_sspace_basic) {
-        ch_scaffolds
+        ch_sspace_input = ch_scaffolds
             .join(ch_reads)
             .multiMap { meta, scaffolds, reads ->
                 reads: [meta, reads]
@@ -37,7 +37,6 @@ workflow SCAFFOLDS_EXTEND_STATS {
                 settings: [params.read_distance, params.read_distance_sd, params.read_orientation]
                 name: name
             }
-            .set { ch_sspace_input }
 
         SSPACE_BASIC(
             ch_sspace_input.reads,

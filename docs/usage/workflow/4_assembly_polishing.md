@@ -43,7 +43,7 @@ Contigs can be extended using [SSPACE Basic](https://github.com/nsoranzo/sspace_
 
 ## 3. Coverage calculation
 
-Processed reads are mapped back against the contigs to determine the number of reads mapping towards each contig. This is done with [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/), [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2) or [`BWA`](https://github.com/lh3/bwa). This step is used to remove contig clusters that have little to no coverage downstream.
+Processed reads are mapped back against the contigs to determine the number of reads mapping towards each contig. This is done with [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/), [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2). This step is used to remove contig clusters that have little to no coverage downstream.
 
 > [!INFO]
 > Specify the mapper to use with the `--mapper` parameter. The default is [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2). To skip contig filtering specify `--perc_reads_contig 0`.

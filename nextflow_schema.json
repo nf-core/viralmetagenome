@@ -716,7 +716,7 @@
                     "type": "string",
                     "default": "bwamem2",
                     "fa_icon": "fas fa-align-center",
-                    "enum": ["bwamem2", "bowtie2", "bwa"],
+                    "enum": ["bwamem2", "bowtie2"],
                     "description": "Mapping tool used during iterations"
                 },
                 "intermediate_variant_caller": {
@@ -767,7 +767,7 @@
                     "default": "bwamem2",
                     "fa_icon": "fas fa-align-center",
                     "description": "Define which mapping tool needs to be used when mapping reads to reference",
-                    "enum": ["bwamem2", "bowtie2", "bwa"]
+                    "enum": ["bwamem2", "bowtie2"]
                 },
                 "mapping_constraints": {
                     "type": "string",
@@ -832,18 +832,6 @@
                 "arguments_bwamem2_index": {
                     "type": "string",
                     "description": "Arguments for BWA-MEM2 index",
-                    "fa_icon": "fas fa-cogs",
-                    "hidden": true
-                },
-                "arguments_bwa_index": {
-                    "type": "string",
-                    "description": "Arguments for BWA index",
-                    "fa_icon": "fas fa-cogs",
-                    "hidden": true
-                },
-                "arguments_bwa_mem": {
-                    "type": "string",
-                    "description": "Arguments for BWA MEM",
                     "fa_icon": "fas fa-cogs",
                     "hidden": true
                 },

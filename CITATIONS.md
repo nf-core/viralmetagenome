@@ -40,10 +40,6 @@
 
   > Lu J, Breitwieser FP, Thielen P, Salzberg SL. Bracken: estimating species abundance in metagenomics data. PeerJ Comput Sci. 2017;3:e104. doi: 10.7717/peerj-cs.104. Epub 2017 Jan 2. PMID: 40271438; PMCID: PMC12016282.
 
-- [BWA-MEM](https://github.com/lh3/bwa)
-
-  > Li H. (2013) Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv:1303.3997v2.
-
 - [BWA-MEM2](https://doi.org/10.1109/IPDPS.2019.00041)
 
   > M. Vasimuddin, S. Misra, H. Li and S. Aluru, "Efficient Architecture-Aware Acceleration of BWA-MEM for Multicore Systems," 2019 IEEE International Parallel and Distributed Processing Symposium (IPDPS), Rio de Janeiro, Brazil, 2019, pp. 314-324, doi: 10.1109/IPDPS.2019.00041.

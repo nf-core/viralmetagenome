@@ -2,9 +2,6 @@ include { BWAMEM2_MEM   } from '../../../modules/nf-core/bwamem2/mem/main'
 include { BWAMEM2_INDEX } from '../../../modules/nf-core/bwamem2/index/main'
 include { BOWTIE2_ALIGN } from '../../../modules/nf-core/bowtie2/align/main'
 include { BOWTIE2_BUILD } from '../../../modules/nf-core/bowtie2/build/main'
-include { BWA_MEM       } from '../../../modules/nf-core/bwa/mem/main'
-include { BWA_INDEX     } from '../../../modules/nf-core/bwa/index/main'
-
 workflow MAP_READS {
     take:
     ch_reference_reads // channel: [ val(meta), [ fasta ], [ reads ] ]
@@ -53,25 +50,6 @@ workflow MAP_READS {
 
         ch_bam = BOWTIE2_ALIGN.out.bam
         ch_multiqc = ch_multiqc.mix(BOWTIE2_ALIGN.out.log)
-    }
-    else if (mapper == "bwa") {
-        BWA_INDEX(ch_reference)
-        ch_versions = ch_versions.mix(BWA_INDEX.out.versions.first())
-        ch_bwamem_in = ch_reads
-            .join(BWA_INDEX.out.index, by: [0])
-            .join(ch_reference, by: [0])
-            .multiMap { meta, reads, index, fasta ->
-                reads: [meta, reads]
-                index: [meta, index]
-                fasta: [meta, fasta]
-            }
-
-
-        BWA_MEM(ch_bwamem_in.reads, ch_bwamem_in.index, ch_bwamem_in.fasta, true)
-        ch_versions = ch_versions.mix(BWA_MEM.out.versions.first())
-        //no mqc for bwa
-
-        ch_bam = BWA_MEM.out.bam
     }
 
     emit:

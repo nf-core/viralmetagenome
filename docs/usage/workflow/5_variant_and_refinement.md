@@ -66,7 +66,7 @@ This procedure is done with [`Mash`](https://mash.readthedocs.io/en/latest/) whe
 
 ## 2. Mapping of reads
 
-Mapping filtered reads to supercontig or mapping constraints is done with [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/), [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2) and [`BWA`](https://github.com/lh3/bwa).
+Mapping filtered reads to supercontig or mapping constraints is done with [`Bowtie2`](http://bowtie-bio.sourceforge.net/bowtie2/), [`BWA-MEM2`](https://github.com/bwa-mem2/bwa-mem2).
 
 The comparison of Bowtie2 and BWA-MEM was done for [Yao et al. (2020)](https://doi.org/10.1186/s12859-020-03704-1) where they found that BWA-MEM2 had a higher mapping rate (faster) and better accuracy. BWA-MEM detected more variant bases in mapping reads than Bowtie2. The tool BWA-MEM2 is the next version of the BWA-MEM algorithm in [BWA](https://github.com/lh3/bwa). It produces alignments identical to BWA and is ~1.3-3.1x faster depending on the use-case, dataset and the running machine.
 

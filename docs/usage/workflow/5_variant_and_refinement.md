@@ -59,9 +59,7 @@ For this reason, **use an extensive reference dataset** like the [RVDB](https://
 This procedure is done with [`Mash`](https://mash.readthedocs.io/en/latest/) where the reads are compared to the reference genomes and the reference genome with the highest number of shared k-mers is selected. The number of shared k-mers can be specified with `--arguments_mash_dist "-k 15"` (default k-mer size: `15`), and the number of sketches to create with `--arguments_mash_dist "-s 4000"` (default sketch size: `4000`). These parameters can be combined as `--arguments_mash_dist "-s 4000 -k 15"`.
 
 :::tip
-
-- As in any k-mer based method, larger k-mers will provide more specificity, while smaller k-mers will provide more sensitivity. Larger genomes will also require larger k-mers to avoid k-mers that are shared by chance.
-
+With k-mer based methodes, larger k-mers will provide more specificity, while smaller k-mers will provide more sensitivity. Larger genomes will also require larger k-mers to avoid k-mers that are shared by chance.
 :::
 
 ## 2. Mapping of reads

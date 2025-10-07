@@ -5,7 +5,7 @@ include { BOWTIE2_BUILD } from '../../../modules/nf-core/bowtie2/build/main'
 workflow MAP_READS {
     take:
     ch_reference_reads // channel: [ val(meta), [ fasta ], [ reads ] ]
-    mapper             // val: 'bwamem2' or 'bowtie2' or 'bwa'
+    mapper             // val: 'bwamem2' or 'bowtie2'
 
     main:
 

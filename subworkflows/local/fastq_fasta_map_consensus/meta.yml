@@ -29,7 +29,7 @@ input:
       type: string
       description: |
         Mapping algorithm to use
-      enum: ["bwamem2", "bowtie2", "bwa"]
+      enum: ["bwamem2", "bowtie2"]
   - umi:
       type: boolean
       description: |

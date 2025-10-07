@@ -509,13 +509,9 @@ If Bowtie2 is used, the output from the raw mapping results (in addition to the 
     - `index/<sample-id>/*`: The index files of the consensus.
     - `bam/<sample-id>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
     - `unmapped/<sample-id>/<sample-id>_cl#_it#.fastq.gz`: A fastq file containing the unmapped reads.
-  - `bwamem/`
-    - `index/<sample-id>/*`: The index files of the consensus.
-    - `bam/<sample-id>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
-    - `unmapped/<sample-id>/<sample-id>_cl#_it#.fastq.gz`: A fastq file containing the unmapped reads.
   - `bowtie2/`
     - `build/<sample-id>/*`: The index files of the consensus.
-    - `bam/<sample-id>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
+    - `bam/<sample-pid>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
     - `unmapped/<sample-id>/<sample-id>_cl#_it#.fastq.gz`: A fastq file containing the unmapped reads.
     - `log/<sample-id>_cl#_it#.log`: A log file of the bowtie2 run.
 

@@ -12,8 +12,8 @@ workflow SINGLETON_FILTERING {
     ch_versions = Channel.empty()
 
     if ( !params.skip_singleton_filtering) {
-        filtered = filterContigs ( ch_fasta, min_contig_size, max_n_perc)
-        ch_contig = filtered.pass
+        ch_filtered = filterContigs ( ch_fasta, min_contig_size, max_n_perc)
+        ch_contig   = ch_filtered.pass
     }
     // Rename to avoid errors downstream
     RENAME_FASTA_HEADER_SINGLETON(

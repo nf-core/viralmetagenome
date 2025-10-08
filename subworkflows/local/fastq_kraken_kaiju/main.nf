@@ -48,14 +48,14 @@ workflow FASTQ_KRAKEN_KAIJU {
     // Kaiju
     if ('kaiju' in read_classifiers) {
         KAIJU_KAIJU(ch_reads, ch_kaiju_db)
-        kaiju_report = KAIJU_KAIJU.out.results.map { meta, report -> [meta + [tool: 'kaiju'], report] }
+        ch_kaiju_report = KAIJU_KAIJU.out.results.map { meta, report -> [meta + [tool: 'kaiju'], report] }
         ch_versions  = ch_versions.mix(KAIJU_KAIJU.out.versions.first())
 
-        KAIJU_KAIJU2TABLE(kaiju_report, ch_kaiju_db, params.kaiju_taxon_rank)
+        KAIJU_KAIJU2TABLE(ch_kaiju_report, ch_kaiju_db, params.kaiju_taxon_rank)
         ch_multiqc_files = ch_multiqc_files.mix(KAIJU_KAIJU2TABLE.out.summary)
         ch_versions      = ch_versions.mix(KAIJU_KAIJU2TABLE.out.versions.first())
 
-        KAIJU_KAIJU2KRONA(kaiju_report, ch_kaiju_db)
+        KAIJU_KAIJU2KRONA(ch_kaiju_report, ch_kaiju_db)
         ch_krona_text = ch_krona_text.mix(KAIJU_KAIJU2KRONA.out.txt)
         ch_versions   = ch_versions.mix(KAIJU_KAIJU2KRONA.out.versions.first())
     }

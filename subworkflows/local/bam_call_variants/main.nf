@@ -15,7 +15,7 @@ workflow BAM_CALL_VARIANTS {
     ch_versions = Channel.empty()
     ch_multiqc = Channel.empty()
 
-    meta_fasta = ch_bam_ref.map { meta, _bam, fasta -> [meta, fasta] }
+    ch_meta_fasta = ch_bam_ref.map { meta, _bam, fasta -> [meta, fasta] }
 
     if (variant_caller == "bcftools") {
         BAM_VARIANTS_BCFTOOLS(
@@ -40,7 +40,7 @@ workflow BAM_CALL_VARIANTS {
     if (save_stats) {
         // run stats on all variants not only those that pass the filter
         ch_tabix_in = ch_vcf
-            .join(meta_fasta, by: [0])
+            .join(ch_meta_fasta, by: [0])
             .multiMap { meta, vcf, fasta ->
                 vcf: [meta, vcf]
                 fasta: [meta, fasta]

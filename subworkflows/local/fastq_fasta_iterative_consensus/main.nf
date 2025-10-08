@@ -46,9 +46,9 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
         ch_consensus_allsteps = ch_consensus_allsteps.mix(ITERATION_1.out.consensus)
         ch_multiqc = ch_multiqc.mix(ITERATION_1.out.mqc)
         ch_versions = ch_versions.mix(ITERATION_1.out.versions)
-        bam = ITERATION_1.out.bam
-        vcf = ITERATION_1.out.vcf
-        vcf_filter = ITERATION_1.out.vcf_filter
+        ch_bam = ITERATION_1.out.bam
+        ch_vcf = ITERATION_1.out.vcf
+        ch_vcf_filter = ITERATION_1.out.vcf_filter
         consensus = ITERATION_1.out.consensus
     }
     if (repeats >= 2) {
@@ -72,9 +72,9 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
         ch_consensus_allsteps = ch_consensus_allsteps.mix(ITERATION_2.out.consensus)
         ch_multiqc = ch_multiqc.mix(ITERATION_2.out.mqc)
         ch_versions = ch_versions.mix(ITERATION_2.out.versions)
-        bam = ITERATION_2.out.bam
-        vcf = ITERATION_2.out.vcf
-        vcf_filter = ITERATION_2.out.vcf_filter
+        ch_bam = ITERATION_2.out.bam
+        ch_vcf = ITERATION_2.out.vcf
+        ch_vcf_filter = ITERATION_2.out.vcf_filter
         consensus = ITERATION_2.out.consensus
     }
     if (repeats >= 3) {
@@ -98,9 +98,9 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
         ch_consensus_allsteps = ch_consensus_allsteps.mix(ITERATION_3.out.consensus)
         ch_multiqc = ch_multiqc.mix(ITERATION_3.out.mqc)
         ch_versions = ch_versions.mix(ITERATION_3.out.versions)
-        bam = ITERATION_3.out.bam
-        vcf = ITERATION_3.out.vcf
-        vcf_filter = ITERATION_3.out.vcf_filter
+        ch_bam = ITERATION_3.out.bam
+        ch_vcf = ITERATION_3.out.vcf
+        ch_vcf_filter = ITERATION_3.out.vcf_filter
         consensus = ITERATION_3.out.consensus
     }
     if (repeats >= 4) {
@@ -124,19 +124,19 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
         ch_consensus_allsteps = ch_consensus_allsteps.mix(ITERATION_4.out.consensus)
         ch_multiqc = ch_multiqc.mix(ITERATION_4.out.mqc)
         ch_versions = ch_versions.mix(ITERATION_4.out.versions)
-        bam = ITERATION_4.out.bam
-        vcf = ITERATION_4.out.vcf
-        vcf_filter = ITERATION_4.out.vcf_filter
+        ch_bam = ITERATION_4.out.bam
+        ch_vcf = ITERATION_4.out.vcf
+        ch_vcf_filter = ITERATION_4.out.vcf_filter
         consensus = ITERATION_4.out.consensus
     }
 
     emit:
     consensus_reads    = ch_reference_reads_intermediate // channel: [ val(meta), [ fasta ], [ fastq ] ]
-    consensus_allsteps = ch_consensus_allsteps // channel: [ val(meta), [ fasta ] ]
-    bam                = bam // channel: [ val(meta), [ bam ] ]
-    vcf                = vcf // channel: [ val(meta), [ vcf ] ]
-    vcf_filter         = vcf_filter // channel: [ val(meta), [ vcf ] ]
-    consensus          = consensus // channel: [ val(meta), [ fasta ] ]
-    mqc                = ch_multiqc // channel: [ val(meta), [ mqc ] ]
-    versions           = ch_versions // channel: [ versions.yml ]
+    consensus_allsteps = ch_consensus_allsteps           // channel: [ val(meta), [ fasta ] ]
+    bam                = ch_bam                          // channel: [ val(meta), [ bam ] ]
+    vcf                = ch_vcf                          // channel: [ val(meta), [ vcf ] ]
+    vcf_filter         = ch_vcf_filter                   // channel: [ val(meta), [ vcf ] ]
+    consensus          = consensus                       // channel: [ val(meta), [ fasta ] ]
+    mqc                = ch_multiqc                      // channel: [  mqc ]
+    versions           = ch_versions                     // channel: [ versions.yml ]
 }

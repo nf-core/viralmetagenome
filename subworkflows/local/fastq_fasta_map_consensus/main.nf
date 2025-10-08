@@ -110,7 +110,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
 
     // Vcf & bam files
     ch_vcf_ref         = ch_vcf.join(ch_reference, by: [0])
-    bam_out            = ch_dedup_bam_ref.map{meta,bam,ref -> [meta,bam] }
+    ch_bam_out            = ch_dedup_bam_ref.map{meta,bam,ref -> [meta,bam] }
 
     ch_multiqc         = ch_multiqc.mix(ch_contig_qc_fail_mqc.collectFile(name:'failed_contig_quality_mqc.tsv').ifEmpty([]))
 
@@ -118,11 +118,11 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     consensus_reads = ch_consensus_reads                     // channel: [ val(meta), [ fasta ], [ fastq ] ]
     consensus       = ch_consensus_filtered                  // channel: [ val(meta), [ fasta ] ]
     consensus_all   = ch_consensus_all                       // channel: [ val(meta), [ fasta ] ]
-    bam             = bam_out                                // channel: [ val(meta), [ bam ] ]
+    bam             = ch_bam_out                             // channel: [ val(meta), [ bam ] ]
     vcf             = ch_vcf                                 // channel: [ val(meta), [ vcf ] ]
     vcf_ref         = ch_vcf_ref                             // channel: [ val(meta), [ vcf ], [ fasta ] ]
     vcf_filter      = ch_vcf_filter                          // channel: [ val(meta), [ vcf ] ]
 
-    mqc             = ch_multiqc                             // channel: [ val(meta), [ csi ] ]
+    mqc             = ch_multiqc                             // channel: [ csi  ]
     versions        = ch_versions                            // channel: [ versions.yml ]
 }

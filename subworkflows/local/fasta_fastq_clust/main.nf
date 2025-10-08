@@ -40,16 +40,16 @@ workflow FASTA_FASTQ_CLUST {
 
         if (cluster_method == "mmseqs-linclust") {
             MMSEQS_LINCLUST(MMSEQS_CREATEDB.out.db)
-            db_cluster = MMSEQS_LINCLUST.out.db_cluster
+            ch_db_cluster = MMSEQS_LINCLUST.out.db_cluster
             ch_versions = ch_versions.mix(MMSEQS_LINCLUST.out.versions.first())
         }
         else {
             MMSEQS_CLUSTER(MMSEQS_CREATEDB.out.db)
-            db_cluster = MMSEQS_CLUSTER.out.db_cluster
+            ch_db_cluster = MMSEQS_CLUSTER.out.db_cluster
             ch_versions = ch_versions.mix(MMSEQS_CLUSTER.out.versions.first())
         }
 
-        createtsv_input = db_cluster
+        ch_createtsv_input = ch_db_cluster
             .join(MMSEQS_CREATEDB.out.db, by: [0])
             .multiMap { meta, db_clus, db_in ->
                 result: [meta, db_clus]
@@ -57,7 +57,7 @@ workflow FASTA_FASTQ_CLUST {
                 target: [meta, db_in]
             }
 
-        MMSEQS_CREATETSV(createtsv_input.result, createtsv_input.query, createtsv_input.target)
+        MMSEQS_CREATETSV(ch_createtsv_input.result, ch_createtsv_input.query, ch_createtsv_input.target)
         ch_clusters = MMSEQS_CREATETSV.out.tsv
         ch_versions = ch_versions.mix(MMSEQS_CREATETSV.out.versions.first())
     }

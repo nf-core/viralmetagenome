@@ -49,11 +49,11 @@ workflow ALIGN_COLLAPSE_CONTIGS {
         .join(MINIMAP2_CONTIG_ALIGN.out.bam, by: [0])
         .map { meta, references, _members, bam -> [meta, references, bam] }
 
-    ivar_bam = ch_references_bam.map { meta, _references, bam -> [meta, bam] }
-    ivar_fasta = ch_references_bam.map { _meta, references, _bam -> [references] }
+    ch_ivar_bam = ch_references_bam.map { meta, _references, bam -> [meta, bam] }
+    ch_ivar_fasta = ch_references_bam.map { _meta, references, _bam -> [references] }
     IVAR_CONTIG_CONSENSUS(
-        ivar_bam,
-        ivar_fasta,
+        ch_ivar_bam,
+        ch_ivar_fasta,
         true,
     )
     ch_versions = ch_versions.mix(IVAR_CONTIG_CONSENSUS.out.versions.first())

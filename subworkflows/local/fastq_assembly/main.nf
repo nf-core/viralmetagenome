@@ -103,10 +103,10 @@ workflow FASTQ_ASSEMBLY {
 
     // Filter low complexity contigs with prinseq++
     if (!params.skip_contig_prinseq){
-        prinseq_in = ch_good_assemblies.map{ meta, scaffolds -> [meta, [], scaffolds] }
+        ch_prinseq_in = ch_good_assemblies.map{ meta, scaffolds -> [meta, [], scaffolds] }
 
         PRINSEQ_CONTIG(
-            prinseq_in,
+            ch_prinseq_in,
         )
         ch_versions = ch_versions.mix(PRINSEQ_CONTIG.out.versions.first())
         ch_good_assemblies = PRINSEQ_CONTIG.out.good_reads
@@ -119,7 +119,7 @@ workflow FASTQ_ASSEMBLY {
         }
 
     ch_bad_assemblies = ch_bad_assemblies.mix(ch_good_assemblies_branched.fail)
-    ch_no_contigs = noContigSamplesToMultiQC(bad_assemblies, assemblers)
+    ch_no_contigs = noContigSamplesToMultiQC(ch_bad_assemblies, assemblers)
         .collectFile(name:'samples_no_contigs_mqc.tsv')
     ch_multiqc = ch_multiqc.mix(ch_no_contigs.ifEmpty([]))
 

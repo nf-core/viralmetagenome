@@ -112,9 +112,9 @@ workflow PREPROCESSING_ILLUMINA {
             ch_multiqc_files        = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
             ch_versions             = ch_versions.mix(BBMAP_BBDUK.out.versions)
         } else if (params.decomplexifier == 'prinseq') {
-            prinseq_in = ch_reads_dedup_joined.map { meta, reads -> [meta, reads, []] }
+            ch_prinseq_in = ch_reads_dedup_joined.map { meta, reads -> [meta, reads, []] }
             PRINSEQ_READS (
-                prinseq_in
+                ch_prinseq_in
             )
             ch_reads_decomplexified = PRINSEQ_READS.out.good_reads
             ch_multiqc_files        = ch_multiqc_files.mix(PRINSEQ_READS.out.log)

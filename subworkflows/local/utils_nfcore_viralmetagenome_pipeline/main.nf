@@ -1,8 +1,3 @@
-//
-// Subworkflow with functionality specific to the nf-core/viralmetagenome pipeline
-//
-
-import groovy.json.JsonSlurper
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -357,7 +352,7 @@ def getLengthAndAmbigous(fastaFile) {
 }
 
 def getMapFromJson(json_file) {
-    def Map json = (Map) new JsonSlurper().parse(json_file)
+    def Map json =  new groovy.json.JsonSlurper().parseText(json_file.text)
     return json
 }
 

@@ -352,7 +352,7 @@ def getLengthAndAmbigous(fastaFile) {
 }
 
 def getMapFromJson(json_file) {
-    def Map json =  new groovy.json.JsonSlurper().parseText(json_file.text)
+    def Map json = new groovy.json.JsonSlurper().parseText(json_file.text)
     return json
 }
 

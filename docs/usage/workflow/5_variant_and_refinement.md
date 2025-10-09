@@ -101,9 +101,9 @@ There is a little overlap between the tools, but they all provide a different pe
 
 ## 3. Variant calling
 
-Variant calling is done with [`BCFtools`](http://samtools.github.io/bcftools/bcftools.html) and [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), here a SNP will need to have at least a depth of 10 and a base quality of 20.
+Variant calling is done with [`BCFtools`](http://samtools.github.io/bcftools/bcftools.html) and [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), here a SNP will need to have at least a depth of 5 and a base quality of 20.
 
-For the de novo assembly refinement, the final result will be true minor variants. During the refinement itself, variants are optionally called as intermediate statistics (to enable `--call_intermediate_variants true`). For the External Reference-based Analysis, the variants are called once at the end of the mapping step and these are therefore not true minor variants.
+During the refinement itself, variants are optionally called as intermediate statistics (to enable `--call_intermediate_variants true`). For the External Reference-based Analysis, the variants are called towards the supplied reference, not towards the consensus generated.
 
 > [!INFO]
 > When calling consensus with BCFtools, a variant file is required, so despite `--call intermediate_variants false`, a variant file will be created. In case of `--consensus_caller ivar`, no intermediate variant file will be created.

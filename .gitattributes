@@ -1,7 +1,17 @@
-*.config linguist-language=nextflow
-*.nf.test linguist-language=nextflow
+*.config linguist-language=Nextflow
+*.nf linguist-language=Nextflow
+*.nf.test linguist-language=Nextflow
 modules/nf-core/** linguist-generated
 subworkflows/nf-core/** linguist-generated
 
 # The big MultiQC HTML report shouldn't count towards repo language breakdown
 assets/test_full-multiqc_report.html linguist-generated
+
+# Treat all HTML as non-source (exclude from language stats)
+*.html linguist-vendored
+
+# Tests and fixtures are not source for language breakdown
+testing/** linguist-generated
+
+# Docs are documentation
+docs/** linguist-documentation

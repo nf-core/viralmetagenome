@@ -1,11 +1,11 @@
 process SNPSIFT_EXTRACTFIELDS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3'
+        : 'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -23,16 +23,17 @@ process SNPSIFT_EXTRACTFIELDS {
 
     def avail_mem = 4
     if (!task.memory) {
-        log.info '[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.'
-    } else {
+        log.info('[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')
+    }
+    else {
         avail_mem = task.memory.giga
     }
     """
     SnpSift \\
         -Xmx${avail_mem}g \\
         extractFields \\
-        $args \\
-        $vcf \\
+        ${args} \\
+        ${vcf} \\
         CHROM POS REF ALT \\
         "ANN[*].GENE" "ANN[*].GENEID" \\
         "ANN[*].IMPACT" "ANN[*].EFFECT" \\
@@ -43,6 +44,26 @@ process SNPSIFT_EXTRACTFIELDS {
         "ANN[*].AA_LEN" "ANN[*].DISTANCE" "EFF[*].EFFECT" \\
         "EFF[*].FUNCLASS" "EFF[*].CODON" "EFF[*].AA" "EFF[*].AA_LEN" \\
         > ${prefix}.snpsift.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def avail_mem = 4
+    if (!task.memory) {
+        log.info('[SnpSift] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = task.memory.giga
+    }
+    """
+    touch ${prefix}.snpsift.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

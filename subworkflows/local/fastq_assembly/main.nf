@@ -37,12 +37,11 @@ workflow FASTQ_ASSEMBLY {
             )
         ch_versions          = ch_versions.mix(SPADES.out.versions.first())
 
-        SPADES.out.scaffolds
+        ch_spades_consensus = SPADES.out.scaffolds
             .join(SPADES.out.contigs, remainder:true)
             .map{meta, scaffold, contig -> [meta, scaffold ? scaffold : contig]} // sometimes no scaffold could be created if so take contig
-            .set{spades_consensus}
 
-        EXTEND_SPADES( ch_reads, spades_consensus, "spades")
+        EXTEND_SPADES( ch_reads, ch_spades_consensus, "spades")
         ch_scaffolds         = ch_scaffolds.mix(EXTEND_SPADES.out.scaffolds)
         ch_coverages         = ch_coverages.mix(EXTEND_SPADES.out.coverages)
         ch_versions          = ch_versions.mix(EXTEND_SPADES.out.versions)
@@ -63,14 +62,13 @@ workflow FASTQ_ASSEMBLY {
 
     // MEGAHIT
     if ('megahit' in assemblers) {
-        ch_reads
+        ch_megahit_in = ch_reads
             .filter { it[0].single_end }
             .map { meta, reads -> [meta, [reads], []] }
             .mix(
                 ch_reads.filter { !it[0].single_end }.map { meta, reads -> [meta, [reads[0]], [reads[1]]] }
             )
-            .set{megahit_in}
-        MEGAHIT(megahit_in)
+        MEGAHIT(ch_megahit_in)
         ch_versions          = ch_versions.mix(MEGAHIT.out.versions.first())
 
         EXTEND_MEGAHIT( ch_reads, MEGAHIT.out.contigs, "megahit")
@@ -81,54 +79,49 @@ workflow FASTQ_ASSEMBLY {
     }
 
     // ch_scaffolds, go from [[meta,scaffold1],[meta,scaffold2], ...] to [meta,[scaffolds]]
-    ch_scaffolds
+    ch_scaffolds_combined = ch_scaffolds
         .map { meta, scaffold  -> tuple( groupKey(meta, assemblers.size()), scaffold ) }
         .groupTuple(remainder: true)
-        .set{ch_scaffolds_combined}
 
-    ch_coverages
+    ch_coverages_combined = ch_coverages
         .map { meta, coverages  -> tuple( groupKey(meta, assemblers.size()), coverages ) }
         .groupTuple(remainder: true)
-        .set{ch_coverages_combined}
 
     CAT_ASSEMBLERS(ch_scaffolds_combined)
     ch_scaffolds = CAT_ASSEMBLERS.out.file_out
     ch_versions  =  ch_versions.mix(CAT_ASSEMBLERS.out.versions.first())
 
     // Filter out empty scaffolds, might cause certain processes to crash
-    ch_scaffolds
-        .branch { meta, scaffolds ->
+    ch_scaffolds_branched = ch_scaffolds
+        .branch { _meta, scaffolds ->
             pass: scaffolds.countFasta() > 0
             fail: scaffolds.countFasta() == 0
         }
-        .set{ch_scaffolds_branched}
 
-    good_assemblies = ch_scaffolds_branched.pass
-    bad_assemblies  = ch_scaffolds_branched.fail
+    ch_good_assemblies = ch_scaffolds_branched.pass
+    ch_bad_assemblies  = ch_scaffolds_branched.fail
 
     // Filter low complexity contigs with prinseq++
     if (!params.skip_contig_prinseq){
-        prinseq_in = good_assemblies.map{ meta, scaffolds -> [meta, [], scaffolds] }
+        ch_prinseq_in = ch_good_assemblies.map{ meta, scaffolds -> [meta, [], scaffolds] }
 
         PRINSEQ_CONTIG(
-            prinseq_in,
+            ch_prinseq_in,
         )
         ch_versions = ch_versions.mix(PRINSEQ_CONTIG.out.versions.first())
-        good_assemblies = PRINSEQ_CONTIG.out.good_reads
+        ch_good_assemblies = PRINSEQ_CONTIG.out.good_reads
     }
 
-    good_assemblies
-        .branch { meta, scaffolds ->
+    ch_good_assemblies_branched = ch_good_assemblies
+        .branch { _meta, scaffolds ->
             pass: scaffolds.countFasta() > 0
             fail: scaffolds.countFasta() == 0
         }
-        .set{good_assemblies_branched}
 
-    bad_assemblies = bad_assemblies.mix(good_assemblies_branched.fail)
-    noContigSamplesToMultiQC(bad_assemblies, assemblers)
+    ch_bad_assemblies = ch_bad_assemblies.mix(ch_good_assemblies_branched.fail)
+    ch_no_contigs = noContigSamplesToMultiQC(ch_bad_assemblies, assemblers)
         .collectFile(name:'samples_no_contigs_mqc.tsv')
-        .set{no_contigs}
-    ch_multiqc = ch_multiqc.mix(no_contigs.ifEmpty([]))
+    ch_multiqc = ch_multiqc.mix(ch_no_contigs.ifEmpty([]))
 
     emit:
     scaffolds            = ch_scaffolds           // channel: [ val(meta), [ scaffolds] ]

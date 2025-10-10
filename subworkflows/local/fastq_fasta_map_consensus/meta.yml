@@ -21,7 +21,7 @@ components:
   - bam_stats_filter
   - utils_nfcore_viralmetagenome_pipeline
 input:
-  - reference_reads:
+  - ch_reference_reads:
       description: |
         Input channel containing reference sequences and corresponding reads
         Structure: [ val(meta), path(fasta), path(fastq) ]
@@ -29,7 +29,7 @@ input:
       type: string
       description: |
         Mapping algorithm to use
-      enum: ["bwamem2", "bowtie2", "bwa"]
+      enum: ["bwamem2", "bowtie2"]
   - umi:
       type: boolean
       description: |

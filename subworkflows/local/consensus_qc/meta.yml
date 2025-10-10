@@ -30,19 +30,19 @@ input:
       description: |
         Original raw contigs for comparison with consensus sequences
         Structure: [ val(meta), path(genome) ]
-  - checkv_db:
+  - ch_checkv_db:
       description: |
         CheckV database for completeness and contamination assessment
         Structure: [ path(checkv_db) ]
-  - refpool_db:
+  - ch_refpool_db:
       description: |
         Reference pool database for BLAST similarity searches
         Structure: [ val(meta), path(refpool_db) ]
-  - annotation_db:
+  - ch_annotation_db:
       description: |
         Annotation database for MMseqs2 functional annotation
         Structure: [ val(meta), path(annotation_db) ]
-  - prokka_db:
+  - ch_prokka_db:
       description: |
         Prokka database for protein annotation
         Structure: [ val(meta), path(prokka_db) ]

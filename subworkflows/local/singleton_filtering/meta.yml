@@ -14,7 +14,7 @@ components:
   - utils_nfcore_viralmetagenome_pipeline
   - filtercontigs
 input:
-  - fasta:
+  - ch_fasta:
       description: |
         FASTA files containing singleton contigs to be filtered
         Structure: [ val(meta), path(fasta) ]

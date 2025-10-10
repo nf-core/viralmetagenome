@@ -24,17 +24,17 @@ process EXTRACT_PRECLUSTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def kaiju = kaiju_classifications ? "--kaiju-classifications  <(sort -k2,2 ${kaiju_classifications})" : ''
-    def kaiju_db = kaiju_db ? "--database ${kaiju_db}" : ''
+    def kaiju_db_argument = kaiju_db ? "--database ${kaiju_db}" : ''
     def kraken = kraken_classifications ? "--kraken-classifications <(sort -k2,2  ${kraken_classifications})" : ''
-    def kraken_report = kraken_report ? "--kraken-report ${kraken_report}" : ''
+    def kraken_report_argument = kraken_report ? "--kraken-report ${kraken_report}" : ''
 
     """
     extract_preclust.py \\
         $args \\
         ${kaiju} \\
         ${kraken} \\
-        ${kraken_report} \\
-        ${kaiju_db} \\
+        ${kraken_report_argument} \\
+        ${kaiju_db_argument} \\
         --sequences ${sequence} \\
         --prefix ${prefix}
 

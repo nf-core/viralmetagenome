@@ -5,7 +5,6 @@ keywords:
   - mapping
   - alignment
   - reads
-  - bwa
   - bwamem2
   - bowtie2
   - index
@@ -15,10 +14,8 @@ components:
   - bwamem2/mem
   - bowtie2/build
   - bowtie2/align
-  - bwa/index
-  - bwa/mem
 input:
-  - reference_reads:
+  - ch_reference_reads:
       description: |
         The input channel containing reference sequences and sequencing reads
         Structure: [ val(meta), path(fasta), path(reads) ]
@@ -26,7 +23,7 @@ input:
       type: string
       description: |
         The mapping algorithm to use
-      enum: ["bwamem2", "bowtie2", "bwa"]
+      enum: ["bwamem2", "bowtie2"]
 output:
   - bam:
       description: |

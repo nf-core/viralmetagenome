@@ -9,7 +9,6 @@
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.enable.dsl = 2
 params.global_prefix = getGlobalPrefix(workflow, params)
 def getGlobalPrefix(workflow,params) {
     def date_stamp = new java.util.Date().format( 'yyyyMMdd')
@@ -25,7 +24,7 @@ def getGlobalPrefix(workflow,params) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { VIRALMETAGENOME  } from './workflows/viralmetagenome'
+include { VIRALMETAGENOME         } from './workflows/viralmetagenome'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 /*
@@ -50,9 +49,6 @@ workflow NFCORE_VIRALMETAGENOME {
     VIRALMETAGENOME (
         samplesheet
     )
-
-    emit:
-    multiqc_report = VIRALMETAGENOME.out.multiqc_report // channel: /path/to/multiqc_report.html
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,8 +86,7 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        params.hook_url,
-        NFCORE_VIRALMETAGENOME.out.multiqc_report
+        params.hook_url
     )
 }
 

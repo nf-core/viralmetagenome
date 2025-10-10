@@ -7,13 +7,6 @@ Most of the plots are taken from the MultiQC report, which summarizes results at
 
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
-:::tip
-A global, partly random prefix can be created using the argument `--prefix <string>`. The following string will then be used as a prefix to all output files:
-`java
-    "<prefix_string>_<date>_<pipeline_version>_<workflow_runName>"
-    `
-:::
-
 ## Preprocessing
 
 All output files of the preprocessing steps can be found in the directory `preprocessing/`.
@@ -54,7 +47,7 @@ The FastQC plots displayed in the MultiQC report show _untrimmed_, _trimmed_, an
 
 :::
 
-By default, viralmetagenome will only provide the report and log files if fastp is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`. Similarly, the saving of the output reads can be enabled with `--save_trimmed_fail`.
+By default, nf-core/viralmetagenome will only provide the report and log files if fastp is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`. Similarly, the saving of the output reads can be enabled with `--save_trimmed_fail`.
 
 ### Trimmomatic
 
@@ -68,11 +61,11 @@ By default, viralmetagenome will only provide the report and log files if fastp 
 
 :::
 
-By default, viralmetagenome will only provide the report and log files if Trimmomatic is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`.
+By default, nf-core/viralmetagenome will only provide the report and log files if Trimmomatic is selected. The trimmed reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'trimming'`.
 
 ### UMI-deduplication
 
-UMI-deduplication can be done at the read level using [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html). Viralmetagenome also provides the opportunity to extract the UMI from the read using [`UMI-tools extract`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html#step-3--extract-the-umis) if the UMI is not in the header. Results will be stored in the `preprocessing/umi` directory.
+UMI-deduplication can be done at the read level using [`HUMID`](https://humid.readthedocs.io/en/latest/usage.html). nf-core/viralmetagenome also provides the opportunity to extract the UMI from the read using [`UMI-tools extract`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html#step-3--extract-the-umis) if the UMI is not in the header. Results will be stored in the `preprocessing/umi` directory.
 
 :::note{title="Output files" collapse}
 
@@ -87,13 +80,13 @@ UMI-deduplication can be done at the read level using [`HUMID`](https://humid.re
 
 :::
 
-By default, viralmetagenome will not assume reads have UMIs. To enable this, use the parameter `--with_umi`. Specify where UMI deduplication should occur with `--umi_deduplicate` if at a `read` level, on a `mapping` level, or `both` at a read and mapping level. The deduplicated reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'deduplication'`.
+By default, nf-core/viralmetagenome will not assume reads have UMIs. To enable this, use the parameter `--with_umi`. Specify where UMI deduplication should occur with `--umi_deduplicate` if at a `read` level, on a `mapping` level, or `both` at a read and mapping level. The deduplicated reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'deduplication'`.
 
 ### BBDuk
 
 [BBDuk](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/) stands for Decontamination Using Kmers. BBDuk was developed to combine most common data-quality-related trimming, filtering, and masking operations into a single high-performance tool.
 
-It is used in viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
+It is used in nf-core/viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
 
 :::note{title="Output files" collapse}
 
@@ -103,11 +96,11 @@ It is used in viralmetagenome for complexity filtering using different algorithm
 
 :::
 
-By default, viralmetagenome will only provide the log files of BBDuk. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
+By default, nf-core/viralmetagenome will only provide the log files of BBDuk. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
 
 ### prinseq++
 
-[`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used in viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
+[prinseq++](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used in nf-core/viralmetagenome for complexity filtering using different algorithms. This means that it will remove reads with low sequence diversity (e.g., mono- or dinucleotide repeats).
 
 :::note{title="Output files" collapse}
 
@@ -117,7 +110,7 @@ By default, viralmetagenome will only provide the log files of BBDuk. The filter
 
 :::
 
-By default, viralmetagenome will only provide the log files of prinseq. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
+By default, nf-core/viralmetagenome will only provide the log files of prinseq++. The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'complexity'`.
 
 ### Hostremoval-Kraken2
 
@@ -131,7 +124,7 @@ By default, viralmetagenome will only provide the log files of prinseq. The filt
 
 :::
 
-By default, viralmetagenome will only provide the log files of Kraken2 which are visualized in [MultiQC](#multiqc). The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'host'`.
+By default, nf-core/viralmetagenome will only provide the log files of Kraken2 which are visualized in [MultiQC](#multiqc). The filtered reads can be saved by specifying `--save_intermediate_reads` or `--save_final_reads 'host'`.
 
 ## Metagenomic Diversity
 
@@ -153,7 +146,8 @@ The results of the metagenomic diversity analysis are stored in the directory `m
 
 :::
 
-> By default, viralmetagenome will provide any classified or unclassified fastq files, specify this with `--kraken2_save_reads`. Similarly, for the classified reads table, specify this with `--kraken2_save_readclassification`.
+> [!INFO]
+> By default, nf-core/viralmetagenome will provide any classified or unclassified fastq files, specify this with `--kraken2_save_reads`. Similarly, for the classified reads table, specify this with `--kraken2_save_readclassification`.
 
 ### Kaiju
 
@@ -178,7 +172,7 @@ The results of the metagenomic diversity analysis are stored in the directory `m
 
 :::
 
-![Krona example COVID](images/krona_covid.png){: .center}
+![Krona example COVID](images/krona_covid.png)
 
 ## Assembly & Polishing
 
@@ -196,29 +190,30 @@ Multiple assemblers [spades, trinity, megahit] can be used which have their resu
   - `spades/<spades_mode>/`
     - `contigs/<sample-id>_spades.fa.gz`: Contigs generated by SPAdes.
     - `log/<sample-id>_spades.log`: Directory containing the log file of the SPAdes run.
-  - `quast/<sample-id>_spades.tsv`: Directory containing the QUAST report. - `trinity/` - `contigs/<sample-id>_trinity.fa.gz`: Contigs generated by Trinity. - `quast/<sample-id>_trinity.tsv`: Directory containing the QUAST report - `megahit/` - `contigs/<sample-id>_megahit.fa.gz`: Contigs generated by Megahit. - `quast/<sample-id>_megahit.tsv`: Directory containing the QUAST report.
+    - `quast/<sample-id>_spades.tsv`: Directory containing the QUAST report.
+  - `trinity/`
+    - `contigs/<sample-id>_trinity.fa.gz`: Contigs generated by Trinity.
+    - `quast/<sample-id>_trinity.tsv`: Directory containing the QUAST report.
+  - `megahit/`
+    - `contigs/<sample-id>_megahit.fa.gz`: Contigs generated by Megahit.
+    - `quast/<sample-id>_megahit.tsv`: Directory containing the QUAST report.
+  - `tools_combined/<sample-id>.combined.fa`: Contigs generated by combining the results of the assemblers.
 
 :::
 
 QUAST results are also summarized and plotted in the MultiQC report.
 
-![MultiQC - QUAST assembly statistics](images/mqc_quast.png){: .center}
-
-Finally, the results of the assemblers are combined and stored in the `tools_combined/` directory.
-
-:::abstract{title="Output files" collapse}
-
-- `assemblers` - `tools_combined/<sample-id>.combined.fa`: Contigs generated by combining the results of the assemblers.
-
-:::
+![MultiQC - QUAST assembly statistics](images/mqc_quast.png)
 
 ### SSPACE Basic
 
 [SSPACE Basic](https://github.com/nsoranzo/sspace_basic) is a tool for scaffolding contigs using paired-end reads. It is modified from the SSAKE assembler and has the feature of extending contigs using reads that are unmappable in the contig assembly step.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
-- `sspace_basic/` - `scaffolds/<sample-id>.scaffolds.fasta`: Scaffolds generated by SSPACE Basic. - `log/<sample-id>.*.txt`: Various txt files containing log and summary information on the SSPACE Basic run.
+- `sspace_basic/`
+- `scaffolds/<sample-id>.scaffolds.fasta`: Scaffolds generated by SSPACE Basic.
+- `log/<sample-id>.*.txt`: Various txt files containing log and summary information on the SSPACE Basic run.
 
 :::
 
@@ -226,7 +221,7 @@ Finally, the results of the assemblers are combined and stored in the `tools_com
 
 [`prinseq++`](https://github.com/Adrian-Cantu/PRINSEQ-plus-plus) is used for complexity filtering of contigs.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `prinseq/`
   - `scaffolds/<sample-id>.scaffolds.fasta`: Scaffolds generated by SSPACE Basic.
@@ -236,9 +231,9 @@ Finally, the results of the assemblers are combined and stored in the `tools_com
 
 ### BLAST
 
-[BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) is a sequence comparison tool that can be used to compare a query sequence against a database of sequences. In viralmetagenome, BLAST is used to compare the contigs generated by the assemblers to a database of viral sequences.
+[BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) is a sequence comparison tool that can be used to compare a query sequence against a database of sequences. In nf-core/viralmetagenome, BLAST is used to compare the contigs generated by the assemblers to a database of viral sequences.
 
-By default, viralmetagenome will only provide the BLAST results in a tabular format. It will have selected only for the top five hits and will also have a filtered version where it will only include hits with an e-value of 0.01 or lower, a bitscore of 50 or higher, and an alignment percentage of 0.80 or higher.
+By default, nf-core/viralmetagenome will only provide the BLAST results in a tabular format. It will have selected only for the top five hits and will also have a filtered version where it will only include hits with an e-value of 0.01 or lower, a bitscore of 50 or higher, and an alignment percentage of 0.80 or higher.
 
 :::info{title="Column names" collapse}
 
@@ -260,7 +255,7 @@ By default, viralmetagenome will only provide the BLAST results in a tabular for
 
 :::
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/`
   - `blast/<sample-id>_filter.tsv`: Filtered BLAST results in tabular format.
@@ -269,7 +264,8 @@ By default, viralmetagenome will only provide the BLAST results in a tabular for
 
 :::
 
-> By default, viralmetagenome will only provide the filtered blast.txt file. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> [!INFO]
+> By default, nf-core/viralmetagenome will only provide the filtered blast.txt file. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### Preclustering - Kaiju & Kraken2
 
@@ -277,7 +273,7 @@ By default, viralmetagenome will only provide the BLAST results in a tabular for
 
 [Kraken2](https://ccb.jhu.edu/software/kraken2/) is a taxonomic sequence classifier that assigns taxonomic labels to DNA sequences. Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database. That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/intermediate/precluster`
   - `kaiju/<sample-id>_kaiju.tsv`: Raw output from Kaiju with taxonomic rank, read ID, and taxonomic ID.
@@ -288,13 +284,14 @@ By default, viralmetagenome will only provide the BLAST results in a tabular for
 
 :::
 
-> By default, viralmetagenome will not provide any preclustering files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> [!INFO]
+> By default, nf-core/viralmetagenome will not provide any preclustering files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### Clustering
 
 The output files of each clustering method are directly put in the `assembly/polishing` directory, with the exception of a summary file that is generated by the pipeline for each cluster with the size of the cluster, the centroid, etc.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/intermediate/cluster/`
   - `<sample-id>/<sample-id>.summary_mqc.tsv`: A tabular file with comments used for [MultiQC](#multiqc) with statistics on the number of identified clusters in a sample.
@@ -306,13 +303,14 @@ The output files of each clustering method are directly put in the `assembly/pol
 Whenever there is a 'cl#' in the file name, it refers to the cluster number of that sample.
 :::
 
-> By default, viralmetagenome will not provide any clustering overview files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> [!INFO]
+> By default, nf-core/viralmetagenome will not provide any clustering overview files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 #### CD-HIT-EST
 
 [CD-HIT](https://github.com/weizhongli/cdhit) is a very fast, widely used program for clustering and comparing protein or nucleotide sequences.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/cdhit/`
   - `<sample-id>/<sample-id>.fa.clstr`: A cluster file containing the clustering information. where ">" starts a new cluster, a "\*" at the end means that this sequence is the representative or centroid of this cluster, and a "%" is the identity between this sequence and the representative.
@@ -324,7 +322,7 @@ Whenever there is a 'cl#' in the file name, it refers to the cluster number of t
 
 [vsearch](https://github.com/torognes/vsearch) implements a single-pass, greedy centroid-based clustering algorithm, similar to the algorithms implemented in usearch, DNAclust, and sumaclust for example. The output has to be in the `--uc` format or else the pipeline will not be able to process the output.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/vsearch/`
   - `<sample-id>/<sample-id>.tsv.gz`: A cluster file containing the clustering information.
@@ -349,7 +347,7 @@ Whenever there is a 'cl#' in the file name, it refers to the cluster number of t
 
 [MMseqs2](https://github.com/soedinglab/MMseqs2/wiki) is a software suite to search and cluster huge protein and nucleotide sequence sets. The cascaded clustering workflow (`mmseqs-cluster`) first runs linclust, the linear-time clustering module of mmseqs (`mmseqs-linclust`), that can produce clustering’s down to 50% sequence identity in very short time.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/`
   - `mmseqs2/<sample-id>/<sample-id>.tsv`: A cluster file containing the clustering information. Where the first column is the cluster representative and the second column the member.
@@ -362,7 +360,7 @@ Whenever there is a 'cl#' in the file name, it refers to the cluster number of t
 
 [vRhyme](https://github.com/AnantharamanLab/vRhyme) is a multi-functional tool for binning virus genomes from metagenomes. vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs).
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/vrhyme`
   - `<sample-id>/vRhyme_best_bins.#.membership.tsv`: scaffold membership of best bins.
@@ -374,7 +372,7 @@ Whenever there is a 'cl#' in the file name, it refers to the cluster number of t
 
 [Mash](https://github.com/marbl/Mash) calculates the distance between two sequences based on the jaccard distance. The Mash distance can be quickly computed from the size-reduced sketches alone, yet produces a result that strongly correlates with alignment-based measures such as the Average Nucleotide Identity (ANI).
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/mash`
   - `<sample-id>/dist/*.tsv`: A distance matrix of the genomes with ANI.
@@ -385,7 +383,7 @@ Whenever there is a 'cl#' in the file name, it refers to the cluster number of t
 
 The network of a triple segmented Hazara virus looks like this, each node represents a contig colored on cluster. The edge represents that the ANI is higher than the specified `--identity_threshold`.
 
-![mash HAZV example image](images/mash_HAZV_example.png){: .center}
+![mash HAZV example image](images/mash_HAZV_example.png)
 
 :::info{title="What are those names?"}
 Most assemblers tend to give each contig name a specific prefix. For example,
@@ -396,13 +394,13 @@ Most assemblers tend to give each contig name a specific prefix. For example,
 
 :::
 
-Based on these prefixes viralmetagenome separates external references from denovo contigs. If any assemblers are added, consider specifying a specific regex for `--assembler_patterns`.
+Based on these prefixes nf-core/viralmetagenome separates external references from denovo contigs. If any assemblers are added, consider specifying a specific regex for `--assembler_patterns`.
 
 ### Minimap2
 
 [Minimap2](https://github.com/lh3/minimap2) is a versatile sequence alignment program that aligns larger DNA or mRNA sequences against a large reference database.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/scaffolding/<sample-id>/minimap`
   - `<sample-id>_cl#.bam`: A BAM file containing the alignment of contigs to the centroid.
@@ -410,33 +408,23 @@ Based on these prefixes viralmetagenome separates external references from denov
 
 :::
 
-> By default, viralmetagenome will not provide the minimap output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
+> [!INFO]
+> By default, nf-core/viralmetagenome will not provide the minimap output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
-### iVar contig consensus
+### iVar contig consensus (scaffolding)
 
 [iVar](https://andersen-lab.github.io/ivar/html/manualpage.html#autotoc_md19) is a computational method for calling consensus sequences from viral populations.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `polishing/scaffolding/<sample-id>`
   - `<sample-id>_cl#_consensus.fa`: A fasta file containing the consensus sequence of the cluster.
   - `<sample-id>_cl#_consensus.mpileup`: A mpileup file containing depth at each position of the consensus sequence.
-  - `hybrid-<sample-id>_cl#_consensus.fa`: A fasta file containing the hybrid consensus sequence of the cluster and the reference.
-  - `/visualised/`
-    - `*.png`: A visualization of the consensus sequence displaying which regions came from the reference and which from the contigs.
-    - `*.txt`: The alignment of the reference to the consensus sequence written as a blast alignment.
 
 :::
 
-> By default, viralmetagenome will not provide the iVar output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
-
-A visualization is made to show which regions came from the external reference (red) and which from the denovo contigs (green). For example,
-
-![iVar visualization example](images/hybrid_consensus_scaffolding.png){: .center}
-
-:::info
-The hybrid consensus is generated by mapping the contigs to the reference and then calling the consensus sequence. This is done to fill in the gaps in the contigs with the reference sequence, if there are no positions with 0 coverage there will not be a hybrid consensus and the output from iVar will be used.
-:::
+> [!INFO]
+> By default, nf-core/viralmetagenome will not provide the iVar output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ## Variant Calling & Iterative Refinement
 
@@ -449,7 +437,7 @@ Mapping constraints are combined with the specified samples, here, the identifie
 The results from the iterations are stored with the same structure as the final round of polishing in the `assembly/polishing/iterations/it#` directory.
 
 :::info
-To be able to make a distinction between the output files of the iterations, viralmetagenome follows a schema where it starts from `singletons` or a `consensus` goes through the iterations and ends with the `variant-calling`. The output files will have the following structure:
+To be able to make a distinction between the output files of the iterations, nf-core/viralmetagenome follows a schema where it starts from `singletons` or a `consensus`, goes through the iterations and ends with the `variant-calling`. The output files will have the following structure:
 
 ```mermaid
 graph LR
@@ -465,9 +453,9 @@ The prefix of the sample is combined with the previous state of the sample. For 
 
 ### Reference selection
 
-The reference selection is done using [`mash`](https://mash.readthedocs.io/en/latest/index.html) tool. Here the reference file is sketched (`variants/mapping-info/mash/sketch`) and compared to the reads (`variants/mapping-info/mash/screen`) where the reference with the highest estimated average nucleotide identity (ANI) and shared hashes is selected (`variants/mapping-info/mash/select-ref`).
+The reference selection is done using [`Mash`](https://mash.readthedocs.io/en/latest/index.html) tool. Here the reference file is sketched (`variants/mapping-info/mash/sketch`) and compared to the reads (`variants/mapping-info/mash/screen`) where the reference with the highest estimated average nucleotide identity (ANI) and shared hashes is selected (`variants/mapping-info/mash/select-ref`).
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `variants/mapping-info/mash`
   - `sketch/<sample-id>_<constraint-id>.msh`: The sketch file of the reads.
@@ -491,11 +479,11 @@ The reference selection is done using [`mash`](https://mash.readthedocs.io/en/la
 
 The mapping results are stored in the directory `variants/mapping-info/` or in the iterations directory `assembly/polishing/iterations/it#`.
 
-If bowtie is used, the output from the raw mapping results (in addition to the results after deduplication) are included in the multiqc report.
+If Bowtie2 is used, the output from the raw mapping results (in addition to the results after deduplication) are included in the multiqc report.
 
 ![MultiQC - Bowtie2 alignment score plot](images/mqc_bowtie2_plot.png)
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/`
   - `bwamem2/`
@@ -514,20 +502,16 @@ If bowtie is used, the output from the raw mapping results (in addition to the r
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/`
   - `bwamem2/`
     - `index/<sample-id>/*`: The index files of the consensus.
     - `bam/<sample-id>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
     - `unmapped/<sample-id>/<sample-id>_cl#_it#.fastq.gz`: A fastq file containing the unmapped reads.
-  - `bwamem/`
-    - `index/<sample-id>/*`: The index files of the consensus.
-    - `bam/<sample-id>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
-    - `unmapped/<sample-id>/<sample-id>_cl#_it#.fastq.gz`: A fastq file containing the unmapped reads.
   - `bowtie2/`
     - `build/<sample-id>/*`: The index files of the consensus.
-    - `bam/<sample-id>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
+    - `bam/<sample-pid>/<sample-id>_cl#_it#.bam`: A BAM file containing the alignment of contigs to the consensus.
     - `unmapped/<sample-id>/<sample-id>_cl#_it#.fastq.gz`: A fastq file containing the unmapped reads.
     - `log/<sample-id>_cl#_it#.log`: A log file of the bowtie2 run.
 
@@ -544,12 +528,12 @@ Deduplication results are also visualized within the MultiQC report.
 [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html) is a set of tools for handling Unique Molecular Identifiers (UMIs) in NGS data. The deduplication is done by the `dedup` tool.
 
 **Number of deduplicated reads**:
-![MultiQC - UMI-tools deduplication plot](images/mqc_umitools_deduplication_barplot.png){.center}
+![MultiQC - UMI-tools deduplication plot](images/mqc_umitools_deduplication_barplot.png)
 
 **Summary statistics**:
-![MultiQC - UMI-tools violin plot](images/mqc_umitools_stats_violin.png){.center}
+![MultiQC - UMI-tools violin plot](images/mqc_umitools_stats_violin.png)
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/deduplicate/`
   - `bam/<sample-id>/<sample-id>_<constraint-id>-CONSTRAINT.umi_deduplicated.bam`: A BAM file containing the alignment of contigs to the consensus.
@@ -561,7 +545,7 @@ Deduplication results are also visualized within the MultiQC report.
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/deduplicate`
   - `bam/<sample-id>/<sample-id>_cl#_it#.umi_deduplicated.bam`: A BAM file containing the alignment of contigs to the consensus.
@@ -579,7 +563,7 @@ Deduplication results are also visualized within the MultiQC report.
 
 ![MultiQC - Picard deduplication plot](images/mqc_picard_deduplication.png)
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/deduplicate/`
   - `picard/`
@@ -588,7 +572,7 @@ Deduplication results are also visualized within the MultiQC report.
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/deduplicate`
   - `picard/`
@@ -607,10 +591,10 @@ If `--deduplicate` is set to `true` [default], all metrics will be calculated on
 
 [Samtools](http://www.htslib.org/) is a suite of programs for interacting with high-throughput sequencing data. We use samtools in this pipeline to obtain mapping statistics from three tools: `flagstat`, `idxstats` and `stats`.
 
-![MultiQC - Samtools stats statistics](images/mqc_samtools_alignment_plot.png){.center}
-![MultiQC - Samtools flagstat statistics](images/mqc_samtools-flagstat-dp.png){.center}
+![MultiQC - Samtools stats statistics](images/mqc_samtools_alignment_plot.png)
+![MultiQC - Samtools flagstat statistics](images/mqc_samtools-flagstat-dp.png)
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/metrics`
   - `flagstat/<sample-id>_<constraint-id>-CONSTRAINT.flagstat`: A text file containing the flagstat output.
@@ -619,7 +603,7 @@ If `--deduplicate` is set to `true` [default], all metrics will be calculated on
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/metrics`
   - `flagstat/<sample-id>_cl#_it#.flagstat`: A text file containing the flagstat output.
@@ -632,7 +616,7 @@ If `--deduplicate` is set to `true` [default], all metrics will be calculated on
 
 [`Picard`](https://broadinstitute.github.io/picard/) is a set of command line tools for manipulating high-throughput sequencing data. We use picard-tools in this pipeline to obtain mapping and coverage metrics.
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/metrics/picard`
   - `*.CollectMultipleMetrics.*`: Alignment QC files from picard CollectMultipleMetrics in `*_metrics` textual format.
@@ -640,7 +624,7 @@ If `--deduplicate` is set to `true` [default], all metrics will be calculated on
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/metrics/picard`
   - `*.CollectMultipleMetrics.*`: Alignment QC files from picard CollectMultipleMetrics in `*_metrics` textual format.
@@ -657,14 +641,14 @@ To facilitate the intra host analysis, a mpileup like file is generated. This fi
 
 Where $N$ is the total bases at a position, $k$ is the pseudocount (default 50), and $p_i$ is the frequency of the nucleotide $i$.
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/custom-vcf/<sample-id>`
   - `*.tsv`: A custom tsv file containing the depth of every nucleotide at each position of the reference.
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/custom-vcf/<sample-id>`
   - `*.tsv`: A custom tsv file containing the depth of every nucleotide at each position of the reference.
@@ -675,10 +659,10 @@ Where $N$ is the total bases at a position, $k$ is the pseudocount (default 50),
 
 [mosdepth](https://github.com/brentp/mosdepth) is a fast BAM/CRAM depth calculation for WGS, exome, or targeted sequencing. mosdepth is used in this pipeline to obtain genome-wide coverage values in 200bp windows. The results are rendered in MultiQC (genome-wide coverage).
 
-![MultiQC - Mosdepth cumulative coverage plot](images/mqc_mosdepth-cumcoverage-dist-id.png){.center}
-![MultiQC - Mosdepth coverage plot](images/mqc_mosdepth-coverage-per-contig-single.png){.center}
+![MultiQC - Mosdepth cumulative coverage plot](images/mqc_mosdepth-cumcoverage-dist-id.png)
+![MultiQC - Mosdepth coverage plot](images/mqc_mosdepth-coverage-per-contig-single.png)
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/mapping-info/metrics/mosdepth`
   - `<sample-id>_<constraint-id>-CONSTRAINT.per-base.bed.gz`: A bed file containing the coverage values in 200bp windows.
@@ -688,7 +672,7 @@ Where $N$ is the total bases at a position, $k$ is the pseudocount (default 50),
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/metrics/mosdepth`
   - `<sample-id>_cl#_it#.per-base.bed.gz`: A bed file containing the coverage values in 200bp windows.
@@ -700,13 +684,13 @@ Where $N$ is the total bases at a position, $k$ is the pseudocount (default 50),
 
 ### Variant calling & filtering
 
-Variant calling is done with [`BCFTools mpileup`](http://samtools.github.io/bcftools/bcftools.html) or [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), the filtering with `BCFtools filter`.
+Variant calling is done with [`BCFtools mpileup`](http://samtools.github.io/bcftools/bcftools.html) or [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html), the filtering with `BCFtools filter`.
 
 Variant files are visualized in the MultiQC report.
 
-![MultiQC - BCFTools variant calling plot](images/mqc_bcftools-stats-subtypes.png){.center}
+![MultiQC - BCFtools variant calling plot](images/mqc_bcftools-stats-subtypes.png)
 
-:::abstract{title="Output files - variants" collapse}
+:::note{title="Output files - variants" collapse}
 
 - `variants/variant_calling`
   - `bcftools/`
@@ -724,7 +708,7 @@ Variant files are visualized in the MultiQC report.
 
 :::
 
-:::abstract{title="Output files - iterations" collapse}
+:::note{title="Output files - iterations" collapse}
 
 - `assembly/polishing/iterations/it#/variants/variant_calling`
   - `bcftools/`
@@ -746,7 +730,7 @@ Variant files are visualized in the MultiQC report.
 
 Variant annotation is performed with [`SnpEff`](https://pcingola.github.io/SnpEff/) to predict the functional effects of identified variants, and [`SnpSift`](https://pcingola.github.io/SnpEff/SnpSift.html) to extract information from the annotated variants into a tabular format.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `variants/annotation/`
   - `<sample-id>/<sample-id>_<constraint-id>-CONSTRAINT.ann.vcf.gz`: A VCF file with annotated variants showing their predicted functional effects.
@@ -766,15 +750,16 @@ The SnpEff annotation provides valuable information about variants, including:
 - Changes at the amino acid level (protein impact)
 - Location within gene features (exon, intron, etc.)
 
+> [!INFO]
 > By default, variant annotation is enabled. It can be skipped with `--skip_vcf_annotation`.
 
 ### Consensus generation
 
-The consensus sequences are generated by [`BCFTools`](http://samtools.github.io/bcftools/bcftools.html) or [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html). The consensus sequences are stored in the directory `consensus/` or in the iterations directory `assembly/polishing/iterations/it#/consensus`.
+The consensus sequences are generated by [`BCFtools`](http://samtools.github.io/bcftools/bcftools.html) or [`iVar`](https://andersen-lab.github.io/ivar/html/manualpage.html). The consensus sequences are stored in the directory `consensus/` or in the iterations directory `assembly/polishing/iterations/it#/consensus`.
 
 `BCFtools` will use the filtered variants file whereas, `iVar` will redetermine the variants to collapse in the consensus using their own workflow, read more about their differences in the [consensus calling section](./workflow/variant_and_refinement.md#4-consensus-calling).
 
-:::abstract{title="Output files - iterations & variants" collapse}
+:::note{title="Output files - iterations & variants" collapse}
 
 - `consensus`
   - `seq/<it# | scaffold_consensus | variant-calling | constraint>/ `
@@ -794,20 +779,21 @@ Consensus quality control is done with multiple tools, the results are stored in
 
 [QUAST](http://quast.sourceforge.net/) is a quality assessment tool for genome assemblies. It calculates various metrics such as N50, L50, number of contigs, number of mismatches, number of indels, etc.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `consensus/quality_control/quast/`
   - `<sample-id>/<iteration>/<sample-id>_<cl# | constraint-id>.tsv`: A tabular file containing the QUAST report.
 
 :::
 
+> [!INFO]
 > If no iterative refinement was run, the output will be in the `consensus/quality_control/quast/<sample-id>/constraint` directory.
 
 ### CheckV
 
 [`CheckV`](https://bitbucket.org/berkeleylab/checkv/src/master/) is a tool for assessing the quality of viral genomes recovered from metagenomes. It calculates various metrics such as the number of viral genes, the number of viral contigs, the number of viral genomes, etc.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `consensus/quality_control/checkv/`
   - `<sample-id>/<sample-id>_<cl# | constraint-id>/quality_summary.tsv`: A tabular file that integrates the results from the three main modules of checkv and should be the main output referred to.
@@ -821,7 +807,7 @@ Consensus quality control is done with multiple tools, the results are stored in
 
 [`Prokka`](https://github.com/tseemann/prokka) is a whole genome annotation pipeline for identifying features of interest in a set of genomic DNA sequences, and labelling them with useful information. Prokka is a software tool to annotate bacterial, archaeal and viral genomes.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `consensus/quality_control/prokka/`
   - `<sample-id>/<iteration>/\* directories containing the prokka output files.
@@ -852,13 +838,13 @@ Consensus quality control is done with multiple tools, the results are stored in
 
 :::
 
-::: tip{title= "Modifying blast columns"}
+:::tip{title= "Modifying blast columns"}
 
 Modifying these columns can be done through a custom config file and by updating `bin/utils/constant_variables.py`.
 
 :::
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `consensus/quality_control/blast/` A tabular file containing the BLAST report of all intermediate & final results.
 
@@ -866,7 +852,7 @@ Modifying these columns can be done through a custom config file and by updating
 
 ### MMseqs-search (annotation)
 
-[MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases. Viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virousarus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](customisation/databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that is embedded within the database.
+[MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases. nf-core/viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virosaurus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](customisation/databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that is embedded within the database.
 
 :::info{title="Column names" collapse}
 
@@ -894,7 +880,7 @@ Modifying these columns can be done through a custom config file and by updating
 
 :::
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `consensus/quality_control/mmseqs-search/all_genomes_annotation.hits.tsv`: A tabular file containing the MMseqs-search hits, all genomes are combined to reduce the number of jobs.
 
@@ -911,7 +897,7 @@ It is used to align the following genomic data:
 - The denovo contigs from each assembler (that constituted the final consensus genome)
 - Each consensus genome from the iterative refinement steps.
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `consensus/quality_control/mafft/`
   - `<sample-id>/<sample_id>_cl#_iterations.fas`: A fasta file containing a multiple sequence alignment of only the iterations.
@@ -921,17 +907,17 @@ It is used to align the following genomic data:
 
 Alignment can then be opened with MSA viewer, for example Jalview
 
-![MSA alignment jalview](images/mafft_example_alignment_jalview.png){.center}
+![MSA alignment jalview](images/mafft_example_alignment_jalview.png)
 
 ## MultiQC
 
 [MultiQC](http://multiqc.info) is a visualization tool that generates a single HTML report summarizing all samples in your project. Most of the pipeline QC results are visualized in the report and further statistics are available in the report data directory.
 
-Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
+Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>. For an example report, see the [example output](https://github.com/nf-core/viralmetagenome/tree/dev/assets/test_full-multiqc_report.html).
 
-Furthermore, viralmetagenome runs MultiQC 2 times, as it uses the output from multiqc to create multiple summary tables of the consensus genomes and their iterations.
+Furthermore, nf-core/viralmetagenome runs MultiQC 2 times, as it uses the output from multiqc to create multiple summary tables of the consensus genomes and their iterations.
 
-:::abstract{title="Output files Multiqc" collapse}
+:::note{title="Output files Multiqc" collapse}
 
 - `multiqc/`
   - `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
@@ -940,7 +926,7 @@ Furthermore, viralmetagenome runs MultiQC 2 times, as it uses the output from mu
 
 :::
 
-:::abstract{title="Custom overview tables" collapse}
+:::note{title="Custom overview tables" collapse}
 
 - `overview-tables/`: a directory with a set of summary TSV files.
   - `contigs_overview_with_iterations.tsv`: A tabular file containing the contig information of the final **contig consensus** genome and their intermediate iterations.
@@ -950,7 +936,7 @@ Furthermore, viralmetagenome runs MultiQC 2 times, as it uses the output from mu
 
 :::
 
-:::abstract{title="Output files" collapse}
+:::note{title="Output files" collapse}
 
 - `pipeline_info/`
 - Reports generated by Nextflow: `execution_report.html`, `execution_timeline.html`, `execution_trace.txt` and `pipeline_dag.dot`/`pipeline_dag.svg`.

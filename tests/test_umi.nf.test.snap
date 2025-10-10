@@ -3,6 +3,15 @@
         "content": [
             166,
             {
+                "BCFTOOLS_FILTER": {
+                    "bcftools": 1.21
+                },
+                "BCFTOOLS_SORT": {
+                    "bcftools": 1.21
+                },
+                "BCFTOOLS_STATS": {
+                    "bcftools": 1.21
+                },
                 "BLASTN_QC": {
                     "blast": "2.16.0+"
                 },
@@ -28,6 +37,11 @@
                 "CONTIG_INDEX": {
                     "samtools": 1.21
                 },
+                "CUSTOM_MPILEUP": {
+                    "pysam": "0.22.1",
+                    "numpy": "1.26.4",
+                    "pysamstats": "1.1.2"
+                },
                 "FASTP": {
                     "fastp": "0.24.0"
                 },
@@ -43,6 +57,16 @@
                 "HUMID": {
                     "humid": "1.0.4"
                 },
+                "IVAR_CONSENSUS": {
+                    "ivar": "1.4.4"
+                },
+                "IVAR_VARIANTS": {
+                    "ivar": "1.4.4",
+                    "samtools": 1.21
+                },
+                "IVAR_VARIANTS_TO_VCF": {
+                    "python": "3.9.12"
+                },
                 "MASH_SCREEN": {
                     "mash": 2.3
                 },
@@ -54,6 +78,12 @@
                 },
                 "MMSEQS_EASYSEARCH": {
                     "mmseqs": "17.b804f"
+                },
+                "MOSDEPTH": {
+                    "mosdepth": "0.3.10"
+                },
+                "PICARD_COLLECTMULTIPLEMETRICS": {
+                    "picard": "3.3.0"
                 },
                 "PRINSEQ_CONTIG": {
                     "prinseqplusplus": 1.2
@@ -70,6 +100,24 @@
                 "QUAST_QC": {
                     "quast": "5.3.0"
                 },
+                "RENAME_FASTA_HEADER_CALLED_CONSENSUS": {
+                    "sed": 4.7
+                },
+                "SAMTOOLS_FAIDX": {
+                    "samtools": 1.21
+                },
+                "SAMTOOLS_FLAGSTAT": {
+                    "samtools": 1.21
+                },
+                "SAMTOOLS_IDXSTATS": {
+                    "samtools": 1.21
+                },
+                "SAMTOOLS_INDEX": {
+                    "samtools": 1.21
+                },
+                "SAMTOOLS_STATS": {
+                    "samtools": 1.21
+                },
                 "SELECT_REFERENCE": {
                     "python": "3.9.21",
                     "pandas": "2.2.3",
@@ -78,11 +126,17 @@
                 "SPADES": {
                     "spades": "4.1.0"
                 },
+                "TABIX_TABIX": {
+                    "tabix": 1.21
+                },
+                "UMITOOLS_DEDUP": {
+                    "umitools": "1.1.5"
+                },
                 "UMITOOLS_EXTRACT": {
                     "umitools": "1.1.5"
                 },
                 "Workflow": {
-                    "nf-core/viralmetagenome": "v0.1.3dev"
+                    "nf-core/viralmetagenome": "v1.0.0"
                 }
             }
         ],
@@ -90,7 +144,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T10:25:07.126992096"
+        "timestamp": "2025-09-22T16:36:51.114132576"
     },
     "multiqc": {
         "content": [
@@ -190,7 +244,6 @@
                 "humid-neighbours.txt:md5,94599b0b9a5de87abce58d9516abb747",
                 "multiqc_bcftools_stats.yaml:md5,453adcfa8c7ba34d651a09b9d60665c6",
                 "multiqc_citations.txt:md5,368223ca0f14ca0d5eebe0b8cc7e5b00",
-                "multiqc_fastp.yaml:md5,8ffa13b4df9b571e248f6c47615d6b95",
                 "multiqc_humid_clusters.yaml:md5,224e6df05368f3905be3b1f2ca439b67",
                 "multiqc_humid_counts.yaml:md5,224e6df05368f3905be3b1f2ca439b67",
                 "multiqc_humid_neighbours.yaml:md5,fcb412190e9956040392e54b6119222e",
@@ -211,6 +264,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-22T10:25:07.186969788"
+        "timestamp": "2025-09-22T16:36:51.13610396"
     }
 }

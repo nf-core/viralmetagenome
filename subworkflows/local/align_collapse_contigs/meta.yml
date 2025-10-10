@@ -13,9 +13,7 @@ components:
   - minimap2/index
   - ivar/consensus
   - rename_fasta_header
-  - nocov_to_reference
   - rename/fasta/header
-  - nocov/to/reference
 input:
   - ch_references_members:
       description: |

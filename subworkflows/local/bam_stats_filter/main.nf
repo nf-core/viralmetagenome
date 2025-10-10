@@ -20,7 +20,7 @@ workflow BAM_STATS_FILTER {
     SAMTOOLS_INDEX ( ch_bam )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
-    stats_in = ch_bam
+    ch_stats_in = ch_bam
         .join(SAMTOOLS_INDEX.out.bai, by: [0])
         .join(ch_reference, by: [0])
         .multiMap{ meta, bam, bai, ref ->
@@ -28,10 +28,10 @@ workflow BAM_STATS_FILTER {
             ref : [meta, ref ]
         }
 
-    SAMTOOLS_STATS ( stats_in.bam_bai, stats_in.ref )
+    SAMTOOLS_STATS ( ch_stats_in.bam_bai, ch_stats_in.ref )
     ch_versions = ch_versions.mix(SAMTOOLS_STATS.out.versions.first())
 
-    SAMTOOLS_STATS
+    ch_bam_filtered = SAMTOOLS_STATS
         .out
         .stats
         .join(ch_bam, by: [0] )
@@ -42,7 +42,6 @@ workflow BAM_STATS_FILTER {
             fail: mapped_reads <= min_mapped_reads
                 return [ meta, bam, mapped_reads ]
         }
-        .set{ ch_bam_filtered }
 
     bam_pass = ch_bam_filtered.pass
     bam_fail = ch_bam_filtered.fail

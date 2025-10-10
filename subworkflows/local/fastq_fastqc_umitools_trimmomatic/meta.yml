@@ -16,7 +16,7 @@ components:
   - umitools/extract
   - trimmomatic
 input:
-  - reads:
+  - ch_reads:
       description: |
         Input FASTQ files for processing
         Structure: [ val(meta), path(reads) ]

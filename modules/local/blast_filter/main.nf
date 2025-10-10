@@ -1,11 +1,11 @@
 process BLAST_FILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16fd0599cbc5e52a5ac51f8668ed2c6988b4f44d461606e37953afcd581cd52d/data':
-        'community.wave.seqera.io/library/biopython_pandas_python:671653bb7f9c4d5b' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16fd0599cbc5e52a5ac51f8668ed2c6988b4f44d461606e37953afcd581cd52d/data'
+        : 'community.wave.seqera.io/library/biopython_pandas_python:671653bb7f9c4d5b'}"
 
     input:
     tuple val(meta), path(blast)
@@ -13,10 +13,10 @@ process BLAST_FILTER {
     tuple val(meta3), path(db)
 
     output:
-    tuple val(meta), path("*.hits.txt")  , emit: hits, optional: true
-    tuple val(meta), path("*.fa")        , emit: sequence
+    tuple val(meta), path("*.hits.txt"), emit: hits, optional: true
+    tuple val(meta), path("*.fa"), emit: sequence
     tuple val(meta), path("*.filter.tsv"), emit: filter, optional: true
-    path "versions.yml"                  , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process BLAST_FILTER {
     def blast_command = blast ? "-i ${blast}" : ""
     """
     blast_filter.py \\
-        $args \\
+        ${args} \\
         ${blast_command} \\
         -c ${contigs} \\
         -r ${db} \\

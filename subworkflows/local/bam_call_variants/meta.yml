@@ -14,7 +14,7 @@ components:
   - bam_variants_ivar
   - vcf_tabix_stats
 input:
-  - bam_ref:
+  - ch_bam_ref:
       description: |
         The input channel containing BAM files with their corresponding reference sequences
         Structure: [ val(meta), path(bam), path(fasta) ]

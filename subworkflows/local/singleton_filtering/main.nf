@@ -4,7 +4,7 @@ include { RENAME_FASTA_HEADER as RENAME_FASTA_HEADER_SINGLETON } from '../../../
 workflow SINGLETON_FILTERING {
 
     take:
-    fasta               // channel: [ val(meta), [ fasta ] ]
+    ch_fasta               // channel: [ val(meta), [ fasta ] ]
     min_contig_size     // int
     max_n_perc        // int
 
@@ -12,15 +12,15 @@ workflow SINGLETON_FILTERING {
     ch_versions = Channel.empty()
 
     if ( !params.skip_singleton_filtering) {
-        filtered = filterContigs ( fasta, min_contig_size, max_n_perc)
-        contig = filtered.pass
+        ch_filtered = filterContigs ( ch_fasta, min_contig_size, max_n_perc)
+        ch_contig   = ch_filtered.pass
     }
     // Rename to avoid errors downstream
     RENAME_FASTA_HEADER_SINGLETON(
-        contig,
+        ch_contig,
         []
         )
-    ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_SINGLETON.out.versions)
+    ch_versions = ch_versions.mix(RENAME_FASTA_HEADER_SINGLETON.out.versions.first())
 
 
     emit:

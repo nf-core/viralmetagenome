@@ -17,15 +17,15 @@ components:
   - make_bed_mask
   - make/bed/mask
 input:
-  - bam:
+  - ch_bam:
       description: |
         BAM files for coverage analysis and masking
         Structure: [ val(meta), path(bam) ]
-  - vcf:
+  - ch_vcf:
       description: |
         VCF files containing variants for consensus calling
         Structure: [ val(meta), path(vcf) ]
-  - fasta:
+  - ch_fasta:
       description: |
         Reference FASTA sequences
         Structure: [ val(meta), path(fasta) ]

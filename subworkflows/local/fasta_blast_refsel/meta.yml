@@ -18,11 +18,11 @@ input:
       description: |
         FASTA sequences to be BLASTed against reference database
         Structure: [ val(meta), path(fasta) ]
-  - blast_db:
+  - ch_blast_db:
       description: |
         BLAST database for sequence comparison
         Structure: [ val(meta), path(db) ]
-  - blast_db_fasta:
+  - ch_blast_db_fasta:
       description: |
         FASTA sequences corresponding to the BLAST database
         Structure: [ val(meta), path(fasta) ]

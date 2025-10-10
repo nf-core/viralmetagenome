@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix inconsistent dependency versions across modules ([#208](https://github.com/nf-core/viralmetagenome/pull/208)) (by @Joon-Klaps)
 - Fix conda issue unrecognized arguments: --mkdir ([#210](https://github.com/nf-core/viralmetagenome/pull/210)) (by @Joon-Klaps)
 - Fix writing no sequence for select_reference.py to the first reference of the multifasta ([#214](https://github.com/nf-core/viralmetagenome/pull/214)) (by @Joon-Klaps)
+- Fix main language detection to ignore generated files ([#222](https://github.com/nf-core/viralmetagenome/pull/222)) (by @Joon-Klaps)
 
 ### `Dependencies`
 

@@ -6,7 +6,7 @@
 nextflow run nf-core/viralmetagenome -profile test,docker
 ```
 
-> [!INFO]
+> [!NOTE]
 > Make sure you have [Nextflow](https://nf-co.re/docs/usage/installation) and a container manager (for example, [Docker](https://docs.docker.com/get-docker/)) installed. See the [installation instructions](installation.md) for more info.
 
 :::tip
@@ -47,7 +47,7 @@ nf-core/viralmetagenome can in addition to constructing de novo consensus genome
 
 An example mapping constraint samplesheet file consisting of 5 references, may look something like the one below.
 
-> [!INFO]
+> [!NOTE]
 > This is for 5 references, 2 of them being a multi-fasta file, only one of the multi-fasta needs to undergo [reference selection](./workflow/variant_and_refinement.md#1a-selection-of-reference).
 
 ```tsv title="constraints-samplesheet.tsv"

@@ -146,7 +146,7 @@ The results of the metagenomic diversity analysis are stored in the directory `m
 
 :::
 
-> [!INFO]
+> [!NOTE]
 > By default, nf-core/viralmetagenome will provide any classified or unclassified fastq files, specify this with `--kraken2_save_reads`. Similarly, for the classified reads table, specify this with `--kraken2_save_readclassification`.
 
 ### Kaiju
@@ -264,7 +264,7 @@ By default, nf-core/viralmetagenome will only provide the BLAST results in a tab
 
 :::
 
-> [!INFO]
+> [!NOTE]
 > By default, nf-core/viralmetagenome will only provide the filtered blast.txt file. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### Preclustering - Kaiju & Kraken2
@@ -284,7 +284,7 @@ By default, nf-core/viralmetagenome will only provide the BLAST results in a tab
 
 :::
 
-> [!INFO]
+> [!NOTE]
 > By default, nf-core/viralmetagenome will not provide any preclustering files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### Clustering
@@ -303,7 +303,7 @@ The output files of each clustering method are directly put in the `assembly/pol
 Whenever there is a 'cl#' in the file name, it refers to the cluster number of that sample.
 :::
 
-> [!INFO]
+> [!NOTE]
 > By default, nf-core/viralmetagenome will not provide any clustering overview files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 #### CD-HIT-EST
@@ -408,7 +408,7 @@ Based on these prefixes nf-core/viralmetagenome separates external references fr
 
 :::
 
-> [!INFO]
+> [!NOTE]
 > By default, nf-core/viralmetagenome will not provide the minimap output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ### iVar contig consensus (scaffolding)
@@ -423,7 +423,7 @@ Based on these prefixes nf-core/viralmetagenome separates external references fr
 
 :::
 
-> [!INFO]
+> [!NOTE]
 > By default, nf-core/viralmetagenome will not provide the iVar output files. The intermediate files can be saved by specifying `--save_intermediate_polishing`.
 
 ## Variant Calling & Iterative Refinement
@@ -750,7 +750,7 @@ The SnpEff annotation provides valuable information about variants, including:
 - Changes at the amino acid level (protein impact)
 - Location within gene features (exon, intron, etc.)
 
-> [!INFO]
+> [!NOTE]
 > By default, variant annotation is enabled. It can be skipped with `--skip_vcf_annotation`.
 
 ### Consensus generation
@@ -786,7 +786,7 @@ Consensus quality control is done with multiple tools, the results are stored in
 
 :::
 
-> [!INFO]
+> [!NOTE]
 > If no iterative refinement was run, the output will be in the `consensus/quality_control/quast/<sample-id>/constraint` directory.
 
 ### CheckV

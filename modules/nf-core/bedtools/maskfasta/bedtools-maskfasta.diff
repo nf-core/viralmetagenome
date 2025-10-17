@@ -1,0 +1,20 @@
+Changes in component 'nf-core/bedtools/maskfasta'
+'modules/nf-core/bedtools/maskfasta/meta.yml' is unchanged
+'modules/nf-core/bedtools/maskfasta/environment.yml' is unchanged
+Changes in 'bedtools/maskfasta/main.nf':
+--- modules/nf-core/bedtools/maskfasta/main.nf
++++ modules/nf-core/bedtools/maskfasta/main.nf
+@@ -8,8 +8,7 @@
+         'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
+ 
+     input:
+-    tuple val(meta), path(bed)
+-    path  fasta
++    tuple val(meta), path(bed), path(fasta)
+ 
+     output:
+     tuple val(meta), path("*.fa"), emit: fasta
+
+'modules/nf-core/bedtools/maskfasta/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/bedtools/maskfasta/tests/main.nf.test' is unchanged
+************************************************************

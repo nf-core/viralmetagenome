@@ -1,0 +1,18 @@
+Changes in component 'nf-core/quast'
+'modules/nf-core/quast/environment.yml' is unchanged
+Changes in 'quast/main.nf':
+--- modules/nf-core/quast/main.nf
++++ modules/nf-core/quast/main.nf
+@@ -1,6 +1,7 @@
+ process QUAST {
+     tag "$meta.id"
+     label 'process_medium'
++    errorStrategy { task.exitStatus == 4 ? 'ignore' : 'retry' } // can fail if mpileup empty
+ 
+     conda "${moduleDir}/environment.yml"
+     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+
+'modules/nf-core/quast/meta.yml' is unchanged
+'modules/nf-core/quast/tests/main.nf.test' is unchanged
+'modules/nf-core/quast/tests/main.nf.test.snap' is unchanged
+************************************************************

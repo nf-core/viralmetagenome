@@ -9,13 +9,22 @@
 ----------------------------------------------------------------------------------------
 */
 
+params.global_prefix = getGlobalPrefix(workflow, params)
+def getGlobalPrefix(workflow,params) {
+    def date_stamp = new java.util.Date().format( 'yyyyMMdd')
+    if (params.prefix) {
+        return "${params.prefix}_${date_stamp}_${workflow.manifest.version}_${workflow.runName}".replaceAll("\\s+", "_")
+    }
+    return null
+}
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { VIRALMETAGENOME  } from './workflows/viralmetagenome'
+include { VIRALMETAGENOME         } from './workflows/viralmetagenome'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 /*

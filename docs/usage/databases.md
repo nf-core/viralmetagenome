@@ -157,7 +157,7 @@ An easy-to-use public database with a lot of metadata is [BV-BRC](https://www.bv
 
 Here we select all viral genomes that are not lab reassortments and are reference genomes and add metadata attributes to the output.
 
-> [!INFO]
+> [!NOTE]
 > This is an example, in case you need to have a more elaborate dataset than Virosaurus, be more inclusive towards your taxa of interest and include more metadata attributes.
 
 ```bash

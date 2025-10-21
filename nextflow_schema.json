@@ -519,6 +519,12 @@
                     "description": "Set of fasta sequences used as potential references for the contigs",
                     "fa_icon": "fas fa-database"
                 },
+                "blacklist": {
+                    "type": "string",
+                    "description": "File containing identifiers to exclude from the scaffolding reference pool",
+                    "help_text": "Provide a newline-delimited list of identifiers or fragments when your reference pool bundles partial or defective genomes.",
+                    "fa_icon": "fas fa-ban"
+                },
                 "skip_precluster": {
                     "type": "boolean",
                     "fa_icon": "fas fa-forward",

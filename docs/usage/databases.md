@@ -16,6 +16,9 @@ The default database is the [latest version of clustered Reference Viral DataBas
 
 An alternative reference pool is the [Virosaurus](https://viralzone.expasy.org/8676) database which is a manually curated database of viral genomes, which was last updated in 2020.
 
+> [!NOTE]
+> Some reference pools bundle partial or defective genomes (for example specific entries in RVDB). If you encounter such sequences, supply the `--blacklist` parameter with a newline-separated list of identifiers or identifier fragments to keep them out of the scaffolding step.
+
 Any nucleotide fasta file will do. Specify it with the parameter `--reference_pool`.
 
 ## Kaiju
@@ -71,13 +74,13 @@ You can speed up database construction by supplying the threads parameter (`-t`)
 
 :::
 
-For the Kaiju database construction documentation, see [here](https://github.com/bioinformatics-centre/kaiju#custom-database).
+For the Kaiju database construction documentation, see the [Kaiju custom database guide](https://github.com/bioinformatics-centre/kaiju#custom-database).
 
 ## Kraken2 databases
 
 The Kraken2 database will be used to classify the reads and intermediate contigs in taxonomic groups.
 
-A number of database indexes have already been generated and maintained by [@BenLangmead Lab](https://github.com/BenLangmead), see [here](https://benlangmead.github.io/aws-indexes/k2). These databases can directly be used to run the workflow with Kraken2 as well as Bracken.
+A number of database indexes have already been generated and maintained by [@BenLangmead Lab](https://github.com/BenLangmead); you can browse them in the [AWS Kraken2 index catalogue](https://benlangmead.github.io/aws-indexes/k2). These databases can directly be used to run the workflow with Kraken2 as well as Bracken.
 
 In case the databases above do not contain your desired libraries, you can build a custom Kraken2 database. This requires two components: a taxonomy (consisting of `names.dmp`, `nodes.dmp`, and `*accession2taxid`) files, and the FASTA files you wish to include.
 

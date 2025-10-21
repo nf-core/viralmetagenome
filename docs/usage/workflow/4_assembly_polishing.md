@@ -10,7 +10,6 @@ nf-core/viralmetagenome offers an elaborate workflow for the assembly and polish
    - [Pre-clustering](#51-pre-clustering-using-taxonomy): separating contigs based on identified taxonomy-id.
    - [Actual clustering](#52-actual-clustering-on-nucleotide-similarity): clustering contigs based on nucleotide similarity.
 1. [Scaffolding](#7-scaffolding): scaffolding the contigs to the centroid of each bin.
-1. [Annotation with Reference](#8-annotation-with-reference): annotating regions with 0-depth coverage with the reference sequence.
 
 ![assembly_polishing](../../images/assembly_polishing.png)
 
@@ -56,6 +55,9 @@ The top 5 hits for each contig are combined with the de novo contigs and sent to
 
 > [!INFO]
 > The reference pool can be specified with the `--reference_pool` parameter. The default is the latest clustered [Reference Viral DataBase (RVDB)](https://rvdb.dbi.udel.edu/).
+
+> [!NOTE]
+> Reference collections may contain truncated or defective sequences (for example some RVDB entries). Supply the `--blacklist` parameter with a newline-delimited list of identifiers (or identifier fragments) to exclude those hits during BLAST filtering and prevent them from being used as a reference during scaffolding.
 
 ## 5. Taxonomy guided Clustering
 

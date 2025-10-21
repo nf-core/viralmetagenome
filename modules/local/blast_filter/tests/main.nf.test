@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blast.out.txt', checkIfExists: true) ]
                 input[1] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/illumina/HIV.contigs.fasta', checkIfExists: true) ]
-                input[2] = [ [],  []]
+                input[2] = []
                 input[3] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/db/HIV.fasta', checkIfExists: true) ]
                 """
             }
@@ -37,7 +37,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blast.out.txt', checkIfExists: true) ]
                 input[1] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/illumina/HIV.contigs.fasta', checkIfExists: true) ]
-                input[2] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blacklist.txt', checkIfExists: true) ]
+                input[2] = [ file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blacklist.txt', checkIfExists: true) ]
                 input[3] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/db/HIV.fasta', checkIfExists: true) ]
                 """
             }
@@ -61,7 +61,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blast.out.txt', checkIfExists: true) ]
                 input[1] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/illumina/HIV.contigs.fasta', checkIfExists: true) ]
-                input[2] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blacklist.txt', checkIfExists: true) ]
+                input[2] = [ file(params.pipelines_testdata_base_path + '/local_modules/blast_filter/HIV.blacklist.txt', checkIfExists: true) ]
                 input[3] = [ [id:'test'], file(params.pipelines_testdata_base_path + '/db/HIV.fasta', checkIfExists: true) ]
                 """
             }

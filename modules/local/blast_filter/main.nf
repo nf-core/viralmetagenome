@@ -10,8 +10,8 @@ process BLAST_FILTER {
     input:
     tuple val(meta), path(blast)
     tuple val(meta2), path(contigs)
-    tuple val(meta3), path(blacklist)
-    tuple val(meta4), path(db)
+    path(blacklist)
+    tuple val(meta3), path(db)
 
     output:
     tuple val(meta), path("*.hits.txt"), emit: hits, optional: true

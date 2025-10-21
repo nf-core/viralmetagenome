@@ -9,6 +9,7 @@ workflow FASTA_CONTIG_CLUST {
     take:
     ch_fasta_fastq        // channel: [ val(meta), [ fasta ],  [ fastq ] ]
     ch_coverages          // channel: [ val(meta), [ idxstats* ] ]
+    ch_blacklist          // channel: [ val(meta), path(blacklist) ]
     ch_blast_db           // channel: [ val(meta), path(db) ]
     ch_blast_db_fasta     // channel: [ val(meta), path(fasta) ]
     ch_kraken2_db         // channel: [ val(meta), path(db) ]
@@ -22,6 +23,7 @@ workflow FASTA_CONTIG_CLUST {
     // Blast contigs to a reference database, to find a reference genome can be used for scaffolding
     FASTA_BLAST_REFSEL (
         ch_fasta,
+        ch_blacklist,
         ch_blast_db,
         ch_blast_db_fasta
     )

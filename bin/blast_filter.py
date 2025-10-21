@@ -7,6 +7,7 @@
 
 import argparse
 import logging
+import re
 import sys
 from pathlib import Path
 from typing import Dict, Iterable, Optional, Sequence, cast
@@ -22,7 +23,7 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     """Define and immediately parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Provide a command line tool to filter blast results.",
-        epilog="Example: python blast_filter.py in.clstr prefix",
+        epilog="Example: python blast_filter.py -i blast.txt -c contigs.fa -r references.fa -p prefix -b blacklist.txt",
     )
 
     parser.add_argument(
@@ -112,18 +113,25 @@ def filter_hits(
     """Filter blast results."""
     result = df.copy()
     if escore != 0:
+        # filter by escore cutoff
         result = cast(pd.DataFrame, result[result["evalue"] <= escore])
     if bitscore != 0:
+        # filter by bitscore cutoff
         result = cast(pd.DataFrame, result[result["bitscore"] >= bitscore])
     if percent_alignment != 0:
+        # check if alignment percentage meets cutoff
         result["percent_alignment"] = result["length"] / result["qlen"]
         result = cast(pd.DataFrame, result[result["percent_alignment"] >= percent_alignment])
     if blacklist:
-        subject_prefix = result["subject"].str.split(" ", n=1).str[0]
-        mask = ~subject_prefix.isin(blacklist)
-        result = cast(pd.DataFrame, result[mask].copy())
+        # Compile regex pattern for blacklist entries
+        combined_pattern = "|".join([re.escape(entry) for entry in blacklist if entry])
+        matches = result["subject"].str.contains(combined_pattern, regex=True)
+        result = cast(pd.DataFrame, result[~matches].copy())
+        logger.info("Removed %d hits based on blacklist filtering.", matches.sum())
         if result.empty:
             logger.warning("All BLAST hits were removed by blacklist filtering.")
+        if combined_pattern and not matches.any():
+            logger.debug("Blacklist provided but no valid entries detected after cleaning.")
     return result
 
 
@@ -131,11 +139,6 @@ def read_blast(blast: Path) -> pd.DataFrame:
     df = pd.read_csv(blast, sep="\t", header=None)
     df.columns = BLAST_COLUMNS
     return df
-
-
-def to_dict_remove_dups(sequences: Iterable[SeqIO.SeqRecord]) -> Dict[str, SeqIO.SeqRecord]:
-    return {record.id: record for record in sequences}
-
 
 def load_blacklist(blacklist_path: Path) -> set[str]:
     """Return a set of blacklisted subject identifiers."""

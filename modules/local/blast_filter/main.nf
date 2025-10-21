@@ -10,7 +10,8 @@ process BLAST_FILTER {
     input:
     tuple val(meta), path(blast)
     tuple val(meta2), path(contigs)
-    tuple val(meta3), path(db)
+    tuple val(meta3), path(blacklist)
+    tuple val(meta4), path(db)
 
     output:
     tuple val(meta), path("*.hits.txt"), emit: hits, optional: true
@@ -25,10 +26,12 @@ process BLAST_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def blast_command = blast ? "-i ${blast}" : ""
+    def blacklist_arg = blacklist ? "-k ${blacklist}" : ""
     """
     blast_filter.py \\
         ${args} \\
         ${blast_command} \\
+        ${blacklist_arg} \\
         -c ${contigs} \\
         -r ${db} \\
         -p ${prefix}

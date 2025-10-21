@@ -7,6 +7,7 @@ lint:
   multiqc_config: false
   files_unchanged:
     - .prettierignore
+    - .gitattributes
 nf_core_version: 3.3.2
 repository_type: pipeline
 template:

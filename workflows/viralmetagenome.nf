@@ -68,7 +68,7 @@ workflow VIRALMETAGENOME {
     def contig_classifiers = params.precluster_classifiers ? params.precluster_classifiers.split(',').collect{ it.trim().toLowerCase() } : []
     // Optional parameters
     ch_adapter_fasta  = createFileChannel(params.adapter_fasta)
-    ch_blacklist      = createFileChannel(params.blacklist)
+    ch_blacklist      = createFileChannel(params.blacklist).map{ it -> [ [id: 'blacklist'], it ] }
     ch_metadata       = createFileChannel(params.metadata)
     ch_contaminants   = createFileChannel(params.contaminants)
     ch_spades_yml     = createFileChannel(params.spades_yml)

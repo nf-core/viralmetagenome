@@ -8,7 +8,7 @@
         "type": "object",
         "properties": {
             "id": {
-                "type": "string",
+                "type": ["string", "integer"],
                 "pattern": "^(?!.*\\_)[A-Za-z0-9\\-\\.]+$",
                 "errorMessage": "Sequence ID must be provided and cannot contain spaces or special characters with the exception of '-' and '.'",
                 "meta": ["id"]
@@ -35,7 +35,7 @@
             "segment": {
                 "errorMessage": "Segment cannot contain spaces or special characters with the exception of '-' and '.'. Segment is unique in combination with species",
                 "meta": ["segment"],
-                "type": "string",
+                "type": ["string", "integer"],
                 "pattern": "^(?!.*\\_)[A-Za-z0-9\\-\\.]+$"
             },
             "selection": {

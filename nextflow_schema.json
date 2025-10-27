@@ -813,7 +813,7 @@
                     "type": "string",
                     "description": "Sequence(s) to use as a reference for mapping instead of the de novo contigs or scaffolds",
                     "fa_icon": "far fa-file-alt",
-                    "schema": "assets/schemas/mapping_constraints.json"
+                    "schema": "assets/schemas/mapping_constraints.json",
                     "help_text": "Perform a separate standard read mapping + consensus calling analysis to create a reference-based consensus from the provided reference sequence(s). Optionally the best reference is selected using Mash."
                 },
                 "deduplicate": {

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `nf-tests` for `test` profile ([#189](https://github.com/nf-core/viralmetagenome/pull/189)) (by @Joon-Klaps)
 - Update docs ([#200](https://github.com/nf-core/viralmetagenome/pull/200)) (by @Joon-Klaps)
 - Template update for nf-core/tools v3.3.2 ([#202](https://github.com/nf-core/viralmetagenome/pull/202)) (by @Joon-Klaps)
+- Added option to blacklist certain NCBI accessions (`--blacklist`) from reference pool (`--reference_pool`) ([#228](https://github.com/nf-core/viralmetagenome/pull/228)) (by @Joon-Klaps)
 
 ### `Fixed`
 
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix conda issue unrecognized arguments: --mkdir ([#210](https://github.com/nf-core/viralmetagenome/pull/210)) (by @Joon-Klaps)
 - Fix writing no sequence for select_reference.py to the first reference of the multifasta ([#214](https://github.com/nf-core/viralmetagenome/pull/214)) (by @Joon-Klaps)
 - Fix main language detection to ignore generated files ([#224](https://github.com/nf-core/viralmetagenome/pull/224)) (by @Joon-Klaps)
+
 
 ### `Dependencies`
 

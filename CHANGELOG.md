@@ -28,7 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix writing no sequence for select_reference.py to the first reference of the multifasta ([#214](https://github.com/nf-core/viralmetagenome/pull/214)) (by @Joon-Klaps)
 - Fix main language detection to ignore generated files ([#224](https://github.com/nf-core/viralmetagenome/pull/224)) (by @Joon-Klaps)
 
-
 ### `Dependencies`
 
 ### `Deprecated`

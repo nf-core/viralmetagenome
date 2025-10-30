@@ -19,6 +19,7 @@ Initial release of nf-core/viralmetagenome, created with the [nf-core](https://n
 - Add `nf-tests` for `test` profile ([#189](https://github.com/nf-core/viralmetagenome/pull/189)) (by @Joon-Klaps)
 - Update docs ([#200](https://github.com/nf-core/viralmetagenome/pull/200)) (by @Joon-Klaps)
 - Template update for nf-core/tools v3.3.2 ([#202](https://github.com/nf-core/viralmetagenome/pull/202)) (by @Joon-Klaps)
+- Added option to blacklist certain NCBI accessions (`--blacklist`) from reference pool (`--reference_pool`) ([#228](https://github.com/nf-core/viralmetagenome/pull/228)) (by @Joon-Klaps)
 
 ### `Fixed`
 

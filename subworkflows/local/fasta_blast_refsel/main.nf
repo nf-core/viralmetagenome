@@ -5,6 +5,7 @@ include { BLAST_FILTER          } from '../../../modules/local/blast_filter'
 workflow FASTA_BLAST_REFSEL {
     take:
     ch_fasta          // channel: [ val(meta), path(fasta)]
+    ch_blacklist      // channel: [ val(meta), path(blacklist) ]
     ch_blast_db       // channel: [ val(meta), path(db) ]
     ch_blast_db_fasta // channel: [ val(meta), path(fasta) ]
 
@@ -39,6 +40,7 @@ workflow FASTA_BLAST_REFSEL {
     BLAST_FILTER(
         ch_input_blast_filter.hits,
         ch_input_blast_filter.contigs,
+        ch_blacklist,
         ch_blast_db_fasta,
     )
     ch_versions = ch_versions.mix(BLAST_FILTER.out.versions.first())

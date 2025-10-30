@@ -10,6 +10,7 @@ process BLAST_FILTER {
     input:
     tuple val(meta), path(blast)
     tuple val(meta2), path(contigs)
+    path(blacklist)
     tuple val(meta3), path(db)
 
     output:
@@ -25,10 +26,12 @@ process BLAST_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def blast_command = blast ? "-i ${blast}" : ""
+    def blacklist_arg = blacklist ? "-k ${blacklist}" : ""
     """
     blast_filter.py \\
         ${args} \\
         ${blast_command} \\
+        ${blacklist_arg} \\
         -c ${contigs} \\
         -r ${db} \\
         -p ${prefix}

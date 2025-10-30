@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Template update for nf-core/tools v3.3.2 ([#202](https://github.com/nf-core/viralmetagenome/pull/202)) (by @Joon-Klaps)
 - Add option for local desktop configuration profile ([#227](https://github.com/nf-core/viralmetagenome/pull/227)) (by @Joon-Klaps)
 - Added option to blacklist certain NCBI accessions (`--blacklist`) from reference pool (`--reference_pool`) ([#228](https://github.com/nf-core/viralmetagenome/pull/228)) (by @Joon-Klaps)
+- Add support for both string and integer inputs in samplesheets through `validation.lentientMode = true` ([#230](https://github.com/nf-core/viralmetagenome/pull/230)) (by @Joon-Klaps)
 
 ### `Fixed`
 

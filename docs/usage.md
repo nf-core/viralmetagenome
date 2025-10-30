@@ -94,10 +94,11 @@ The typical command for running the pipeline is as follows:
 
 ```bash
 nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir ./results  -profile docker
+# Or when running on a local desktop, with max. 30GB RAM and 8 CPUs
+nextflow run nf-core/viralmetagenome --input ./samplesheet.csv --outdir ./results  -profile local,docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
-
 Note that the pipeline will create the following files in your working directory:
 
 ```bash

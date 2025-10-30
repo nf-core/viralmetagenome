@@ -8,7 +8,7 @@
         "type": "object",
         "properties": {
             "id": {
-                "type": ["string", "integer"],
+                "type": "string",
                 "pattern": "^(?!.*\\_)[A-Za-z0-9\\-\\.]+$",
                 "errorMessage": "Sequence ID must be provided and cannot contain spaces or special characters with the exception of '-' and '.'",
                 "meta": ["id"]

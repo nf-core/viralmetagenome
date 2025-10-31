@@ -6,11 +6,9 @@ lint:
     - conf/igenomes_ignored.config
   files_unchanged:
     - .prettierignore
+    - .gitattributes
   multiqc_config: false
 nf_core_version: 3.4.1
-files_unchanged:
-  - .prettierignore
-  - .gitattributes
 repository_type: pipeline
 template:
   author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou

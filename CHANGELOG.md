@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.0.0 - [date]
 
+Initial release of nf-core/viralmetagenome, created with the [nf-core](https://nf-co.re/) template.
+
 ### `Added`
 
 - Add argument to control the maximum mpileup depth in `custom_mpileup.py` script ([#176](https://github.com/nf-core/viralmetagenome/pull/176)) (by @Joon-Klaps)

@@ -14,6 +14,9 @@ multiqc/multiqc_data/multiqc.log
 multiqc/multiqc_data/multiqc_data.json
 multiqc/multiqc_data/multiqc_sources.txt
 multiqc/multiqc_data/multiqc_software_versions.txt
+multiqc/multiqc_data/llms-full.txt
+multiqc/multiqc_plots/{svg,pdf,png}/*.{svg,pdf,png}
+multiqc/multiqc_report.html
 multiqc/multiqc_data/fastqc*
 multiqc/multiqc_data/multiqc_fastqc.yaml
 multiqc/multiqc_data/multiqc_fastqc_1.yaml
@@ -28,8 +31,6 @@ multiqc/multiqc_data/samtools-flagstat-dp_Percentage_of_total.txt
 multiqc/multiqc_data/samtools-flagstat-dp_Read_counts.txt
 multiqc/multiqc_data/samtools-stats-dp.txt
 multiqc/multiqc_data/mosdepth*
-multiqc/multiqc_plots/{svg,pdf,png}/*.{svg,pdf,png}
-multiqc/multiqc_report.html
 
 # ------------------------------------------------------------------------------
 # Pipeline info and overview tables

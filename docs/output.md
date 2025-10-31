@@ -2,8 +2,7 @@
 
 ## Introduction
 
-This document describes the output produced by the pipeline.
-Most of the plots are taken from the MultiQC report, which summarizes results at the end of the pipeline.
+This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
 
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 

@@ -1,22 +1,23 @@
 process BLAST_FILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-949aaaddebd054dc6bded102520daff6f0f93ce6:aa2a3707bfa0550fee316844baba7752eaab7802-0':
-        'community.wave.seqera.io/library/pandas_pip_biopython:465ab8e47f7a0510' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16fd0599cbc5e52a5ac51f8668ed2c6988b4f44d461606e37953afcd581cd52d/data'
+        : 'community.wave.seqera.io/library/biopython_pandas_python:671653bb7f9c4d5b'}"
 
     input:
     tuple val(meta), path(blast)
     tuple val(meta2), path(contigs)
+    path(blacklist)
     tuple val(meta3), path(db)
 
     output:
-    tuple val(meta), path("*.hits.txt")  , emit: hits, optional: true
-    tuple val(meta), path("*.fa")        , emit: sequence
+    tuple val(meta), path("*.hits.txt"), emit: hits, optional: true
+    tuple val(meta), path("*.fa"), emit: sequence
     tuple val(meta), path("*.filter.tsv"), emit: filter, optional: true
-    path "versions.yml"                  , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,10 +26,12 @@ process BLAST_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def blast_command = blast ? "-i ${blast}" : ""
+    def blacklist_arg = blacklist ? "-k ${blacklist}" : ""
     """
     blast_filter.py \\
-        $args \\
+        ${args} \\
         ${blast_command} \\
+        ${blacklist_arg} \\
         -c ${contigs} \\
         -r ${db} \\
         -p ${prefix}

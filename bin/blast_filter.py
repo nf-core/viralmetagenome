@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
+# Originally written by Joon Klaps and released under the MIT license.
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
+
 """Provide a command line tool to filter blast results."""
 
 import argparse
 import logging
+import re
 import sys
 from pathlib import Path
+from typing import Dict, Iterable, Optional, Sequence, cast
 
 import pandas as pd
 from Bio import SeqIO
@@ -14,11 +19,11 @@ from utils.constant_variables import BLAST_COLUMNS
 logger = logging.getLogger()
 
 
-def parse_args(argv=None):
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     """Define and immediately parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Provide a command line tool to filter blast results.",
-        epilog="Example: python blast_filter.py in.clstr prefix",
+        epilog="Example: python blast_filter.py -i blast.txt -c contigs.fa -r references.fa -p prefix -b blacklist.txt",
     )
 
     parser.add_argument(
@@ -81,6 +86,14 @@ def parse_args(argv=None):
     )
 
     parser.add_argument(
+        "-k",
+        "--blacklist",
+        metavar="BLACKLIST FILE",
+        type=Path,
+        help="File containing subject identifiers to exclude (one per line).",
+    )
+
+    parser.add_argument(
         "-l",
         "--log-level",
         help="The desired log level (default WARNING).",
@@ -90,29 +103,62 @@ def parse_args(argv=None):
     return parser.parse_args(argv)
 
 
-def filter(df, escore, bitscore, percent_alignment):
+def filter_hits(
+    df: pd.DataFrame,
+    escore: float,
+    bitscore: float,
+    percent_alignment: float,
+    blacklist: Optional[set[str]] = None,
+) -> pd.DataFrame:
     """Filter blast results."""
+    result = df.copy()
     if escore != 0:
-        df = df[df["evalue"] <= escore]
+        # filter by escore cutoff
+        result = cast(pd.DataFrame, result[result["evalue"] <= escore])
     if bitscore != 0:
-        df = df[df["bitscore"] >= bitscore]
+        # filter by bitscore cutoff
+        result = cast(pd.DataFrame, result[result["bitscore"] >= bitscore])
     if percent_alignment != 0:
-        df["percent_alignment"] = df["length"] / df["qlen"]
-        df = df[df["percent_alignment"] >= percent_alignment]
-    return df
+        # check if alignment percentage meets cutoff
+        result["percent_alignment"] = result["length"] / result["qlen"]
+        result = cast(pd.DataFrame, result[result["percent_alignment"] >= percent_alignment])
+    if blacklist:
+        # Compile regex pattern for blacklist entries
+        combined_pattern = "|".join([re.escape(entry) for entry in blacklist if entry])
+        matches = result["subject"].str.contains(combined_pattern, regex=True)
+        result = cast(pd.DataFrame, result[~matches].copy())
+        logger.info("Removed %d hits based on blacklist filtering.", matches.sum())
+        if result.empty:
+            logger.warning("All BLAST hits were removed by blacklist filtering.")
+        if combined_pattern and not matches.any():
+            logger.debug("Blacklist provided but no valid entries detected after cleaning.")
+    return result
 
 
-def read_blast(blast):
+def read_blast(blast: Path) -> pd.DataFrame:
     df = pd.read_csv(blast, sep="\t", header=None)
     df.columns = BLAST_COLUMNS
     return df
 
+def load_blacklist(blacklist_path: Path) -> set[str]:
+    """Return a set of blacklisted subject identifiers."""
+    with open(blacklist_path, "r", encoding="utf-8") as handle:
+        entries = {
+            line.split()[0]
+            for raw_line in handle
+            if (line := raw_line.strip()) and not line.startswith("#")
+        }
+    logger.info("Loaded %d blacklist entries from %s", len(entries), blacklist_path)
+    return entries
 
-def to_dict_remove_dups(sequences):
-    return {record.id: record for record in sequences}
 
+def write_contigs_and_blast_sequence(
+    df: pd.DataFrame,
+    contigs: Path,
+    references: Path,
 
-def extract_contigs_hits(df, contigs, references, prefix):
+    prefix: str,
+) -> None:
     """
     Extracts contigs hits from a DataFrame and writes them to a FASTA file.
     Processes reference sequences in chunks to avoid memory issues.
@@ -127,17 +173,21 @@ def extract_contigs_hits(df, contigs, references, prefix):
         None
     """
     # Get unique hit IDs we need to find
-    needed_hits = set(hit.split(" ")[0] for hit in df["subject"].unique())
+    needed_hits = {hit.split(" ")[0] for hit in df["subject"].unique()}
 
     # Copy contigs to output file first
-    with open(contigs, "r") as contigs_file, open(f"{prefix}_withref.fa", "w") as out_file:
+    with open(contigs, "r", encoding="utf-8") as contigs_file, open(
+        f"{prefix}_withref.fa", "w", encoding="utf-8"
+    ) as out_file:
         out_file.write(contigs_file.read())
 
         # Process reference sequences in chunks
-        found_hits = set()
+        found_hits: set[str] = set()
         for record in SeqIO.parse(references, "fasta"):
             hit_name = record.id
             if hit_name in needed_hits:
+                # Reasign the id
+                record.id = hit_name.replace("|", "-").replace("\\", "-").replace("/", "-")
                 SeqIO.write(record, out_file, "fasta")
                 found_hits.add(hit_name)
 
@@ -148,13 +198,13 @@ def extract_contigs_hits(df, contigs, references, prefix):
         # Warn if some sequences weren't found
         missing_hits = needed_hits - found_hits
         if missing_hits:
-            logger.warning(f"Could not find the following reference sequences: {', '.join(missing_hits)}")
+            logger.warning(
+                "Could not find the following reference sequences: %s",
+                ", ".join(sorted(missing_hits)),
+            )
 
 
-def write_hits(df, contigs, references, prefix):
-    # Extract contigs & blast hits and write to fasta file
-    extract_contigs_hits(df, contigs, references, prefix)
-
+def write_filtered_blast_df(df: pd.DataFrame, prefix: str) -> None:
     # Write filtered hits to file
     df.to_csv(prefix + ".filter.tsv", sep="\t", index=False)
 
@@ -164,34 +214,49 @@ def write_hits(df, contigs, references, prefix):
     unique_series.to_csv(prefix + ".filter.hits.txt", sep="\t", index=False, header=False)
 
 
-def main(argv=None):
+def main(argv: Optional[Sequence[str]] = None) -> int:
     """Coordinate argument parsing and program execution."""
     args = parse_args(argv)
     logging.basicConfig(level=args.log_level, format="[%(levelname)s] %(message)s")
 
-    if args.blast is None and args.contigs.is_file():
-        logger.warning(f"No blast input was provide, just copying input file.")
-        with open(args.contigs, "r") as contigs_file:
+    if args.blast is None and args.contigs and args.contigs.is_file():
+        logger.warning("No blast input was provide, just copying input file.")
+        with open(args.contigs, "r", encoding="utf-8") as contigs_file:
             contig_content = contigs_file.read()
-        with open(f"{args.prefix}_withref.fa", "w") as f:
+        with open(f"{args.prefix}_withref.fa", "w", encoding="utf-8") as f:
             f.write(contig_content)
         return 0
 
-    if not args.blast.is_file():
-        logger.error(f"The given input file {args.blast} was not found!")
+    if args.blast is None or not args.blast.is_file():
+        logger.error("The given input file %s was not found!", args.blast)
         sys.exit(2)
-    if not args.references.is_file():
-        logger.error(f"The given input file {args.references} was not found!")
+    if args.references is None or not args.references.is_file():
+        logger.error("The given input file %s was not found!", args.references)
         sys.exit(2)
-    if not args.contigs.is_file():
-        logger.error(f"The given input file {args.contigs} was not found!")
+    if args.contigs is None or not args.contigs.is_file():
+        logger.error("The given input file %s was not found!", args.contigs)
         sys.exit(2)
+    if args.blacklist is not None and not args.blacklist.is_file():
+        logger.error("The given blacklist file %s was not found!", args.blacklist)
+        sys.exit(2)
+
+    blacklist_hits: Optional[set[str]] = None
+    if args.blacklist is not None:
+        blacklist_hits = load_blacklist(args.blacklist)
 
     df = read_blast(args.blast)
 
-    df_filter = filter(df, args.escore, args.bitscore, args.percent_alignment)
+    df_filter = filter_hits(
+        df,
+        args.escore,
+        args.bitscore,
+        args.percent_alignment,
+        blacklist_hits,
+    )
 
-    write_hits(df_filter, args.contigs, args.references, args.prefix)
+    write_contigs_and_blast_sequence(df_filter, args.contigs, args.references, args.prefix)
+
+    write_filtered_blast_df(df_filter, args.prefix)
 
     return 0
 

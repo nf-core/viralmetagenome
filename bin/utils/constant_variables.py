@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Originally written by Joon Klaps and released under the MIT license.
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
+
 """Provide a python file with numerous constant values"""
 
 BLAST_COLUMNS = [
@@ -37,10 +40,6 @@ READ_DECLARATION = {
         'namespace_patterns': 'kaiju',
         'suffix': 'R1+R2'
     }
-    #TODO:
-    # - prinseq ++
-    # - bbduk
-
 }
 
 

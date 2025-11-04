@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/Joon-Klaps/viralgenie/master/assets/schemas/input.json",
-    "title": "Joon-Klaps/viralgenie pipeline - params.input schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/viralmetagenome/master/assets/schemas/input.json",
+    "title": "nf-core/viralmetagenome pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {
@@ -9,9 +9,15 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^[A-z0-9\\-]+$",
+                "pattern": "^[A-z0-9\\-\\.]+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces or special characters",
                 "meta": ["id", "sample"]
+            },
+            "group": {
+                "type": "string",
+                "pattern": "^[A-z0-9\\-\\.]+$",
+                "errorMessage": "Group name must be provided and cannot contain spaces or special characters",
+                "meta": ["group"]
             },
             "fastq_1": {
                 "type": "string",

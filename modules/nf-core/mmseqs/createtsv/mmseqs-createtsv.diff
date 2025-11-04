@@ -1,8 +1,10 @@
-Changes in module 'nf-core/mmseqs/createtsv'
+Changes in component 'nf-core/mmseqs/createtsv'
+'modules/nf-core/mmseqs/createtsv/environment.yml' is unchanged
+Changes in 'mmseqs/createtsv/main.nf':
 --- modules/nf-core/mmseqs/createtsv/main.nf
 +++ modules/nf-core/mmseqs/createtsv/main.nf
 @@ -9,9 +9,9 @@
-         'biocontainers/mmseqs2:15.6f452--pl5321h6a68c12_0' }"
+         'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1' }"
  
      input:
 -    tuple val(meta), path(db_result)
@@ -15,4 +17,9 @@ Changes in module 'nf-core/mmseqs/createtsv'
      output:
      tuple val(meta), path("*.tsv"), emit: tsv
 
+'modules/nf-core/mmseqs/createtsv/meta.yml' is unchanged
+'modules/nf-core/mmseqs/createtsv/tests/cluster.nextflow.config' is unchanged
+'modules/nf-core/mmseqs/createtsv/tests/main.nf.test' is unchanged
+'modules/nf-core/mmseqs/createtsv/tests/taxonomy.nextflow.config' is unchanged
+'modules/nf-core/mmseqs/createtsv/tests/main.nf.test.snap' is unchanged
 ************************************************************

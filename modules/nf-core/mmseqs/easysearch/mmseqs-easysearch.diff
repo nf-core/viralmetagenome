@@ -1,7 +1,9 @@
-Changes in module 'nf-core/mmseqs/easysearch'
+Changes in component 'nf-core/mmseqs/easysearch'
+'modules/nf-core/mmseqs/easysearch/environment.yml' is unchanged
+Changes in 'mmseqs/easysearch/main.nf':
 --- modules/nf-core/mmseqs/easysearch/main.nf
 +++ modules/nf-core/mmseqs/easysearch/main.nf
-@@ -23,6 +23,7 @@
+@@ -22,6 +22,7 @@
      def args = task.ext.args ?: ''
      def args2 = task.ext.args2 ?: "*.dbtype"
      prefix = task.ext.prefix ?: "${meta.id}"
@@ -9,13 +11,17 @@ Changes in module 'nf-core/mmseqs/easysearch'
      """
      mkdir -p ${prefix}
  
-@@ -36,6 +37,7 @@
+@@ -35,6 +36,7 @@
          ${prefix}.tsv \\
          tmp1 \\
-         $args \\
+         ${args} \\
 +        $strand_search \\
-         --threads ${task.cpus} \\
-         --compressed 1
+         --threads ${task.cpus}
+ 
  
 
+'modules/nf-core/mmseqs/easysearch/meta.yml' is unchanged
+'modules/nf-core/mmseqs/easysearch/tests/main.nf.test' is unchanged
+'modules/nf-core/mmseqs/easysearch/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/mmseqs/easysearch/tests/nextflow.config' is unchanged
 ************************************************************

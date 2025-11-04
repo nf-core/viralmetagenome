@@ -34,7 +34,7 @@ process CAT_CAT {
     // Use input file ending as default
     prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
     out_zip  = prefix.endsWith('.gz')
-    in_zip   = file_list[0].endsWith('.gz')
+    in_zip   = file_list.any { it.endsWith('.gz') }
     command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
     command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
     if(file_list.contains(prefix.trim())) {
@@ -76,4 +76,3 @@ def getFileSuffix(filename) {
     def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
     return match ? match[0][1] : filename.substring(filename.lastIndexOf('.'))
 }
-

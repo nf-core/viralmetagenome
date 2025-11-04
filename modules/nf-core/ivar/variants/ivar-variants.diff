@@ -1,14 +1,23 @@
-Changes in module 'nf-core/ivar/variants'
+Changes in component 'nf-core/ivar/variants'
+Changes in 'ivar/variants/environment.yml':
+--- modules/nf-core/ivar/variants/environment.yml
++++ modules/nf-core/ivar/variants/environment.yml
+@@ -5,3 +5,4 @@
+   - bioconda
+ dependencies:
+   - bioconda::ivar=1.4.4
++  - bioconda::samtools=1.21
+
+Changes in 'ivar/variants/main.nf':
 --- modules/nf-core/ivar/variants/main.nf
 +++ modules/nf-core/ivar/variants/main.nf
-@@ -27,24 +27,47 @@
+@@ -27,24 +27,45 @@
      def args2 = task.ext.args2 ?: ''
      def prefix = task.ext.prefix ?: "${meta.id}"
      def features = gff ? "-g $gff" : ""
 -    def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
 +
 +    def max_retries = 3
-+
      """
 -    samtools \\
 -        mpileup \\
@@ -55,11 +64,14 @@ Changes in module 'nf-core/ivar/variants'
 +    # Continue with the workflow
      cat <<-END_VERSIONS > versions.yml
      "${task.process}":
-         ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
++        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
 +        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
      END_VERSIONS
      """
-+
- }
+ 
 
+'modules/nf-core/ivar/variants/meta.yml' is unchanged
+'modules/nf-core/ivar/variants/tests/main.nf.test' is unchanged
+'modules/nf-core/ivar/variants/tests/main.nf.test.snap' is unchanged
 ************************************************************

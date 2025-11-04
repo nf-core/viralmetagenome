@@ -26,9 +26,22 @@ process KRAKENTOOLS_KREPORT2KRONA {
     cp ${kreport} tmp; echo >> tmp
 
     kreport2krona.py \\
-        -r tmp \\
+        -r ${kreport} \\
         -o ${prefix}.txt \\
         ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kreport2krona.py: ${VERSION}
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

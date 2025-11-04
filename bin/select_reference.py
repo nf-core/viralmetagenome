@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Originally written by Joon Klaps and released under the MIT license.
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
+
 """Provide a command line tool to filter blast results."""
 
 import argparse
@@ -60,7 +63,7 @@ def to_dict_remove_dups(sequences) -> dict:
     return {record.id: record for record in sequences}
 
 
-def write_hits(df, references, prefix) -> None:
+def write_hits(df, references, prefix) -> int:
     """
     Write contigs hits from a DataFrame to a FASTA file using memory-efficient processing.
 
@@ -72,6 +75,11 @@ def write_hits(df, references, prefix) -> None:
     Returns:
         None
     """
+    if df.empty:
+        open(f"{prefix}_reference.fa", "a").close()
+        open(f"{prefix}.json", "a").close()
+        return 0
+
     needed_hits = set(hit.split(" ")[0] for hit in df["query-ID"].unique())
     found_hits = set()
 
@@ -99,6 +107,12 @@ def write_hits(df, references, prefix) -> None:
         if missing_hits:
             logger.warning(f"Could not find the following reference sequences: {', '.join(missing_hits)}")
 
+    # Writing best hit to JSON for metadata purposes
+    df_renamed = df.copy()
+    df_renamed["query-ID"] = df_renamed["query-ID"].str.replace("\\", "-")
+    df_renamed.to_json(f"{prefix}.json", orient="records", lines=True)
+
+    return 0
 
 def read_mash_screen(file) -> pd.DataFrame:
     """
@@ -130,6 +144,29 @@ def read_mash_screen(file) -> pd.DataFrame:
     return df.iloc[[0]]
 
 
+def fallback_df(references_file) -> pd.DataFrame:
+    """
+    Get the ID and description of the first sequence in the references file.
+
+    Args:
+        references_file (Path): Path to the references FASTA file
+
+    Returns:
+        tuple: (sequence_id, sequence_description) or (None, None) if no sequences found
+    """
+    record = next(SeqIO.parse(references_file, "fasta"), None)
+    if record:
+        return pd.DataFrame({
+            "identity": [0.0],
+            "shared-hashes": ["0/0"],
+            "median-multiplicity": [0],
+            "p-value": [1.0],
+            "query-ID": [record.id],
+            "query-comment": [record.description if record.description else ""]
+        })
+    return pd.DataFrame()
+
+
 def main(argv=None):
     """Coordinate argument parsing and program execution."""
     args = parse_args(argv)
@@ -144,20 +181,13 @@ def main(argv=None):
     # reading in the mash results
     df = read_mash_screen(args.mash)
     if df.empty:
-        # Create empty files so nextflow doesn't crash
-        open(f"{args.prefix}_reference.fa", "a").close()
-        open(f"{args.prefix}.json", "a").close()
-        return 0
+        logger.info("No mash screen hits found. Using first reference sequence as fallback.")
+
+        # Get first reference sequence info
+        df = fallback_df(args.references)
 
     # Selecting the best hit and write the hit to a fasta file
-    write_hits(df, args.references, args.prefix)
-
-    # Writing the best hit to a json file for metadata purposes
-    df_renamed = df.copy()
-    df_renamed["query-ID"] = df_renamed["query-ID"].str.replace("\\", "-")
-    df_renamed.to_json(f"{args.prefix}.json", orient="records", lines=True)
-
-    return 0
+    return write_hits(df, args.references, args.prefix)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Originally written by jenniferlu717/KrakenTools, adjusted by Joon Klaps.
+# See git repository (https://github.com/nf-core/viralmetagenome) for full license text.
+
 import argparse
 import logging
 import sys

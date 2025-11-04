@@ -1,15 +1,22 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Joon-Klaps/viralgenie
+    nf-core/viralmetagenome
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/Joon-Klaps/viralgenie
-    Website: https://joon-klaps.github.io/viralgenie/latest/
+    Github : https://github.com/nf-core/viralmetagenome
+    Website: https://nf-co.re/viralmetagenome
+    Slack  : https://nfcore.slack.com/channels/viralmetagenome
 ----------------------------------------------------------------------------------------
 */
 
 params.global_prefix = getGlobalPrefix(workflow, params)
-
+def getGlobalPrefix(workflow,params) {
+    def date_stamp = new java.util.Date().format( 'yyyyMMdd')
+    if (params.prefix) {
+        return "${params.prefix}_${date_stamp}_${workflow.manifest.version}_${workflow.runName}".replaceAll("\\s+", "_")
+    }
+    return null
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,10 +24,9 @@ params.global_prefix = getGlobalPrefix(workflow, params)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { VIRALGENIE              } from './workflows/viralgenie.nf'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_viralgenie_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_viralgenie_pipeline'
-
+include { VIRALMETAGENOME         } from './workflows/viralmetagenome'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_viralmetagenome_pipeline'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
@@ -30,7 +36,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_vira
 //
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
-workflow NFCORE_VIRALGENIE {
+workflow NFCORE_VIRALMETAGENOME {
 
     take:
     samplesheet // channel: samplesheet read in from --input
@@ -40,11 +46,11 @@ workflow NFCORE_VIRALGENIE {
     //
     // WORKFLOW: Run pipeline
     //
-    VIRALGENIE (
+    VIRALMETAGENOME (
         samplesheet
     )
     emit:
-    multiqc_report = VIRALGENIE.out.multiqc_report // channel: /path/to/multiqc_report.html
+    multiqc_report = VIRALMETAGENOME.out.multiqc_report // channel: /path/to/multiqc_report.html
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,13 +70,16 @@ workflow {
         params.monochrome_logs,
         args,
         params.outdir,
-        params.input
+        params.input,
+        params.help,
+        params.help_full,
+        params.show_hidden
     )
 
     //
     // WORKFLOW: Run main workflow
     //
-    NFCORE_VIRALGENIE (
+    NFCORE_VIRALMETAGENOME (
         PIPELINE_INITIALISATION.out.samplesheet
     )
     //
@@ -83,22 +92,8 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        NFCORE_VIRALGENIE.out.multiqc_report
+        NFCORE_VIRALMETAGENOME.out.multiqc_report
     )
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-def getGlobalPrefix(workflow,params) {
-    def date_stamp = new java.util.Date().format( 'yyyyMMdd')
-    if (params.prefix) {
-        return "${params.prefix}_${date_stamp}_${workflow.manifest.version}_${workflow.runName}".replaceAll("\\s+", "_")
-    }
-    return null
 }
 
 /*

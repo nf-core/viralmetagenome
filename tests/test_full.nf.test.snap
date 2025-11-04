@@ -201,7 +201,7 @@
                     "untar": 1.34
                 },
                 "Workflow": {
-                    "nf-core/viralmetagenome": "v1.0.0"
+                    "nf-core/viralmetagenome": "v1.1.0dev"
                 },
                 "XZ_DB": {
                     "xz": "5.2.6"

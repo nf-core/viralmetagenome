@@ -2,13 +2,17 @@ lint:
   files_exist:
     - conf/test.config
     - conf/test_full.config
-    - docs/README.md
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
+  files_unchanged:
+    - .gitattributes
+    - .prettierignore
   multiqc_config: false
-nf_core_version: 3.3.1
+nf_core_version: 3.5.2
 repository_type: pipeline
 template:
   author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
-  description: a bioinformatics best-practice analysis pipeline for untargeted viral
+  description: A bioinformatics best-practice analysis pipeline for untargeted viral
     genome reconstruction and to identify intra-host variants from metagenomic sequencing
     data.
   force: false
@@ -18,4 +22,4 @@ template:
   outdir: .
   skip_features:
     - igenomes
-  version: 0.1.3dev
+  version: 1.1.1dev

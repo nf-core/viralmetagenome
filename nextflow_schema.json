@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/viralmetagenome/master/nextflow_schema.json",
     "title": "nf-core/viralmetagenome pipeline parameters",
-    "description": "a bioinformatics best-practice analysis pipeline for untargeted viral genome reconstruction and to identify intra-host variants from metagenomic sequencing data.",
+    "description": "A bioinformatics best-practice analysis pipeline for untargeted viral genome reconstruction and to identify intra-host variants from metagenomic sequencing data.",
     "type": "object",
     "$defs": {
         "input_output_options": {
@@ -185,6 +185,18 @@
                     "fa_icon": "far calendar",
                     "description": "Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.",
                     "hidden": true
+                },
+                "help": {
+                    "type": ["boolean", "string"],
+                    "description": "Display the help message."
+                },
+                "help_full": {
+                    "type": "boolean",
+                    "description": "Display the full detailed help message."
+                },
+                "show_hidden": {
+                    "type": "boolean",
+                    "description": "Display hidden parameters in the help message (only works when --help or --help_full are provided)."
                 }
             }
         }

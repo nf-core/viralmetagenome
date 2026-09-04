@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - ([#313](https://github.com/nf-core/viralmetagenome/pull/313)) - Add param `--normalise_reads` to digitally normalise reads with BBNorm before de novo assembly (by @Joon-Klaps)
 - ([#317](https://github.com/nf-core/viralmetagenome/pull/317)) - Add `tests/lib/UTILS.groovy` and rewrite the pipeline-level nf-tests as scenario lists, so assertions are defined once instead of copied across seven files (by @Joon-Klaps)
+- ([#319](https://github.com/nf-core/viralmetagenome/pull/319)) - Add a "Contig Taxonomy" MultiQC bar chart summarising contig taxonomic classifications (species/taxon level, per sample) with a switchable genome-completeness dataset (by @Joon-Klaps)
 - ([#318](https://github.com/nf-core/viralmetagenome/pull/318)) - Update all nf-core modules and subworkflows (by @Joon-Klaps)
 - ([#320](https://github.com/nf-core/viralmetagenome/pull/320)) - Fix [#281](https://github.com/nf-core/viralmetagenome/issues/281) - add opt-in param `--use_host_filtered_reads` to route host-filtered reads into the iterative consensus refinement and final variant-calling mapping steps. Defaults to `false` to preserve existing behaviour (by @Joon-Klaps)
 - ([#318](https://github.com/nf-core/viralmetagenome/pull/318)) - Document how to build a custom annotation database from NCBI Virus, and fix stale `customisation/databases.md` cross-references left over from a docs restructure (by @Joon-Klaps)

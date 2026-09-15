@@ -16,6 +16,7 @@ process CUSTOM_MULTIQC {
     path blast_files            , stageAs: "?/blast/*"
     path mapping_constraints
     path anno_files             , stageAs: "?/annotation/*"
+    path annotation_metadata
     path clusters_tsv           , stageAs: "?/clusters/*"
     path screen_files           , stageAs: "?/screen/*"
     path custom_table_headers
@@ -44,6 +45,7 @@ process CUSTOM_MULTIQC {
     def quast_files_command = quast_files ? "--quast_files ${quast_files}" : ''
     def blast_files_command = blast_files ? "--blast_files ${blast_files}" : ''
     def annotation_files = anno_files ? "--annotation_files ${anno_files}" : ''
+    def annotation_metadata_command = annotation_metadata ? "--annotation_metadata ${annotation_metadata}" : ''
     def clusters_files = clusters_tsv ? "--clusters_files ${clusters_tsv}" : ''
     def mapping_constraints_command = mapping_constraints ? "--mapping_constraints ${mapping_constraints}" : ''
     def screen_files_command = screen_files ? "--screen_files ${screen_files}" : ''
@@ -60,6 +62,7 @@ process CUSTOM_MULTIQC {
         ${quast_files_command} \\
         ${blast_files_command} \\
         ${annotation_files} \\
+        ${annotation_metadata_command} \\
         ${clusters_files} \\
         ${mapping_constraints_command} \\
         ${screen_files_command} \\

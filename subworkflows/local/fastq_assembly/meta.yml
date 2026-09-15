@@ -29,6 +29,12 @@ input:
       description: |
         SPAdes configuration YAML file
         Structure: [ path(yml) ]
+  - normalise_reads:
+      type: boolean
+      description: |
+        Run BBNorm digital normalisation on the reads before assembly. Applied only to
+        the reads passed to SPAdes/Trinity/MEGAHIT; scaffold extension and per-contig
+        coverage still use the full read set.
   - ch_spades_hmm:
       description: |
         SPAdes HMM model files

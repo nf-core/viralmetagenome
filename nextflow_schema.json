@@ -51,7 +51,6 @@
                 },
                 "transpose_overview_tables": {
                     "type": "boolean",
-                    "default": false,
                     "description": "Transpose the samples overview table so samples become columns and result fields become rows.",
                     "help_text": "Applies only to samples_overview.tsv. The contig and mapping overview tables remain in long format.",
                     "fa_icon": "fas fa-table"
@@ -199,6 +198,12 @@
                     "description": "Skip the fastqc step after host & contaminants were removed",
                     "hidden": true
                 },
+                "use_host_filtered_reads": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-filter",
+                    "description": "Prefer host-filtered reads for downstream mapping & polishing steps once host removal has completed successfully",
+                    "help_text": "When enabled, the iterative consensus refinement and final variant-calling mapping steps (`bwamem2`/`bowtie2`) consume the host-filtered reads instead of the pre-host-removal, decomplexified reads."
+                },
                 "arguments_fastqc": {
                     "type": "string",
                     "default": "--quiet",
@@ -224,7 +229,7 @@
                     "type": "string",
                     "description": "Arguments for UMI-tools extract",
                     "fa_icon": "fas fa-cogs",
-                    "default": "--umi-separator \":",
+                    "default": "--umi-separator \":\"",
                     "hidden": true
                 },
                 "arguments_humid": {
@@ -464,6 +469,17 @@
                     "fa_icon": "fas fa-exchange-alt",
                     "description": "Specify the read orientation.",
                     "hidden": true
+                },
+                "normalise_reads": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-balance-scale",
+                    "description": "Digitally normalise reads with BBNorm before de novo assembly",
+                    "help_text": "Runs BBNorm on the reads passed to SPAdes, Trinity and MEGAHIT, which reduces the memory and runtime cost of assembling high-coverage libraries. Normalisation is applied **only** to the assemblers: scaffold extension and the per-contig coverage behind `--perc_reads_contig` continue to use the full read set, and reads used for mapping, variant calling and consensus generation are never normalised."
+                },
+                "arguments_bbnorm": {
+                    "type": "string",
+                    "fa_icon": "fas fa-terminal",
+                    "description": "Extra arguments passed to BBNorm"
                 },
                 "arguments_spades": {
                     "type": "string",
@@ -872,6 +888,12 @@
                     "help_text": "Samples, reference combinations below this total mapped read threshold are skipped for variant/consensus calling to avoid unreliable results.",
                     "minimum": 1
                 },
+                "keep_unmapped": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-filter",
+                    "description": "Keep unmapped reads in the alignments used for contig coverage, polishing and consensus refinement",
+                    "help_text": "Unmapped reads are dropped by default: `samtools view -F 4` on the contig-coverage alignment behind `--perc_reads_contig`, and `-G 12` (drops only read pairs with both ends unmapped) on the alignments carried into deduplication, variant calling and consensus generation. This substantially reduces the temporary storage footprint, since the pipeline maps up to five times per sample. Enable this to carry the full alignment, including unmapped reads, through those steps. Mapping statistics and the `--min_mapped_reads` filter are computed before the polishing alignments are filtered, so reported mapping rates are unaffected either way."
+                },
                 "min_consensus_depth": {
                     "type": "integer",
                     "minimum": 1,
@@ -922,7 +944,7 @@
                 },
                 "arguments_umitools_dedup": {
                     "type": "string",
-                    "default": "--umi-separator=\\':\\' --method cluster --unmapped-reads use",
+                    "default": "--umi-separator=':' --method cluster --unmapped-reads use",
                     "description": "Arguments for UMI-tools deduplication",
                     "fa_icon": "fas fa-cogs",
                     "hidden": true
@@ -970,7 +992,7 @@
                 },
                 "arguments_bcftools_mpileup3": {
                     "type": "string",
-                    "default": "--include \\'INFO/DP>=5\\",
+                    "default": "--include 'INFO/DP>=5'",
                     "description": "Arguments for BCFtools mpileup step 3",
                     "fa_icon": "fas fa-cogs",
                     "hidden": true
@@ -1074,7 +1096,7 @@
                 },
                 "arguments_snpsift_extractfields": {
                     "type": "string",
-                    "default": "-s \",\" -e \".",
+                    "default": "-s \",\" -e \".\"",
                     "description": "Arguments for SnpSift ExtractFields tool",
                     "fa_icon": "fas fa-cogs"
                 }
@@ -1114,7 +1136,17 @@
                     "default": "ftp://ftp.expasy.org/databases/viralzone/2020_4/virosaurus90_vertebrate-20200330.fas.gz",
                     "fa_icon": "fas fa-database",
                     "description": "Database used for annotation of the consensus constructs",
-                    "help_text": "The metadata fields are stored in the fasta comment as `key1:\"value1\"|key2:\"value2\"|...` see docs/databases.md for more information."
+                    "help_text": "The annotation fields are read from `--annotation_metadata` when that is given, and are otherwise parsed out of the fasta header as `key1=\"value1\"|key2=\"value2\"|...` pairs. See docs/usage/databases.md for more information."
+                },
+                "annotation_metadata": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "mimetype": "text/csv",
+                    "pattern": "^\\S+\\.(csv|tsv|txt)(\\.gz)?$",
+                    "fa_icon": "fas fa-table",
+                    "description": "Metadata table describing the sequences of the annotation database",
+                    "help_text": "Optional csv/tsv table (may be gzipped) whose first column holds the sequence identifiers of `--annotation_db` and whose remaining columns become annotation fields in the report. When given, it replaces parsing those fields out of the fasta headers, so the database itself needs no `key=\"value\"` annotations."
                 },
                 "skip_prokka": {
                     "type": "boolean",

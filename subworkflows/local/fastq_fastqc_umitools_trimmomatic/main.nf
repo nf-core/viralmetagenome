@@ -36,7 +36,6 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC {
     min_trimmed_reads // integer: > 0
 
     main:
-    ch_versions = channel.empty()
     ch_fastqc_raw_html = channel.empty()
     ch_fastqc_raw_zip = channel.empty()
     if (!skip_fastqc) {
@@ -113,5 +112,4 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC {
     trim_read_count     = ch_trim_read_count     // channel: [ val(meta), val(count) ]
     fastqc_trim_html    = ch_fastqc_trim_html    // channel: [ val(meta), [ html ] ]
     fastqc_trim_zip     = ch_fastqc_trim_zip     // channel: [ val(meta), [ zip ] ]
-    versions            = ch_versions            // channel: [ versions.yml ]
 }

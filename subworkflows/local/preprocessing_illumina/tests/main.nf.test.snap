@@ -261,10 +261,6 @@
                 "4": [
                     "samples_low_reads_mqc.tsv:md5,669fa5f40cbbb7c2d4348119be2b3882"
                 ],
-                "5": [
-                    "versions.yml:md5,1d59e11333f3553107c3f4d8446ef035",
-                    "versions.yml:md5,89e393bda548dc2b38afdd7e25d60b26"
-                ],
                 "low_reads_mqc": [
                     "samples_low_reads_mqc.tsv:md5,669fa5f40cbbb7c2d4348119be2b3882"
                 ],
@@ -359,17 +355,13 @@
                             "test_2_dedup.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,1d59e11333f3553107c3f4d8446ef035",
-                    "versions.yml:md5,89e393bda548dc2b38afdd7e25d60b26"
                 ]
             }
         ],
-        "timestamp": "2026-02-10T17:31:15.263801595",
+        "timestamp": "2026-09-03T12:57:09.377807",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
         }
     },
     "sarscov2 paired-end [fastq] - with_umi - humid": {
@@ -507,9 +499,6 @@
                 "4": [
                     "samples_low_reads_mqc.tsv:md5,669fa5f40cbbb7c2d4348119be2b3882"
                 ],
-                "5": [
-                    
-                ],
                 "low_reads_mqc": [
                     "samples_low_reads_mqc.tsv:md5,669fa5f40cbbb7c2d4348119be2b3882"
                 ],
@@ -539,13 +528,10 @@
                 ],
                 "reads_trimmed": [
                     
-                ],
-                "versions": [
-                    
                 ]
             }
         ],
-        "timestamp": "2026-02-12T17:26:11.836864796",
+        "timestamp": "2026-09-03T12:56:43.04996",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
@@ -622,9 +608,6 @@
                 "4": [
                     
                 ],
-                "5": [
-                    
-                ],
                 "low_reads_mqc": [
                     
                 ],
@@ -692,16 +675,13 @@
                             "test_R2.fastp.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
-                ],
-                "versions": [
-                    
                 ]
             }
         ],
-        "timestamp": "2026-02-10T17:30:54.931458154",
+        "timestamp": "2026-09-03T12:56:53.71718",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
         }
     },
     "sarscov2 paired-end [fastq] - fastp": {

@@ -3,7 +3,57 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.1.3 - 2026-06-27
+## v1.2.0 - 2026-09-14
+
+### `Added`
+
+- ([#312](https://github.com/nf-core/viralmetagenome/pull/312)) - Fix [#282](https://github.com/nf-core/viralmetagenome/issues/282) - drop unmapped reads from the contig-coverage alignment and unmapped read pairs from the alignments used in polishing and consensus refinement, and add param `--keep_unmapped` to carry them through instead (by @Joon-Klaps)
+- ([#313](https://github.com/nf-core/viralmetagenome/pull/313)) - Add param `--normalise_reads` to digitally normalise reads with BBNorm before de novo assembly (by @Joon-Klaps)
+- ([#317](https://github.com/nf-core/viralmetagenome/pull/317)) - Add `tests/lib/UTILS.groovy` and rewrite the pipeline-level nf-tests as scenario lists, so assertions are defined once instead of copied across seven files (by @Joon-Klaps)
+- ([#318](https://github.com/nf-core/viralmetagenome/pull/318)) - Document how to build a custom annotation database from NCBI Virus, and fix stale `customisation/databases.md` cross-references left over from a docs restructure (by @Joon-Klaps)
+- ([#318](https://github.com/nf-core/viralmetagenome/pull/318)) - Add param `--annotation_metadata` to read the consensus annotation fields from a csv/tsv table (optionally gzipped) instead of parsing them out of the annotation database fasta headers (by @Joon-Klaps)
+- ([#319](https://github.com/nf-core/viralmetagenome/pull/319)) - Add a "Contig Taxonomy" MultiQC bar chart summarising contig taxonomic classifications (species/taxon level, per sample), switchable between all clusters and only the reconstructed ones, plus a separate genome-completeness heatmap (by @Joon-Klaps)
+- ([#320](https://github.com/nf-core/viralmetagenome/pull/320)) - Fix [#281](https://github.com/nf-core/viralmetagenome/issues/281) - add opt-in param `--use_host_filtered_reads` to route host-filtered reads into the iterative consensus refinement and final variant-calling mapping steps. Defaults to `false` to preserve existing behaviour (by @Joon-Klaps)
+- ([#321](https://github.com/nf-core/viralmetagenome/pull/321)) - Template update to nf-core/tools v4.1.0. The lint workflow pins Nextflow to 25.10.7 until [nextflow-io/nextflow#7474](https://github.com/nextflow-io/nextflow/issues/7474) ships in a 26.04.x release (by @Joon-Klaps)
+- ([#322](https://github.com/nf-core/viralmetagenome/pull/322)) - Update all nf-core modules and subworkflows (by @Joon-Klaps)
+
+### `Fixed`
+
+- ([#302](https://github.com/nf-core/viralmetagenome/pull/302)) - Fix [#285](https://github.com/nf-core/viralmetagenome/issues/285) & update modules of the subworkflow `fastq_kraken_kaiju` (by @Joon-Klaps)
+- ([#315](https://github.com/nf-core/viralmetagenome/pull/315)) - Fix [#314](https://github.com/nf-core/viralmetagenome/issues/314) - make `cluster.tsv` not an 'intermediate' file, as it contains a lot of info and is useful for downstream analyses (by @Joon-Klaps)
+- ([#322](https://github.com/nf-core/viralmetagenome/pull/322)) - Replace the deprecated `cat/cat` module with `find/concatenate`, and `tabix/tabix` module with `htslib/bgziptabix` (by @Joon-Klaps)
+- ([#324](https://github.com/nf-core/viralmetagenome/pull/324)) - Release fixes: pin Python 3.11 in the `quast` conda environment (`distutils` was removed in Python 3.12+), pin Nextflow 25.10.7 in the download-test workflow (same [nextflow-io/nextflow#7474](https://github.com/nextflow-io/nextflow/issues/7474) workaround as the lint workflow), make the `pipeline_info` pre-commit hook inspect only staged paths, and warn instead of crash on an unparsable `--annotation_metadata` table (by @Joon-Klaps)
+
+### `Dependencies`
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| `bcftools` | 1.22        | 1.23.1      |
+| `fastp`    | 1.0.1       | 1.3.6       |
+| `htslib`   | 1.22.1      | 1.24        |
+| `minimap2` | 2.29        | 2.30        |
+| `mosdepth` | 0.3.11      | 0.3.14      |
+| `multiqc`  | 1.34        | 1.35        |
+| `picard`   | 3.4.0       | 3.5.0       |
+| `prokka`   | 1.14.6      | 1.15.6      |
+| `samtools` | 1.22.1      | 1.24        |
+| `snpeff`   | 5.4.0a      | 5.4.0c      |
+| `vsearch`  | 2.21.1      | 2.31.0      |
+
+### `Parameters`
+
+| Old parameter | New parameter               |
+| ------------- | --------------------------- |
+|               | `--keep_unmapped`           |
+|               | `--normalise_reads`         |
+|               | `--arguments_bbnorm`        |
+|               | `--annotation_metadata`     |
+|               | `--use_host_filtered_reads` |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present.
+> **NB:** Parameter has been **added** if just the new parameter information is present.
+
+## v1.1.3 - 2026-07-02
 
 ### `Added`
 
@@ -14,6 +64,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Dependencies`
 
 ### `Parameters`
+
+| Old parameter | New parameter               |
+| ------------- | --------------------------- |
+|               | `--use_host_filtered_reads` |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.

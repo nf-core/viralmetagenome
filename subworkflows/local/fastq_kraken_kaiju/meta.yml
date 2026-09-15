@@ -42,6 +42,19 @@ input:
       description: |
         Kaiju database for taxonomic classification
         Structure: [ path(kaiju_db) ]
+  - kraken2_save_reads:
+      type: boolean
+      description: |
+        Whether to save classified reads from Kraken2
+  - kraken2_save_readclassification:
+      type: boolean
+      description: |
+        Whether to save read classification assignments from Kraken2
+  - kaiju_taxon_rank:
+      type: string
+      description: |
+        Taxonomic rank to display in Kaiju report and Krona visualization
+      enum: ["phylum", "class", "order", "family", "genus", "species"]
 output:
   - read_classifications:
       description: |

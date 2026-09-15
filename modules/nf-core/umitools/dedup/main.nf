@@ -3,10 +3,11 @@ process UMITOOLS_DEDUP {
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    // The upstream wave container is pruned and ships without pandas, which
+    // `umi_tools dedup --output-stats` needs. Use the biocontainer instead.
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/umi_tools:1.1.5--py39hf95cd2a_0' :
         'biocontainers/umi_tools:1.1.5--py39hf95cd2a_0' }"
-
 
     input:
     tuple val(meta), path(bam), path(bai)

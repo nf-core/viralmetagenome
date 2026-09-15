@@ -18,7 +18,6 @@ workflow CONSENSUS_QC {
 
     main:
 
-    ch_versions        = channel.empty()
     ch_blast           = channel.empty()
     ch_checkv          = channel.empty()
     ch_quast           = channel.empty()
@@ -79,13 +78,11 @@ workflow CONSENSUS_QC {
         if (!params.checkv_db) {
             CHECKV_DOWNLOADDATABASE()
             ch_checkv_db = CHECKV_DOWNLOADDATABASE.out.checkv_db
-            ch_versions = ch_versions.mix(CHECKV_DOWNLOADDATABASE.out.versions.first())
         }
 
         // uses HMM and AA alignment to deterimine completeness
         CHECKV_ENDTOEND(ch_genome_grouped, ch_checkv_db)
         ch_checkv = CHECKV_ENDTOEND.out.quality_summary
-        ch_versions = ch_versions.mix(CHECKV_ENDTOEND.out.versions.first())
     }
 
     // Align the different steps to each other to see how the sequences have changed
@@ -124,5 +121,4 @@ workflow CONSENSUS_QC {
     checkv     = ch_checkv        // channel: [ val(meta), [ tsv ] ]
     quast      = ch_quast         // channel: [ val(meta), [ tsv ] ]
     annotation = ch_annotation    // channel: [ val(meta), [ txt ] ]
-    versions   = ch_versions      // channel: [ versions.yml ]
 }

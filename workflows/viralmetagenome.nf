@@ -56,10 +56,12 @@ workflow VIRALMETAGENOME {
     take:
     ch_samplesheet // channel: samplesheet read in from --input
     outdir
+    keep_unmapped // boolean: keep unmapped reads in downstream alignments
+    normalise_reads // boolean: digitally normalise reads before assembly
+    use_host_filtered_reads // boolean: prefer host-filtered reads for downstream mapping & polishing steps
 
     main:
 
-    ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
 
     /*
@@ -77,6 +79,7 @@ workflow VIRALMETAGENOME {
     ch_spades_yml      = createFileChannel(params.spades_yml)
     ch_spades_hmm      = createFileChannel(params.spades_hmm)
     ch_constraint_meta = createFileChannel(params.mapping_constraints)
+    ch_annotation_meta = createFileChannel(params.annotation_metadata)
 
     // Databases, we really don't want to stage unnecessary databases
     ch_ref_pool      = (!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc)           ? createChannel( params.reference_pool, "reference", true )                                                         : channel.empty()
@@ -134,13 +137,13 @@ workflow VIRALMETAGENOME {
     ch_blast_refdb  = channel.empty()
 
     if ( params.reference_pool && ((!params.skip_assembly && !params.skip_polishing) || (!params.skip_consensus_qc && !params.skip_blast_qc))){
-        BLAST_MAKEBLASTDB ( ch_ref_pool )
+        BLAST_MAKEBLASTDB ( ch_ref_pool, [] )
         ch_blast_refdb = BLAST_MAKEBLASTDB.out.db
     }
 
-    // If we don't preprocess reads, remove samples with 0 reads
-    ch_host_trim_reads      = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
-    ch_decomplex_trim_reads = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
+    ch_host_trim_reads      = channel.empty()
+    ch_decomplex_trim_reads = channel.empty()
+
     // preprocessing illumina reads
     if (!params.skip_preprocessing){
         PREPROCESSING_ILLUMINA (
@@ -153,8 +156,16 @@ workflow VIRALMETAGENOME {
         ch_decomplex_trim_reads = PREPROCESSING_ILLUMINA.out.reads_decomplexified
         ch_multiqc_files        = ch_multiqc_files.mix(PREPROCESSING_ILLUMINA.out.mqc.collect{_meta, mqc -> mqc}.ifEmpty([]))
         ch_multiqc_files        = ch_multiqc_files.mix(PREPROCESSING_ILLUMINA.out.low_reads_mqc.ifEmpty([]))
-        ch_versions             = ch_versions.mix(PREPROCESSING_ILLUMINA.out.versions)
+    } else {
+        // Nothing downstream drops empty samples, so remove them here.
+        // countFastq() reads every file on the head node, hence only when preprocessing is skipped.
+        ch_host_trim_reads      = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
+        ch_decomplex_trim_reads = ch_reads.filter{ _meta, reads -> reads[0].countFastq() > 0}
     }
+
+    // Reads used for downstream mapping & polishing steps (iterative refinement, mapping-constraint
+    // selection, final variant-calling mapping).
+    ch_mapping_polishing_reads = use_host_filtered_reads ? ch_host_trim_reads : ch_decomplex_trim_reads
 
     // Determining metagenomic diversity
     if (!params.skip_read_classification) {
@@ -163,10 +174,12 @@ workflow VIRALMETAGENOME {
             read_classifiers,
             ch_kraken2_db,
             ch_bracken_db,
-            ch_kaiju_db
+            ch_kaiju_db,
+            params.kraken2_save_reads,
+            params.kraken2_save_readclassification,
+            params.kaiju_taxon_rank
             )
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_KRAKEN_KAIJU.out.mqc.collect{_meta, mqc -> mqc}.ifEmpty([]))
-        ch_versions      = ch_versions.mix(FASTQ_KRAKEN_KAIJU.out.versions)
     }
 
     // Assembly
@@ -185,10 +198,9 @@ workflow VIRALMETAGENOME {
 
     if (!params.skip_assembly) {
         // run different assemblers and combine contigs
-        FASTQ_ASSEMBLY( ch_host_trim_reads, ch_spades_yml, ch_spades_hmm)
+        FASTQ_ASSEMBLY( ch_host_trim_reads, ch_spades_yml, ch_spades_hmm, normalise_reads)
         ch_contigs       = FASTQ_ASSEMBLY.out.scaffolds
         ch_coverages     = FASTQ_ASSEMBLY.out.coverages
-        ch_versions      = ch_versions.mix(FASTQ_ASSEMBLY.out.versions)
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_ASSEMBLY.out.mqc.ifEmpty([]))
 
         if (!params.skip_polishing){
@@ -211,7 +223,6 @@ workflow VIRALMETAGENOME {
                 params.perc_reads_contig,
                 params.cluster_with_reference_pool
                 )
-            ch_versions = ch_versions.mix(FASTA_CONTIG_CLUST.out.versions)
 
             // Split up clusters into singletons and clusters of multiple contigs
             ch_centroids_members = FASTA_CONTIG_CLUST.out.centroids_members
@@ -233,7 +244,6 @@ workflow VIRALMETAGENOME {
             ALIGN_COLLAPSE_CONTIGS (
                 ch_centroids_members.multiple
                 )
-            ch_versions = ch_versions.mix(ALIGN_COLLAPSE_CONTIGS.out.versions)
 
             SINGLETON_FILTERING (
                 ch_centroids_members.singletons,
@@ -250,11 +260,9 @@ workflow VIRALMETAGENOME {
             // To do this we combine the channels based on sample
             // Extract the reference meta's and reads
             // Make cartesian product of identified references & reads so all references will be mapped against again.
-                ch_reads_tmp     = ch_decomplex_trim_reads.map { meta, fastq -> [meta.sample,meta, fastq]}
-                ch_consensus_tmp = ch_consensus.map { meta, fasta -> [meta.sample,meta, fasta] }
-
-                ch_consensus_reads_intermediate = ch_consensus_tmp
-                    .combine(ch_reads_tmp, by: [0])
+                ch_consensus_reads_intermediate = ch_consensus
+                    .map { meta, fasta -> [meta.sample, meta, fasta] }
+                    .combine(ch_mapping_polishing_reads.map { meta, fastq -> [meta.sample, meta, fastq]}, by: [0])
                     .map{
                         _sample, meta_ref, fasta, _meta_reads, fastq -> [meta_ref, fasta, fastq]
                     }
@@ -271,12 +279,12 @@ workflow VIRALMETAGENOME {
                     params.intermediate_consensus_caller,
                     params.intermediate_mapping_stats,
                     params.min_mapped_reads,
+                    keep_unmapped,
                     params.min_contig_size,
                     params.max_n_perc
                 )
                 ch_consensus                 = ch_consensus.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_allsteps)
                 ch_polishing_consensus_reads = FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_reads
-                ch_versions                  = ch_versions.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.versions)
                 ch_multiqc_files             = ch_multiqc_files.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.mqc.ifEmpty([])) //collect already done in subworkflow
             } else {
                 ch_polishing_consensus_reads = ch_consensus_reads_intermediate
@@ -303,7 +311,7 @@ workflow VIRALMETAGENOME {
             .transpose(remainder: true)                                                   // Unnest
 
         // Joining all the reads with the mapping constraints, filter for those specified or keep everything if none specified.
-        ch_map_seq_anno_combined = ch_decomplex_trim_reads
+        ch_map_seq_anno_combined = ch_mapping_polishing_reads
             .combine ( ch_mapping_constraints )
             .filter { meta_reads, _fastq, _meta_mapping, mapping_samples, _sequence ->
                 mapping_samples == null || mapping_samples == meta_reads.sample
@@ -335,7 +343,6 @@ workflow VIRALMETAGENOME {
             ch_constraint_consensus_reads.multiFastaSelection
         )
         ch_mash_screen = FASTQ_FASTA_MASH_SCREEN.out.json.collect{_meta, json -> json}
-        ch_versions    = ch_versions.mix(FASTQ_FASTA_MASH_SCREEN.out.versions)
 
         // For QC we keep original sequence to compare to
         ch_unaligned_contigs = ch_unaligned_raw_contigs
@@ -361,12 +368,12 @@ workflow VIRALMETAGENOME {
             params.consensus_caller,
             params.mapping_stats,
             params.min_mapped_reads,
+            keep_unmapped,
             params.min_contig_size,
             params.max_n_perc
         )
         ch_consensus     = ch_consensus.mix(FASTQ_FASTA_MAP_CONSENSUS.out.consensus_all)
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTA_MAP_CONSENSUS.out.mqc.ifEmpty([])) // collect already done in subworkflow
-        ch_versions      = ch_versions.mix(FASTQ_FASTA_MAP_CONSENSUS.out.versions)
 
     }
 
@@ -394,7 +401,6 @@ workflow VIRALMETAGENOME {
             ch_annotation_db,
             ch_prokka_db
             )
-        ch_versions           = ch_versions.mix(CONSENSUS_QC.out.versions)
         ch_checkv_summary     = CONSENSUS_QC.out.checkv.collect{_meta, summary -> summary}.ifEmpty([])
         ch_quast_summary      = CONSENSUS_QC.out.quast.collect{_meta, summary -> summary}.ifEmpty([])
         ch_blast_summary      = CONSENSUS_QC.out.blast.collect{_meta, summary -> summary}.ifEmpty([])
@@ -435,7 +441,7 @@ workflow VIRALMETAGENOME {
             "${process}:\n${tool_versions.join('\n')}"
         }
 
-    def ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
+    def ch_collated_versions = softwareVersionsToYAML(topic_versions.versions_file)
         .mix(topic_versions_string)
         .collectFile(
             storeDir: "${outdir}/pipeline_info",
@@ -463,6 +469,7 @@ workflow VIRALMETAGENOME {
         ch_blast_summary.ifEmpty([]),
         ch_constraint_meta,
         ch_annotation_summary.ifEmpty([]),
+        ch_annotation_meta,
         ch_clusters_tsv.ifEmpty([]),
         ch_mash_screen.ifEmpty([]),
         ch_multiqc_custom_table_headers.ifEmpty([])
@@ -470,7 +477,6 @@ workflow VIRALMETAGENOME {
 
     emit:
     multiqc_report = CUSTOM_MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                        // channel: [ path(versions.yml) ]
 }
 
 /*

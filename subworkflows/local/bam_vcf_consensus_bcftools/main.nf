@@ -2,7 +2,7 @@
 // Consensus calling with BCFTools
 //
 
-include { TABIX_TABIX        } from '../../../modules/nf-core/tabix/tabix/main'
+include { HTSLIB_BGZIPTABIX  } from '../../../modules/nf-core/htslib/bgziptabix/main'
 include { BEDTOOLS_MERGE     } from '../../../modules/nf-core/bedtools/merge/main'
 include { BEDTOOLS_MASKFASTA } from '../../../modules/nf-core/bedtools/maskfasta/main'
 include { BCFTOOLS_CONSENSUS } from '../../../modules/nf-core/bcftools/consensus/main'
@@ -17,8 +17,12 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
 
     main:
 
-    TABIX_TABIX(
-        ch_vcf
+    // The VCFs are already bgzipped, so only build the tabix index.
+    HTSLIB_BGZIPTABIX(
+        ch_vcf.map { meta, vcf -> [meta, vcf, [], []] },
+        'compress',
+        true,
+        'vcf',
     )
 
     ch_bam_vcf_fasta = ch_bam
@@ -59,7 +63,7 @@ workflow BAM_VCF_CONSENSUS_BCFTOOLS {
     // Call consensus sequence with BCFTools
     //
     ch_bcftools_in = ch_vcf
-        .join(TABIX_TABIX.out.index, by: [0])
+        .join(HTSLIB_BGZIPTABIX.out.index, by: [0])
         .join(BEDTOOLS_MASKFASTA.out.fasta, by: [0])
         .map { meta, v, t, f ->
             [meta, v, t, f, []]

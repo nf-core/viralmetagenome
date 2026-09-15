@@ -2,7 +2,7 @@
 // Identify the best hits of a set from a set of reference genomes using MASH
 //
 
-include { CAT_CAT as CAT_CAT_READS } from '../../../modules/nf-core/cat/cat/main'
+include { FIND_CONCATENATE as CAT_CAT_READS } from '../../../modules/nf-core/find/concatenate/main'
 include { MASH_SKETCH              } from '../../../modules/nf-core/mash/sketch/main'
 include { MASH_SCREEN              } from '../../../modules/nf-core/mash/screen/main'
 include { SELECT_REFERENCE         } from '../../../modules/local/select_reference/main'
@@ -12,7 +12,6 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     ch_fasta_reads // channel of [[meta], [multi-fasta], [read1, read2]]
 
     main:
-    ch_versions = channel.empty()
 
     //
     // Join reads
@@ -26,7 +25,6 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     //
     ch_input_sketch = ch_fasta_reads.map { meta, fasta, _reads -> [meta, fasta] }
     MASH_SKETCH(ch_input_sketch)
-    ch_versions = ch_versions.mix(MASH_SKETCH.out.versions.first())
 
     ch_input_screen = CAT_CAT_READS.out.file_out
         .join(MASH_SKETCH.out.mash)
@@ -39,7 +37,6 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     // Identify best hits from the reference sketch.
     //
     MASH_SCREEN(ch_input_screen.query, ch_input_screen.sequences)
-    ch_versions = ch_versions.mix(MASH_SCREEN.out.versions.first())
 
     //
     // Isolate/extract the best hit from mash screen using custom script select_reference
@@ -60,5 +57,4 @@ workflow FASTQ_FASTA_MASH_SCREEN {
     emit:
     reference_fastq = ch_reference_fastq // channel: [meta, fasta, reads ]
     json            = ch_json            // channel: [meta, json ]
-    versions        = ch_versions        // channel: [ versions.yml ]
 }

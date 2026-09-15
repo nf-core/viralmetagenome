@@ -21,14 +21,14 @@ Changes in 'mash/dist/main.nf':
 +    echo "name1\tname2\tdistance\tp-value\tmatching-hashes" > ${prefix}.txt
      mash \\
          dist \\
-         -p $task.cpus \\
-         $args \\
-         $reference \\
--        $query > ${prefix}.txt
-+        $query >> ${prefix}.txt
+         -p ${task.cpus} \\
+         ${args} \\
+         ${reference} \\
+-        ${query} > ${prefix}.txt
++        ${query} >> ${prefix}.txt
+     """
  
-     cat <<-END_VERSIONS > versions.yml
-     "${task.process}":
+     stub:
 
 'modules/nf-core/mash/dist/tests/main.nf.test.snap' is unchanged
 'modules/nf-core/mash/dist/tests/main.nf.test' is unchanged

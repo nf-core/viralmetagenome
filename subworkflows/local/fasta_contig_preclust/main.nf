@@ -13,7 +13,6 @@ workflow FASTA_CONTIG_PRECLUST {
     ch_kraken2_db      // channel: [ db ]
 
     main:
-    ch_versions = channel.empty()
 
     // modify single_end so kaiju & kraken don't crash
     ch_contigs = ch_contigs_reads.map{ meta, fasta, _reads -> [meta + [single_end:true, og_single_end:meta.single_end], fasta] }
@@ -22,7 +21,6 @@ workflow FASTA_CONTIG_PRECLUST {
     if ('kaiju' in contig_classifiers){
         KAIJU_CONTIG ( ch_contigs, ch_kaiju_db)
         ch_kaiju    = KAIJU_CONTIG.out.results
-        ch_versions = ch_versions.mix( KAIJU_CONTIG.out.versions.first() )
     }
 
     ch_kraken        = channel.empty()
@@ -94,5 +92,4 @@ workflow FASTA_CONTIG_PRECLUST {
     contigs_reads  = ch_sequences_reads  // channel: [ [ meta ], [ fasta ], [ fastq ]
     kraken         = ch_kraken           // channel: [ val(meta), [ kraken ] ]
     kaiju          = ch_kaiju            // channel: [ val(meta), [ kaiju ] ]
-    versions       = ch_versions         // channel: [ versions.yml ]
 }

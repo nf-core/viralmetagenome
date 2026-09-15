@@ -1,4 +1,4 @@
-include { CAT_CAT as CAT_CLUSTER                                      } from '../../../modules/nf-core/cat/cat/main'
+include { FIND_CONCATENATE as CAT_CLUSTER                             } from '../../../modules/nf-core/find/concatenate/main'
 include { MINIMAP2_INDEX as MINIMAP2_CONTIG_INDEX                     } from '../../../modules/nf-core/minimap2/index/main'
 include { MINIMAP2_ALIGN as MINIMAP2_CONTIG_ALIGN                     } from '../../../modules/nf-core/minimap2/align/main'
 include { IVAR_CONSENSUS as IVAR_CONTIG_CONSENSUS                     } from '../../../modules/nf-core/ivar/consensus/main'
@@ -9,7 +9,6 @@ workflow ALIGN_COLLAPSE_CONTIGS {
     ch_references_members
 
     main:
-    ch_versions = channel.empty()
 
     ch_sequences = ch_references_members.map { meta, references, members -> [meta, [references, members]] }
 
@@ -53,12 +52,10 @@ workflow ALIGN_COLLAPSE_CONTIGS {
         ch_ivar_fasta,
         true,
     )
-    ch_versions = ch_versions.mix(IVAR_CONTIG_CONSENSUS.out.versions.first())
 
     RENAME_FASTA_HEADER_CONTIG_CONSENSUS(IVAR_CONTIG_CONSENSUS.out.fasta, [])
 
     emit:
     consensus       = RENAME_FASTA_HEADER_CONTIG_CONSENSUS.out.fasta // channel: [ val(meta), [ fasta ] ]
     unaligned_fasta = CAT_CLUSTER.out.file_out // channel: [ val(meta), [ fasta ] ]
-    versions        = ch_versions // channel: [ versions.yml ]
 }

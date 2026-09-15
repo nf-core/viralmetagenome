@@ -12,7 +12,6 @@ workflow FASTA_FASTQ_CLUST {
     identity_threshold // value: 0.85
 
     main:
-    ch_versions = channel.empty()
     ch_fasta = ch_fasta_fastq.map { meta, fasta, _fastq -> [meta, fasta] }
 
     // cluster our reference hits and contigs should make this a subworkflow
@@ -39,13 +38,11 @@ workflow FASTA_FASTQ_CLUST {
         }
         VRHYME_VRHYME(vhryme_in.reads, vhryme_in.fasta)
         ch_clusters = VRHYME_VRHYME.out.membership
-        ch_versions = ch_versions.mix(VRHYME_VRHYME.out.versions.first())
     }
     else if (cluster_method == "mash") {
 
         // Calculate distances
         MASH_DIST(ch_fasta)
-        ch_versions = ch_versions.mix(MASH_DIST.out.versions.first())
 
         // Fix bug with clusty not accepting singletons
         ch_dist = MASH_DIST.out.dist
@@ -62,5 +59,4 @@ workflow FASTA_FASTQ_CLUST {
 
     emit:
     clusters = ch_clusters // channel: [ [ meta ], [ clusters ] ]
-    versions = ch_versions // channel: [ versions.yml ]
 }

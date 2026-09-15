@@ -17,16 +17,18 @@
                     "samtools": "1.22.1"
                 },
                 "CAT_ASSEMBLERS": {
+                    "coreutils": 9.4,
+                    "find": "4.6.0",
                     "pigz": 2.8
                 },
                 "CDHIT_CDHITEST": {
                     "cdhit": "4.8.1"
                 },
                 "CONTIG_IDXSTATS": {
-                    "samtools": "1.22.1"
+                    "samtools": 1.24
                 },
                 "CONTIG_INDEX": {
-                    "samtools": "1.22.1"
+                    "samtools": 1.24
                 },
                 "EXTRACT_CLUSTER": {
                     "biopython": 1.85,
@@ -38,7 +40,7 @@
                     "python": "3.9.1"
                 },
                 "FASTP": {
-                    "fastp": "1.0.1"
+                    "fastp": "1.3.6"
                 },
                 "FASTQC_RAW": {
                     "fastqc": "0.12.1"
@@ -87,7 +89,7 @@
                     "untar": 1.34
                 },
                 "Workflow": {
-                    "nf-core/viralmetagenome": "v1.1.3"
+                    "nf-core/viralmetagenome": "v1.2.0"
                 }
             },
             [
@@ -132,11 +134,13 @@
                 "assembly/polishing",
                 "assembly/polishing/cdhitest",
                 "assembly/polishing/cdhitest/SRR11140744",
+                "assembly/polishing/cdhitest/SRR11140744/SRR11140744.clusters.tsv",
                 "assembly/polishing/cdhitest/SRR11140744/clusters",
                 "assembly/polishing/cdhitest/SRR11140744/clusters/SRR11140744_taxid2697049_cdhit.fa.clstr",
                 "assembly/polishing/cdhitest/SRR11140744/references",
                 "assembly/polishing/cdhitest/SRR11140744/references/SRR11140744_taxid2697049_cdhit.fa",
                 "assembly/polishing/cdhitest/SRR11140748",
+                "assembly/polishing/cdhitest/SRR11140748/SRR11140748.clusters.tsv",
                 "assembly/polishing/cdhitest/SRR11140748/clusters",
                 "assembly/polishing/cdhitest/SRR11140748/clusters/SRR11140748_taxid2697049_cdhit.fa.clstr",
                 "assembly/polishing/cdhitest/SRR11140748/references",
@@ -240,9 +244,9 @@
                 "SRR11140748_cl0.tsv:md5,44ad8f080dbcc374fdcdb21989f56146",
                 "SRR11140744_cl0_singleton.fasta:md5,d516230799da49400c85acefdb59646f",
                 "SRR11140748_cl0_singleton.fasta:md5,6761378582ed349787568f6d50b66e59",
-                "SRR11140744.fastp.json:md5,f8eef72194acbdd00321057edfb972d0",
-                "SRR11140748.fastp.json:md5,bbcea546259f1a4f694eec82d756a4cb",
-                "empty-SRR.fastp.json:md5,7291568569db81b5940b8a78bb277ad8",
+                "SRR11140744.fastp.json:md5,79f95b57073a55dc3b9ee56b92456e55",
+                "SRR11140748.fastp.json:md5,0f6f0ba2731cc30ecfca96c7beca6bb4",
+                "empty-SRR.fastp.json:md5,282648c6a1bcc0de4136e143f7631660",
                 "SRR11140744_bad_out_R1.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "SRR11140744_bad_out_R2.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "SRR11140744_single_out_R1.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -253,7 +257,7 @@
                 "SRR11140748_single_out_R2.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
             ]
         ],
-        "timestamp": "2026-04-12T10:27:31.666386",
+        "timestamp": "2026-09-03T14:16:25.259857",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
@@ -285,16 +289,18 @@
                     "samtools": "1.22.1"
                 },
                 "CAT_ASSEMBLERS": {
+                    "coreutils": 9.4,
+                    "find": "4.6.0",
                     "pigz": 2.8
                 },
                 "CDHIT_CDHITEST": {
                     "cdhit": "4.8.1"
                 },
                 "CONTIG_IDXSTATS": {
-                    "samtools": "1.22.1"
+                    "samtools": 1.24
                 },
                 "CONTIG_INDEX": {
-                    "samtools": "1.22.1"
+                    "samtools": 1.24
                 },
                 "EXTRACT_CLUSTER": {
                     "biopython": 1.85,
@@ -306,7 +312,7 @@
                     "python": "3.9.1"
                 },
                 "FASTP": {
-                    "fastp": "1.0.1"
+                    "fastp": "1.3.6"
                 },
                 "FASTQC_RAW": {
                     "fastqc": "0.12.1"
@@ -355,7 +361,7 @@
                     "untar": 1.34
                 },
                 "Workflow": {
-                    "nf-core/viralmetagenome": "v1.1.3"
+                    "nf-core/viralmetagenome": "v1.2.0"
                 }
             },
             [
@@ -401,11 +407,13 @@
                 "assembly/polishing/blast",
                 "assembly/polishing/cdhitest",
                 "assembly/polishing/cdhitest/SRR11140744",
+                "assembly/polishing/cdhitest/SRR11140744/SRR11140744.clusters.tsv",
                 "assembly/polishing/cdhitest/SRR11140744/clusters",
                 "assembly/polishing/cdhitest/SRR11140744/clusters/SRR11140744_taxid2697049_cdhit.fa.clstr",
                 "assembly/polishing/cdhitest/SRR11140744/references",
                 "assembly/polishing/cdhitest/SRR11140744/references/SRR11140744_taxid2697049_cdhit.fa",
                 "assembly/polishing/cdhitest/SRR11140748",
+                "assembly/polishing/cdhitest/SRR11140748/SRR11140748.clusters.tsv",
                 "assembly/polishing/cdhitest/SRR11140748/clusters",
                 "assembly/polishing/cdhitest/SRR11140748/clusters/SRR11140748_taxid2697049_cdhit.fa.clstr",
                 "assembly/polishing/cdhitest/SRR11140748/references",
@@ -509,9 +517,9 @@
                 "SRR11140748_cl0.tsv:md5,44ad8f080dbcc374fdcdb21989f56146",
                 "SRR11140744_cl0_singleton.fasta:md5,d516230799da49400c85acefdb59646f",
                 "SRR11140748_cl0_singleton.fasta:md5,6761378582ed349787568f6d50b66e59",
-                "SRR11140744.fastp.json:md5,f8eef72194acbdd00321057edfb972d0",
-                "SRR11140748.fastp.json:md5,bbcea546259f1a4f694eec82d756a4cb",
-                "empty-SRR.fastp.json:md5,7291568569db81b5940b8a78bb277ad8",
+                "SRR11140744.fastp.json:md5,79f95b57073a55dc3b9ee56b92456e55",
+                "SRR11140748.fastp.json:md5,0f6f0ba2731cc30ecfca96c7beca6bb4",
+                "empty-SRR.fastp.json:md5,282648c6a1bcc0de4136e143f7631660",
                 "SRR11140744_bad_out_R1.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "SRR11140744_bad_out_R2.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "SRR11140744_single_out_R1.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -522,7 +530,7 @@
                 "SRR11140748_single_out_R2.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
             ]
         ],
-        "timestamp": "2026-04-11T13:21:29.158794",
+        "timestamp": "2026-09-03T14:14:51.93894",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"

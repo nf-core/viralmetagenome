@@ -54,7 +54,7 @@ workflow SCAFFOLDS_EXTEND_STATS {
         ch_bam = MAP_READS_CONTIGS.out.bam
 
         CONTIG_INDEX(ch_bam)
-        ch_bam_bai = ch_bam.join(CONTIG_INDEX.out.bai)
+        ch_bam_bai = ch_bam.join(CONTIG_INDEX.out.index)
 
         CONTIG_IDXSTATS(ch_bam_bai)
         ch_coverages = CONTIG_IDXSTATS.out.idxstats

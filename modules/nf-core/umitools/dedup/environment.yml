@@ -4,6 +4,5 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - conda-forge::pandas=2.2.3
-  # renovate: datasource=conda depName=bioconda/umi_tools
   - bioconda::umi_tools=1.1.5
+  - conda-forge::pandas=2.2.3

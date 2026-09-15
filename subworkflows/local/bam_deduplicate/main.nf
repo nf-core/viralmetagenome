@@ -13,12 +13,11 @@ workflow BAM_DEDUPLICATE {
     ch_multiqc = channel.empty()
 
     ch_bam = ch_bam_ref_fai.map { meta, bam, _fasta, _fai -> [meta, bam] }
-    ch_reference = ch_bam_ref_fai.map { meta, _bam, fasta, _fai -> [meta, fasta] }
-    ch_faidx = ch_bam_ref_fai.map { meta, _bam, _fasta, fai -> [meta, fai] }
+    ch_reference_fai = ch_bam_ref_fai.map { meta, _bam, fasta, fai -> [meta, fasta, fai] }
 
     if (umi && ['mapping', 'both'].contains(params.umi_deduplicate)) {
         SAMTOOLS_INDEX(ch_bam)
-        ch_bam_bai = ch_bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+        ch_bam_bai = ch_bam.join(SAMTOOLS_INDEX.out.index, by: [0])
 
         UMITOOLS_DEDUP(ch_bam_bai, mapping_stats)
         ch_dedup_bam = UMITOOLS_DEDUP.out.bam
@@ -27,7 +26,7 @@ workflow BAM_DEDUPLICATE {
         }
     }
     else {
-        PICARD_MARKDUPLICATES(ch_bam, ch_reference, ch_faidx)
+        PICARD_MARKDUPLICATES(ch_bam, ch_reference_fai)
         ch_dedup_bam = PICARD_MARKDUPLICATES.out.bam
         if (mapping_stats) {
             ch_multiqc = ch_multiqc.mix(PICARD_MARKDUPLICATES.out.metrics)

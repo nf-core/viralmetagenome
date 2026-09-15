@@ -179,16 +179,21 @@ def read_file_to_df(file: str, **kwargs) -> pd.DataFrame:
     if os.path.getsize(file_path) == 0:
         logger.debug("File is empty %s", file_path)
         return pd.DataFrame()
-    if file_path.suffix in [
+
+    # pandas decompresses on the fly, we only need to look past the .gz to find the format
+    suffixes = file_path.suffixes
+    suffix = suffixes[-2] if suffixes and suffixes[-1] == ".gz" and len(suffixes) > 1 else file_path.suffix
+
+    if suffix in [
         ".tsv",
         ".txt",
     ]:  # mqc calls tsv's txts, bed files are gzipped
         df = df_from_tsv(file_path, **kwargs)
-    elif file_path.suffix == ".csv":
+    elif suffix == ".csv":
         df = df_from_csv(file_path, **kwargs)
-    elif file_path.suffix in [".yaml", ".yml"]:
+    elif suffix in [".yaml", ".yml"]:
         df = df_from_yaml(file_path, **kwargs)
-    elif file_path.suffix in [".json"]:
+    elif suffix in [".json"]:
         df = df_from_json(file_path, **kwargs)
     else:
         logger.error(
@@ -212,8 +217,7 @@ def df_from_tsv(file: str, **kwargs) -> pd.DataFrame:
     """
     _check_pandas_available()
 
-    with open(file, "r") as table:
-        df = pd.read_csv(table, sep="\t", **kwargs)
+    df = pd.read_csv(file, sep="\t", **kwargs)
     return df
 
 
@@ -229,8 +233,7 @@ def df_from_csv(file: str, **kwargs) -> pd.DataFrame:
     """
     _check_pandas_available()
 
-    with open(file, "r") as table:
-        df = pd.read_csv(table, **kwargs)
+    df = pd.read_csv(file, **kwargs)
     return df
 
 

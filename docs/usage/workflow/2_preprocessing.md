@@ -92,3 +92,9 @@ The reason why we use Kraken2 for host removal over regular read mappers is nice
 
 > [!NOTE]
 > Specify the host database with the `--host_k2_db` parameter. The default is a small subset of the human genome and **we highly suggest that you make this database more elaborate** (for example, complete human genome, common sequencer contaminants, bacterial genomes, ...). For this, read the section on [creating custom kraken2 host databases](../customisation/databases.md#kraken2-databases).
+
+By default, the [de novo assembly](4_assembly_polishing.md) step uses host-filtered reads whenever host removal has run successfully. The [mapping steps used for iterative consensus refinement and final variant calling](5_variant_and_refinement.md#2-mapping-of-reads), however, use the pre-host-removal, decomplexified reads by default.
+
+:::tip{title="Use host-filtered reads for mapping & polishing too"}
+Set `--use_host_filtered_reads true` to also route the host-filtered reads into these downstream mapping and polishing steps.
+:::

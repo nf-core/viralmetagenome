@@ -3,7 +3,7 @@
 // Taken from https://github.com/nf-core/viralrecon/blob/master/subworkflows/local/vcf_tabix_stats.nf
 //
 
-include { TABIX_TABIX    } from '../../../modules/nf-core/tabix/tabix/main'
+include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix/main'
 include { BCFTOOLS_STATS } from '../../../modules/nf-core/bcftools/stats/main'
 
 workflow VCF_TABIX_STATS {
@@ -17,11 +17,15 @@ workflow VCF_TABIX_STATS {
 
     main:
 
-    TABIX_TABIX(
-        ch_vcf
+    // The VCFs are already bgzipped, so this only builds the tabix index.
+    HTSLIB_BGZIPTABIX(
+        ch_vcf.map { meta, vcf -> [meta, vcf, [], []] },
+        'compress',
+        true,
+        'vcf',
     )
     ch_stats_in = ch_vcf
-        .join(TABIX_TABIX.out.index, by: [0])
+        .join(HTSLIB_BGZIPTABIX.out.index, by: [0])
         .join(ch_fasta, by: [0])
         .multiMap { meta, vcf, tbi, fasta ->
             vcf_tbi: [meta, vcf, tbi]
@@ -38,6 +42,6 @@ workflow VCF_TABIX_STATS {
     )
 
     emit:
-    index    = TABIX_TABIX.out.index    // channel: [ val(meta), [ index ] ]
+    index    = HTSLIB_BGZIPTABIX.out.index    // channel: [ val(meta), [ index ] ]
     stats    = BCFTOOLS_STATS.out.stats // channel: [ val(meta), [ txt ] ]
 }

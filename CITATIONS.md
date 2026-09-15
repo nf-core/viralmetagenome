@@ -20,6 +20,10 @@
 
   > Bushnell B. (2022) BBMap, URL: http://sourceforge.net/projects/bbmap/
 
+- [BBNorm](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbnorm-guide/)
+
+  > Bushnell B. (2022) BBMap, URL: http://sourceforge.net/projects/bbmap/
+
 - [BCFtools](https://doi.org/10.1093/gigascience/giab008)
 
   > Danecek, Petr et al. “Twelve years of SAMtools and BCFtools.” GigaScience vol. 10,2 (2021): giab008. doi:10.1093/gigascience/giab008

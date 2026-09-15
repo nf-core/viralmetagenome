@@ -3,9 +3,9 @@ process IVAR_VARIANTS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
-        'biocontainers/ivar:1.4.4--h077b44d_0' }"
+        'quay.io/biocontainers/ivar:1.4.4--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -17,7 +17,8 @@ process IVAR_VARIANTS {
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ivar'), eval("ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p'"), emit: versions_ivar, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/^samtools //p'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +29,8 @@ process IVAR_VARIANTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def features = gff ? "-g $gff" : ""
 
+    // `samtools mpileup` intermittently fails on network-backed storage, so retry a few
+    // times before giving up instead of failing the whole run on a transient read error.
     def max_retries = 3
     """
     set -e  # Exit on error
@@ -37,7 +40,7 @@ process IVAR_VARIANTS {
         error_message=\$(echo "\$samtools_log" | grep 'E::' | head -n1 || true)
         if [ -n "\$error_message" ]; then
             echo "Samtools error: \$error_message"
-            echo "Retrying (\$((\$retry_count + 1))/3)..."
+            echo "Retrying (\$((\$retry_count + 1))/$max_retries)..."
             retry_count=\$((\$retry_count + 1))
         else
             break
@@ -60,13 +63,6 @@ process IVAR_VARIANTS {
             $args \\
             $features
     fi
-
-    # Continue with the workflow
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -75,10 +71,5 @@ process IVAR_VARIANTS {
     """
     touch ${prefix}.tsv
     $touch_mpileup
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 }

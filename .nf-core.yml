@@ -7,10 +7,18 @@ lint:
     - .gitattributes
     - .prettierignore
     - .github/PULL_REQUEST_TEMPLATE.md
-    - .github/workflows/branch.yml
     - .github/workflows/linting.yml
   multiqc_config: false
-nf_core_version: 4.0.2
+  nextflow_config:
+    # `nextflow config -flat` mangles quotes inside these values, so the linter
+    # cannot compare them with the schema defaults. See nf-core/tools#3696.
+    - config_defaults:
+        - params.arguments_umitools_extract
+        - params.arguments_umitools_dedup
+        - params.arguments_bcftools_mpileup3
+        - params.arguments_snpsift_extractfields
+  nf_test_content: false
+nf_core_version: 4.1.0
 repository_type: pipeline
 template:
   author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
@@ -22,4 +30,4 @@ template:
   outdir: .
   skip_features:
     - igenomes
-  version: 1.1.3
+  version: 1.2.0

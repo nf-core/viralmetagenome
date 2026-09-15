@@ -22,7 +22,6 @@ workflow FASTA_CONTIG_CLUST {
     cluster_with_reference_pool // boolean: whether blast db is provided (if not, skip blast ref selection)
 
     main:
-    ch_versions          = channel.empty()
     ch_no_blast_hits     = channel.empty()
     ch_fasta             = ch_fasta_fastq.map{ meta, fasta, _fastq -> [meta, fasta] }
     ch_fasta_ref_contigs = ch_fasta
@@ -52,7 +51,6 @@ workflow FASTA_CONTIG_CLUST {
             ch_kaiju_db,
             ch_kraken2_db
         )
-        ch_versions      = ch_versions.mix(FASTA_CONTIG_PRECLUST.out.versions)
         ch_contigs_reads = FASTA_CONTIG_PRECLUST.out.contigs_reads
     }
 
@@ -62,7 +60,6 @@ workflow FASTA_CONTIG_CLUST {
         cluster_method,
         identity_threshold
     )
-    ch_versions = ch_versions.mix(FASTA_FASTQ_CLUST.out.versions)
 
     // if we have no coverage files, make the empty array else join with coverages
     if (perc_reads_contig == 0){
@@ -123,6 +120,5 @@ workflow FASTA_CONTIG_CLUST {
     clusters_tsv          = EXTRACT_CLUSTER.out.tsv        // channel: [ [ meta ], [ tsv ] ]
     clusters_summary      = EXTRACT_CLUSTER.out.summary    // channel: [ [ meta ], [ tsv ] ]
     no_blast_hits_mqc     = ch_no_blast_hits               // channel: [ tsv ]
-    versions              = ch_versions                    // channel: [ versions.yml ]
 
 }

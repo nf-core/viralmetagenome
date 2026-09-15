@@ -20,6 +20,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NFT_VER: "0.9.4"
   NFT_WORKDIR: "~"
+  NFT_CLEANUP: "true"
   NXF_ANSI_LOG: false
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
@@ -40,7 +41,7 @@ jobs:
           rm -rf ./* || true
           rm -rf ./.??* || true
           ls -la ./
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -86,7 +87,7 @@ jobs:
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -95,6 +96,7 @@ jobs:
         uses: ./.github/actions/nf-test
         continue-on-error: ${{ matrix.NXF_VER == 'latest-everything' }}
         env:
+          NFT_CLEANUP: ${{ env.NFT_CLEANUP }}
           NFT_WORKDIR: ${{ env.NFT_WORKDIR }}
           NXF_VERSION: ${{ matrix.NXF_VER }}
         with:

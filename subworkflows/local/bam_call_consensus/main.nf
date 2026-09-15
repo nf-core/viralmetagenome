@@ -11,7 +11,6 @@ workflow BAM_CALL_CONSENSUS {
 
     main:
 
-    ch_versions = channel.empty()
     ch_bam = ch_bam_ref.map { meta, bam, _fasta -> [meta, bam] }
     ch_fasta = ch_bam_ref.map { meta, _bam, fasta -> [meta, fasta] }
 
@@ -31,7 +30,6 @@ workflow BAM_CALL_CONSENSUS {
             mapping_stats,
         )
         ch_consensus = IVAR_CONSENSUS.out.fasta
-        ch_versions = ch_versions.mix(IVAR_CONSENSUS.out.versions.first())
     }
 
     RENAME_FASTA_HEADER_CALLED_CONSENSUS(
@@ -41,5 +39,4 @@ workflow BAM_CALL_CONSENSUS {
 
     emit:
     consensus = RENAME_FASTA_HEADER_CALLED_CONSENSUS.out.fasta // channel: [ val(meta), [ fasta ] ]
-    versions  = ch_versions // channel: [ versions.yml ]
 }

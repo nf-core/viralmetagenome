@@ -60,6 +60,13 @@ input:
       type: integer
       description: |
         Minimum number of mapped reads required to proceed
+  - keep_unmapped:
+      type: boolean
+      description: |
+        Keep unmapped reads in the alignments carried into deduplication, variant
+        calling and consensus generation. When false (the default) the read pairs with
+        both ends unmapped are dropped. Statistics are computed beforehand, so mapping
+        rates are unaffected.
   - min_len:
       type: integer
       description: |

@@ -73,6 +73,11 @@ All three methods are supported to keep protocol compatibility with other pipeli
 > [!NOTE]
 > The mapping tool can be specified with the `--mapper` parameter, the default is `bwamem2`, in case the intermediate mapper (for intermediate refinement cycles) needs to be different, this can be specified with `--intermediate_mapper` otherwise it uses the supplied `--mapper` tool.
 
+By default, both the iterative consensus refinement mapping and the final variant-calling mapping use the trimmed & decomplexified reads produced during [preprocessing](2_preprocessing.md), **before** [host read-removal](2_preprocessing.md#5-host-read-removal).
+
+> [!NOTE]
+> Set `--use_host_filtered_reads true` to instead map the host-filtered reads at these two steps.
+
 ### 2.1 Deduplication
 
 Read deduplication is an optional step that can be performed with [`Picard`](https://broadinstitute.github.io/picard/) or if UMIs are used [`UMI-tools`](https://umi-tools.readthedocs.io/en/latest/QUICK_START.html). Unless you are using [UMIs](https://dnatech.genomecenter.ucdavis.edu/faqs/what-are-umis-and-why-are-they-used-in-high-throughput-sequencing/) it is not possible to establish whether the fragments you have sequenced from your sample were derived via true biological duplication (i.e. sequencing independent template fragments) or as a result of PCR biases introduced during the library preparation. To correct your reads, use picard MarkDuplicates to mark the duplicate reads identified amongst the alignments to allow you to gauge the overall level of duplication in your samples.

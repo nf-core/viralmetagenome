@@ -12,7 +12,6 @@ workflow BAM_VARIANTS_IVAR {
 
     main:
 
-    ch_versions = channel.empty()
 
     ch_bam     = ch_bam_fasta.map { meta, bam, _fasta -> [meta, bam] }
     ch_fasta   = ch_bam_fasta.map { _meta, _bam, fasta -> [fasta] }
@@ -28,7 +27,6 @@ workflow BAM_VARIANTS_IVAR {
         [],
         save_stats,
     )
-    ch_versions = ch_versions.mix(IVAR_VARIANTS.out.versions.first())
 
     ch_ivar_tsv = IVAR_VARIANTS.out.tsv
 
@@ -60,5 +58,4 @@ workflow BAM_VARIANTS_IVAR {
     multiqc    = IVAR_VARIANTS_TO_VCF.out.tsv // channel: [ val(meta), [ tsv ] ]
     vcf        = BCFTOOLS_SORT.out.vcf // channel: [ val(meta), [ vcf ] ]
     vcf_filter = BCFTOOLS_FILTER.out.vcf // channel: [ val(meta), [ vcf ] ]
-    versions   = ch_versions // channel: [ versions.yml ]
 }

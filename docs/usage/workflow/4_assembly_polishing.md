@@ -177,9 +177,9 @@ The coverage of the contigs is calculated using the same method as in the [cover
 :::info{title="Show me an example how it works"}
 If the `--perc_reads_contig` is set to `5`, the cumulative sum of the contigs from every assembler is calculated. For example:
 
-- Cluster 1: the cumulative sum of the contigs from SPAdes is 0.6, Megahit is 0.5, the cluster is kept.
-- Cluster 2: the cumulative sum of the contigs from SPAdes is 0.1, Megahit is 0.1, the cluster is removed.
-- Cluster 3: the cumulative sum of the contigs from SPAdes is 0.5, Megahit is 0, the cluster is kept.
+- Cluster 1: the cumulative sum of the contigs from SPAdes is `6`, Megahit is `5`, the cluster is kept.
+- Cluster 2: the cumulative sum of the contigs from SPAdes is `1`, Megahit is `1`, the cluster is removed.
+- Cluster 3: the cumulative sum of the contigs from SPAdes is `5`, Megahit is `0`, the cluster is kept.
 
 :::
 

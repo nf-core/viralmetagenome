@@ -61,11 +61,13 @@ Prokka can be given a custom protein database to annotate your genomes with, hav
 
 ## MMseqs-search
 
-[MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases.nf-core/viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virosaurus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](../customisation/databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that is embedded within the database. This allows nf-core/viralmetagenome, in addition to the BLAST search of reference pool hits, to compare the generated consensus genomes at a species & segment level.
+[MMseqs-search](https://github.com/soedinglab/MMseqs2/wiki#searching) is an ultra-fast and sensitive search tool for protein and nucleotide databases.nf-core/viralmetagenome uses MMseqs to search the consensus genomes in an annotated database, like [Virosaurus](https://virosaurus.vital-it.ch/) (see also [defining your own custom annotation database](../databases.md#annotation-sequences)), and uses the annotation data of the best hit to assign the consensus genome a species name, segment name, expected host, and any other metadata that describes the database sequences - taken from a metadata table when `--annotation_metadata` is given, and from the fasta headers otherwise. This allows nf-core/viralmetagenome, in addition to the BLAST search of reference pool hits, to compare the generated consensus genomes at a species & segment level.
 
 :::info
 MMseqs was used for the annotation step instead of BLAST because of the ability to query using a tblastx search for highly diverging viruses while supplying a nucleotide annotation database. To specify another type of search (e.g. blastp, blastx, etc.), please refer to the [parameters consensus-qc section](../parameters.md#consensus-qc).
 :::
+
+The species assigned to each final consensus cluster is also summarised across the whole run in the "Contig clusters" section of the MultiQC report, see [output section](../output.md#multiqc).
 
 > [!NOTE]
 > MMseqs-search can be skipped with `--skip_consensus_annotation`.

@@ -148,11 +148,37 @@ Set it with the variable `--kraken2_db`
 
 Identifying the species and the segment of the final genome constructs is done based on a tblastx search (with MMseqs2) to an annotated sequencing dataset. This dataset is by default the [Virosaurus](https://viralzone.expasy.org/8676) as it contains a good representation of the viral genomes and is annotated.
 
-This annotation database can be specified using `--annotation_db`
+Set the sequences with `--annotation_db`. The annotation data itself comes from a **metadata table** when you pass `--annotation_metadata`, and from the **fasta headers** otherwise.
+
+### Metadata table
+
+`--annotation_metadata` takes a csv or tsv, optionally gzipped. The first column holds the sequence identifiers, every other column becomes a field in the report:
+
+```csv
+Accession,species,segment,host
+NC_078521,Mykissvirus tructae,3,Oncorhynchus mykiss
+KM368312,Alphainfluenzavirus influenzae,3,Sus scrofa
+```
+
+Identifiers are matched against the fasta header up to the first whitespace, with or without a version suffix (`NC_078521.1` matches `NC_078521`). Empty cells, and sequences missing from the table, are left unannotated. A column named like one of the search result columns is skipped with a warning, ignoring case - so NCBI Virus' `Length` gives way to the alignment `length` and does not reach the report.
+
+### Fasta headers
+
+Without `--annotation_metadata`, the annotation data has to be in the header itself as `key=value` or `key="value"` pairs, the way Virosaurus ships it:
+
+```text
+>754189.6 species="Ungulate tetraparvovirus 3"|segment="nan"|host_common_name="Pig"
+>NC_001731; species=Molluscum contagiosum virus; taxid=10279; segment=N/A;
+```
+
+- **Quote your values** unless you separate the pairs with `;`. An unquoted value runs to the next `;` or to the end of the line, so `species=Influenza segment=4` becomes a single `species` field.
+- Values may not contain a `"` or a `;`, not even inside quotes.
+- Keys are single words: `nucleic acid=DNA` is stored as `acid`.
+- `key:value` (colon-separated) is not picked up.
 
 ### Creating a custom annotation dataset with [BV-BRC](https://www.bv-brc.org/)
 
-In case [Virosaurus](https://viralzone.expasy.org/8676) does not suffice your needs, a custom annotation dataset can be made. Creating a custom annotation dataset can easily be done as long as the annotation data is in the fasta header using this format: `(key)=(value)` or `(key):(value)`. For example, the following fasta headers are both valid:
+In case [Virosaurus](https://viralzone.expasy.org/8676) does not suffice your needs, a custom annotation dataset can be made. Either supply the annotation as a metadata table, or put `key=value` pairs in the fasta header as described above. For example, the following fasta headers are both valid:
 
 ```text
 >754189.6 species="Ungulate tetraparvovirus 3"|segment="nan"|host_common_name="Pig"|genbank_accessions="NC_038883"|taxon_id="754189"
@@ -165,60 +191,82 @@ Here we select all viral genomes that are not lab reassortments and are referenc
 
 > [!NOTE]
 > This is an example, in case you need to have a more elaborate dataset than Virosaurus, be more inclusive towards your taxa of interest and include more metadata attributes.
+> [BV-BRC](https://www.bv-brc.org/) carries a lot of metadata and is queried with their [CLI-tool](https://www.bv-brc.org/docs/cli_tutorial/index.html). Here we take every viral reference genome that is not a lab reassortment, metadata and sequences separately:
 
 ```bash
-# download annotation metadata +/- 5s
-p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne host_common_name,'Lab reassortment' --attr genome_id,species,segment,genome_name,genome_length,host_common_name,genbank_accessions,taxon_id   > all-virus-anno.txt
-# download genome data, done separately as it takes much longer to query +/- 1 hour
-p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne host_common_name,'Lab reassortment' | p3-get-genome-contigs --attr sequence > all-virus.fasta
+# metadata, +/- 5s
+p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne host_common_name,'Lab reassortment' --attr genome_id,species,segment,genome_name,genome_length,host_common_name,genbank_accessions,taxon_id > all-virus-anno.txt
+# sequences, done separately as it takes much longer to query +/- 1 hour
+p3-all-genomes --eq superkingdom,Viruses --eq reference_genome,Reference --ne host_common_name,'Lab reassortment' | p3-get-genome-contigs --attr sequence > all-virus-contigs.txt
 ```
 
 :::tip
-Any attribute can be downloaded and will be added to the final report if the formatting remains the same.
-For a complete list of attributes see `p3-all-genomes --fields` or read their [manual](https://www.bv-brc.org/docs/cli_tutorial/cli_getting_started.html)
+Any attribute can be added to `--attr` and becomes a column in the report. For the complete list see `p3-all-genomes --fields` or their [manual](https://www.bv-brc.org/docs/cli_tutorial/cli_getting_started.html).
 :::
 
-Next, the metadata and the genomic data are combined into a single fasta file where the metadata fields are stored in the fasta comment as `key1="value1"|key2="value2"|...` using the following python code.
+`all-virus-anno.txt` is already a tsv whose first column is the `genome_id`, so it can go straight to `--annotation_metadata`. Only the sequences need a conversion step, as `p3-get-genome-contigs` returns a tsv rather than a fasta:
 
 ```python
 import pandas as pd
-import re
 
-# read in sequences with all columns as strings
-sequences = pd.read_csv("refseq-virus.fasta", index_col=0, sep="\t", dtype=str)
-data = pd.read_csv("refseq-virus-anno.txt", index_col=0, sep="\t", dtype=str)
+contigs = pd.read_csv("all-virus-contigs.txt", sep="\t", dtype=str)
+with open("bv-brc-virus.fasta", "w") as out:
+    for genome_id, sequence in zip(contigs["genome.genome_id"], contigs["contig.sequence"]):
+        out.write(f">{genome_id}\n{sequence}\n")
+```
 
-# merge the df's
-df = sequences.join(data)
-# remove 'genome' from the name
-df.columns = df.columns.str.replace("genome.", "")
+A genome with several contigs is written out once per contig under the same `genome_id`, which is what you want - they share the one metadata row.
 
-# create fasta header
-def create_fasta_header(row):
-    annotations = ";".join(
-        [
-            f'{column}="{value}"'
-            for column, value in row.items()
-            if column != "contig.sequence"
-        ]
-    )
-    return f"{annotations}\n"
+The p3 tools prefix their columns with the entity name, so trim that off to keep the report headings readable:
 
+```bash
+sed '1s/genome\.//g' all-virus-anno.txt > bv-brc-virus-metadata.tsv
+```
 
-df["fasta_header"] = df.apply(create_fasta_header, axis=1)
-
-df["fasta_entry"] = (
-    ">" + df.index.astype(str) + " " + df["fasta_header"] + df["contig.sequence"]
-)
-with open("bv-brc-refvirus-anno.fasta", "w") as f:
-    for entry in df["fasta_entry"]:
-        f.write(entry + "\n")
+```bash
+nextflow run nf-core/viralmetagenome \
+    -profile <docker/singularity/.../institute> \
+    --input samplesheet.csv \
+    --outdir <OUTDIR> \
+    --annotation_db bv-brc-virus.fasta \
+    --annotation_metadata bv-brc-virus-metadata.tsv
 ```
 
 :::tip{title="Expected files in database directory"}
 
-- `refseq-virus.fasta`
-- `refseq-virus-anno.txt`
-- `bv-brc-refvirus-anno.fasta`
+- `all-virus-contigs.txt` and `all-virus-anno.txt` (the two downloads)
+- `bv-brc-virus.fasta` (passed to `--annotation_db`)
+- `bv-brc-virus-metadata.tsv` (passed to `--annotation_metadata`)
 
+:::
+
+### Creating a custom annotation dataset with [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/)
+
+[NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/) is a good alternative to BV-BRC when you want a dataset that is refreshed more often, or that is focused tightly on one taxon of interest. Its FASTA download carries no annotations at all - the defline is just an accession and free text - so the metadata comes from the exported table, which is what `--annotation_metadata` takes.
+
+```text
+>NC_078521.1 |Rainbow trout orthomyxovirus-1 strain Rainbow/Idaho/347/1997 putative nucleoprotein (NP) gene, complete cds
+```
+
+1. Search "Nucleotide" sequences for your taxon of interest - a species/family name or an NCBI taxid, e.g. [`Orthomyxoviridae, taxid:11308`](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Orthomyxoviridae,taxid:11308).
+1. Narrow the result set with the filters (host, sequence length, completeness, RefSeq only, ...) so you end up with a representative, non-redundant set.
+1. Enable the metadata columns you want with the column-selector, then `Download` > `Current table` > `CSV` > **Download All Records**. `Accession` comes first and is what the sequences are matched on; `Species`, `Segment` and `Host` describe a consensus genome best.
+1. `Download` > `Nucleotide` > `FASTA` > **Download All Records**.
+1. Point the pipeline at both files as they are downloaded:
+
+```bash
+nextflow run nf-core/viralmetagenome \
+    -profile <docker/singularity/.../institute> \
+    --input samplesheet.csv \
+    --outdir <OUTDIR> \
+    --annotation_db sequences.fasta \
+    --annotation_metadata sequences.csv
+```
+
+:::warning
+Both downloads must come from the **same search and the same filters**. Neither file records the query, so a FASTA and a CSV from two different sessions look valid but share no accessions. The pipeline warns how many contigs hit a sequence missing from the metadata table - if that is the whole run, this is why.
+:::
+
+:::note{title="What about JenaDB?"}
+The best match found for a database going by that name is [VirJenDB](https://www.virjendb.org) (also written VJDB), a FAIR virus (meta)data platform developed at Friedrich Schiller University Jena as part of [NFDI4Microbiota](https://nfdi4microbiota.de/usecases/virjendb) and described in [Nucleic Acids Research](https://academic.oup.com/nar/article/54/D1/D912/8382361). It aggregates and harmonises sequences and roughly 200 metadata fields from 16 upstream sources - including NCBI Virus, BV-BRC, ICTV and ViralZone - and offers FASTA/TSV/CSV/JSON/XML export through its web portal and a documented REST API. It's a comparatively new and still-evolving resource, so check its own documentation for the current export options; the same recipe as above (download the sequences and the metadata table, then pass them as `--annotation_db` and `--annotation_metadata`) applies regardless of which of these sources you pull from.
 :::

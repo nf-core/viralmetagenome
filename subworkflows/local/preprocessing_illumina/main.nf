@@ -18,7 +18,6 @@ workflow PREPROCESSING_ILLUMINA {
     ch_contaminants            // channel: [ path(contaminants_fasta) ]
 
     main:
-    ch_versions         = channel.empty()
     ch_multiqc_files    = channel.empty()
     ch_trim_read_count  = channel.empty()
 
@@ -33,7 +32,6 @@ workflow PREPROCESSING_ILLUMINA {
             params.skip_trimming,
             params.min_trimmed_reads
             )
-        ch_versions        = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.versions)
         ch_trim_read_count = ch_trim_read_count.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.trim_read_count)
         ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.fastqc_raw_zip)
         ch_multiqc_files   = ch_multiqc_files.mix(FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC.out.fastqc_trim_html)
@@ -78,7 +76,6 @@ workflow PREPROCESSING_ILLUMINA {
         )
         ch_reads_dedup   = HUMID.out.dedup
         ch_multiqc_files = ch_multiqc_files.mix(HUMID.out.stats)
-        ch_versions      = ch_versions.mix(HUMID.out.versions)
     }
     else {
         ch_reads_dedup = ch_reads_trim
@@ -106,7 +103,6 @@ workflow PREPROCESSING_ILLUMINA {
             )
             ch_reads_decomplexified = BBMAP_BBDUK.out.reads
             ch_multiqc_files        = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
-            ch_versions             = ch_versions.mix(BBMAP_BBDUK.out.versions)
         } else if (params.decomplexifier == 'prinseq') {
             ch_prinseq_in = ch_reads_dedup_joined.map { meta, reads -> [meta, reads, []] }
             PRINSEQ_READS (
@@ -114,7 +110,6 @@ workflow PREPROCESSING_ILLUMINA {
             )
             ch_reads_decomplexified = PRINSEQ_READS.out.good_reads
             ch_multiqc_files        = ch_multiqc_files.mix(PRINSEQ_READS.out.log)
-            ch_versions             = ch_versions.mix(PRINSEQ_READS.out.versions)
         }
     } else {
         ch_reads_decomplexified = ch_reads_dedup_joined
@@ -151,5 +146,4 @@ workflow PREPROCESSING_ILLUMINA {
     reads_trimmed           = ch_reads_dedup                  // channel: [ [ meta ], [ reads ] ]
     mqc                     = ch_multiqc_files                // channel: [ [ meta ], [ mqc ] ]
     low_reads_mqc           = ch_low_reads_mqc                // channel: [ mqc ]
-    versions                = ch_versions                     // channel: [ versions.yml ]
 }

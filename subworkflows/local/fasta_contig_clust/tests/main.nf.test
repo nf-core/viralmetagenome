@@ -36,6 +36,7 @@ nextflow_workflow {
                     [id:'sarscov2_db'],
                     file(params.pipelines_testdata_base_path + '/db/sarscov2.fasta', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }

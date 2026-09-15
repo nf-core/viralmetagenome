@@ -4,8 +4,8 @@ Changes in component 'nf-core/prinseqplusplus'
 Changes in 'prinseqplusplus/main.nf':
 --- modules/nf-core/prinseqplusplus/main.nf
 +++ modules/nf-core/prinseqplusplus/main.nf
-@@ -8,14 +8,14 @@
-         'biocontainers/prinseq-plus-plus:1.2.3--hc90279e_1' }"
+@@ -8,13 +8,13 @@
+         'quay.io/biocontainers/prinseq-plus-plus:1.2.3--hc90279e_1' }"
  
      input:
 -    tuple val(meta), path(reads)
@@ -16,16 +16,14 @@ Changes in 'prinseqplusplus/main.nf':
 -    tuple val(meta), path("*_single_out*.fastq.gz"), optional: true, emit: single_reads
 -    tuple val(meta), path("*_bad_out*.fastq.gz")   , optional: true, emit: bad_reads
 -    tuple val(meta), path("*.log")                                 , emit: log
--    path "versions.yml"                                            , emit: versions
-+    tuple val(meta), path("*_good_out*")    , emit: good_reads
-+    tuple val(meta), path("*_single_out*")  , optional: true, emit: single_reads
-+    tuple val(meta), path("*_bad_out*")     , optional: true, emit: bad_reads
-+    tuple val(meta), path("*.log")          , emit: log
-+    path "versions.yml"                     , emit: versions
++    tuple val(meta), path("*_good_out*")                  , emit: good_reads
++    tuple val(meta), path("*_single_out*"), optional: true, emit: single_reads
++    tuple val(meta), path("*_bad_out*")   , optional: true, emit: bad_reads
++    tuple val(meta), path("*.log")                        , emit: log
+     tuple val("${task.process}"), val('prinseqplusplus'), eval("prinseq++ --version | cut -f 2 -d ' '"), topic: versions, emit: versions_prinseqplusplus
  
      when:
-     task.ext.when == null || task.ext.when
-@@ -23,39 +23,22 @@
+@@ -23,31 +23,19 @@
      script:
      def args = task.ext.args ?: ''
      def prefix = task.ext.prefix ?: "${meta.id}"
@@ -42,20 +40,6 @@ Changes in 'prinseqplusplus/main.nf':
 -            -VERBOSE 1 \\
 -            $args \\
 -            | tee ${prefix}.log
-+    """
-+    prinseq++ \\
-+        -threads $task.cpus \\
-+        ${fastqs} \\
-+        ${fasta_arg} \\
-+        -out_name ${prefix} \\
-+        -VERBOSE 1 \\
-+        $args \\
-+        | tee ${prefix}.log
- 
--        cat <<-END_VERSIONS > versions.yml
--        "${task.process}":
--            prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
--        END_VERSIONS
 -        """
 -    } else {
 -        """
@@ -68,19 +52,21 @@ Changes in 'prinseqplusplus/main.nf':
 -            -VERBOSE 1 \\
 -            $args \\
 -            | tee ${prefix}.log
--
--        cat <<-END_VERSIONS > versions.yml
--        "${task.process}":
--            prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
--        END_VERSIONS
 -        """
 -    }
-+    cat <<-END_VERSIONS > versions.yml
-+    "${task.process}":
-+        prinseqplusplus: \$(echo \$(prinseq++ --version | cut -f 2 -d ' ' ))
-+    END_VERSIONS
 +    """
- }
++    prinseq++ \\
++        -threads $task.cpus \\
++        ${fastqs} \\
++        ${fasta_arg} \\
++        -out_name ${prefix} \\
++        -VERBOSE 1 \\
++        $args \\
++        | tee ${prefix}.log
++    """
+ 
+     stub:
+     def prefix = task.ext.prefix ?: "${meta.id}"
 
 'modules/nf-core/prinseqplusplus/tests/main.nf.test.snap' is unchanged
 'modules/nf-core/prinseqplusplus/tests/nextflow.config' is unchanged

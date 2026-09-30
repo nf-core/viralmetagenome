@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-- ([#PR](https://github.com/nf-core/viralmetagenome/pull/PR)) - Add param `--skip_softclip_consensus` (default `true`) to extend the consensus ends with the consensus of the reads soft-clipped there during iterative refinement, so segment ends the assembler left off can be recovered (by @Joon-Klaps)
+- ([#331](https://github.com/nf-core/viralmetagenome/pull/331)) - Add param `--skip_softclip_consensus` (default `true`) to extend the consensus ends with the consensus of the reads soft-clipped there during iterative refinement, so segment ends the assembler left off can be recovered (by @Joon-Klaps)
 
 ## v1.2.0 - 2026-09-16
 

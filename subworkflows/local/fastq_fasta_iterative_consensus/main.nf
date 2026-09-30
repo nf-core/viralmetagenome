@@ -21,6 +21,7 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
     n_100                         // integer: n_100
     umi_deduplicate               // string:  [ read | mapping | both ] where UMI deduplication happens
     ivar_header                   // string:  path to a custom iVar VCF header, or null for the bundled one
+    softclip_consensus            // val: [ true | false ] extend the consensus ends with the reads soft-clipped there
 
     main:
     ch_reference_reads_intermediate = ch_reference_reads
@@ -45,6 +46,7 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
             n_100,
             umi_deduplicate,
             ivar_header,
+            softclip_consensus,
         )
 
         ch_reference_reads_intermediate = ITERATION_1.out.consensus_reads
@@ -73,6 +75,7 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
             n_100,
             umi_deduplicate,
             ivar_header,
+            softclip_consensus,
         )
 
         ch_reference_reads_intermediate = ITERATION_2.out.consensus_reads
@@ -101,6 +104,7 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
             n_100,
             umi_deduplicate,
             ivar_header,
+            softclip_consensus,
         )
 
         ch_reference_reads_intermediate = ITERATION_3.out.consensus_reads
@@ -129,6 +133,7 @@ workflow FASTQ_FASTA_ITERATIVE_CONSENSUS {
             n_100,
             umi_deduplicate,
             ivar_header,
+            softclip_consensus,
         )
 
         ch_reference_reads_intermediate = ITERATION_4.out.consensus_reads

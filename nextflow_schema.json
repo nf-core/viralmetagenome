@@ -823,6 +823,13 @@
                     "description": "Calculate summary statistics during iterations",
                     "help_text": "Collect coverage/alignment metrics per cycle to monitor convergence (adds minor overhead).",
                     "default": true
+                },
+                "skip_softclip_consensus": {
+                    "type": "boolean",
+                    "default": true,
+                    "fa_icon": "fas fa-forward",
+                    "description": "Don't extend the consensus ends with the reads soft-clipped there during iterative refinement",
+                    "help_text": "Pileup-based consensus callers only count aligned bases, so reads that run past a consensus end are soft-clipped and the consensus can never grow beyond the reference it was mapped to. When enabled (`--skip_softclip_consensus false`), each refinement cycle extends both ends with the consensus of those overhangs, and the next cycle re-maps the reads and re-calls the new bases like any others. It needs at least one refinement cycle and is never applied in the final variant-calling round. Thresholds are set with `--arguments_softclip_consensus`."
                 }
             }
         },
@@ -1085,6 +1092,14 @@
                     "type": "string",
                     "default": "--count-orphans --max-depth 0 --min-BQ 20 --no-BAQ -aa",
                     "description": "Arguments for iVar consensus step 2",
+                    "fa_icon": "fas fa-cogs",
+                    "hidden": true
+                },
+                "arguments_softclip_consensus": {
+                    "type": "string",
+                    "default": "--min-depth 5",
+                    "description": "Arguments for extending consensus ends from soft-clipped reads",
+                    "help_text": "Options of `bin/softclip_consensus.py`: `--min-depth` (unique fragments carrying the majority base), `--min-agreement` (default 0.7), `--min-mapq` (20), `--min-baseq` (20), `--max-extension` (150 bp per end per cycle), `--end-tolerance` (5), `--kmer-size` (25, self-repeat guard, 0 disables).",
                     "fa_icon": "fas fa-cogs",
                     "hidden": true
                 },

@@ -19,6 +19,7 @@ components:
   - bam_call_variants
   - bam_call_consensus
   - bam_stats_filter
+  - softclip_consensus
   - utils_nfcore_viralmetagenome_pipeline
 input:
   - ch_reference_reads:
@@ -75,6 +76,11 @@ input:
       type: integer
       description: |
         Maximum number of consecutive Ns allowed in consensus sequences
+  - softclip_consensus:
+      type: boolean
+      description: |
+        Extend each consensus end with the consensus of the reads soft-clipped there
+        (modules/local/softclip_consensus). Only meaningful when the output is mapped again.
 output:
   - consensus_reads:
       description: |

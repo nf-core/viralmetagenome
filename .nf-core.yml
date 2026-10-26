@@ -7,9 +7,16 @@ lint:
     - .gitattributes
     - .prettierignore
     - .github/PULL_REQUEST_TEMPLATE.md
+    - .github/workflows/linting.yml
   multiqc_config: false
+  nextflow_config:
+    - config_defaults:
+        - params.arguments_umitools_extract
+        - params.arguments_umitools_dedup
+        - params.arguments_bcftools_mpileup3
+        - params.arguments_snpsift_extractfields
   nf_test_content: false
-nf_core_version: 4.1.0
+nf_core_version: 4.2.1
 repository_type: pipeline
 template:
   author: Joon Klaps, Philippe Lemey, Liana Kafetzopoulou
@@ -23,4 +30,4 @@ template:
   outdir: .
   skip_features:
     - igenomes
-  version: 1.2.1dev
+  version: 1.2.0

@@ -7,16 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
-### `Fixed`
-
 - ([#334](https://github.com/nf-core/viralmetagenome/pull/334)) - Bump nf-core template to 4.2.1
+- ([#336](https://github.com/nf-core/viralmetagenome/pull/336)) - Update all nf-core modules and subworkflows
+
+### `Fixed`
 
 ### `Dependencies`
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| `template` | 4.2.0       | 4.2.1       |
+| `bowtie2`  | 2.5.4       | 2.5.5       |
+| `fastp`    | 1.3.6       | 1.4.0       |
 | `fastqc`   | 0.12.1      | 0.13.0      |
+| `htslib`   | 1.21        | 1.24        |
+| `samtools` | 1.21        | 1.24        |
+| `template` | 4.2.0       | 4.2.1       |
 
 ## v1.2.0 - 2026-09-16
 

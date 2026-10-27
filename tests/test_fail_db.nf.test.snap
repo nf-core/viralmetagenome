@@ -89,7 +89,7 @@
                     "untar": 1.34
                 },
                 "Workflow": {
-                    "nf-core/viralmetagenome": "v1.2.0"
+                    "nf-core/viralmetagenome": "v1.3.0dev"
                 }
             },
             [
@@ -361,7 +361,7 @@
                     "untar": 1.34
                 },
                 "Workflow": {
-                    "nf-core/viralmetagenome": "v1.2.0"
+                    "nf-core/viralmetagenome": "v1.3.0dev"
                 }
             },
             [

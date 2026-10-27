@@ -6,6 +6,7 @@ include { BAM_STATS_METRICS                       } from '../bam_stats_metrics'
 include { BAM_CALL_VARIANTS                       } from '../bam_call_variants'
 include { BAM_CALL_CONSENSUS                      } from '../bam_call_consensus'
 include { BAM_STATS_FILTER                        } from '../bam_stats_filter'
+include { SOFTCLIP_CONSENSUS                      } from '../../../modules/local/softclip_consensus/main'
 
 workflow FASTQ_FASTA_MAP_CONSENSUS {
 
@@ -24,6 +25,7 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
     n_100                // integer: n_100
     umi_deduplicate      // string:  [ read | mapping | both ] where UMI deduplication happens
     ivar_header          // string:  path to a custom iVar VCF header, or null for the bundled one
+    softclip_consensus   // val: [ true | false ] extend the consensus ends with the reads soft-clipped there
 
     main:
 
@@ -97,6 +99,13 @@ workflow FASTQ_FASTA_MAP_CONSENSUS {
         mapping_stats
     )
     ch_consensus_all      = BAM_CALL_CONSENSUS.out.consensus
+
+    // Pileup-based consensus callers never see soft-clipped bases, so a consensus cannot grow past
+    // the reference it was mapped to. Add the overhang back; the next mapping round re-calls it.
+    if (softclip_consensus) {
+        SOFTCLIP_CONSENSUS ( ch_consensus_all.join(ch_dedup_bam, by: [0]) )
+        ch_consensus_all  = SOFTCLIP_CONSENSUS.out.fasta
+    }
 
     // Check if consensus genomes are long enough
     ch_contigs            = filterContigs ( ch_consensus_all, min_len, n_100 )

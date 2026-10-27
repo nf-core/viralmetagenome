@@ -144,6 +144,7 @@ workflow VIRALMETAGENOME {
     intermediate_variant_caller     // string:  [ bcftools | ivar ]
     intermediate_consensus_caller   // string:  [ bcftools | ivar ]
     intermediate_mapping_stats      // boolean
+    skip_softclip_consensus         // boolean
 
     // Mapping & variant calling
     mapper                          // string:  [ bwamem2 | bowtie2 ]
@@ -414,7 +415,8 @@ workflow VIRALMETAGENOME {
                     min_contig_size,
                     max_n_perc,
                     umi_deduplicate,
-                    ivar_header
+                    ivar_header,
+                    !skip_softclip_consensus
                 )
                 ch_consensus                 = ch_consensus.mix(FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_allsteps)
                 ch_polishing_consensus_reads = FASTQ_FASTA_ITERATIVE_CONSENSUS.out.consensus_reads
@@ -505,7 +507,8 @@ workflow VIRALMETAGENOME {
             min_contig_size,
             max_n_perc,
             umi_deduplicate,
-            ivar_header
+            ivar_header,
+            false // never extend here: bases added in this last round would not be re-mapped
         )
         ch_consensus     = ch_consensus.mix(FASTQ_FASTA_MAP_CONSENSUS.out.consensus_all)
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_FASTA_MAP_CONSENSUS.out.mqc.ifEmpty([])) // collect already done in subworkflow

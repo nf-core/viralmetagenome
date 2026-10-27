@@ -155,3 +155,15 @@ There are again a couple of differences between the iVar and BCFtools:
 
 > [!NOTE]
 > The consensus caller can be specified with the `--consensus_caller` parameter, the default is `ivar`. The intermediate consensus caller (for intermediate refinement cycles) can be specified with `--intermediate_consensus_caller` and is by default `bcftools`.
+
+### 4.1 Extending consensus ends from soft-clipped reads
+
+Both consensus callers work from a pileup, which only counts bases that are aligned to the reference. Reads that run past a consensus end are soft-clipped, so their overhang never reaches the pileup and a consensus can never grow beyond the reference it was mapped to. Refinement cycles can correct bases, but they cannot recover a segment end that the assembler left off. This matters most for segmented viruses with conserved termini, where assemblers often stop short of, or fold back at, the segment ends.
+
+Enable `--skip_softclip_consensus false` to extend both ends of the consensus in every refinement cycle:
+
+1. The reads soft-clipped at a consensus end are grouped by where their alignment stops. Reads in one group share a coordinate frame, and only the largest group is used, because an indel in the contig's last few bases shifts one group against another.
+2. Walking outward one base at a time, the majority base is added while at least `--min-depth` unique fragments carry it (duplicates of one fragment count once) and at least `--min-agreement` of the reads agree. A read stops voting once it disagrees with the extension built so far, so a minority carrying an indel or another haplotype drops out.
+3. The extension is refused from the first 25-mer that already occurs in the contig in either orientation. This keeps the reverse-complement fold-back that assemblers produce at segment ends from being grown back in.
+
+The next cycle maps the reads onto the extended consensus and its consensus caller re-calls the new bases like any others, so each cycle can extend an end by up to about one read length. The extension is never applied in the final variant-calling round, where the added bases would not be re-mapped. It needs at least one refinement cycle (`--iterative_refinement_cycles`) and is not used for mapping constraints, which do not go through the refinement cycles. The thresholds can be changed with `--arguments_softclip_consensus`. A per-end report is written to `consensus/softclip/`.

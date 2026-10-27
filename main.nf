@@ -137,6 +137,7 @@ workflow NFCORE_VIRALMETAGENOME {
         params.intermediate_variant_caller,
         params.intermediate_consensus_caller,
         params.intermediate_mapping_stats,
+        params.skip_softclip_consensus,
 
         // Mapping & variant calling
         params.mapper,

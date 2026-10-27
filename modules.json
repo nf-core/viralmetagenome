@@ -122,7 +122,7 @@
                     },
                     "fastqc": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "git_sha": "2c2d159951605a1e815f1236616201353138c073",
                         "installed_by": ["fastq_fastqc_umitools_fastp", "modules"]
                     },
                     "find/concatenate": {

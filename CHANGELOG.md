@@ -3,6 +3,21 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.3.0dev - YYYY-MM-DD
+
+### `Added`
+
+### `Fixed`
+
+- ([#334](https://github.com/nf-core/viralmetagenome/pull/334)) - Bump nf-core template to 4.2.1
+
+### `Dependencies`
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| `template` | 4.2.0       | 4.2.1       |
+| `fastqc`   | 0.12.1      | 0.13.0      |
+
 ## v1.2.0 - 2026-09-16
 
 ### `Added`

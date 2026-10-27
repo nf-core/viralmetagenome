@@ -1,0 +1,710 @@
+nextflow_workflow {
+
+    name "Test Workflow PREPROCESSING_ILLUMINA"
+    script "../main.nf"
+    workflow "PREPROCESSING_ILLUMINA"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "subworkflows/preprocessing_illumina"
+    tag "preprocessing_illumina"
+    tag "fastq_fastqc_umitools_trimmomatic"
+    tag "fastq_fastqc_umitools_fastp"
+    tag "fastq_kraken_host_remove"
+    tag "fastqc"
+    tag "umitools/extract"
+    tag "trimmomatic"
+    tag "fastp"
+    tag "humid"
+    tag "cat/fastq"
+    tag "bbmap/bbduk"
+    tag "prinseqplusplus"
+    tag "kraken2/kraken2"
+
+    setup {
+        run("UNTAR", alias: "KRAKEN2_HOST_DB_UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:"kraken2_host"],
+                    file(params.pipelines_testdata_base_path + '/db/kraken2_hs22.tar.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    //
+    // Test 1: Default fastp workflow (tests FASTQ_FASTQC_UMITOOLS_FASTP)
+    //
+    test("sarscov2 paired-end [fastq] - fastp") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = false
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 2: Trimmomatic workflow (tests FASTQ_FASTQC_UMITOOLS_TRIMMOMATIC)
+    //
+    test("sarscov2 paired-end [fastq] - trimmomatic") {
+
+        when {
+            params {
+                arguments_trimmomatic     = 'ILLUMINACLIP:TruSeq3-PE:2:30:10'
+                arguments_fastp           = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'trimmomatic'
+                input[5] = false
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 3: With UMI deduplication using HUMID
+    //
+    test("sarscov2 paired-end [fastq] - with_umi - humid") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = true
+                input[6] = true
+                input[7] = false
+                input[8] = 0
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = true
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 4: With merge reads using CAT_FASTQ
+    //
+    test("sarscov2 paired-end [fastq] - merge_reads") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_1', single_end:false, sample:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ],
+                    [
+                        [ id:'test_2', single_end:false, sample:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = true
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = true
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 5: With decomplexification using BBDuk
+    //
+    test("sarscov2 paired-end [fastq] - bbduk") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = 'fastp'
+                input[5] = true
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = false
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 6: With decomplexification using PRINSEQ
+    //
+    test("sarscov2 paired-end [fastq] - prinseq") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = true
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = false
+                input[17] = 'prinseq'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success                  },
+                { assert workflow.out.mqc                  },
+                { assert workflow.out.reads                }, // prinseq not determinstic output could use nft-fastq later
+                { assert workflow.out.reads_decomplexified }, // prinseq not determinstic output could use nft-fastq later
+                { assert snapshot(
+                    workflow.out.reads_trimmed,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 7: With host removal using Kraken2
+    //
+    test("sarscov2 paired-end [fastq] - host_removal") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = KRAKEN2_HOST_DB_UNTAR.out.untar.map{ meta, db -> db }
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = true
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = false
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 8: Full pipeline - all steps enabled
+    //
+    test("sarscov2 paired-end [fastq] - full_pipeline") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = KRAKEN2_HOST_DB_UNTAR.out.untar.map{ meta, db -> db }
+                input[2] = []
+                input[3] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = 'fastp'
+                input[5] = false
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = false
+                input[17] = 'bbduk'
+                input[18] = false
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 9: Low read count handling
+    //
+    test("sarscov2 paired-end [fastq] - min_trimmed_reads_fail") {
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = true
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 100000
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mqc },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.reads_trimmed,
+                    workflow.out.reads_decomplexified,
+                    workflow.out.low_reads_mqc,
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Test 10: Default trimmomatic workflow - stub
+    //
+    test("sarscov2 paired-end [fastq] - trimmomatic - stub") {
+        options '-stub-run'
+
+        when {
+            params {
+                arguments_trimmomatic     = 'ILLUMINACLIP:TruSeq3-PE:2:30:10'
+                arguments_fastp           = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'trimmomatic'
+                input[5] = false
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    //
+    // Test 11: Fastp workflow - stub
+    //
+    test("sarscov2 paired-end [fastq] - fastp - stub") {
+        options '-stub-run'
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                input[3] = Channel.of([])
+                input[4] = 'fastp'
+                input[5] = false
+                input[6] = false
+                input[7] = false
+                input[8] = 1
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = false
+                input[15] = false
+                input[16] = true
+                input[17] = 'bbduk'
+                input[18] = true
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    //
+    // Test 12: Full pipeline - stub
+    //
+    test("sarscov2 paired-end [fastq] - full_pipeline - stub") {
+        options '-stub-run'
+
+        when {
+            params {
+                arguments_fastp           = ''
+                arguments_trimmomatic     = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, sample:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = KRAKEN2_HOST_DB_UNTAR.out.untar.map{ meta, db -> db }
+                input[2] = []
+                input[3] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = 'fastp'
+                input[5] = false
+                input[6] = true
+                input[7] = false
+                input[8] = 0
+                input[9] = false
+                input[10] = false
+                input[11] = false
+                input[12] = 1
+                input[13] = 'read'
+                input[14] = true
+                input[15] = false
+                input[16] = false
+                input[17] = 'bbduk'
+                input[18] = false
+                input[19] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

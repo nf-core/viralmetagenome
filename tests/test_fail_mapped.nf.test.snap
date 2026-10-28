@@ -95,7 +95,7 @@
                 "multiqc/multiqc_report.html"
             ],
             [
-                "fastp-insert-size-plot.txt:md5,580b7d083a3354de1eb65679b1a286ea",
+                "fastp-insert-size-plot.txt:md5,ab2c7fa3c58086806837029cfdd776d6",
                 "fastp-seq-content-gc-plot_Read_1_After_filtering.txt:md5,77fb928de301ef52db00166b15dfdd93",
                 "fastp-seq-content-gc-plot_Read_1_Before_filtering.txt:md5,fc8340a43942ce0029c43815b51e7206",
                 "fastp-seq-content-gc-plot_Read_2_After_filtering.txt:md5,8592fa1e8514cb99b3ea4cb1bb0ede05",
@@ -110,7 +110,7 @@
                 "fastp-seq-quality-plot_Read_2_Before_filtering.txt:md5,f77606ac7f9da3ed988fb03fd48eabf4",
                 "fastp_filtered_reads_plot.txt:md5,55090b531a529af29097fb19cd837e52",
                 "multiqc_citations.txt:md5,57db2426be011862828d18f767d25b57",
-                "multiqc_fastp.yaml:md5,f5750b70ba7292b5a539375329f2a7bc",
+                "multiqc_fastp.yaml:md5,9657624904043d7374c917abdb5a7000",
                 "multiqc_samples_low_reads.yaml:md5,a6448224a69eb18345f91150747c7621"
             ]
         ],

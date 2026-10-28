@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Fixed`
 
+- ([#336](https://github.com/nf-core/viralmetagenome/pull/336)) - Request `--output-type z --write-index=tbi` for `BCFTOOLS_MPILEUP` in `conf/modules.config`, since the updated module derives its output extension and index from `ext.args3` and otherwise emits an uncompressed vcf without an index, which silently skipped `BCFTOOLS_NORM`, `BCFTOOLS_FILTER` and everything downstream of it
+
 ### `Dependencies`
 
 | Dependency | Old version | New version |

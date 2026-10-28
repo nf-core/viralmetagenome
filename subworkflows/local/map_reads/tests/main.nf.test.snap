@@ -62,7 +62,7 @@
                         "sample": "test",
                         "single_end": false
                     },
-                    "test_null.bowtie2.log:md5,7569bc0aa37bca966eb59b71bd273299"
+                    "test_null.bowtie2.log:md5,cd07db1ad3c44563533385fddf01151c"
                 ]
             ]
         ],
@@ -135,7 +135,7 @@
                         "sample": "test",
                         "single_end": false
                     },
-                    "test_null.bowtie2.log:md5,7569bc0aa37bca966eb59b71bd273299"
+                    "test_null.bowtie2.log:md5,cd07db1ad3c44563533385fddf01151c"
                 ]
             ]
         ],

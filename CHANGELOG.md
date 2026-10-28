@@ -7,16 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added`
 
+- ([#334](https://github.com/nf-core/viralmetagenome/pull/334)) - Bump nf-core template to 4.2.1
+- ([#336](https://github.com/nf-core/viralmetagenome/pull/336)) - Update all nf-core modules and subworkflows
+
 ### `Fixed`
 
-- ([#334](https://github.com/nf-core/viralmetagenome/pull/334)) - Bump nf-core template to 4.2.1
+- ([#336](https://github.com/nf-core/viralmetagenome/pull/336)) - Request `--output-type z --write-index=tbi` for `BCFTOOLS_MPILEUP` in `conf/modules.config`, since the updated module derives its output extension and index from `ext.args3` and otherwise emits an uncompressed vcf without an index, which silently skipped `BCFTOOLS_NORM`, `BCFTOOLS_FILTER` and everything downstream of it
 
 ### `Dependencies`
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| `template` | 4.2.0       | 4.2.1       |
+| `bowtie2`  | 2.5.4       | 2.5.5       |
+| `fastp`    | 1.3.6       | 1.4.0       |
 | `fastqc`   | 0.12.1      | 0.13.0      |
+| `htslib`   | 1.21        | 1.24        |
+| `samtools` | 1.21        | 1.24        |
+| `template` | 4.2.0       | 4.2.1       |
 
 ## v1.2.0 - 2026-09-16
 

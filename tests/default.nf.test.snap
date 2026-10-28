@@ -51,7 +51,7 @@
                     "pysamstats": "1.1.2"
                 },
                 "FASTP": {
-                    "fastp": "1.3.6"
+                    "fastp": "1.4.0"
                 },
                 "FASTQC_HOST": {
                     "fastqc": "0.13.0"
@@ -239,7 +239,7 @@
                     "python": "3.9.1"
                 },
                 "FASTP": {
-                    "fastp": "1.3.6"
+                    "fastp": "1.4.0"
                 },
                 "FASTQC_HOST": {
                     "fastqc": "0.13.0"
@@ -1255,7 +1255,7 @@
                 "contig_completeness.txt:md5,f32110b4be7aac0158119fda120410fc",
                 "contig_taxonomy_All_clusters.txt:md5,5ff56a25d06788b5f4211b58ad73e74a",
                 "contig_taxonomy_Reconstructed_clusters.txt:md5,0cd73e8030119486de21c4b0759dcc3d",
-                "fastp-insert-size-plot.txt:md5,580b7d083a3354de1eb65679b1a286ea",
+                "fastp-insert-size-plot.txt:md5,ab2c7fa3c58086806837029cfdd776d6",
                 "fastp-seq-content-gc-plot_Read_1_After_filtering.txt:md5,77fb928de301ef52db00166b15dfdd93",
                 "fastp-seq-content-gc-plot_Read_1_Before_filtering.txt:md5,fc8340a43942ce0029c43815b51e7206",
                 "fastp-seq-content-gc-plot_Read_2_After_filtering.txt:md5,8592fa1e8514cb99b3ea4cb1bb0ede05",
@@ -1278,7 +1278,7 @@
                 "kraken-top-n-plot_Unclassified.txt:md5,d3e6fae9b860d7b777b2110a2f7642dd",
                 "multiqc_bcftools_stats.yaml:md5,034f7ed5f1666dba101b54d8e34497ee",
                 "multiqc_citations.txt:md5,ca5ee81b05f0cec3ad44e1557f2cddce",
-                "multiqc_fastp.yaml:md5,f5750b70ba7292b5a539375329f2a7bc",
+                "multiqc_fastp.yaml:md5,9657624904043d7374c917abdb5a7000",
                 "multiqc_ivar_variants.yaml:md5,221ffc531ec03a14f9c30d3db0557f74",
                 "multiqc_kraken.yaml:md5,d5b81d208510e7de8e3b8ceb01ecb9a2",
                 "multiqc_quast_quast_megahit.yaml:md5,82a185f52a0ca6befb9910eb98b4aff6",
@@ -1286,9 +1286,9 @@
                 "multiqc_samples_low_reads.yaml:md5,a6448224a69eb18345f91150747c7621",
                 "quast_num_contigs.txt:md5,38140ae00dcde51a1a80b5eed7b71c89",
                 "quast_table.txt:md5,0fa42e965c5c8591bebfbd952f2fcf4c",
-                "SRR11140744.fastp.json:md5,79f95b57073a55dc3b9ee56b92456e55",
-                "SRR11140748.fastp.json:md5,0f6f0ba2731cc30ecfca96c7beca6bb4",
-                "empty-SRR.fastp.json:md5,282648c6a1bcc0de4136e143f7631660",
+                "SRR11140744.fastp.json:md5,073f57d5e76461e6d8a6b22b4ab12829",
+                "SRR11140748.fastp.json:md5,a16c30949728d8cdca64b332d6b1b2df",
+                "empty-SRR.fastp.json:md5,7964b2c65bd36796dd5bd73f77d0234d",
                 "SRR11140744_kraken2_host.kraken2.report.txt:md5,8af6d6b36473056da22d0a01e65a468a",
                 "SRR11140748_kraken2_host.kraken2.report.txt:md5,dcb606266fa1e1b47b4ef5d275159490",
                 "SRR11140744_BA2-CONSTRAINT.ann.vcf:md5,804a00769644ebcb05037586995fb3bd",
@@ -1919,7 +1919,7 @@
                     "pysamstats": "1.1.2"
                 },
                 "FASTP": {
-                    "fastp": "1.3.6"
+                    "fastp": "1.4.0"
                 },
                 "FASTQC_HOST": {
                     "fastqc": "0.13.0"
@@ -2068,7 +2068,7 @@
                     "pysamstats": "1.1.2"
                 },
                 "FASTP": {
-                    "fastp": "1.3.6"
+                    "fastp": "1.4.0"
                 },
                 "FASTQC_HOST": {
                     "fastqc": "0.13.0"
@@ -2720,7 +2720,7 @@
                 "bcftools_stats_vqc_Count_SNP.txt:md5,45294eceb9d20e990e3181c083f87745",
                 "bcftools_stats_vqc_Count_Transitions.txt:md5,2566bfedd0aac6d792e8d03d349dadb8",
                 "bcftools_stats_vqc_Count_Transversions.txt:md5,c32b34565e5c3bdb8ad0ffe64d502a98",
-                "fastp-insert-size-plot.txt:md5,580b7d083a3354de1eb65679b1a286ea",
+                "fastp-insert-size-plot.txt:md5,ab2c7fa3c58086806837029cfdd776d6",
                 "fastp-seq-content-gc-plot_Read_1_After_filtering.txt:md5,77fb928de301ef52db00166b15dfdd93",
                 "fastp-seq-content-gc-plot_Read_1_Before_filtering.txt:md5,fc8340a43942ce0029c43815b51e7206",
                 "fastp-seq-content-gc-plot_Read_2_After_filtering.txt:md5,8592fa1e8514cb99b3ea4cb1bb0ede05",
@@ -2743,13 +2743,13 @@
                 "kraken-top-n-plot_Unclassified.txt:md5,d3e6fae9b860d7b777b2110a2f7642dd",
                 "multiqc_bcftools_stats.yaml:md5,cbb839bead138ffbbfd60cd65b7e6dbb",
                 "multiqc_citations.txt:md5,888c4fd02526795cbf2943413494d685",
-                "multiqc_fastp.yaml:md5,f5750b70ba7292b5a539375329f2a7bc",
+                "multiqc_fastp.yaml:md5,9657624904043d7374c917abdb5a7000",
                 "multiqc_ivar_variants.yaml:md5,dd8c93144f89c6b69b00660618bacb47",
                 "multiqc_kraken.yaml:md5,d5b81d208510e7de8e3b8ceb01ecb9a2",
                 "multiqc_samples_low_reads.yaml:md5,a6448224a69eb18345f91150747c7621",
-                "SRR11140744.fastp.json:md5,79f95b57073a55dc3b9ee56b92456e55",
-                "SRR11140748.fastp.json:md5,0f6f0ba2731cc30ecfca96c7beca6bb4",
-                "empty-SRR.fastp.json:md5,282648c6a1bcc0de4136e143f7631660",
+                "SRR11140744.fastp.json:md5,073f57d5e76461e6d8a6b22b4ab12829",
+                "SRR11140748.fastp.json:md5,a16c30949728d8cdca64b332d6b1b2df",
+                "empty-SRR.fastp.json:md5,7964b2c65bd36796dd5bd73f77d0234d",
                 "SRR11140744_kraken2_host.kraken2.report.txt:md5,8af6d6b36473056da22d0a01e65a468a",
                 "SRR11140748_kraken2_host.kraken2.report.txt:md5,dcb606266fa1e1b47b4ef5d275159490",
                 "SRR11140744_BA2-CONSTRAINT.ann.vcf:md5,2b57500825e1045c123fcdd9e177982a",
@@ -3412,7 +3412,7 @@
                     "pysamstats": "1.1.2"
                 },
                 "FASTP": {
-                    "fastp": "1.3.6"
+                    "fastp": "1.4.0"
                 },
                 "FASTQC_HOST": {
                     "fastqc": "0.13.0"
